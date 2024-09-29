@@ -1,0 +1,95 @@
+.main-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f2f5;
+  font-size: 14px; /* Set font size */
+}
+
+.user-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 1000px; /* Adjust to fit larger width if needed */
+}
+
+.admin-user-card {
+  width: 100%;
+}
+
+.admin-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.admin-select {
+  width: 100%;
+  border-radius: 4px;
+}
+
+.admin-search-input {
+  border-radius: 4px;
+  height: 40px;
+}
+
+.admin-buttons .ant-btn {
+  border-radius: 4px;
+  font-size: 14px; /* Set button font size */
+}
+
+.admin-buttons .ant-btn-primary {
+  background-color: #f44336;
+  border-color: #f44336;
+}
+
+.admin-buttons .ant-btn-primary:hover {
+  background-color: #d32f2f;
+  border-color: #d32f2f;
+}
+
+.admin-buttons .ant-btn-default {
+  color: white;
+  background-color: #f44336;
+  border-color: #f44336;
+}
+
+.admin-buttons .ant-btn-default:hover {
+  background-color: #d32f2f;
+  border-color: #d32f2f;
+}
+
+.admin-buttons-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.admin-buttons-col button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.admin-buttons-col .primary-button {
+  background-color: #f44336;
+  border: 1px solid #f44336;
+  color: white;
+}
+
+.admin-buttons-col .primary-button:hover {
+  background-color: #d32f2f;
+  border-color: #d32f2f;
+}
+
+.admin-buttons-col .button-icon {
+  margin-right: 8px;
+  vertical-align: middle;
+}

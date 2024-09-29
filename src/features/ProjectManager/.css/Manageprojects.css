@@ -1,0 +1,102 @@
+.manage-projects {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.manage-container {
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  padding: 20px;
+  margin: 100px auto;
+  position: relative;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.text-name-tab {
+  font-size: 20px;
+  color: #000000;
+  margin: 0;
+}
+
+.tab-top {
+  display: flex;
+  height: 50px;
+  padding: 15px;
+  justify-content: left;
+  background-color: #ffffff;
+  position: relative;
+}
+
+.new-project-btn {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  font-size: 15px;
+  height: 50px;
+  background-color: #f24b50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.new-project-btn span {
+  margin-right: 8px;
+}
+
+.new-project-btn:hover {
+  background-color: #d43f44;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.list-check-button {
+  position: relative;
+  font-size: 20px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  margin: 10px;
+}
+
+.list-check-button .ant-btn {
+  background-color: #1890ff;
+  color: white;
+  border-radius: 4px;
+  border: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 250px;
+  height: 50px;
+  text-align: left;
+}
+
+.list-check-button .anticon {
+  margin-left: 8px;
+}
+
+.list-check-button .ant-dropdown-menu {
+  width: 200px;
+}
+
+.list-check-button .ant-dropdown-menu-item {
+  padding: 10px 16px;
+  font-size: 16px;
+}
+
+.list-check-button .ant-dropdown-menu-item:hover {
+  background-color: #e6f7ff;
+  color: #1890ff;
+}
+.text-field-search{
+  width: 250px !important;;
+  height: 50px !important;;
+}
+
