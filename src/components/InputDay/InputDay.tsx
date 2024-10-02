@@ -84,10 +84,10 @@ const InputDay: React.FC<InputDayProps> = ({
           position: 'absolute',
           right: '10px',
           fontSize: '18px',
-          color: '#ffffff',
+          color: '#ff0000',
           cursor: 'pointer',
           padding: '5px',
-          backgroundColor: isFocused ? '#ffffff' : 'transparent',
+          backgroundColor: isFocused ? '#1677ff' : 'transparent',
           borderRadius: '50%',
           transition: 'background-color 0.3s'
         }}

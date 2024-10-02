@@ -8,8 +8,7 @@
   }
   
   .ant-table-wrapper {
-    max-height: 240px;
-    overflow: auto;
+    max-height: 350px;
   }
   
   .ant-table-row {

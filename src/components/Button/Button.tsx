@@ -10,7 +10,6 @@ interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = ({ onClick, style, children, className = '', type = 'button', icon }) => {
-  // Handle 'primary' type as a class and map others to the button's native type attribute
   const buttonType = type === 'primary' ? 'button' : type;
   const buttonClass = type === 'primary' ? `${className} primary-button` : className;
 

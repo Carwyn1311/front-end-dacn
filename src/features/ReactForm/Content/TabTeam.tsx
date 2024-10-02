@@ -53,19 +53,6 @@ const TabTeam: React.FC = () => {
           </Col>
         </Row>
       </Form.Item>
-
-      <Form.Item>
-        <Row justify="end" gutter={16}>
-          <Col>
-            <Button htmlType="button">Cancel</Button>
-          </Col>
-          <Col>
-            <Button type="primary" htmlType="submit">
-              Save
-            </Button>
-          </Col>
-        </Row>
-      </Form.Item>
     </Form>
   );
 };

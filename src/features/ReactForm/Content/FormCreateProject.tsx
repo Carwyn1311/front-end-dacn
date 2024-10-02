@@ -3,11 +3,12 @@ import { BiX } from 'react-icons/bi';
 import React, { useState } from 'react';
 import { useForm, FormProvider, Controller, SubmitHandler } from 'react-hook-form';
 import { Tab, Tabs, Box } from '@mui/material';
-import '../.css/FormCreateProject.css';
+import '../.css/FormCreateProject.css'; // Sửa đường dẫn CSS
 import TabGeneral from './TabGeneral';
 import TabTeam from './TabTeam';
 import TabTasks from './TabTasks';
 import TabNotification from './TabNotification';
+import Button from '../../../components/Button/Button';
 
 interface FormValues {
   generalField: string
@@ -34,13 +35,19 @@ const FormCreateProject: React.FC = (): JSX.Element | null => {
   };
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    void (async () => {
-      console.log(data);
-    })();
+    console.log(data);
   };
 
   const handleClose = (): void => {
     setIsVisible(false);
+  };
+
+  const handleCancel = (): void => {
+    console.log('Cancel button clicked');
+  };
+
+  const handleSave = (): void => {
+    void methods.handleSubmit(onSubmit)();
   };
 
   if (!isVisible) {
@@ -53,14 +60,12 @@ const FormCreateProject: React.FC = (): JSX.Element | null => {
         <div className="form-titlebar">
           <h2>Create Project</h2>
           <button className="close-button" type="button" onClick={handleClose} aria-label="Close form">
-            <BiX style={{
-              fontWeight: 'bold',
-              fontSize: '35px'
-            }}/>
+            <BiX style={{ fontWeight: 'bold', fontSize: '35px' }} />
           </button>
-
         </div>
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
+
+        {/* Form content with tabs */}
+        <form onSubmit={methods.handleSubmit(onSubmit)} style={{ overflowY: 'auto', height: 'calc(100vh - 160px)' }}>
           <Tabs value={activeTab} onChange={handleTabChange}>
             <Tab label="General" />
             <Tab label="Team" />
@@ -82,9 +87,7 @@ const FormCreateProject: React.FC = (): JSX.Element | null => {
               name="teamField"
               control={methods.control}
               defaultValue=""
-              render={({ field }) => (
-                <TabTeam />
-              )}
+              render={({ field }) => <TabTeam />}
             />
           </TabPanel>
 
@@ -93,9 +96,7 @@ const FormCreateProject: React.FC = (): JSX.Element | null => {
               name="tasksField"
               control={methods.control}
               defaultValue=""
-              render={({ field }) => (
-                <TabTasks />
-              )}
+              render={({ field }) => <TabTasks />}
             />
           </TabPanel>
 
@@ -104,11 +105,13 @@ const FormCreateProject: React.FC = (): JSX.Element | null => {
               name="notificationField"
               control={methods.control}
               defaultValue=""
-              render={({ field }) => (
-                <TabNotification />
-              )}
+              render={({ field }) => <TabNotification />}
             />
           </TabPanel>
+          <div className="action-buttons-container">
+            <Button className="cancel-button" onClick={handleCancel}>Cancel</Button>
+            <Button className="save-button" onClick={handleSave}>Save</Button>
+          </div>
         </form>
       </div>
     </FormProvider>

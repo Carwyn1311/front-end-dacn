@@ -51,7 +51,7 @@ const TabGeneral: React.FC = (): JSX.Element => {
     setSelectedType(type);
   };
 
-  const items = ['Apple', 'Banana', 'Cherry', 'Date', 'Grape', 'Lemon', 'Mango', 'Orange', '1'];
+  const items = ['client1 api - [client1]', 'client2 - [client2]', 'client3 - [client3]', 'client4 - [client4]', 'client5 - [client5]'];
 
   const handleFormSubmit = async (data: FormData): Promise<void> => {
     await onSubmit(data);
@@ -183,11 +183,6 @@ const TabGeneral: React.FC = (): JSX.Element => {
               </button>
             ))}
           </div>
-        </div>
-
-        <div className="action-buttons">
-          <button type="button" className="cancel-button">Cancel</button>
-          <button type="submit" className="save-button">Save</button>
         </div>
       </form>
     </div>
