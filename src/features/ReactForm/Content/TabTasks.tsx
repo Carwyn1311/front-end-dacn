@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Table, Button, Checkbox, Row, Col } from 'antd';
+import { Table, Button, Checkbox } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
-import '../.css/TabTasks.css'; // Import file CSS mới
+import '../.css/TabTasks.css';
 
 interface Task {
   key: string
@@ -26,14 +26,6 @@ const TabTasks: React.FC = () => {
   const handleDelete = (key: string): void => {
     const newTasks = tasks.filter((task) => task.key !== key);
     setTasks(newTasks);
-  };
-
-  const handleSave = (): void => {
-    console.log('Saved tasks:', tasks);
-  };
-
-  const handleCancel = (): void => {
-    console.log('Cancelled');
   };
 
   const handleCheckboxChange = (key: string, checked: boolean): void => {
@@ -83,16 +75,6 @@ const TabTasks: React.FC = () => {
         rowKey="key"
         scroll={{ y: 240 }}
       />
-      <Row justify="end" gutter={16} style={{ marginTop: '16px' }}>
-        <Col>
-          <Button onClick={handleCancel}>Cancel</Button>
-        </Col>
-        <Col>
-          <Button type="primary" onClick={handleSave} style={{ backgroundColor: '#e91e63', borderColor: '#e91e63' }}>
-            Save
-          </Button>
-        </Col>
-      </Row>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Checkbox, Button, Row, Col, Form } from 'antd';
+import { Checkbox, Form } from 'antd';
 
 const TabNotification: React.FC = () => {
   const [form] = Form.useForm();
@@ -15,21 +15,6 @@ const TabNotification: React.FC = () => {
     setCheckedItems({
       ...checkedItems,
       [e.target.name]: e.target.checked
-    });
-  };
-
-  const handleSave = (): void => {
-    console.log('Saved Notifications Settings:', checkedItems);
-  };
-
-  const handleCancel = (): void => {
-    form.resetFields();
-    setCheckedItems({
-      submitTimesheet: false,
-      requestOff: false,
-      approveRejectOff: false,
-      requestChangeTime: false,
-      approveRejectChangeTime: false
     });
   };
 
@@ -84,20 +69,6 @@ const TabNotification: React.FC = () => {
         >
           Approve/Reject Change Working Time
         </Checkbox>
-      </Form.Item>
-
-      {/* Nút Cancel và Save */}
-      <Form.Item>
-        <Row justify="end" gutter={16}>
-          <Col>
-            <Button onClick={handleCancel}>Cancel</Button>
-          </Col>
-          <Col>
-            <Button type="primary" onClick={handleSave} style={{ backgroundColor: '#e91e63', borderColor: '#e91e63' }}>
-              Save
-            </Button>
-          </Col>
-        </Row>
       </Form.Item>
     </Form>
   );

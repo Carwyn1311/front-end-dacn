@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import { IoMdLock } from 'react-icons/io';
 import { BiUser } from 'react-icons/bi';
 import React, { useState, useEffect } from 'react';
@@ -95,14 +93,14 @@ const Login = (): JSX.Element => {
         <div className="form-group">
           <div className="login-container">
             <h3 className="text-top-label">Timesheet</h3>
-            <h2 className="login-title">Login</h2>
+            <h2 className="login-title">Log in</h2>
             <form className="login-form" onSubmit={handleSubmit}>
               <div className="input-group">
                 <BiUser className="user-icon" />
                 <TextField
                   value={userName}
                   onChange={handleUserNameChange}
-                  placeholder="User name"
+                  placeholder="User name or email"
                   className="input-field"
                 />
               </div>
@@ -124,14 +122,17 @@ const Login = (): JSX.Element => {
                 <label>Remember me</label>
               </div>
               {error && <p className="error">{error}</p>}
-              <button type="submit">Login</button>
+              <button type="submit">Log in</button>
             </form>
             <button onClick={handleGoogleLoginClick} className="google-login-btn">
-              Login with Google
+              Log In With Google
             </button>
           </div>
         </div>
       </div>
+      <footer>
+        <p>© 2024 Timesheet. <strong>Version 4.3.0.0 [20231608]</strong></p>
+      </footer>
     </div>
   );
 };
