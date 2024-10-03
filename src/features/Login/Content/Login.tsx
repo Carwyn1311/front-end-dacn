@@ -92,27 +92,32 @@ const Login = (): JSX.Element => {
       <div>
         <div className="form-group">
           <div className="login-container">
-            <h3 className="text-top-label">Timesheet</h3>
+            <h3 className="text-top-label">AI CHAT</h3>
             <h2 className="login-title">Log in</h2>
             <form className="login-form" onSubmit={handleSubmit}>
+              {/* Username input */}
               <div className="input-group">
-                <BiUser className="user-icon" />
+                <BiUser className="user-icon" /> {/* Đưa icon ra bên ngoài */}
                 <TextField
                   value={userName}
                   onChange={handleUserNameChange}
-                  placeholder="User name or email"
-                  className="input-field"
+                  placeholder=""
+                  label="User Name"
+                  fullWidth={true}
                 />
               </div>
+              {/* Password input */}
               <div className="input-group">
-                <IoMdLock className="user-icon" />
+                <IoMdLock className="user-icon" /> {/* Đưa icon ra bên ngoài */}
                 <PasswordField
                   value={password}
                   onChange={handlePasswordChange}
-                  placeholder="Password"
-                  className="input-field"
+                  placeholder=""
+                  label="Password"
+                  fullWidth={true}
                 />
               </div>
+              {/* Remember me */}
               <div className="input-group">
                 <input
                   type="checkbox"
@@ -131,7 +136,7 @@ const Login = (): JSX.Element => {
         </div>
       </div>
       <footer>
-        <p>© 2024 Timesheet. <strong>Version 4.3.0.0 [20231608]</strong></p>
+      <p style={{ color: "white" }}>© 2024 AI CHAT. <strong>Version 4.3.0.0 [20231608]</strong></p>
       </footer>
     </div>
   );
