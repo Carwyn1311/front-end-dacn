@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import '../.css/CreateAccount.css';
 const CreateAccount: React.FC = () => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
