@@ -53,9 +53,10 @@ body {
 
 .input-group {
   display: flex;
-  align-items: center; /* Căn giữa icon và input */
-  margin-bottom: 20px;
+  align-items: center; /* Căn giữa theo chiều dọc */
+  justify-content: flex-start; /* Căn trái */
 }
+
 
 .user-icon {
   margin-right: 10px; /* Tạo khoảng cách giữa icon và input */
@@ -83,6 +84,8 @@ body {
 
 input[type="checkbox"] + label {
   font-size: 14px;
+  white-space: nowrap;
+  margin-right: 280px;
   color: #555;
 }
 

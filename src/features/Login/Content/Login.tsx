@@ -130,6 +130,7 @@ const Login = (): JSX.Element => {
                 />
                 <label>Remember me</label>
               </div>
+
               {error && <p className="error">{error}</p>}
               <button type="submit">Log in</button>
             </form>

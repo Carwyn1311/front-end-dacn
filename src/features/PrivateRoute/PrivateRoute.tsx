@@ -1,16 +1,19 @@
 import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import { TokenAuthService } from '../TokenAuthService/TokenAuthService';
 
-interface PrivateRouteProps {}
+interface PrivateRouteProps {
+  children: React.ReactElement
+}
 
-const PrivateRoute: React.FC<PrivateRouteProps> = () => {
-  const isAuthenticated = localStorage.getItem('token') !== null;
+const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
+  const isAuthenticated = TokenAuthService.getToken(); // Kiểm tra token
 
-  if (!isAuthenticated) {
+  if ((isAuthenticated == null) || isAuthenticated === '') {
     return <Navigate to="/login" />;
   }
 
-  return <Outlet />;
+  return children;
 };
 
 export default PrivateRoute;
