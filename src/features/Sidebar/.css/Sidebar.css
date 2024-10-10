@@ -1,15 +1,24 @@
 .sidebar {
   width: 340px;
-  background-color: #ffffff;
+  background-color: #f8fafc;
+  color: #1f2937;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-size: 15px;
-  margin-top: 60px;
-  transition: transform 0.3s ease; 
+  font-size: 16px;
   position: fixed;
   top: 0;
   left: 0;
   height: 100%;
   z-index: 1000;
+  transition: transform 0.3s ease;
+  padding-top: 20px;
+}
+
+.sidebar.closed {
+  transform: translateX(-100%); /* Sidebar bị ẩn */
+}
+
+.sidebar.open {
+  transform: translateX(0); /* Sidebar mở */
 }
 
 .sidebar-hidden .main-content {
@@ -17,7 +26,7 @@
 }
 
 .sidebar.closed {
-  transform: translateX(-100%); 
+  transform: translateX(-100%);
 }
 
 .sidebar.open {
@@ -25,23 +34,35 @@
 }
 
 .sidebar-toggle-button {
-  position: fixed;
-  top: 20px;
-  left: 25px;
+  background-color: #f4f4f4;
+  font-size: 16px; /* Kích thước nhỏ hơn cho icon ba dòng kẻ */
+  background: none;
+  border: none;
   cursor: pointer;
-  font-size: 30px;
-  font-weight: bold;
-  z-index: 1100; 
-  color: #ffffff;
-  display: flex;
+  padding: 5px; /* Thêm padding để dễ nhấp */
+  margin-left: 10px; /* Điều chỉnh khoảng cách so với lề trái */
+  display: flex; /* Sắp xếp linh hoạt cho icon */
+  justify-content: center;
   align-items: center;
+}
+
+
+.sidebar-toggle-button:hover {
+  background-color: #164a7d; /* Cải thiện phản hồi hover */
 }
 
 .profile {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
+}
+
+.profile img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 10px;
 }
 
 .profile-picture {
@@ -49,6 +70,22 @@
   height: 80px;
   border-radius: 50%;
   margin-bottom: 10px;
+}
+
+.menu-item {
+  padding: 15px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #374151;
+}
+
+.menu-item:hover {
+  background-color: #e2e8f0;
+  border-radius: 5px;
+}
+
+.menu-item svg {
+  margin-right: 10px;
 }
 
 h2 {
@@ -84,12 +121,11 @@ nav ul ul {
   padding-left: 20px;
 }
 
-
 .admin-menu {
   list-style: none;
   padding-left: 0;
   margin: 0;
-  padding: -3px;
+  padding: 0;
 }
 
 .admin-menu li {
@@ -108,14 +144,15 @@ nav ul ul {
 
 .text-admin {
   display: flex;
-  align-items: center; 
+  align-items: center;
   font-size: 15px;
   padding: 5px;
   margin-right: 210px;
 }
+
 .icon-admin {
   display: flex;
-  align-items: center; 
+  align-items: center;
   margin-left: 7px;
   font-size: 15px;
   padding: 5px;
@@ -123,13 +160,14 @@ nav ul ul {
 
 .text-sidebar {
   display: flex;
-  align-items: center; 
+  align-items: center;
   font-size: 15px;
   padding: 5px;
 }
+
 .icon-sidebar {
   display: flex;
-  align-items: center; 
+  align-items: center;
   margin-left: -9px;
   font-size: 15px;
   padding: 5px;
@@ -159,10 +197,9 @@ nav ul ul {
 
 .sidebar-function {
   padding: 30px;
-  position: relative;
+  position: relative; /* Thêm position relative */
   top: -20px;
   font-weight: bold;
-  
 }
 
 .sidebar-menu {
@@ -171,10 +208,14 @@ nav ul ul {
   max-height: calc(100vh - 80px);
   overflow-x: hidden;
   overflow-y: scroll;
+  width: 330px;
+  margin-top: 10px;
+  height: 520px;
 }
+
+/* Thanh cuộn tùy chỉnh */
 ::-webkit-scrollbar {
   width: 8px;
-  margin-right: 15px;
 }
 
 ::-webkit-scrollbar-track {
@@ -184,22 +225,17 @@ nav ul ul {
 ::-webkit-scrollbar-thumb {
   background: #888;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+  background: #555;
 }
-.footer{
+
+.footer {
   font-size: 14px;
   display: flex;
   color: rgb(4, 14, 14);
   margin-left: 80px;
   margin-top: -42px;
-  font-weight:none;
+  font-weight: none;
   background-color: #ffffff;
 }
-
-.sidebar-menu{
-  width: 330px;
-  margin-top: 10px;
-  height: 520px;
-}
-

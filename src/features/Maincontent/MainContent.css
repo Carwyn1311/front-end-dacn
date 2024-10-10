@@ -1,0 +1,39 @@
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    transition: margin-left 0.3s ease;
+    margin-left: 0; /* Đảm bảo nội dung chính luôn căn giữa khi sidebar đóng */
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 12px;
+    border-radius: 30px;
+    border: 2px solid #3b82f6; /* Viền màu xanh nhạt */
+    font-size: 16px;
+    outline: none;
+    background-color: white;
+  }
+  
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .action-buttons .button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    background-color: #3b82f6;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .action-buttons .button:hover {
+    background-color: #1e3a8a; /* Màu xanh đậm hơn khi hover */
+  }
+  
