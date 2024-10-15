@@ -1,0 +1,66 @@
+.profile-container {
+  max-width: 700px; /* Giảm max-width để nhỏ gọn hơn */
+  max-height: 700px;
+  margin: 0 auto;
+  padding: 20px; /* Thêm padding để tránh các cạnh sát quá */
+}
+
+.profile-card {
+  text-align: center;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-avatar-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.profile-avatar {
+  width: 120px; /* Giảm kích thước avatar */
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-name {
+  font-size: 20px; /* Giảm cỡ chữ */
+  font-weight: bold;
+}
+
+.profile-email,
+.profile-phone {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.profile-tags .ant-tag {
+  margin-right: 5px;
+}
+
+.profile-info-card {
+  padding: 15px; /* Giảm padding để tiết kiệm không gian */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-detail-card {
+  padding: 15px; /* Giảm padding */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-actions {
+  text-align: right;
+}
+
+.profile-actions button {
+  margin-right: 10px;
+  padding: 5px 15px; /* Giảm padding cho button */
+}
+
+.ant-form-item {
+  margin-bottom: 12px; /* Giảm khoảng cách giữa các form items */
+}

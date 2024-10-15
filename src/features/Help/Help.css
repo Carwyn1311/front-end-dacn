@@ -1,0 +1,47 @@
+/* Đặt các thuộc tính chung cho container */
+.help-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f2f5;
+    padding: 20px;
+  }
+  
+  /* Định dạng cho Card chứa thông tin trợ giúp */
+  .help-card {
+    max-width: 600px;
+    width: 100%;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+  
+  /* Định dạng cho mỗi item trong danh sách */
+  .help-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  /* Định dạng cho liên kết */
+  .help-item a {
+    color: #1890ff;
+    font-size: 16px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  /* Thêm hiệu ứng hover cho liên kết */
+  .help-item a:hover {
+    color: #40a9ff;
+  }
+  
+  /* Tiêu đề của Card */
+  .ant-card-head-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+  }
+  
