@@ -25,11 +25,11 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn }
   };
 
   const handleHelpClick = () => {
-    navigate('/help'); // Điều hướng đến trang trợ giúp
+    navigate('/help'); 
   };
 
   const handleInfoClick = () => {
-    navigate('/info'); // Điều hướng đến trang Info
+    navigate('/info'); 
   };
 
   const handleLogout = () => {

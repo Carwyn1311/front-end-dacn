@@ -31,7 +31,7 @@ function MainContent({ isSidebarOpen }: MainContentProps) {
         flexDirection: 'column', 
         alignItems: 'center', 
         width: isSidebarOpen ? 'calc(100% - 250px)' : '100%',
-        transition: 'width 0.3s ease' // Thêm hiệu ứng chuyển đổi khi sidebar mở/đóng
+        transition: 'width 0.3s ease'
       }}
     >
       <h1 style={{ textAlign: 'center', marginBottom: '20px' }}>Tôi có thể giúp gì cho bạn?</h1>
