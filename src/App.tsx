@@ -12,7 +12,6 @@ const App: React.FC = () => {
   const [userName, setUserName] = useState('');  // Bạn có thể cập nhật giá trị người dùng khi có dữ liệu
   const [email, setEmail] = useState('');        // Cập nhật giá trị email khi người dùng đăng nhập
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Thêm trạng thái đăng nhập
-=======
 import Button from './components/Button/Button';
 
 const App: React.FC = () => {
