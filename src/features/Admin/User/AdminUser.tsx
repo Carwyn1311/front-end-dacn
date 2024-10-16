@@ -1,115 +1,126 @@
 import React, { useState } from 'react';
 import './AdminUser.css';
-import { Card, Select, Row, Col } from 'antd';
-import { PlusOutlined, ImportOutlined, SearchOutlined } from '@ant-design/icons';
-import Dropdown from '../../../components/Dropdown/Dropdown';
-import AutoSearch from '../../../components/AutoSearchField/AutoSearch';
-import Button from '../../../components/Button/Button';
+import { Card, Select, Row, Col, Input, Button, List, Checkbox, Modal } from 'antd';
+import { PlusOutlined, ImportOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
+const { Search } = Input;
+
+// Giả lập dữ liệu người dùng
+const userData = [
+  { id: 1, name: 'User1', role: 'Admin', status: 'Hoạt động' },
+  { id: 2, name: 'User2', role: 'User', status: 'Đóng băng' },
+  { id: 3, name: 'User3', role: 'User', status: 'Hoạt động' },
+];
 
 const AdminUser: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>('');
+  const [users, setUsers] = useState(userData); // Quản lý danh sách người dùng
+  const [selectedUser, setSelectedUser] = useState<any>(null); // Quản lý người dùng được chọn
 
-  // Adding explicit return type
-  const handleSearchChange = (item: string): void => {
-    setSearchValue(item);
+  // Thay đổi sự kiện tìm kiếm
+  const handleSearchChange = (value: string) => {
+    setSearchValue(value);
+    const filteredUsers = userData.filter(user =>
+      user.name.toLowerCase().includes(value.toLowerCase())
+    );
+    setUsers(filteredUsers);
   };
 
-  // Sample data for AutoSearch items
-  const searchItems = [
-    'Username1',
-    'Name1',
-    'Surname1',
-    'Email1',
-    'Username2',
-    'Name2',
-    'Surname2',
-    'Email2'
-  ];
+  // Thêm người dùng
+  const handleAddUser = () => {
+    const newUser = { id: users.length + 1, name: 'New User', role: 'User', status: 'Hoạt động' };
+    setUsers([...users, newUser]);
+  };
+
+  // Sửa người dùng
+  const handleEditUser = (user: any) => {
+    setSelectedUser(user);
+    Modal.info({
+      title: 'Chỉnh sửa người dùng',
+      content: `Chỉnh sửa thông tin của ${user.name}`,
+      onOk: () => setSelectedUser(null),
+    });
+  };
+
+  // Xóa người dùng
+  const handleDeleteUser = (userId: number) => {
+    setUsers(users.filter(user => user.id !== userId));
+  };
+
+  // Đóng băng người dùng
+  const handleFreezeUser = (user: any) => {
+    const updatedUsers = users.map(u => (u.id === user.id ? { ...u, status: 'Đóng băng' } : u));
+    setUsers(updatedUsers);
+  };
 
   return (
-    <div className="main-content">
+    <div className="main-content" style={{ padding: '20px', backgroundColor: '#f0f2f5', height: '100vh' }}>
       <div className="user-container">
-        <Card title="Users" className="admin-user-card">
-          <Row gutter={16} className="admin-buttons">
+        <Card title="Quản lý người dùng" className="admin-user-card" style={{ width: '100%', maxWidth: '900px', margin: 'auto' }}>
+          
+          {/* Tìm kiếm người dùng */}
+          <Row gutter={16} className="admin-buttons" style={{ marginBottom: '20px' }}>
+            <Col span={16}>
+              <Search
+                placeholder="Tìm kiếm người dùng"
+                value={searchValue}
+                onChange={e => handleSearchChange(e.target.value)}
+                prefix={<SearchOutlined />}
+                allowClear
+                enterButton
+              />
+            </Col>
             <Col>
               <Button
                 type="primary"
                 icon={<PlusOutlined />}
-                style={{ backgroundColor: '#f44336', borderColor: '#f44336', width: '120px', height: '30px', color: 'white', fontSize: '14px' }}
-                onClick={() => console.log('Button clicked!')} // Add onClick handler
+                onClick={handleAddUser}
               >
-              New User
+                Thêm người dùng
               </Button>
-
-            </Col>
-            <Col>
-              <Button
-                icon={<ImportOutlined />}
-                style={{ backgroundColor: '#f44336', borderColor: '#f44336', width: '120px', height: '30px', color: 'white', fontSize: '14px' }}
-                onClick={() => console.log('Import clicked!')} // Add onClick handler
-              >
-              Import
-              </Button>
-            </Col>
-
-            <Col span={6}>
-              <Dropdown
-                label="Position"
-                options={['All', 'Dev', 'Tester', 'IT', 'PM', 'Mentor']}
-                defaultValue="All"
-                onChange={(value) => console.log('Selected:', value)}
-              />
-            </Col>
-            <Col span={8}>
-              <AutoSearch
-                items={searchItems}
-                onSelectItem={handleSearchChange}
-                placeholder="Search by Username, Name, Surname or Email"
-                prefix={<SearchOutlined />}
-                className="admin-search-input"
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                width="340px"
-                height="50px"
-              />
             </Col>
           </Row>
 
+          {/* Danh sách người dùng */}
+          <List
+            dataSource={users}
+            renderItem={user => (
+              <List.Item
+                actions={[
+                  <Button icon={<EditOutlined />} onClick={() => handleEditUser(user)}>Sửa</Button>,
+                  <Button icon={<DeleteOutlined />} onClick={() => handleDeleteUser(user.id)} danger>Xóa</Button>,
+                  <Button onClick={() => handleFreezeUser(user)}>Đóng băng</Button>,
+                ]}
+              >
+                <List.Item.Meta
+                  title={user.name}
+                  description={`Role: ${user.role} | Trạng thái: ${user.status}`}
+                />
+              </List.Item>
+            )}
+          />
+
+          {/* Chọn trạng thái người dùng */}
           <Row gutter={16} style={{ marginTop: '20px' }}>
-            <Col span={4}>
-              <Select defaultValue="Active" className="admin-select">
-                <Option value="active">Active</Option>
-                <Option value="inactive">Inactive</Option>
+            <Col span={6}>
+              <Select defaultValue="Hoạt động" style={{ width: '100%' }}>
+                <Option value="active">Hoạt động</Option>
+                <Option value="frozen">Đóng băng</Option>
               </Select>
             </Col>
 
-            <Col span={4}>
-              <Select defaultValue="All" className="admin-select">
-                <Option value="all">User Type</Option>
-              </Select>
+            <Col span={6}>
+              <Button type="primary">Lưu trạng thái</Button>
             </Col>
+          </Row>
 
-            <Col span={4}>
-              <Dropdown
-                label="Level"
-                options={['All', 'Beginner', 'Intermediate', 'Advanced']}
-                defaultValue="All"
-                onChange={(value) => console.log('Selected:', value)}
-              />
-            </Col>
-
-            <Col span={4}>
-              <Select defaultValue="All" className="admin-select">
-                <Option value="all">Trainer</Option>
-              </Select>
-            </Col>
-
-            <Col span={4}>
-              <Select defaultValue="All" className="admin-select">
-                <Option value="all">Branch</Option>
-              </Select>
+          {/* Giao diện chat với nhân viên hỗ trợ */}
+          <Row style={{ marginTop: '20px' }}>
+            <Col span={24}>
+              <Button type="primary" style={{ width: '100%' }}>
+                Chat với nhân viên hỗ trợ
+              </Button>
             </Col>
           </Row>
         </Card>

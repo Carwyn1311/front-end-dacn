@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 
-function MainContent() {
+interface MainContentProps {
+  isSidebarOpen: boolean;
+}
+
+function MainContent({ isSidebarOpen }: MainContentProps) {
   const [inputValue, setInputValue] = useState('');
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]); // Lưu nhiều tệp
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -11,20 +15,28 @@ function MainContent() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const filesArray = Array.from(e.target.files);
-      setSelectedFiles(prevFiles => [...prevFiles, ...filesArray]); // Thêm nhiều tệp vào danh sách
+      setSelectedFiles((prevFiles) => [...prevFiles, ...filesArray]);
     }
   };
 
   const handleRemoveFile = (index: number) => {
-    setSelectedFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
+    setSelectedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
   return (
-    <div className="main-content" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+    <div 
+      className="main-content" 
+      style={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        width: isSidebarOpen ? 'calc(100% - 250px)' : '100%',
+        transition: 'width 0.3s ease'
+      }}
+    >
       <h1 style={{ textAlign: 'center', marginBottom: '20px' }}>Tôi có thể giúp gì cho bạn?</h1>
       <div className="input-section" style={{ width: '100%' }}>
-        <div className="input-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          {/* Hiển thị các tệp đã chọn */}
+        <div className="input-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
           {selectedFiles.length > 0 && (
             <div className="file-preview-list" style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
               {selectedFiles.map((file, index) => (
@@ -49,19 +61,17 @@ function MainContent() {
             </div>
           )}
 
-          {/* Biểu tượng tải tệp, hoạt động như một nút tải tệp */}
-          <label htmlFor="file-upload" className="input-icon" style={{ position: 'absolute', left: '10px', fontSize: '20px', color: '#888' }}>
+          <label htmlFor="file-upload" className="input-icon" style={{ position: 'absolute', left: '10px', fontSize: '20px', color: '#888', cursor: 'pointer' }}>
             &#128206;
           </label>
           <input
             id="file-upload"
             type="file"
             multiple
-            style={{ display: 'none' }} // Ẩn input file thực tế
-            onChange={handleFileChange} // Hàm xử lý khi người dùng chọn tệp
+            style={{ display: 'none' }}
+            onChange={handleFileChange}
           />
-          
-          {/* Trường nhập liệu */}
+
           <input
             type="text"
             className="input-field"
@@ -70,9 +80,12 @@ function MainContent() {
             onChange={handleInputChange}
             style={{ width: '95%', padding: '15px', borderRadius: '30px', border: '1px solid #ccc', fontSize: '16px', outline: 'none', paddingLeft: '40px' }}
           />
-          
-          {/* Biểu tượng mũi tên */}
-          {inputValue && <span className="input-arrow" style={{ position: 'absolute', right: '10px', fontSize: '20px', color: '#888', cursor: 'pointer' }}>&#8593;</span>}
+
+          {inputValue && (
+            <span className="input-arrow" style={{ position: 'absolute', right: '10px', fontSize: '20px', color: '#888', cursor: 'pointer' }}>
+              &#8593;
+            </span>
+          )}
         </div>
       </div>
     </div>
