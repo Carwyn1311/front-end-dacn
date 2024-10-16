@@ -12,6 +12,15 @@ const App: React.FC = () => {
   const [userName, setUserName] = useState('');  // Bạn có thể cập nhật giá trị người dùng khi có dữ liệu
   const [email, setEmail] = useState('');        // Cập nhật giá trị email khi người dùng đăng nhập
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Thêm trạng thái đăng nhập
+=======
+import Button from './components/Button/Button';
+
+const App: React.FC = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [userName] = useState('');
+  const [email] = useState('');
+  const [isLoggedIn] = useState(false)
+
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);  // Toggle trạng thái của Sidebar (mở/đóng)
@@ -54,6 +63,19 @@ const App: React.FC = () => {
             <Route path="/info" element={<Info />} />  {/* Thêm route cho Info */}
           </Routes>
         </div>
+
+    <div className="app-container">
+      <div className="header">
+        <Button onClick={toggleSidebar} className="sidebar-toggle-button">
+          &#9776;
+        </Button>
+      </div>
+      {isSidebarOpen && (
+        <Sidebar userName={userName} email={email} isOpen={isSidebarOpen} isLoggedIn={isLoggedIn}/>
+      )}
+      <div className={`main-content ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+        <MainContent />
+
       </div>
     </Router>
   );
