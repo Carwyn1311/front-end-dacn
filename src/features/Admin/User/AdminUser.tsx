@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import for navigation
 import './AdminUser.css';
-import { Card, Select, Row, Col, Input, Button, List, Checkbox, Modal } from 'antd';
-import { PlusOutlined, ImportOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons';
+import { Card, Select, Row, Col, Input, List, Modal } from 'antd';
+import { PlusOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons';
+import Button from '../../../components/Button/Button';
 
 const { Option } = Select;
 const { Search } = Input;
@@ -14,6 +16,7 @@ const userData = [
 ];
 
 const AdminUser: React.FC = () => {
+  const navigate = useNavigate(); // Create navigate function
   const [searchValue, setSearchValue] = useState<string>('');
   const [users, setUsers] = useState(userData); // Quản lý danh sách người dùng
   const [selectedUser, setSelectedUser] = useState<any>(null); // Quản lý người dùng được chọn
@@ -68,7 +71,6 @@ const AdminUser: React.FC = () => {
                 onChange={e => handleSearchChange(e.target.value)}
                 prefix={<SearchOutlined />}
                 allowClear
-                enterButton
               />
             </Col>
             <Col>
@@ -89,7 +91,7 @@ const AdminUser: React.FC = () => {
               <List.Item
                 actions={[
                   <Button icon={<EditOutlined />} onClick={() => handleEditUser(user)}>Sửa</Button>,
-                  <Button icon={<DeleteOutlined />} onClick={() => handleDeleteUser(user.id)} danger>Xóa</Button>,
+                  <Button icon={<DeleteOutlined />} onClick={() => handleDeleteUser(user.id)} style={{ color: 'red' }}>Xóa</Button>,
                   <Button onClick={() => handleFreezeUser(user)}>Đóng băng</Button>,
                 ]}
               >
@@ -104,12 +106,12 @@ const AdminUser: React.FC = () => {
           {/* Chọn trạng thái người dùng */}
           <Row gutter={16} style={{ marginTop: '20px' }}>
             <Col span={6}>
-              <Select defaultValue="Hoạt động" style={{ width: '100%' }}>
+              <Select defaultValue="all" style={{ width: '100%' }}>
+                <Option value="all">Tất cả</Option>
                 <Option value="active">Hoạt động</Option>
                 <Option value="frozen">Đóng băng</Option>
               </Select>
             </Col>
-
             <Col span={6}>
               <Button type="primary">Lưu trạng thái</Button>
             </Col>
@@ -118,7 +120,11 @@ const AdminUser: React.FC = () => {
           {/* Giao diện chat với nhân viên hỗ trợ */}
           <Row style={{ marginTop: '20px' }}>
             <Col span={24}>
-              <Button type="primary" style={{ width: '100%' }}>
+              <Button 
+                type="primary" 
+                style={{ width: '100%' }} 
+                onClick={() => navigate('/chat')}
+              >
                 Chat với nhân viên hỗ trợ
               </Button>
             </Col>
