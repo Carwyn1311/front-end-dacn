@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Sidebar from './features/Sidebar/Content/Sidebar';
+import Sidebar from './features/Sidebar/Content/Sidebar';  // Kiểm tra nếu bạn cần dùng { Sidebar }
 import AdminUser from './features/Admin/User/AdminUser';
 import MainContent from './features/Maincontent/MainContent';
 import Profile from './features/Profile/Profile';
