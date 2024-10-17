@@ -1,12 +1,12 @@
 import React from 'react';
 
 interface ButtonProps {
-  onClick?: () => void;  // Make onClick optional
-  style?: React.CSSProperties;
-  children: React.ReactNode;
-  className?: string;
-  type?: 'button' | 'submit' | 'reset' | 'primary';
-  icon?: React.ReactNode;
+  onClick: () => void
+  style?: React.CSSProperties
+  children: React.ReactNode
+  className?: string
+  type?: 'button' | 'submit' | 'reset' | 'primary'
+  icon?: React.ReactNode
 }
 
 const Button: React.FC<ButtonProps> = ({ onClick, style, children, className = '', type = 'button', icon }) => {
@@ -15,7 +15,7 @@ const Button: React.FC<ButtonProps> = ({ onClick, style, children, className = '
 
   return (
     <button className={buttonClass} onClick={onClick} style={style} type={buttonType}>
-      {icon != null && <span className="button-icon">{icon}</span>}
+      {icon != null ? <span className="button-icon">{icon}</span> : null}
       {children}
     </button>
   );

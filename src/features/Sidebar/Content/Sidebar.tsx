@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate,useLocation } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 
 interface SidebarProps {
   userName: string;
@@ -12,14 +11,9 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn }) => {
   const [isAvatarMenuOpen, setAvatarMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation(); // To track the current route
 
   const toggleAvatarMenu = () => {
     setAvatarMenuOpen(!isAvatarMenuOpen);
-  };
-
-  const handleBackClick = () => {
-    navigate('/'); // Navigate to the home page
   };
 
   const handleAdminClick = () => {
@@ -31,11 +25,12 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn }
   };
 
   const handleHelpClick = () => {
-    navigate('/help');
+    navigate('/help'); 
   };
 
   const handleInfoClick = () => {
-    navigate('/info');
+    navigate('/info'); 
+  };
 
   const handleLogout = () => {
     console.log('Logged out');
@@ -99,7 +94,7 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn }
               <li style={{ padding: '5px 0', cursor: 'pointer' }} onClick={handleHelpClick}>
                 Trợ giúp
               </li>
-              <li style={{ padding: '5px 0', cursor: 'pointer' }} onClick={handleInfoClick}>
+               <li style={{ padding: '5px 0', cursor: 'pointer' }} onClick={handleInfoClick}>
                 Thông tin hệ thống
               </li>
             </ul>
@@ -114,24 +109,6 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn }
         )}
       </div>
 
-      {/* "Back" button */}
-      {location.pathname !== '/' && (
-        <div style={{ padding: '20px' }}>
-          <button
-            onClick={handleBackClick}
-            style={{
-              width: '100%',
-              padding: '10px',
-              backgroundColor: '#f0f0f0',
-              border: 'none',
-              cursor: 'pointer',
-            }}
-          >
-            Quay lại
-          </button>
-        </div>
-      )}
-
       <div className="menu" style={{ marginLeft: '50px' }}>
         <div className="menu-item">{isOpen && <span>Nội dung AI CHAT</span>}</div>
         <div className="menu-item" style={{ marginLeft: '-5px' }}>
@@ -143,4 +120,3 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn }
 };
 
 export default Sidebar;
-
