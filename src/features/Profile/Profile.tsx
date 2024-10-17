@@ -9,7 +9,11 @@ const Profile = () => {
     email: 'phuc.letrong@ncc.asia',
     phone: '0904752033',
     dob: '13/11/2003',
-    address: 'SG',
+    branch: 'SG',
+    userType: 'TTS',
+    level: 'Intern 0',
+    position: 'Dev',
+    remainLeaveDay: '0',
     bank: 'Techcombank',
     bankAccount: '1118888999',
     taxCode: '123456789',
@@ -35,10 +39,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="profile-container">
-      {/* Header */}
-      <h1 style={{ textAlign: 'center', marginBottom: '20px' }}>Hồ sơ người dùng</h1>
-
+    <div className="profile-container" >
       {/* Phần thông tin cá nhân */}
       <Row gutter={16} className="profile-top">
         <Col span={8}>
@@ -55,7 +56,10 @@ const Profile = () => {
             <p className="profile-phone">{userInfo.phone}</p>
             {/* Thẻ thông tin */}
             <div className="profile-tags">
-              <Tag color="orange">{userInfo.address}</Tag>
+              <Tag color="orange">{userInfo.branch}</Tag>
+              <Tag color="blue">{userInfo.userType}</Tag>
+              <Tag color="purple">{userInfo.position}</Tag>
+              <Tag color="green">{userInfo.level}</Tag>
             </div>
           </Card>
         </Col>
@@ -64,18 +68,32 @@ const Profile = () => {
           <Card className="profile-info-card">
             <Form layout="vertical">
               <Row gutter={16}>
-                <Col span={24}>
+                <Col span={12}>
                   <Form.Item label="Full Name">
-                    <Input name="fullName" value={userInfo.fullName} onChange={handleInputChange} style={{ width: '100%' }} />
+                    <Input name="fullName" value={userInfo.fullName} onChange={handleInputChange} />
                   </Form.Item>
                   <Form.Item label="Email">
-                    <Input name="email" value={userInfo.email} onChange={handleInputChange} style={{ width: '100%' }} />
+                    <Input name="email" value={userInfo.email} onChange={handleInputChange} />
                   </Form.Item>
                   <Form.Item label="DOB">
-                    <Input name="dob" value={userInfo.dob} onChange={handleInputChange} style={{ width: '100%' }} />
+                    <Input name="dob" value={userInfo.dob} onChange={handleInputChange} />
                   </Form.Item>
-                  <Form.Item label="Address">
-                    <Input name="address" value={userInfo.address} onChange={handleInputChange} style={{ width: '100%' }} />
+                  <Form.Item label="Branch">
+                    <Input name="branch" value={userInfo.branch} onChange={handleInputChange} />
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item label="User Type">
+                    <Input name="userType" value={userInfo.userType} onChange={handleInputChange} />
+                  </Form.Item>
+                  <Form.Item label="Level">
+                    <Input name="level" value={userInfo.level} onChange={handleInputChange} />
+                  </Form.Item>
+                  <Form.Item label="Position">
+                    <Input name="position" value={userInfo.position} onChange={handleInputChange} />
+                  </Form.Item>
+                  <Form.Item label="Remain leave day">
+                    <Input name="remainLeaveDay" value={userInfo.remainLeaveDay} onChange={handleInputChange} />
                   </Form.Item>
                 </Col>
               </Row>
@@ -98,42 +116,42 @@ const Profile = () => {
               <Row gutter={16}>
                 <Col span={12}>
                   <Form.Item label="Bank">
-                    <Input name="bank" value={userInfo.bank} onChange={handleInputChange} style={{ width: '100%' }} />
+                    <Input name="bank" value={userInfo.bank} onChange={handleInputChange} />
                   </Form.Item>
                   <Form.Item label="Bank account">
-                    <Input name="bankAccount" value={userInfo.bankAccount} onChange={handleInputChange} style={{ width: '100%' }} />
+                    <Input name="bankAccount" value={userInfo.bankAccount} onChange={handleInputChange} />
                   </Form.Item>
                   <Form.Item label="Tax code">
-                    <Input name="taxCode" value={userInfo.taxCode} onChange={handleInputChange} style={{ width: '100%' }} />
+                    <Input name="taxCode" value={userInfo.taxCode} onChange={handleInputChange} />
                   </Form.Item>
                   <Form.Item label="Emergency Contact">
-                    <Input name="emergencyContact" value={userInfo.emergencyContact} onChange={handleInputChange} style={{ width: '100%' }} />
+                    <Input name="emergencyContact" value={userInfo.emergencyContact} onChange={handleInputChange} />
                   </Form.Item>
                   <Form.Item label="Insurance status">
-                    <Input name="insuranceStatus" value={userInfo.insuranceStatus} onChange={handleInputChange} style={{ width: '100%' }} />
+                    <Input name="insuranceStatus" value={userInfo.insuranceStatus} onChange={handleInputChange} />
                   </Form.Item>
                   <Form.Item label="Identify">
-                    <Input name="identify" value={userInfo.identify} onChange={handleInputChange} style={{ width: '100%' }} />
+                    <Input name="identify" value={userInfo.identify} onChange={handleInputChange} />
                   </Form.Item>
                 </Col>
                 <Col span={12}>
                   <Form.Item label="Place of origin">
-                    <Input name="origin" value={userInfo.origin} onChange={handleInputChange} style={{ width: '100%' }} />
+                    <Input name="origin" value={userInfo.origin} onChange={handleInputChange} />
                   </Form.Item>
                   <Form.Item label="Place of residence">
-                    <Input name="residence" value={userInfo.residence} onChange={handleInputChange} style={{ width: '100%' }} />
+                    <Input name="residence" value={userInfo.residence} onChange={handleInputChange} />
                   </Form.Item>
                   <Form.Item label="Current Address">
-                    <Input name="currentAddress" value={userInfo.currentAddress} onChange={handleInputChange} style={{ width: '100%' }} />
+                    <Input name="currentAddress" value={userInfo.currentAddress} onChange={handleInputChange} />
                   </Form.Item>
                   <Form.Item label="Emergency Contact Phone">
-                    <Input name="emergencyPhone" value={userInfo.emergencyPhone} onChange={handleInputChange} style={{ width: '100%' }} />
+                    <Input name="emergencyPhone" value={userInfo.emergencyPhone} onChange={handleInputChange} />
                   </Form.Item>
                   <Form.Item label="Date of issue">
-                    <Input name="dateOfIssue" value={userInfo.dateOfIssue} onChange={handleInputChange} style={{ width: '100%' }} />
+                    <Input name="dateOfIssue" value={userInfo.dateOfIssue} onChange={handleInputChange} />
                   </Form.Item>
                   <Form.Item label="Issued By">
-                    <Input name="issuedBy" value={userInfo.issuedBy} onChange={handleInputChange} style={{ width: '100%' }} />
+                    <Input name="issuedBy" value={userInfo.issuedBy} onChange={handleInputChange} />
                   </Form.Item>
                 </Col>
               </Row>

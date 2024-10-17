@@ -7,7 +7,6 @@ import MainContent from './features/Maincontent/MainContent';
 import Profile from './features/Profile/Profile';
 import Help from './features/Help/Help';
 import Info from './features/Info/Info';
-import ChatPage from './features/ChatPage/ChatPage';
 
 const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -28,7 +27,7 @@ const App: React.FC = () => {
           </button>
         </div>
 
-        {/* Sidebar */}
+        {/* Sidebar */} 
         {isSidebarOpen && (
           <Sidebar 
             userName={userName} 
@@ -53,7 +52,6 @@ const App: React.FC = () => {
             {/* Trang Trợ giúp */}
             <Route path="/help" element={<Help />} /> {/* Thêm route cho trang trợ giúp */}
             <Route path="/info" element={<Info />} />  {/* Thêm route cho Info */}
-            <Route path="/chat" element={<ChatPage />} /> {/* Thêm route cho ChatPage */}
           </Routes>
         </div>
       </div>
