@@ -36,7 +36,6 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn }
 
   const handleInfoClick = () => {
     navigate('/info');
-  };
 
   const handleLogout = () => {
     console.log('Logged out');

@@ -39,7 +39,7 @@ const MainContent: React.FC<MainContentProps> = ({ isSidebarOpen }) => {
         flexDirection: 'column',
         alignItems: 'center',
         width: isSidebarOpen ? 'calc(100% - 250px)' : '100%',
-        transition: 'width 0.3s ease',
+        transition: 'width 0.3s ease'
       }}
     >
       <h1 style={{ textAlign: 'center', marginBottom: '20px' }}>Tôi có thể giúp gì cho bạn?</h1>
