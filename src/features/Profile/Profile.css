@@ -15,7 +15,10 @@
 .profile-avatar-container {
   display: flex;
   justify-content: center;
+  
   margin-bottom: 20px;
+  width: 200px;
+  height: 145px;
 }
 
 .profile-avatar {
@@ -23,6 +26,7 @@
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
+  margin-right: 92px;
 }
 
 .profile-name {
@@ -41,7 +45,7 @@
 }
 
 .profile-info-card {
-  padding: 15px; /* Giảm padding để tiết kiệm không gian */
+  padding: 30px; /* Giảm padding để tiết kiệm không gian */
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
