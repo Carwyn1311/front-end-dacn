@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../../Sidebar/Content/Sidebar';
+import Sidebar from '../../Sidebar/Content/Sidebar';  // Kiểm tra import này
 
 interface User {
   name: string;
@@ -18,7 +18,7 @@ const UserComponent: React.FC = (): JSX.Element => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // Quản lý trạng thái sidebar
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const navigate = useNavigate();
 
@@ -69,7 +69,7 @@ const UserComponent: React.FC = (): JSX.Element => {
   };
 
   const toggleSidebar = (): void => {
-    setIsSidebarOpen(!isSidebarOpen); // Toggle sidebar mở/đóng
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
   return (
@@ -77,7 +77,7 @@ const UserComponent: React.FC = (): JSX.Element => {
       {isLoggedIn ? (
         <div className="app-container">
           {/* Sidebar với isOpen để quản lý trạng thái mở/đóng */}
-          <Sidebar userName={user.name} email={user.email} isOpen={isSidebarOpen}  isLoggedIn={isLoggedIn} />
+          <Sidebar userName={user.name} email={user.email} isOpen={isSidebarOpen} isLoggedIn={isLoggedIn} />
           <button onClick={toggleSidebar} className="sidebar-toggle-button">
             &#9776; Toggle Sidebar {/* Nút để mở/đóng sidebar */}
           </button>
