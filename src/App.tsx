@@ -1,21 +1,20 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Sidebar from './features/Sidebar/Content/Sidebar';
-import AdminUser from './features/Admin/User/AdminUser'; // Đường dẫn đến AdminUser
+import Sidebar from './features/Sidebar/Content/Sidebar';  // Kiểm tra nếu bạn cần dùng { Sidebar }
+import AdminUser from './features/Admin/User/AdminUser';
 import MainContent from './features/Maincontent/MainContent';
-import Profile from './features/Profile/Profile'; // Import trang Profile
+import Profile from './features/Profile/Profile';
 import Help from './features/Help/Help';
 import Info from './features/Info/Info';
-import ChatPage from './features/ChatPage/ChatPage';
 
 const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [userName, setUserName] = useState('');  // Bạn có thể cập nhật giá trị người dùng khi có dữ liệu
-  const [email, setEmail] = useState('');        // Cập nhật giá trị email khi người dùng đăng nhập
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Thêm trạng thái đăng nhập
-
+  const [userName, setUserName] = useState('');  
+  const [email, setEmail] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);  // Toggle trạng thái của Sidebar (mở/đóng)
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
   return (
@@ -28,7 +27,7 @@ const App: React.FC = () => {
           </button>
         </div>
 
-        {/* Sidebar */}
+        {/* Sidebar */} 
         {isSidebarOpen && (
           <Sidebar 
             userName={userName} 
@@ -53,7 +52,6 @@ const App: React.FC = () => {
             {/* Trang Trợ giúp */}
             <Route path="/help" element={<Help />} /> {/* Thêm route cho trang trợ giúp */}
             <Route path="/info" element={<Info />} />  {/* Thêm route cho Info */}
-            <Route path="/chat" element={<ChatPage />} /> {/* Thêm route cho ChatPage */}
           </Routes>
         </div>
       </div>

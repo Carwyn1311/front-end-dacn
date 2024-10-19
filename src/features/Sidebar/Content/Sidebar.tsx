@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate,useLocation } from 'react-router-dom';
-
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface SidebarProps {
   userName: string;
@@ -35,7 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn }
   };
 
   const handleInfoClick = () => {
-    navigate('/info');
+    navigate('/info'); // This line was missing a closing bracket }
   };
 
   const handleLogout = () => {
@@ -144,4 +143,3 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn }
 };
 
 export default Sidebar;
-

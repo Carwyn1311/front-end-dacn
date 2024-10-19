@@ -7,7 +7,7 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
-  const isAuthenticated = TokenAuthService.getToken(); // Kiểm tra token
+  const isAuthenticated = TokenAuthService.getToken();
 
   if ((isAuthenticated == null) || isAuthenticated === '') {
     return <Navigate to="/login" />;
