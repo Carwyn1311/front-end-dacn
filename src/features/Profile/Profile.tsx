@@ -71,7 +71,7 @@ const Profile = () => {
                   <Form.Item label="Email">
                     <Input name="email" value={userInfo.email} onChange={handleInputChange} style={{ width: '100%' }} />
                   </Form.Item>
-                  <Form.Item label="DOB">
+                  <Form.Item label="Date of Birth">
                     <Input name="dob" value={userInfo.dob} onChange={handleInputChange} style={{ width: '100%' }} />
                   </Form.Item>
                   <Form.Item label="Address">
