@@ -1,17 +1,25 @@
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
 import { IoMdLock } from 'react-icons/io';
 import { BiUser } from 'react-icons/bi';
-import React, { useState, useEffect } from 'react';
+import { MdEmail } from 'react-icons/md'; // Import biểu tượng email
 import { useNavigate } from 'react-router-dom';
 import '../.css/Login.css';
 import TextField from '../../../components/TextField/TextField';
 import PasswordField from '../../../components/PasswordField/PasswordField';
+import { TokenAuthService } from '../../TokenAuthService/TokenAuthService';
 
-const Login = (): JSX.Element => {
+interface LoginProps {
+  onLogin: () => void;
+}
+
+const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
   const [userName, setUserName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [rememberMe, setRememberMe] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
+  const [email, setEmail] = useState<string>(''); // Thêm email cho đăng ký
+  const [error, setError] = useState<string>(''); 
+  const [isRegistering, setIsRegistering] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,7 +27,7 @@ const Login = (): JSX.Element => {
     const storedPassword = localStorage.getItem('password') ?? '';
     const storedRememberMe = localStorage.getItem('rememberMe') === 'true';
 
-    if (storedUserName !== '' && storedPassword !== '') {
+    if (storedUserName && storedPassword) {
       setUserName(storedUserName);
       setPassword(storedPassword);
     }
@@ -36,25 +44,42 @@ const Login = (): JSX.Element => {
     setError('');
   };
 
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setEmail(e.target.value);
+    setError('');
+  };
+
   const handleRememberMeChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setRememberMe(e.target.checked);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    if (userName.trim() === '' || password.trim() === '') {
-      setError('User name and Password are required');
+    if (!userName || !password || (isRegistering && !email)) {
+      setError('All fields are required.');
       return;
     }
 
+    if (isRegistering) {
+      await handleRegister();
+    } else {
+      await handleLogin();
+    }
+  };
+
+  const handleLogin = async (): Promise<void> => {
     try {
-      const response = await axios.post('https://chat-api-backend-x4dl.onrender.com/auth/authenticate', {
+      console.log('Attempting login with:', { userName, password });
+
+      const response = await axiosInstance.post('/auth/authenticate', {
         username: userName,
         password: password,
       });
 
-      if (response.status === 200 && response.data.token) {
-        const token = response.data.token;
+      console.log('API Response:', response.data);
+
+      if (response.status === 200 && response.data.data.jwt) {
+        const token = response.data.data.jwt; 
 
         if (rememberMe) {
           localStorage.setItem('userName', userName);
@@ -66,28 +91,86 @@ const Login = (): JSX.Element => {
           localStorage.removeItem('rememberMe');
         }
 
-        localStorage.setItem('token', token);
+        localStorage.setItem('token', token); 
+
+        TokenAuthService.setToken(token); 
+
         console.log('Logged in successfully');
-        navigate('/dashboard');
+        onLogin(); 
+        navigate('/'); 
       } else {
         setError('Invalid username or password.');
       }
-    } catch (error) {
-      console.error('Error during login:', error);
-      setError('Failed to authenticate. Please try again.');
+    } catch (error: any) {
+      console.error('Login error:', error.response?.data?.message || error.message);
+      setError(error.response?.data?.message || 'Login failed. Please try again.');
+    }
+  };
+
+  const handleRegister = async (): Promise<void> => {
+    try {
+      console.log('Attempting registration for:', { userName, password });
+
+      const response = await axiosInstance.post('/auth/register', {
+        username: userName,
+        password: password,
+        email: email, 
+      });
+
+      console.log('Registration API Response:', response.data);
+
+      if (response.status === 201) {
+        console.log('Account created successfully');
+        setError('Tài khoản đã được tạo thành công. Vui lòng kiểm tra email của bạn để nhận mã kích hoạt.');
+
+        setTimeout(() => {
+          navigate('/activate');
+        }, 2000); 
+      } else {
+        setError(response.data.message || 'Failed to create account.');
+      }
+    } catch (error: any) {
+      if (error.response && error.response.data && error.response.data.errors) {
+        const validationErrors = error.response.data.errors;
+        if (validationErrors.username) {
+          setError(validationErrors.username);
+        } else if (validationErrors.email) {
+          setError(validationErrors.email);
+        } else if (validationErrors.password) {
+          setError(validationErrors.password);
+        } else {
+          setError('Failed to create account.');
+        }
+      } else {
+        console.error('Registration error:', error.response?.data?.message || error.message);
+        setError(error.response?.data?.message || 'Failed to create account.');
+      }
     }
   };
 
   const handleCreateAccount = (): void => {
-    navigate('/create-account');
+    setIsRegistering(true);
   };
 
   const handleForgotPassword = (): void => {
     navigate('/forgot-password');
   };
 
-  const handleGoogleLoginClick = (): void => {
-    console.log('Google Login clicked');
+  const handleGoogleLoginClick = async (): Promise<void> => {
+    try {
+      window.location.href = 'https://chat-api-backend-x4dl.onrender.com/auth/login/google';
+    } catch (error: any) {
+      console.error('Google Login error:', error.response?.data?.message || error.message);
+      setError(error.response?.data?.message || 'Google login failed.');
+    }
+  };
+
+  const handleActivateAccountClick = (): void => {
+    navigate('/activate');
+  };
+
+  const handleBackToLoginClick = (): void => {
+    setIsRegistering(false); 
   };
 
   return (
@@ -96,14 +179,8 @@ const Login = (): JSX.Element => {
         <div className="form-group">
           <div className="login-container">
             <h3 className="text-top-label">AI CHAT</h3>
-            <h2 className="login-title">Login</h2>
-            <form
-              className="login-form"
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSubmit(e);
-              }}
-            >
+            <h2 className="login-title">{isRegistering ? 'Register' : 'Login'}</h2>
+            <form className="login-form" onSubmit={handleSubmit}>
               <div className="input-group">
                 <BiUser className="user-icon" />
                 <TextField
@@ -122,6 +199,19 @@ const Login = (): JSX.Element => {
                   fullWidth={true}
                 />
               </div>
+
+              {isRegistering && (
+                <div className="input-group">
+                  <MdEmail className="user-icon" /> 
+                  <TextField
+                    value={email}
+                    onChange={handleEmailChange}
+                    label="Email"
+                    fullWidth={true}
+                  />
+                </div>
+              )}
+
               <div className="input-group">
                 <input
                   type="checkbox"
@@ -132,24 +222,42 @@ const Login = (): JSX.Element => {
               </div>
 
               {error && <p className="error">{error}</p>}
-              <button type="submit">Log in</button>
+              <button type="submit">{isRegistering ? 'Create Account' : 'Log in'}</button>
             </form>
-            <button onClick={handleGoogleLoginClick} className="google-login-btn">
-              Log In With Google
-            </button>
+            {!isRegistering && (
+              <button onClick={handleGoogleLoginClick} className="google-login-btn">
+                Log In With Google
+              </button>
+            )}
             <div className="horizontal-buttons">
-              <button onClick={handleCreateAccount} className="create-account-btn">
-                Create Account
-              </button>
-              <button onClick={handleForgotPassword} className="forgot-password-btn">
-                Forgot Password
-              </button>
+              {!isRegistering && (
+                <button onClick={handleCreateAccount} className="create-account-btn">
+                  Create Account
+                </button>
+              )}
+              {!isRegistering && (
+                <button onClick={handleForgotPassword} className="forgot-password-btn">
+                  Forgot Password
+                </button>
+              )}
+              {isRegistering && (
+                <>
+                  <button onClick={handleActivateAccountClick} className="activate-account-btn">
+                    Activate Account
+                  </button>
+                  <button onClick={handleBackToLoginClick} className="back-to-login-btn">
+                    Back to Login
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
       </div>
       <footer>
-      <p style={{ textAlign: 'center', fontSize: '16px', marginTop: '20px', color: 'white' }}>© 2024 AI CHAT. <strong>Version 4.3.0.0 [20231608]</strong></p>
+        <p style={{ textAlign: 'center', fontSize: '16px', marginTop: '20px', color: 'blue' }}>
+          © 2024 AI CHAT. <strong>Version 4.3.0.0 [20231608]</strong>
+        </p>
       </footer>
     </div>
   );

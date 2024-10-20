@@ -77,7 +77,9 @@ const UserComponent: React.FC = (): JSX.Element => {
       {isLoggedIn ? (
         <div className="app-container">
           {/* Sidebar với isOpen để quản lý trạng thái mở/đóng */}
-          <Sidebar userName={user.name} email={user.email} isOpen={isSidebarOpen}  isLoggedIn={isLoggedIn} />
+          <Sidebar userName={user.name} email={user.email} isOpen={isSidebarOpen} isLoggedIn={isLoggedIn} onLogout={function (): void {
+            throw new Error('Function not implemented.');
+          } } />
           <button onClick={toggleSidebar} className="sidebar-toggle-button">
             &#9776; Toggle Sidebar {/* Nút để mở/đóng sidebar */}
           </button>

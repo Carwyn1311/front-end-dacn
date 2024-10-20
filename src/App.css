@@ -1,177 +1,40 @@
 .app-container {
   display: flex;
-  min-height: 100vh;
-  background-color: #ffffff;
+  flex-direction: column;
+  height: 100vh;
 }
 
-.sidebar {
-  width: 300px;
-  background-color: #1e3a8a;
-  color: black;
-  padding: 20px;
-  transition: all 0.3s ease; /* Thêm transition để tạo hiệu ứng mượt */
-}
-
-.sidebar.closed {
-  margin-left: -300px; /* Khi sidebar đóng, đẩy nó ra khỏi màn hình */
-}
-
-/* Header chứa icon ba dòng kẻ */
-.header {
-  align-items: center;
-  padding: 10px;
-  background-color: #1e3a8a;
-}
-
-.sidebar-toggle-button {
-  font-size: 16px; /* Kích thước icon ba dòng kẻ */
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 5px;
-  margin-left: 10px;
-}
-
-.sidebar .menu-item {
-  padding: 15px 0;
-  cursor: pointer;
+.app-header {
   display: flex;
-  align-items: center;
-  font-size: 16px;
+  width: 100%;
 }
 
-.sidebar .menu-item:hover {
-  background-color: #3b82f6;
+.sidebar-open {
+  margin-left: 250px; /* Độ rộng của Sidebar */
 }
 
-.main-content {
-  color: #333; /* Màu chữ */
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px;
-  transition: margin-left 0.3s ease;
-}
-
-/* Khi sidebar mở, đẩy nội dung chính sang phải */
-.sidebar-open.main-content {
-  margin-left: 300px;
-}
-
-/* Khi sidebar đóng, nội dung chính trở lại trung tâm */
-.sidebar-closed.main-content {
+.sidebar-closed {
   margin-left: 0;
 }
 
-.main-content h1 {
+.main-content {
+  flex-grow: 1;
+  overflow-y: auto;
+  transition: margin-left 0.3s ease;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+.sidebar-toggle-button {
   font-size: 24px;
-  font-weight: 500;
-  color: #333;
-}
-
-.input-section {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-}
-
-.input-container {
-  position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.input-field {
-  width: 95%;
-  padding: 15px;
-  border-radius: 30px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-  outline: none;
-  background-color: #f8fafc;
-  transition: all 0.3s ease;
-  padding-left: 40px;
-}
-
-.input-field:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
-}
-
-.input-icon {
-  position: absolute;
-  left: 10px;
-  font-size: 20px;
-  color: #888;
   cursor: pointer;
 }
 
-.input-arrow {
-  position: absolute;
-  right: 10px;
-  font-size: 20px;
-  color: #888;
-  cursor: pointer;
-}
-
-/* Hiển thị mũi tên khi có nội dung trong input */
-.input-field:not(:placeholder-shown) + .input-arrow {
-  display: block;
-  color: black; /* Thay đổi màu mũi tên khi có nội dung */
-}
-
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.action-buttons .button {
-  margin: 0 10px;
-  padding: 10px 20px;
-  border-radius: 20px;
-  background-color: #3b82f6; /* Màu xanh nhạt cho nút */
-  color: white; /* Màu chữ trắng */
-  cursor: pointer;
-}
-
-.action-buttons .button:hover {
-  background-color: #1e3a8a;
-}
-
-.file-preview-list {
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 10px;
-}
-
-.file-preview {
-  display: flex;
-  align-items: center;
-  margin-right: 10px;
-}
-
-.file-preview-image {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
-  border-radius: 5px;
-  margin-right: 5px;
-}
-
-.file-preview-name {
-  font-size: 14px;
-  color: #333;
-}
-
-.file-remove {
-  cursor: pointer;
-  font-size: 16px;
-  color: #ff0000;
-  margin-left: 5px;
+.app-title {
+  font-size: 18px;
 }

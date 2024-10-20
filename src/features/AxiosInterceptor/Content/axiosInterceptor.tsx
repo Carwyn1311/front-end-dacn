@@ -1,36 +1,31 @@
-import axios, { AxiosHeaders, InternalAxiosRequestConfig } from 'axios';
+import axios from 'axios';
 
 const axiosInstance = axios.create({
   baseURL: 'https://chat-api-backend-x4dl.onrender.com',
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 axiosInstance.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem('token');
-
+  (config) => {
+    const token = localStorage.getItem('token'); // Lấy JWT từ localStorage
     if (token) {
-      if (!config.headers) {
-        config.headers = {} as AxiosHeaders; // Ép kiểu headers cho đúng với AxiosHeaders
-      }
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`; // Thêm token vào header Authorization
     }
-
     return config;
   },
-  async (error) => {
+  (error) => {
     return Promise.reject(error);
   }
 );
 
 axiosInstance.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  async (error) => {
-    if (error.response && error.response.status === 401) {
+  (response) => response,
+  (error) => {
+    if (error.response.status === 401) {
       console.error('Unauthorized, redirecting to login...');
     }
-
     return Promise.reject(error);
   }
 );

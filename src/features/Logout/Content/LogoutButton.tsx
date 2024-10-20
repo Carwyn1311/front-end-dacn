@@ -1,10 +1,8 @@
-// src/components/LogoutButton.tsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TokenAuthService } from '../../TokenAuthService/TokenAuthService';
-import '../.css/LogoutButton.css';
 
-const LogoutButton: React.FC = () => {
+const LogoutButton: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   const navigate = useNavigate();
 
   const handleLogout = (): void => {
@@ -17,15 +15,15 @@ const LogoutButton: React.FC = () => {
     // Xóa dữ liệu sessionStorage (nếu cần thiết)
     TokenAuthService.removeSessionData('userData');
 
-    // Xóa cookie (ví dụ: cookie lưu token)
-    TokenAuthService.removeCookie('token');
+    // Gọi callback để cập nhật trạng thái đăng nhập
+    onLogout();
 
     // Điều hướng người dùng về trang đăng nhập
     navigate('/login');
   };
 
   return (
-    <button onClick={handleLogout}>
+    <button onClick={handleLogout} style={{ border: 'none', background: 'none', color: 'red', cursor: 'pointer' }}>
       Logout
     </button>
   );

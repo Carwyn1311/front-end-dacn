@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import for navigation
+import { useNavigate } from 'react-router-dom';
 import './AdminUser.css';
 import { Card, Select, Row, Col, Input, List, Modal } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons';
@@ -8,7 +8,6 @@ import Button from '../../../components/Button/Button';
 const { Option } = Select;
 const { Search } = Input;
 
-// Giả lập dữ liệu người dùng
 const userData = [
   { id: 1, name: 'User1', role: 'Admin', status: 'Hoạt động' },
   { id: 2, name: 'User2', role: 'User', status: 'Đóng băng' },
@@ -16,12 +15,11 @@ const userData = [
 ];
 
 const AdminUser: React.FC = () => {
-  const navigate = useNavigate(); // Create navigate function
+  const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState<string>('');
-  const [users, setUsers] = useState(userData); // Quản lý danh sách người dùng
-  const [selectedUser, setSelectedUser] = useState<any>(null); // Quản lý người dùng được chọn
+  const [users, setUsers] = useState(userData);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
 
-  // Thay đổi sự kiện tìm kiếm
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
     const filteredUsers = userData.filter(user =>
@@ -30,13 +28,11 @@ const AdminUser: React.FC = () => {
     setUsers(filteredUsers);
   };
 
-  // Thêm người dùng
   const handleAddUser = () => {
     const newUser = { id: users.length + 1, name: 'New User', role: 'User', status: 'Hoạt động' };
     setUsers([...users, newUser]);
   };
 
-  // Sửa người dùng
   const handleEditUser = (user: any) => {
     setSelectedUser(user);
     Modal.info({
@@ -46,35 +42,34 @@ const AdminUser: React.FC = () => {
     });
   };
 
-  // Xóa người dùng
   const handleDeleteUser = (userId: number) => {
     setUsers(users.filter(user => user.id !== userId));
   };
 
-  // Đóng băng người dùng
   const handleFreezeUser = (user: any) => {
     const updatedUsers = users.map(u => (u.id === user.id ? { ...u, status: 'Đóng băng' } : u));
     setUsers(updatedUsers);
   };
 
   return (
-    <div className="main-content" style={{ padding: '20px', backgroundColor: '#f0f2f5', height: '100vh' }}>
+    <div className="main-content">
       <div className="user-container">
-        <Card title="Quản lý người dùng" className="admin-user-card" style={{ width: '100%', maxWidth: '900px', margin: 'auto' }}>
+        <Card title="Quản lý người dùng" className="admin-user-card">
           
-          {/* Tìm kiếm người dùng */}
-          <Row gutter={16} className="admin-buttons" style={{ marginBottom: '20px' }}>
-            <Col span={16}>
+          {/* Tìm kiếm người dùng và thêm người dùng */}
+          <Row gutter={16} className="admin-buttons">
+            <Col className="admin-search-col">
               <Search
+                className="admin-search"
                 placeholder="Tìm kiếm người dùng"
                 value={searchValue}
                 onChange={e => handleSearchChange(e.target.value)}
-                prefix={<SearchOutlined />}
                 allowClear
               />
             </Col>
-            <Col>
+            <Col className="admin-add-user-col">
               <Button
+                className="admin-add-user-button"
                 type="primary"
                 icon={<PlusOutlined />}
                 onClick={handleAddUser}
@@ -86,48 +81,48 @@ const AdminUser: React.FC = () => {
 
           {/* Danh sách người dùng */}
           <List
+            className="admin-user-list"
             dataSource={users}
             renderItem={user => (
               <List.Item
+className="admin-user-list-item"
                 actions={[
-                  <Button icon={<EditOutlined />} onClick={() => handleEditUser(user)}>Sửa</Button>,
-                  <Button icon={<DeleteOutlined />} onClick={() => handleDeleteUser(user.id)} style={{ color: 'red' }}>Xóa</Button>,
-                  <Button onClick={() => handleFreezeUser(user)}>Đóng băng</Button>,
+                  <Button className="admin-edit-user-button" icon={<EditOutlined />} onClick={() => handleEditUser(user)}>Sửa</Button>,
+                  <Button className="admin-delete-user-button" icon={<DeleteOutlined />} onClick={() => handleDeleteUser(user.id)}>Xóa</Button>,
+                  <Button className="admin-freeze-user-button" onClick={() => handleFreezeUser(user)}>Đóng băng</Button>,
                 ]}
               >
                 <List.Item.Meta
                   title={user.name}
-                  description={`Role: ${user.role} | Trạng thái: ${user.status}`}
+                  description={(
+                    <span>
+                      Role: {user.role} | Trạng thái: {user.status}
+                    </span>
+                  )}
                 />
               </List.Item>
             )}
           />
 
           {/* Chọn trạng thái người dùng */}
-          <Row gutter={16} style={{ marginTop: '20px' }}>
-            <Col span={6}>
-              <Select defaultValue="all" style={{ width: '100%' }}>
-                <Option value="all">Tất cả</Option>
-                <Option value="active">Hoạt động</Option>
-                <Option value="frozen">Đóng băng</Option>
-              </Select>
-            </Col>
-            <Col span={6}>
-              <Button type="primary">Lưu trạng thái</Button>
-            </Col>
+          <Row gutter={16} className="admin-status-row">
+            <Select className="admin-status-select" defaultValue="all">
+              <Option value="all">Tất cả</Option>
+              <Option value="active">Hoạt động</Option>
+              <Option value="frozen">Đóng băng</Option>
+            </Select>
+            <Button className="admin-save-status-button" type="primary">Lưu trạng thái</Button>
           </Row>
 
           {/* Giao diện chat với nhân viên hỗ trợ */}
-          <Row style={{ marginTop: '20px' }}>
-            <Col span={24}>
-              <Button 
-                type="primary" 
-                style={{ width: '100%' }} 
-                onClick={() => navigate('/chat')}
-              >
-                Chat với nhân viên hỗ trợ
-              </Button>
-            </Col>
+          <Row className="admin-chat-row">
+            <Button 
+              className="admin-chat-button"
+              type="primary" 
+              onClick={() => navigate('/chat')}
+            >
+              Chat với nhân viên hỗ trợ
+            </Button>
           </Row>
         </Card>
       </div>

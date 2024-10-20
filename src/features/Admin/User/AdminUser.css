@@ -1,33 +1,101 @@
-/* AdminUser.css */
 .main-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f0f2f5;
+  width: 100%; /* Chiều rộng tối đa cho nội dung chính */
+  margin: 0 auto; /* Căn giữa nội dung chính */
+  max-width: 1200px; /* Tùy chỉnh chiều rộng tối đa để không quá rộng */
 }
 
 .user-container {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 1000px;
+  width: 100%; /* Chiều rộng đầy đủ cho container người dùng */
+  max-width: 1200px; /* Đặt chiều rộng tối đa nếu cần */
+  margin: 0 auto; /* Căn giữa container */
 }
 
 .admin-user-card {
-  width: 100%;
+  width: 100%; /* Kéo dài thẻ Card ra hết chiều ngang */
 }
 
-.admin-buttons {
+.admin-buttons,
+.admin-status-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
 
-.admin-select {
-  width: 100%;
-  border-radius: 4px;
+.admin-search-col {
+  flex-grow: 1;
+}
+
+.admin-add-user-col {
+  margin-left: 10px;
+}
+
+.admin-user-list {
+  max-height: 400px; /* Chiều cao tối đa cho danh sách người dùng */
+  overflow-y: auto; /* Thêm thanh cuộn nếu danh sách quá dài */
+}
+
+.admin-status-select {
+  width: 150px; /* Điều chỉnh kích thước chiều rộng ngắn hơn cho dropdown */
+  margin-right: 10px; /* Khoảng cách giữa dropdown và nút lưu trạng thái */
+}
+
+.admin-save-status-button {
+  padding: 10px 20px;
+}
+
+.admin-chat-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.admin-chat-button {
+  padding: 10px 30px;
+  font-size: 16px; /* Tăng kích thước chữ cho nút */
+}
+
+.admin-add-user-button,
+.admin-edit-user-button,
+.admin-delete-user-button,
+.admin-freeze-user-button,
+.admin-save-status-button,
+.admin-chat-button {
+  background-color: #1890ff; /* Màu nền */
+  color: white; /* Màu chữ */
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 6px; /* Bo góc nút */
+  border: none; /* Loại bỏ viền */
+  box-shadow: none; /* Loại bỏ shadow */
+}
+
+.admin-add-user-button:hover,
+.admin-edit-user-button:hover,
+.admin-delete-user-button:hover,
+.admin-freeze-user-button:hover,
+.admin-save-status-button:hover,
+.admin-chat-button:hover {
+  background-color: #40a9ff; /* Màu nền khi hover */
+}
+
+.admin-add-user-button:focus,
+.admin-edit-user-button:focus,
+.admin-delete-user-button:focus,
+.admin-freeze-user-button:focus,
+.admin-save-status-button:focus,
+.admin-chat-button:focus {
+  outline: none; /* Loại bỏ viền đen khi bấm vào */
+}
+
+.admin-edit-user-button {
+  background-color: #52c41a; /* Màu nền cho nút sửa */
+}
+
+.admin-delete-user-button {
+  background-color: #ff4d4f; /* Màu nền cho nút xóa */
+}
+
+.admin-freeze-user-button {
+  background-color: #faad14; /* Màu nền cho nút đóng băng */
 }
