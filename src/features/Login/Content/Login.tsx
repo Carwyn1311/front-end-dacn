@@ -257,7 +257,7 @@ window.location.href = 'https://chat-api-backend-x4dl.onrender.com/auth/login/go
               )}
               {isRegistering && (
                 <>
-<button onClick={handleActivateAccountClick} className="activate-account-btn">
+                  <button onClick={handleActivateAccountClick} className="activate-account-btn">
                     Activate Account
                   </button>
                   <button onClick={handleBackToLoginClick} className="back-to-login-btn">

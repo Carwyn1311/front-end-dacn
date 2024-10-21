@@ -86,7 +86,7 @@ const AdminUser: React.FC = () => {
   };
 
   return (
-    <div className="main-content">
+    <div className="content">
       <div className="user-container">
         <Card title="Quản lý người dùng" className="admin-user-card">
           <Row gutter={16} className="admin-buttons">
