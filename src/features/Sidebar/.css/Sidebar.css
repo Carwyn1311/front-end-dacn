@@ -11,44 +11,34 @@
   z-index: 1000;
   transition: transform 0.3s ease;
   padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ensures content is spaced between top and bottom */
 }
 
 .sidebar.closed {
-  transform: translateX(-100%); /* Sidebar bị ẩn */
+  transform: translateX(-100%); /* Sidebar hidden */
 }
 
 .sidebar.open {
-  transform: translateX(0); /* Sidebar mở */
-}
-
-.sidebar-hidden .main-content {
-  margin-left: -200px;
-}
-
-.sidebar.closed {
-  transform: translateX(-100%);
-}
-
-.sidebar.open {
-  transform: translateX(0);
+  transform: translateX(0); /* Sidebar visible */
 }
 
 .sidebar-toggle-button {
   background-color: #f4f4f4;
-  font-size: 16px; /* Kích thước nhỏ hơn cho icon ba dòng kẻ */
+  font-size: 16px;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 5px; /* Thêm padding để dễ nhấp */
-  margin-left: 10px; /* Điều chỉnh khoảng cách so với lề trái */
-  display: flex; /* Sắp xếp linh hoạt cho icon */
+  padding: 5px;
+  margin-left: 10px;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
 
-
 .sidebar-toggle-button:hover {
-  background-color: #164a7d; /* Cải thiện phản hồi hover */
+  background-color: #164a7d; /* Hover effect */
 }
 
 .profile {
@@ -65,11 +55,44 @@
   margin-bottom: 10px;
 }
 
-.profile-picture {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  margin-bottom: 10px;
+.avatar-menu {
+  position: absolute;
+  bottom: 20px; /* Menu at the bottom */
+  left: 0;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  z-index: 1;
+  color: black;
+  width: 150px;
+}
+
+.avatar-menu ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.avatar-menu li {
+  padding: 5px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Transition effect for hover */
+}
+
+.avatar-menu li:hover {
+  background-color: #f0f0f0; /* Hover effect for list items */
+  border-radius: 5px;
+}
+
+h2 {
+  font-size: 15px;
+  margin: 5px 0;
+}
+
+p {
+  font-size: 14px;
+  color: #888888;
 }
 
 .menu-item {
@@ -84,48 +107,10 @@
   border-radius: 5px;
 }
 
-.menu-item svg {
-  margin-right: 10px;
-}
-
-h2 {
-  font-size: 15px;
-  margin: 5px 0;
-}
-
-p {
-  font-size: 14px;
-  color: #888888;
-}
-
-nav ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-nav ul li {
-  display: flex;
-  align-items: center;
-  margin: 10px 0;
-}
-
-nav ul li a {
-  text-decoration: none;
-  color: #333333;
-  font-size: 16px;
-  margin-left: 10px;
-}
-
-nav ul ul {
-  list-style-type: none;
-  padding-left: 20px;
-}
-
 .admin-menu {
   list-style: none;
   padding-left: 0;
   margin: 0;
-  padding: 0;
 }
 
 .admin-menu li {
@@ -136,68 +121,9 @@ nav ul ul {
   text-decoration: none;
 }
 
-.admin-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.text-admin {
-  display: flex;
-  align-items: center;
-  font-size: 15px;
-  padding: 5px;
-  margin-right: 210px;
-}
-
-.icon-admin {
-  display: flex;
-  align-items: center;
-  margin-left: 7px;
-  font-size: 15px;
-  padding: 5px;
-}
-
-.text-sidebar {
-  display: flex;
-  align-items: center;
-  font-size: 15px;
-  padding: 5px;
-}
-
-.icon-sidebar {
-  display: flex;
-  align-items: center;
-  margin-left: -9px;
-  font-size: 15px;
-  padding: 5px;
-}
-
-.my-profile {
-  background-color: aqua;
-  height: 80px;
-  padding: 15px;
-}
-
-.info-username {
-  position: absolute;
-  top: -30px;
-  left: 120px;
-  font-size: 15px;
-  margin-top: 65px;
-}
-
-.info-email {
-  position: absolute;
-  top: -5px;
-  left: 120px;
-  font-size: 15px;
-  margin-top: 65px;
-}
-
 .sidebar-function {
   padding: 30px;
-  position: relative; /* Thêm position relative */
+  position: relative;
   top: -20px;
   font-weight: bold;
 }
@@ -213,7 +139,7 @@ nav ul ul {
   height: 520px;
 }
 
-/* Thanh cuộn tùy chỉnh */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }

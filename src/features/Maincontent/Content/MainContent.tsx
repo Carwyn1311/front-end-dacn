@@ -31,6 +31,12 @@ const ChatWebSocket: React.FC = () => {
             if (!response.ok) throw new Error('Lỗi tải cuộc trò chuyện');
             const conversations = await response.json();
             setConversations(conversations);
+
+            if (conversations.length > 0) {
+                const latestConversation = conversations[conversations.length - 1]; // Lấy cuộc trò chuyện cuối cùng
+                setCurrentConversationId(latestConversation.id);
+                setMessages(latestConversation.messages || []);
+            }
         } catch (error) {
             console.error('Lỗi tải cuộc trò chuyện:', error);
             antdMessage.error('Lỗi tải cuộc trò chuyện.');
@@ -87,7 +93,6 @@ const ChatWebSocket: React.FC = () => {
         };
     }, []);
 
-    // Rest of your component code remains the same...
     const startHeartbeat = (stompClient: Client) => {
         setInterval(() => {
             if (stompClient.connected) {
@@ -220,6 +225,13 @@ const ChatWebSocket: React.FC = () => {
         }
     };
 
+    // Hàm xử lý sự kiện nhấn phím Enter
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    };
+
     return (
         <Layout style={{ padding: '20px', backgroundColor: '#f5f5f5' }}>
             <Content style={{ maxWidth: '800px', margin: '0 auto', backgroundColor: '#fff', padding: '20px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
@@ -274,6 +286,7 @@ const ChatWebSocket: React.FC = () => {
                         placeholder="Nhập tin nhắn"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
+                        onKeyDown={handleKeyDown}
                         style={{ width: '70%' }}
                     />
                     <Button type="primary" onClick={sendMessage} style={{ width: '30%' }}>Gửi</Button>
