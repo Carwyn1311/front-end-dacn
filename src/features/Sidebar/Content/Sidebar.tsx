@@ -58,7 +58,7 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
             <Avatar
               src={avatarImage}
               alt="User Profile Picture"
-              size={60}
+              size={70}
               onClick={toggleAvatarMenu}
             />
 
