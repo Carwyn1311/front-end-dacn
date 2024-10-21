@@ -19,6 +19,24 @@ const ChatWebSocket: React.FC = () => {
 
     const stompClientRef = useRef<Client | null>(null);
 
+    // Function to load conversations
+    const loadConversations = async () => {
+        if (!username) {
+            antdMessage.error("Vui lòng nhập tên người dùng.");
+            return;
+        }
+
+        try {
+            const response = await fetch(`https://chat-api-backend-x4dl.onrender.com/api/conversations/by-username?username=${username}`);
+            if (!response.ok) throw new Error('Lỗi tải cuộc trò chuyện');
+            const conversations = await response.json();
+            setConversations(conversations);
+        } catch (error) {
+            console.error('Lỗi tải cuộc trò chuyện:', error);
+            antdMessage.error('Lỗi tải cuộc trò chuyện.');
+        }
+    };
+
     useEffect(() => {
         // Lấy tên người dùng đã lưu từ User.ts khi ứng dụng load
         const storedUser = User.getUserData();
@@ -26,7 +44,16 @@ const ChatWebSocket: React.FC = () => {
             setSavedUsername(storedUser.name); // Lưu tên người dùng vào trạng thái
             setUsername(storedUser.name); // Đặt tên người dùng vào input
         }
+    }, []);
 
+    // New useEffect to automatically load conversations when username is set
+    useEffect(() => {
+        if (username) {
+            loadConversations();
+        }
+    }, [username]);
+
+    useEffect(() => {
         const socket = new SockJS('https://chat-api-backend-x4dl.onrender.com/ws-chat');
         const stompClient = new Client({
             webSocketFactory: () => socket,
@@ -35,24 +62,24 @@ const ChatWebSocket: React.FC = () => {
             },
             onConnect: (frame: string) => {
                 console.log('Đã kết nối: ' + frame);
-
+    
                 stompClient.subscribe('/topic/messages', (messageOutput) => {
                     console.log('Nhận được tin nhắn từ server:', messageOutput.body);
                     const chatMessage = {
-                        sender: 'CHERRY', // Mặc định người gửi là CHERRY
+                        sender: 'GEMINI',
                         content: messageOutput.body,
                         color: 'blue'
                     };
                     setMessages((prevMessages) => [...prevMessages, chatMessage]);
                 });
-
+    
                 startHeartbeat(stompClient);
             },
         });
-
+    
         stompClient.activate();
         stompClientRef.current = stompClient;
-
+    
         return () => {
             if (stompClientRef.current) {
                 stompClientRef.current.deactivate();
@@ -60,6 +87,7 @@ const ChatWebSocket: React.FC = () => {
         };
     }, []);
 
+    // Rest of your component code remains the same...
     const startHeartbeat = (stompClient: Client) => {
         setInterval(() => {
             if (stompClient.connected) {
@@ -103,23 +131,6 @@ const ChatWebSocket: React.FC = () => {
             if (error instanceof Error) {
                 antdMessage.error('Lỗi gửi tin nhắn: ' + error.message);
             }
-        }
-    };
-
-    const loadConversations = async () => {
-        if (!username) {
-            antdMessage.error("Vui lòng nhập tên người dùng.");
-            return;
-        }
-
-        try {
-            const response = await fetch(`https://chat-api-backend-x4dl.onrender.com/api/conversations/by-username?username=${username}`);
-            if (!response.ok) throw new Error('Lỗi tải cuộc trò chuyện');
-            const conversations = await response.json();
-            setConversations(conversations);
-        } catch (error) {
-            console.error('Lỗi tải cuộc trò chuyện:', error);
-            antdMessage.error('Lỗi tải cuộc trò chuyện.');
         }
     };
 
@@ -214,7 +225,6 @@ const ChatWebSocket: React.FC = () => {
             <Content style={{ maxWidth: '800px', margin: '0 auto', backgroundColor: '#fff', padding: '20px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
                 <h2 style={{ textAlign: 'center', color: '#007bff', marginBottom: '20px' }}>Cherry Chat</h2>
 
-                {/* Hiển thị tên người dùng đã lưu */}
                 {savedUsername && (
                     <p style={{ color: 'green' }}>Tên người dùng đã lưu: {savedUsername}</p>
                 )}
@@ -242,7 +252,6 @@ const ChatWebSocket: React.FC = () => {
                         onChange={(e) => setUsername(e.target.value)}
                         style={{ width: '50%' }}
                     />
-                    <Button type="primary" onClick={loadConversations} style={{ width: '50%' }}>Tải cuộc trò chuyện</Button>
                 </Input.Group>
 
                 <Input.Group compact style={{ marginBottom: '10px' }}>
