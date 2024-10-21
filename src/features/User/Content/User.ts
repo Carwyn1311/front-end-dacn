@@ -13,24 +13,44 @@ export class User {
     this.status = status;
   }
 
-  // Example method to check if user is an admin
+  // Phương thức kiểm tra nếu người dùng là Admin
   isAdmin(): boolean {
-    return this.role === 'Admin';
+    return this.role.toLowerCase() === 'admin';
   }
 
-  // Store user in session or local storage
-  static storeUserData(user: User): void {
-    localStorage.setItem('user', JSON.stringify(user));
+  // Lưu thông tin người dùng vào localStorage hoặc sessionStorage
+  static storeUserData(user: User, useSessionStorage: boolean = false): void {
+    const userData = JSON.stringify(user);
+    if (useSessionStorage) {
+      sessionStorage.setItem('user', userData);
+    } else {
+      localStorage.setItem('user', userData);
+    }
   }
 
-  // Retrieve user from storage
-  static getUserData(): User | null {
-    const userData = localStorage.getItem('user');
-    return userData ? JSON.parse(userData) : null;
+  // Lấy thông tin người dùng từ localStorage hoặc sessionStorage
+  static getUserData(useSessionStorage: boolean = false): User | null {
+    const userData = useSessionStorage 
+      ? sessionStorage.getItem('user') 
+      : localStorage.getItem('user');
+    return userData ? Object.assign(new User(0, '', '', '', ''), JSON.parse(userData)) : null;
   }
 
-  // Clear user data from storage
-  static clearUserData(): void {
-    localStorage.removeItem('user');
+  // Xóa thông tin người dùng khỏi localStorage hoặc sessionStorage
+  static clearUserData(useSessionStorage: boolean = false): void {
+    if (useSessionStorage) {
+      sessionStorage.removeItem('user');
+    } else {
+      localStorage.removeItem('user');
+    }
+  }
+
+  // Cập nhật thông tin người dùng đã lưu
+  static updateUserData(newUserData: Partial<User>, useSessionStorage: boolean = false): void {
+    const currentUser = this.getUserData(useSessionStorage);
+    if (currentUser) {
+      const updatedUser = Object.assign(currentUser, newUserData); // Kết hợp dữ liệu mới với đối tượng User hiện tại
+      this.storeUserData(updatedUser, useSessionStorage);
+    }
   }
 }

@@ -4,11 +4,13 @@ import { Client } from '@stomp/stompjs';
 import { Layout, Button, Input, List, Upload, message as antdMessage } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import type { UploadRequestOption } from 'rc-upload/lib/interface';
+import { User } from '../User/Content/User'; // Import lớp User để sử dụng
 
 const { Content } = Layout;
 
 const ChatWebSocket: React.FC = () => {
-    const [username, setUsername] = useState('');
+    const [username, setUsername] = useState(''); // Tên người dùng hiện tại
+    const [savedUsername, setSavedUsername] = useState<string | null>(''); // Tên người dùng đã lưu
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState<any[]>([]);
     const [currentConversationId, setCurrentConversationId] = useState('');
@@ -18,6 +20,13 @@ const ChatWebSocket: React.FC = () => {
     const stompClientRef = useRef<Client | null>(null);
 
     useEffect(() => {
+        // Lấy tên người dùng đã lưu từ User.ts khi ứng dụng load
+        const storedUser = User.getUserData();
+        if (storedUser && storedUser.name) {
+            setSavedUsername(storedUser.name); // Lưu tên người dùng vào trạng thái
+            setUsername(storedUser.name); // Đặt tên người dùng vào input
+        }
+
         const socket = new SockJS('https://chat-api-backend-x4dl.onrender.com/ws-chat');
         const stompClient = new Client({
             webSocketFactory: () => socket,
@@ -30,7 +39,7 @@ const ChatWebSocket: React.FC = () => {
                 stompClient.subscribe('/topic/messages', (messageOutput) => {
                     console.log('Nhận được tin nhắn từ server:', messageOutput.body);
                     const chatMessage = {
-                        sender: 'CHERRY',  // Updated to 'CHERRY'
+                        sender: 'CHERRY', // Mặc định người gửi là CHERRY
                         content: messageOutput.body,
                         color: 'blue'
                     };
@@ -231,6 +240,11 @@ const ChatWebSocket: React.FC = () => {
             <Content style={{ maxWidth: '800px', margin: '0 auto', backgroundColor: '#fff', padding: '20px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
                 <h2 style={{ textAlign: 'center', color: '#007bff', marginBottom: '20px' }}>Cherry Chat</h2>
 
+                {/* Hiển thị tên người dùng đã lưu */}
+                {savedUsername && (
+                    <p style={{ color: 'green' }}>Tên người dùng đã lưu: {savedUsername}</p>
+                )}
+
                 <List
                     bordered
                     style={{ height: '300px', overflowY: 'auto', marginBottom: '10px', backgroundColor: '#f9f9f9' }}
@@ -259,7 +273,7 @@ const ChatWebSocket: React.FC = () => {
 
                 <Input.Group compact style={{ marginBottom: '10px' }}>
                     <Button type="default" onClick={createConversation} style={{ width: '50%' }}>Tạo cuộc trò chuyện</Button>
-                    <Button type="default" danger={true} onClick={deleteConversation} style={{ width: '50%' }}>Xóa cuộc trò chuyện</Button>
+                    <Button type="default" danger onClick={deleteConversation} style={{ width: '50%' }}>Xóa cuộc trò chuyện</Button>
                 </Input.Group>
 
                 <List

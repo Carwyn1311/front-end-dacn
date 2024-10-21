@@ -8,6 +8,7 @@ import '../.css/Login.css';
 import TextField from '../../../components/TextField/TextField';
 import PasswordField from '../../../components/PasswordField/PasswordField';
 import { TokenAuthService } from '../../TokenAuthService/TokenAuthService';
+import { User } from '../../User/Content/User';
 
 interface LoginProps {
   onLogin: () => void;
@@ -20,9 +21,17 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
   const [email, setEmail] = useState<string>(''); // Thêm email cho đăng ký
   const [error, setError] = useState<string>(''); 
   const [isRegistering, setIsRegistering] = useState<boolean>(false);
+  const [savedUserName, setSavedUserName] = useState<string | null>(''); // Lưu tên người dùng đã lưu
+
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Lấy tên người dùng đã lưu từ User.ts khi ứng dụng tải
+    const storedUser = User.getUserData();
+    if (storedUser && storedUser.name) {
+      setSavedUserName(storedUser.name); // Hiển thị tên người dùng đã lưu
+    }
+
     const storedUserName = localStorage.getItem('userName') ?? '';
     const storedPassword = localStorage.getItem('password') ?? '';
     const storedRememberMe = localStorage.getItem('rememberMe') === 'true';
@@ -81,6 +90,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
       if (response.status === 200 && response.data.data.jwt) {
         const token = response.data.data.jwt; 
 
+        // Lưu thông tin người dùng và token vào localStorage hoặc sessionStorage
         if (rememberMe) {
           localStorage.setItem('userName', userName);
           localStorage.setItem('password', password);
@@ -92,8 +102,11 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
         }
 
         localStorage.setItem('token', token); 
-
         TokenAuthService.setToken(token); 
+
+        // Lưu thông tin người dùng bằng User.ts
+        const user = new User(1, userName, email, 'User', 'Active');
+        User.storeUserData(user);
 
         console.log('Logged in successfully');
         onLogin(); 

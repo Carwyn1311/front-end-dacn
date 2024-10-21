@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './AdminUser.css';
+import '../.css/AdminUser.css';
 import { Card, Select, Row, Col, Input, List, Modal } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons';
+import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import Button from '../../../components/Button/Button';
+import SearchInput from '../../../components/SearchInput/SearchInput';
+import { FaSearch } from 'react-icons/fa';
 
 const { Option } = Select;
-const { Search } = Input;
 
 const userData = [
   { id: 1, name: 'User1', role: 'Admin', status: 'Hoạt động' },
@@ -59,12 +60,16 @@ const AdminUser: React.FC = () => {
           {/* Tìm kiếm người dùng và thêm người dùng */}
           <Row gutter={16} className="admin-buttons">
             <Col className="admin-search-col">
-              <Search
-                className="admin-search"
-                placeholder="Tìm kiếm người dùng"
+              <SearchInput
+                className='admin-search'
+                label="Search by client or project name"
                 value={searchValue}
-                onChange={e => handleSearchChange(e.target.value)}
-                allowClear
+                onChange={e => handleSearchChange(e.target.value)} 
+                placeholder=""
+                prefixIcon={<FaSearch />}
+                width="300px"
+                height="35px"
+                fullWidth={false}
               />
             </Col>
             <Col className="admin-add-user-col">

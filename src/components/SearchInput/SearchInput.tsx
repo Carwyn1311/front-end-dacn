@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 
 interface SearchInputProps {
-  label?: string
-  name?: string
-  value: string
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  placeholder?: string
-  fullWidth?: boolean
-  fullHeight?: boolean
-  margin?: 'none' | 'dense' | 'normal'
-  className?: string
-  width?: string
-  height?: string
-  prefixIcon?: React.ReactNode
+  label?: string;
+  name?: string;
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
+  fullWidth?: boolean;
+  fullHeight?: boolean;
+  margin?: 'none' | 'dense' | 'normal';
+  className?: string;
+  width?: string;
+  height?: string;
+  prefixIcon?: React.ReactNode;
 }
 
 const SearchInput: React.FC<SearchInputProps> = ({
@@ -58,7 +58,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
           className={`floating-label ${isFocused || value !== '' ? 'focused' : ''}`}
           style={{
             position: 'absolute',
-            top: isFocused || value !== '' ? '-22px' : '50%',
+            top: isFocused || value !== '' ? '-18px' : '50%', // Hover lên cách khung 3px khi input focus
             left: '8px',
             transform: 'translateY(-50%)',
             fontSize: isFocused || value !== '' ? '12px' : '16px',
@@ -79,8 +79,8 @@ const SearchInput: React.FC<SearchInputProps> = ({
           onFocus={handleFocus}
           onBlur={handleBlur}
           style={{
-            width: '100%',
-            height: '100px',
+            width: width || '100%', // Set width từ props
+            height: height || '35px', // Set height từ props (giả sử 35px)
             border: 'none',
             outline: 'none',
             padding: '5px',

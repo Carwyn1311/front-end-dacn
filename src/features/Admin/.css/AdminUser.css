@@ -14,6 +14,11 @@
   width: 100%; /* Kéo dài thẻ Card ra hết chiều ngang */
 }
 
+.admin-search{
+  width: 200px;
+  height: 50px;
+}
+
 .admin-buttons,
 .admin-status-row {
   display: flex;
