@@ -1,40 +1,64 @@
+/* App.css */
+
+/* Đặt chiều cao 100% cho toàn bộ ứng dụng */
 .app-container {
   display: flex;
-  flex-direction: column;
   height: 100vh;
 }
 
-.app-header {
-  display: flex;
-  width: 100%;
+/* Sidebar cố định bên trái */
+.sidebar {
+  width: 250px; /* Chiều rộng sidebar */
+  height: 100vh; /* Chiều cao sidebar */
+  position: fixed; /* Cố định bên trái */
+  left: 0;
+  top: 0;
+  background-color: #333; /* Màu nền cho sidebar */
+  color: white;
+  padding: 20px;
+  transition: transform 0.3s ease; /* Hiệu ứng khi ẩn/mở sidebar */
+  overflow-y: auto;
 }
 
-.sidebar-open {
-  margin-left: 250px; /* Độ rộng của Sidebar */
+/* Khi sidebar đóng */
+.sidebar-closed .sidebar {
+  transform: translateX(-100%); /* Dịch sidebar ra khỏi màn hình khi đóng */
 }
 
-.sidebar-closed {
-  margin-left: 0;
-}
-
+/* Main content điều chỉnh theo sidebar */
 .main-content {
   flex-grow: 1;
-  overflow-y: auto;
-  transition: margin-left 0.3s ease;
+  margin-left: 250px; /* Đẩy nội dung qua phải khi sidebar mở */
+  padding: 20px;
+  transition: margin-left 0.3s ease; /* Hiệu ứng chuyển động khi mở/đóng sidebar */
+  overflow: auto; /* Cho phép cuộn nếu nội dung dài hơn màn hình */
 }
 
-.header {
+/* Khi sidebar bị đóng */
+.sidebar-closed .main-content {
+  margin-left: 0; /* Không có khoảng cách khi sidebar đóng */
+}
+
+/* Header trong MainContent */
+.app-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 10px;
+  padding: 10px 20px;
+  background-color: #f0f0f0; /* Màu nền của header */
+  border-bottom: 1px solid #ddd;
 }
 
 .sidebar-toggle-button {
   font-size: 24px;
   cursor: pointer;
+  background: none;
+  border: none;
+  color: #333;
 }
 
 .app-title {
-  font-size: 18px;
+  font-size: 24px;
+  font-weight: bold;
 }
+
