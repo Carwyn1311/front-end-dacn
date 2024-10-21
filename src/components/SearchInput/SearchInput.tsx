@@ -40,8 +40,8 @@ const SearchInput: React.FC<SearchInputProps> = ({
       style={{
         display: 'flex',
         alignItems: 'center',
-        border: '1px solid #ccc',
-        borderRadius: '4px',
+        border: '2px solid #ccc',
+        borderRadius: '15px',
         padding: '8px',
         width: fullWidth ? '100%' : width,
         height: fullHeight ? '100%' : height

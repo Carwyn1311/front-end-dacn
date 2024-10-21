@@ -1,32 +1,35 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../.css/AdminUser.css';
-import { Card, Select, Row, Col, Input, List, Modal } from 'antd';
+import { Card, Row, Col, List, Modal } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import Button from '../../../components/Button/Button';
 import SearchInput from '../../../components/SearchInput/SearchInput';
 import { FaSearch } from 'react-icons/fa';
-
-const { Option } = Select;
+import Dropdown from '../../../components/Dropdown/Dropdown'; // Import Dropdown component
 
 const userData = [
   { id: 1, name: 'User1', role: 'Admin', status: 'Hoạt động' },
   { id: 2, name: 'User2', role: 'User', status: 'Đóng băng' },
   { id: 3, name: 'User3', role: 'User', status: 'Hoạt động' },
+  { id: 4, name: 'User4', role: 'User', status: 'Hoạt động' },
+  { id: 5, name: 'User5', role: 'Admin', status: 'Hoạt động' },
+  { id: 6, name: 'User6', role: 'User', status: 'Đóng băng' },
+  { id: 7, name: 'User7', role: 'User', status: 'Hoạt động' },
+  { id: 8, name: 'User8', role: 'Admin', status: 'Hoạt động' },
 ];
 
 const AdminUser: React.FC = () => {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState<string>('');
   const [users, setUsers] = useState(userData);
+  const [statusFilter, setStatusFilter] = useState<string>('Tất cả');
+  const [roleFilter, setRoleFilter] = useState<string>('Tất cả');
   const [selectedUser, setSelectedUser] = useState<any>(null);
 
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
-    const filteredUsers = userData.filter(user =>
-      user.name.toLowerCase().includes(value.toLowerCase())
-    );
-    setUsers(filteredUsers);
+    filterUsers(value, statusFilter, roleFilter);
   };
 
   const handleAddUser = () => {
@@ -52,19 +55,47 @@ const AdminUser: React.FC = () => {
     setUsers(updatedUsers);
   };
 
+  const filterUsers = (searchValue: string, status: string, role: string) => {
+    let filteredUsers = userData;
+
+    if (status !== 'Tất cả') {
+      filteredUsers = filteredUsers.filter(user => user.status === status);
+    }
+
+    if (role !== 'Tất cả') {
+      filteredUsers = filteredUsers.filter(user => user.role === role);
+    }
+
+    if (searchValue) {
+      filteredUsers = filteredUsers.filter(user =>
+        user.name.toLowerCase().includes(searchValue.toLowerCase())
+      );
+    }
+
+    setUsers(filteredUsers);
+  };
+
+  const handleStatusChange = (status: string) => {
+    setStatusFilter(status);
+    filterUsers(searchValue, status, roleFilter);
+  };
+
+  const handleRoleChange = (role: string) => {
+    setRoleFilter(role);
+    filterUsers(searchValue, statusFilter, role);
+  };
+
   return (
-    <div className="main-content">
+    <div className="content">
       <div className="user-container">
         <Card title="Quản lý người dùng" className="admin-user-card">
-          
-          {/* Tìm kiếm người dùng và thêm người dùng */}
           <Row gutter={16} className="admin-buttons">
             <Col className="admin-search-col">
               <SearchInput
-                className='admin-search'
+                className="admin-search"
                 label="Search by client or project name"
                 value={searchValue}
-                onChange={e => handleSearchChange(e.target.value)} 
+                onChange={e => handleSearchChange(e.target.value)}
                 placeholder=""
                 prefixIcon={<FaSearch />}
                 width="300px"
@@ -84,13 +115,33 @@ const AdminUser: React.FC = () => {
             </Col>
           </Row>
 
+          {/* Dropdown lọc trạng thái và vai trò */}
+          <Row gutter={16} className="admin-filter-row">
+            <Col span={8}>
+              <Dropdown
+                label="Lọc theo trạng thái"
+                options={['Tất cả', 'Hoạt động', 'Đóng băng']}
+                defaultValue="Tất cả"
+                onChange={handleStatusChange}
+              />
+            </Col>
+            <Col span={8}>
+              <Dropdown
+                label="Lọc theo vai trò"
+                options={['Tất cả', 'Admin', 'User']}
+                defaultValue="Tất cả"
+                onChange={handleRoleChange}
+              />
+            </Col>
+          </Row>
+
           {/* Danh sách người dùng */}
           <List
             className="admin-user-list"
             dataSource={users}
             renderItem={user => (
               <List.Item
-className="admin-user-list-item"
+                className="admin-user-list-item"
                 actions={[
                   <Button className="admin-edit-user-button" icon={<EditOutlined />} onClick={() => handleEditUser(user)}>Sửa</Button>,
                   <Button className="admin-delete-user-button" icon={<DeleteOutlined />} onClick={() => handleDeleteUser(user.id)}>Xóa</Button>,
@@ -108,16 +159,6 @@ className="admin-user-list-item"
               </List.Item>
             )}
           />
-
-          {/* Chọn trạng thái người dùng */}
-          <Row gutter={16} className="admin-status-row">
-            <Select className="admin-status-select" defaultValue="all">
-              <Option value="all">Tất cả</Option>
-              <Option value="active">Hoạt động</Option>
-              <Option value="frozen">Đóng băng</Option>
-            </Select>
-            <Button className="admin-save-status-button" type="primary">Lưu trạng thái</Button>
-          </Row>
 
           {/* Giao diện chat với nhân viên hỗ trợ */}
           <Row className="admin-chat-row">
