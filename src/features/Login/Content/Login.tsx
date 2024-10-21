@@ -79,38 +79,39 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
   const handleLogin = async (): Promise<void> => {
     try {
       console.log('Attempting login with:', { userName, password });
-
+  
       const response = await axiosInstance.post('/auth/authenticate', {
-username: userName,
+        username: userName,
         password: password,
       });
-
+  
       console.log('API Response:', response.data);
-
+  
       if (response.status === 200 && response.data.data.jwt) {
-        const token = response.data.data.jwt; 
-
+        const token = response.data.data.jwt;
+  
         // Lưu thông tin người dùng và token vào localStorage hoặc sessionStorage
         if (rememberMe) {
           localStorage.setItem('userName', userName);
           localStorage.setItem('password', password);
           localStorage.setItem('rememberMe', 'true');
+          localStorage.setItem('token', token);  // Lưu token vào localStorage khi Remember Me được chọn
         } else {
+          sessionStorage.setItem('token', token);  // Lưu token vào sessionStorage khi Remember Me không được chọn
           localStorage.removeItem('userName');
           localStorage.removeItem('password');
           localStorage.removeItem('rememberMe');
         }
-
-        localStorage.setItem('token', token); 
+  
         TokenAuthService.setToken(token); 
-
+  
         // Lưu thông tin người dùng bằng User.ts
         const user = new User(1, userName, email, 'User', 'Active');
         User.storeUserData(user);
-
+  
         console.log('Logged in successfully');
-        onLogin(); 
-        navigate('/'); 
+        onLogin();
+        navigate('/');
       } else {
         setError('Invalid username or password.');
       }
@@ -119,6 +120,7 @@ username: userName,
       setError(error.response?.data?.message || 'Login failed. Please try again.');
     }
   };
+  
 
   const handleRegister = async (): Promise<void> => {
     try {
