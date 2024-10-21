@@ -83,7 +83,7 @@ const AppContent: React.FC = () => {
       {/* Main Content with Header */}
       <div className="main-content" style={{ flexGrow: 1, padding: '20px', transition: 'margin-left 0.3s', marginLeft: isSidebarOpen ? '250px' : '0', overflow: 'auto' }}>
         {/* Header */}
-        <header className="app-header" style={{ backgroundColor: '#f11', borderBottom: '1px solid #ddd', height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'fixed', top: '0', left: isSidebarOpen ? '250px' : '0', width: isSidebarOpen ? 'calc(100% - 250px)' : '100%', zIndex: '1' }}>
+        <header className="app-header" style={{ backgroundColor: 'white', borderBottom: '1px solid #ddd', height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'fixed', top: '0', left: isSidebarOpen ? '250px' : '0', width: isSidebarOpen ? 'calc(100% - 250px)' : '100%', zIndex: '1' }}>
           <Button onClick={toggleSidebar} className="sidebar-toggle-button" style={{ fontSize: '24px', cursor: 'pointer' }}>
             &#9776;
           </Button>

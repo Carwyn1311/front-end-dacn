@@ -39,7 +39,7 @@ const ChatWebSocket: React.FC = () => {
                 stompClient.subscribe('/topic/messages', (messageOutput) => {
                     console.log('Nhận được tin nhắn từ server:', messageOutput.body);
                     const chatMessage = {
-                        sender: 'CHERRY', // Mặc định người gửi là CHERRY
+                        sender: 'GEMINI', // Mặc định người gửi là CHERRY
                         content: messageOutput.body,
                         color: 'blue'
                     };
