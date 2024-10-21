@@ -1,60 +1,94 @@
 /* App.css */
 
-/* Đặt chiều cao 100% cho toàn bộ ứng dụng */
+/* Set height to 100% for the entire application */
 .app-container {
   display: flex;
   height: 100vh;
+  flex-direction: row; /* Layout in a row */
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
-/* Sidebar cố định bên trái */
+/* Sidebar fixed to the left */
 .sidebar {
-  width: 250px; /* Chiều rộng sidebar */
-  height: 100vh; /* Chiều cao sidebar */
-  position: fixed; /* Cố định bên trái */
+  width: 250px;
+  height: 100vh;
+  position: fixed; /* Fixed to the left */
   left: 0;
   top: 0;
-  background-color: #333; /* Màu nền cho sidebar */
+  background-color: #333; /* Sidebar background color */
   color: white;
   padding: 20px;
-  transition: transform 0.3s ease; /* Hiệu ứng khi ẩn/mở sidebar */
-  overflow-y: auto;
+  transition: transform 0.3s ease; /* Animation for showing/hiding sidebar */
+  overflow-y: auto; /* Vertical scroll auto */
+  overflow-x: hidden; /* No horizontal scroll */
+  z-index: 1000; /* Ensure it is above the content */
 }
 
-/* Khi sidebar đóng */
+/* When sidebar is closed */
 .sidebar-closed .sidebar {
-  transform: translateX(-100%); /* Dịch sidebar ra khỏi màn hình khi đóng */
+  transform: translateX(-100%); /* Slide sidebar out of view when closed */
 }
 
-/* Main content điều chỉnh theo sidebar */
+/* Main content adjusted according to the sidebar */
 .main-content {
   flex-grow: 1;
-  margin-left: 250px; /* Đẩy nội dung qua phải khi sidebar mở */
   padding: 20px;
-  transition: margin-left 0.3s ease; /* Hiệu ứng chuyển động khi mở/đóng sidebar */
-  overflow: auto; /* Cho phép cuộn nếu nội dung dài hơn màn hình */
+  transition: margin-left 0.3s ease; /* Smooth transition when sidebar opens/closes */
+  overflow-y: auto; /* Vertical scroll auto */
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  margin-top: 80px; /* Push content down to avoid the header */
 }
 
-/* Khi sidebar bị đóng */
+/* When the sidebar is closed */
 .sidebar-closed .main-content {
-  margin-left: 0; /* Không có khoảng cách khi sidebar đóng */
+  margin-left: 0; /* No margin when the sidebar is closed */
 }
 
-/* Header trong MainContent */
+/* Larger header */
 .app-header {
+  background-color: #6e1e1e;
+  border-bottom: 1px solid #ddd;
+  height: 80px; /* Increase the height of the header */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
-  background-color: #f0f0f0; /* Màu nền của header */
-  border-bottom: 1px solid #ddd;
+  padding: 0 20px;
+  position: fixed; /* Fix the header at the top */
+  top: 0;
+  z-index: 999; /* Ensure header stays on top of other elements */
+  transition: left 0.3s ease, width 0.3s ease;
+  overflow-x: hidden; /* Prevent header overflow */
 }
 
+/* When the sidebar is open, adjust header position and width */
+.sidebar-open .app-header {
+  left: 250px;
+  width: calc(100% - 250px);
+  .sidebar-toggle-button {
+    margin-left: 30px;
+  }
+}
+
+/* When the sidebar is closed, the header takes up the full width */
+.sidebar-closed .app-header {
+  left: 0;
+  width: 100%;
+}
+
+/* Sidebar toggle button */
 .sidebar-toggle-button {
   font-size: 24px;
+  height: 50px;
+  width: 50px;
   cursor: pointer;
   background: none;
   border: none;
   color: #333;
+  
+  /* Centering content */
+  display: flex;
+  justify-content: center;  /* Horizontally center */
+  align-items: center;      /* Vertically center */
 }
 
 .app-title {
@@ -62,3 +96,9 @@
   font-weight: bold;
 }
 
+/* Prevent horizontal scroll on the body */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scroll on body */
+}
