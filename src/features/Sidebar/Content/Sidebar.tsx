@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LogoutButton from '../../Logout/Content/LogoutButton';
+import Avatar from '../../User/Content/Avatar';
+import avatarImage from '../../User/images/CHERRY.png';
 
 interface SidebarProps {
   userName: string;
@@ -53,17 +55,10 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
         {isLoggedIn ? (
           <>
             {/* Chỉ hiển thị avatar và menu khi đã đăng nhập */}
-            <img
-              src="https://static.vecteezy.com/ti/vecteur-libre/p1/21548095-defaut-profil-image-avatar-utilisateur-avatar-icone-la-personne-icone-tete-icone-profil-image-icones-defaut-anonyme-utilisateur-masculin-et-femelle-homme-d-affaire-photo-espace-reserve-social-reseau-avatar-portrait-gratuit-vectoriel.jpg"
-              alt="User Avatar"
-              style={{
-                width: '50px',
-                height: '50px',
-                borderRadius: '50%',
-                objectFit: 'cover',
-                cursor: 'pointer',
-                marginBottom: '10px',
-              }}
+            <Avatar
+              src={avatarImage}
+              alt="User Profile Picture"
+              size={60}
               onClick={toggleAvatarMenu}
             />
 
