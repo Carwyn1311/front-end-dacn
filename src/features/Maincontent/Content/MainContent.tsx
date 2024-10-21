@@ -4,7 +4,7 @@ import { Client } from '@stomp/stompjs';
 import { Layout, Button, Input, List, Upload, message as antdMessage } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import type { UploadRequestOption } from 'rc-upload/lib/interface';
-import { User } from '../User/Content/User'; // Import lớp User để sử dụng
+import { User } from '../../User/Content/User';
 
 const { Content } = Layout;
 
@@ -120,32 +120,6 @@ const ChatWebSocket: React.FC = () => {
         } catch (error) {
             console.error('Lỗi tải cuộc trò chuyện:', error);
             antdMessage.error('Lỗi tải cuộc trò chuyện.');
-        }
-    };
-
-    const createConversation = async () => {
-        if (!username) {
-            antdMessage.error("Vui lòng nhập tên người dùng.");
-            return;
-        }
-
-        try {
-            const response = await fetch('https://chat-api-backend-x4dl.onrender.com/api/conversations/create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, message: '' })
-            });
-
-            if (!response.ok) throw new Error('Lỗi tạo cuộc trò chuyện');
-            const newConversation = await response.json();
-            setCurrentConversationId(newConversation.id);
-            loadConversations();
-            antdMessage.success("Đã tạo cuộc trò chuyện. Vui lòng gửi tin nhắn đầu tiên.");
-        } catch (error) {
-            console.error('Lỗi tạo cuộc trò chuyện:', error);
-            antdMessage.error('Lỗi tạo cuộc trò chuyện.');
         }
     };
 
@@ -272,7 +246,6 @@ const ChatWebSocket: React.FC = () => {
                 </Input.Group>
 
                 <Input.Group compact style={{ marginBottom: '10px' }}>
-                    <Button type="default" onClick={createConversation} style={{ width: '50%' }}>Tạo cuộc trò chuyện</Button>
                     <Button type="default" danger onClick={deleteConversation} style={{ width: '50%' }}>Xóa cuộc trò chuyện</Button>
                 </Input.Group>
 

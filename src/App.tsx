@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Sidebar from './features/Sidebar/Content/Sidebar';
 import AdminUser from './features/Admin/User/AdminUser';
-import MainContent from './features/Maincontent/MainContent';
+import MainContent from './features/Maincontent/Content/MainContent';
 import Profile from './features/Profile/Profile';
 import Help from './features/Help/Help';
 import Info from './features/Info/Info';
@@ -11,6 +11,8 @@ import './App.css';
 import Login from './features/Login/Content/Login';
 import ActivateAccount from './features/ActivateAccount/ActivateAccount';
 import Button from './components/Button/Button';
+import CreateConversation from './features/Maincontent/Content/CreateConversation';
+import { User } from './features/User/Content/User'; // Import lớp User để lấy thông tin người dùng
 
 const App: React.FC = () => {
   return (
@@ -22,9 +24,8 @@ const App: React.FC = () => {
 
 const AppContent: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);  // Lưu conversation ID sau khi tạo
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -32,32 +33,47 @@ const AppContent: React.FC = () => {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    setUserName('');
-    setEmail('');
+    User.clearUserData(); // Xóa thông tin người dùng khỏi localStorage hoặc sessionStorage
   };
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  // If not logged in, show only the login page
+  // Callback khi cuộc trò chuyện mới được tạo
+  const handleConversationCreated = (conversationId: string) => {
+    setCurrentConversationId(conversationId);  // Lưu ID của cuộc trò chuyện
+  };
+
+  useEffect(() => {
+    // Kiểm tra xem người dùng đã đăng nhập hay chưa dựa trên thông tin trong User.ts
+    const currentUser = User.getUserData();
+    if (currentUser && currentUser.name) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  // Nếu chưa đăng nhập, chỉ hiện trang đăng nhập
   if (!isLoggedIn) {
     return (
       <Routes>
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
-        <Route path="*" element={<Navigate to="/login" />} /> {/* Redirect any other path to login */}
+        <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     );
   }
 
-  // If logged in, show the full application with the sidebar, header, and main content
+  // Lấy thông tin user từ User.ts sau khi đăng nhập thành công
+  const currentUser = User.getUserData();
+
+  // Nếu đã đăng nhập, hiển thị đầy đủ ứng dụng với sidebar, header, và nội dung chính
   return (
     <div className={`app-container ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`} style={{ display: 'flex', height: '100vh' }}>
       {/* Sidebar */}
       {isSidebarOpen && (
         <Sidebar
-          userName={userName}
-          email={email}
+          userName={currentUser?.name || ''}
+          email={currentUser?.email || ''}
           isOpen={isSidebarOpen}
           isLoggedIn={isLoggedIn}
           onLogout={handleLogout}
@@ -71,6 +87,11 @@ const AppContent: React.FC = () => {
           <Button onClick={toggleSidebar} className="sidebar-toggle-button" style={{ fontSize: '24px', cursor: 'pointer' }}>
             &#9776;
           </Button>
+
+          {/* Nút tạo cuộc trò chuyện mới trong Header */}
+          {currentUser && (
+            <CreateConversation username={currentUser.name} onConversationCreated={handleConversationCreated} />
+          )}
         </header>
 
         {/* Main Content Routes */}
@@ -81,10 +102,17 @@ const AppContent: React.FC = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/help" element={<Help />} />
             <Route path="/info" element={<Info />} />
-            <Route path="/chat" element={<ChatPage />} />
+            <Route path="/chat" element={<ChatPage/>} />
             <Route path="/activate" element={<ActivateAccount />} />
             <Route path="*" element={<Navigate to="/" />} /> {/* Redirect unknown paths to home */}
           </Routes>
+
+          {/* Hiển thị Conversation ID sau khi tạo */}
+          {currentConversationId && (
+            <div style={{ marginTop: '20px', fontWeight: 'bold' }}>
+              Conversation ID: {currentConversationId}
+            </div>
+          )}
         </div>
       </div>
     </div>

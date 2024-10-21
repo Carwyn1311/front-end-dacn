@@ -10,7 +10,7 @@ interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = ({ onClick, style, children, className = '', type = 'button', icon }) => {
-  const buttonType = type === 'primary' ? 'button' : type;
+  const buttonType = type === 'primary' ? 'button' : type;  // Chỉ có 3 giá trị button type hợp lệ
   const buttonClass = type === 'primary' ? `${className} primary-button` : className;
 
   return (
