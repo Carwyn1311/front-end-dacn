@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom'; // Import useLocation for detecting the current route
 import LogoutButton from '../../Logout/Content/LogoutButton';
 
 interface SidebarProps {
@@ -13,6 +13,7 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, onLogout }) => {
   const [isAvatarMenuOpen, setAvatarMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation(); // Get the current route
 
   const toggleAvatarMenu = () => {
     setAvatarMenuOpen(!isAvatarMenuOpen);
@@ -36,6 +37,10 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
 
   const handleLoginClick = () => {
     navigate('/login');
+  };
+
+  const handleBackToHome = () => {
+    navigate('/');
   };
 
   return (
@@ -115,6 +120,15 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
           <div style={{ padding: '20px', cursor: 'pointer' }} onClick={handleLoginClick}>
             <button style={{ padding: '10px', width: '100%', backgroundColor: '#1890ff', border: 'none', color: 'white', cursor: 'pointer' }}>
               Login
+            </button>
+          </div>
+        )}
+
+        {/* Back to Home Button */}
+        {location.pathname !== '/' && ( // Show the button if not on the home page
+          <div style={{ padding: '10px 0', cursor: 'pointer' }} onClick={handleBackToHome}>
+            <button style={{ padding: '10px', width: '100%', backgroundColor: '#ff5722', border: 'none', color: 'white', cursor: 'pointer' }}>
+              Quay lại trang chính
             </button>
           </div>
         )}

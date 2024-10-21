@@ -17,7 +17,6 @@ const ChatWebSocket: React.FC = () => {
 
     const stompClientRef = useRef<Client | null>(null);
 
-    // Kết nối WebSocket
     useEffect(() => {
         const socket = new SockJS('https://chat-api-backend-x4dl.onrender.com/ws-chat');
         const stompClient = new Client({
@@ -31,14 +30,13 @@ const ChatWebSocket: React.FC = () => {
                 stompClient.subscribe('/topic/messages', (messageOutput) => {
                     console.log('Nhận được tin nhắn từ server:', messageOutput.body);
                     const chatMessage = {
-                        sender: 'GEMINI',
+                        sender: 'CHERRY',  // Updated to 'CHERRY'
                         content: messageOutput.body,
                         color: 'blue'
                     };
                     setMessages((prevMessages) => [...prevMessages, chatMessage]);
                 });
 
-                // Heartbeat
                 startHeartbeat(stompClient);
             },
         });
@@ -90,7 +88,7 @@ const ChatWebSocket: React.FC = () => {
             ]);
 
             setMessage('');
-            loadConversations(); // Cập nhật danh sách cuộc trò chuyện
+            loadConversations();
         } catch (error: unknown) {
             console.error('Lỗi gửi tin nhắn:', error);
             if (error instanceof Error) {
@@ -229,11 +227,10 @@ const ChatWebSocket: React.FC = () => {
     };
 
     return (
-        <Layout style={{ padding: '20px' }}>
-            <Content style={{ maxWidth: '500px', margin: '0 auto' }}>
-                <h2>Chat với WebSocket</h2>
+        <Layout style={{ padding: '20px', backgroundColor: '#f5f5f5' }}>
+            <Content style={{ maxWidth: '800px', margin: '0 auto', backgroundColor: '#fff', padding: '20px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+                <h2 style={{ textAlign: 'center', color: '#007bff', marginBottom: '20px' }}>Cherry Chat</h2>
 
-                {/* Khu vực tin nhắn */}
                 <List
                     bordered
                     style={{ height: '300px', overflowY: 'auto', marginBottom: '10px', backgroundColor: '#f9f9f9' }}
@@ -246,31 +243,28 @@ const ChatWebSocket: React.FC = () => {
                     )}
                 />
 
-                {/* Tải lên ảnh */}
                 <Upload customRequest={uploadImage} showUploadList={false}>
-                    <Button icon={<UploadOutlined />}>Tải lên ảnh</Button>
+                    <Button icon={<UploadOutlined />} style={{ marginBottom: '10px', width: '100%' }}>Tải lên ảnh</Button>
                 </Upload>
 
-                {/* Nhập tên và tin nhắn */}
-                <Input.Group compact style={{ marginTop: '10px' }}>
+                <Input.Group compact style={{ marginBottom: '10px' }}>
                     <Input
                         placeholder="Nhập tên người dùng"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        style={{ width: '60%' }}
+                        style={{ width: '50%' }}
                     />
-                    <Button type="primary" onClick={loadConversations}>Tải cuộc trò chuyện</Button>
+                    <Button type="primary" onClick={loadConversations} style={{ width: '50%' }}>Tải cuộc trò chuyện</Button>
                 </Input.Group>
 
-                <Input.Group compact style={{ marginTop: '10px' }}>
-                    <Button type="default" onClick={createConversation}>Tạo cuộc trò chuyện</Button>
-                    <Button type="default" danger={true} onClick={deleteConversation}>Xóa cuộc trò chuyện</Button>
+                <Input.Group compact style={{ marginBottom: '10px' }}>
+                    <Button type="default" onClick={createConversation} style={{ width: '50%' }}>Tạo cuộc trò chuyện</Button>
+                    <Button type="default" danger={true} onClick={deleteConversation} style={{ width: '50%' }}>Xóa cuộc trò chuyện</Button>
                 </Input.Group>
 
-                {/* Hiển thị các cuộc trò chuyện */}
                 <List
                     bordered
-                    style={{ marginTop: '20px' }}
+                    style={{ marginBottom: '10px' }}
                     dataSource={conversations}
                     renderItem={(item) => (
                         <List.Item onClick={() => { setCurrentConversationId(item.id); setMessages(item.messages); }}>
@@ -279,27 +273,25 @@ const ChatWebSocket: React.FC = () => {
                     )}
                 />
 
-                {/* Nhập và gửi tin nhắn */}
-                <Input.Group compact style={{ marginTop: '10px' }}>
+                <Input.Group compact style={{ marginBottom: '10px' }}>
                     <Input
                         placeholder="Nhập tin nhắn"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
-                        style={{ width: '60%' }}
+                        style={{ width: '70%' }}
                     />
-                    <Button type="primary" onClick={sendMessage}>Gửi</Button>
+                    <Button type="primary" onClick={sendMessage} style={{ width: '30%' }}>Gửi</Button>
                 </Input.Group>
 
-                {/* Cập nhật tiêu đề cuộc trò chuyện */}
                 {currentConversationId && (
-                    <Input.Group compact style={{ marginTop: '10px' }}>
+                    <Input.Group compact>
                         <Input
                             placeholder="Nhập tiêu đề mới"
                             value={newTitle}
                             onChange={(e) => setNewTitle(e.target.value)}
-                            style={{ width: '60%' }}
+                            style={{ width: '70%' }}
                         />
-                        <Button type="primary" onClick={updateConversationTitle}>Thay đổi tiêu đề</Button>
+                        <Button type="primary" onClick={updateConversationTitle} style={{ width: '30%' }}>Thay đổi tiêu đề</Button>
                     </Input.Group>
                 )}
             </Content>
