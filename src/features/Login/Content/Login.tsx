@@ -81,7 +81,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
       console.log('Attempting login with:', { userName, password });
 
       const response = await axiosInstance.post('/auth/authenticate', {
-        username: userName,
+username: userName,
         password: password,
       });
 
@@ -171,7 +171,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
 
   const handleGoogleLoginClick = async (): Promise<void> => {
     try {
-      window.location.href = 'https://chat-api-backend-x4dl.onrender.com/auth/login/google';
+window.location.href = 'https://chat-api-backend-x4dl.onrender.com/auth/login/google';
     } catch (error: any) {
       console.error('Google Login error:', error.response?.data?.message || error.message);
       setError(error.response?.data?.message || 'Google login failed.');
@@ -255,7 +255,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
               )}
               {isRegistering && (
                 <>
-                  <button onClick={handleActivateAccountClick} className="activate-account-btn">
+<button onClick={handleActivateAccountClick} className="activate-account-btn">
                     Activate Account
                   </button>
                   <button onClick={handleBackToLoginClick} className="back-to-login-btn">
