@@ -39,9 +39,23 @@ const CreateConversation: React.FC<CreateConversationProps> = ({ username, onCon
   };
 
   return (
-    <Button type="primary" onClick={createConversation} style={{ width: '100%' }}>
-      Create New Conversation
-    </Button>
+    <Button 
+  type="primary" 
+  onClick={createConversation} 
+  style={{ 
+    width: 'auto',          // Điều chỉnh độ rộng tự động
+    padding: ' 10px',    // Điều chỉnh khoảng cách bên trong nút
+    fontSize: '17px',       // Điều chỉnh kích thước biểu tượng hoặc văn bản
+    float: 'right',         // Căn sang phải
+    marginRight: '100%',    // Điều chỉnh khoảng cách bên phải nếu cần
+    marginTop: '5px'       // Điều chỉnh khoảng cách trên nếu cần
+  }}>
+  &#9998;
+</Button>
+
+
+
+
   );
 };
 
