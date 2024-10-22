@@ -9,9 +9,10 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 interface ConversationListProps {
   onSelectConversation: (conversationId: string, messages: any[]) => void;
+  onConversationCreated?: (conversationId: string, newConversation: any) => void; // Thêm sự kiện để nhận cuộc trò chuyện mới
 }
 
-const ConversationList: React.FC<ConversationListProps> = ({ onSelectConversation }) => {
+const ConversationList: React.FC<ConversationListProps> = ({ onSelectConversation, onConversationCreated }) => {
   const [conversations, setConversations] = useState<any[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<any>(null);
   const [showEditForm, setShowEditForm] = useState(false);  // State to control edit form visibility
@@ -22,8 +23,25 @@ const ConversationList: React.FC<ConversationListProps> = ({ onSelectConversatio
       const data = await loadConversations();
       setConversations(data);
     };
+
+    // Tải lần đầu tiên khi component được mount
     fetchConversations();
+
+    // Thiết lập setInterval để tải lại cuộc trò chuyện mỗi 1 giây
+    const intervalId = setInterval(() => {
+      fetchConversations();
+    }, 1000);
+
+    // Cleanup function khi component bị unmount
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
+
+  // Cập nhật danh sách conversations khi có cuộc trò chuyện mới
+  const handleConversationCreated = (conversationId: string, newConversation: any) => {
+    setConversations((prevConversations) => [...prevConversations, newConversation]);
+  };
 
   const handleConversationSelect = (conversationId: string, messages: any[]) => {
     ConversationId.storeConversationId(conversationId);  // Store selected conversation ID in session storage
@@ -90,7 +108,6 @@ const ConversationList: React.FC<ConversationListProps> = ({ onSelectConversatio
             <button className="modal-close-button" onClick={() => setModalVisible(false)}>✕</button>
           </div>
         </div>
-
       </Modal>
 
       {/* Show edit form if showEditForm is true */}

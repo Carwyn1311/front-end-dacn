@@ -33,7 +33,7 @@ const CreateConversation: React.FC<CreateConversationProps> = ({
             if (!response.ok) throw new Error('Error creating conversation');
             const newConversation = await response.json();
 
-            // Thay vì gọi lại API để lấy danh sách conversations, sử dụng ngay dữ liệu vừa tạo
+            // Sử dụng ngay dữ liệu vừa tạo
             onConversationCreated(newConversation.id, newConversation); // Gửi thông tin cuộc trò chuyện vừa tạo về cho App
 
             antdMessage.success("Đã tạo cuộc trò chuyện mới.");

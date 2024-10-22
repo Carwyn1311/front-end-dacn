@@ -1,9 +1,12 @@
 .conversation-list-container {
-    max-height: 400px; /* Limit height for scrollable list */
     overflow-y: auto;
     border: 1px solid #eaeaea;
     border-radius: 8px;
     background-color: #f8f9fa;
+    margin-top: 25px;
+    width: 250px;
+    height: 500px;
+    margin-left: -20px;
   }
   
   .conversation-list-item {
