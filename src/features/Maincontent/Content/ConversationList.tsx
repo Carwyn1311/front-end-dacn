@@ -44,6 +44,7 @@ const ConversationList: React.FC<ConversationListProps> = ({ onSelectConversatio
   };
 
   const handleConversationSelect = (conversationId: string, messages: any[]) => {
+    console.log("Selected Conversation ID:", conversationId); 
     ConversationId.storeConversationId(conversationId);  // Store selected conversation ID in session storage
     onSelectConversation(conversationId, messages);  // Pass the selected conversation and messages to parent component
   };

@@ -5,6 +5,7 @@ import { Layout, Button, Input, List, Upload, message as antdMessage } from 'ant
 import { UploadOutlined } from '@ant-design/icons';
 import type { UploadRequestOption } from 'rc-upload/lib/interface';
 import { User } from '../../User/Content/User';
+import '../.css/MainContent.css';
 
 const { Content } = Layout;
 
@@ -18,7 +19,7 @@ const MainContent: React.FC = () => {
     const [newTitle, setNewTitle] = useState('');
 
     const stompClientRef = useRef<Client | null>(null);
-
+    
     // Function to load conversations
     const loadConversations = async () => {
         if (!username) {
@@ -243,11 +244,12 @@ const MainContent: React.FC = () => {
     };
 
     return (
-        <Layout style={{ padding: '20px', backgroundColor: '#f5f5f5' }}>
-            <Content style={{ maxWidth: '800px', margin: '0 auto', backgroundColor: '#fff', padding: '20px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
-                <h2 style={{ textAlign: 'center', color: '#007bff', marginBottom: '20px' }}>AI Chat</h2>
+        <div className="outer-frame">
+            <Layout className="layout-container" style={{ padding: '20px', backgroundColor: '#f5f5f5' }}>
+                <Content style={{ width: '800px', margin: '0 auto', backgroundColor: '#fff', padding: '20px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+                    <h2 style={{ textAlign: 'center', color: '#007bff', marginBottom: '20px' }}>AI Chat</h2>
 
-                <List
+                    <List
                     bordered
                     style={{ height: '300px', overflowY: 'auto', marginBottom: '10px', backgroundColor: '#f9f9f9' }}
                     dataSource={messages}
@@ -259,49 +261,51 @@ const MainContent: React.FC = () => {
                     )}
                 />
 
-                <Upload customRequest={uploadImage} showUploadList={false}>
-                    <Button icon={<UploadOutlined />} style={{ marginBottom: '10px', width: '100%' }}>Tải lên ảnh</Button>
-                </Upload>
 
-                <Input.Group compact style={{ marginBottom: '10px' }}>
-                    <Button type="default" danger onClick={deleteConversation} style={{ width: '50%' }}>Xóa cuộc trò chuyện</Button>
-                </Input.Group>
+                    <Upload customRequest={uploadImage} showUploadList={false}>
+                        <Button icon={<UploadOutlined />} style={{ marginBottom: '10px', width: '100%' }}>Tải lên ảnh</Button>
+                    </Upload>
 
-                <List
-                    bordered
-                    style={{ marginBottom: '10px' }}
-                    dataSource={conversations}
-                    renderItem={(item) => (
-                        <List.Item onClick={() => { setCurrentConversationId(item.id); setMessages(item.messages); }}>
-                            <strong>{item.title || 'Không có tiêu đề'}</strong>
-                        </List.Item>
-                    )}
-                />
+                    <Input.Group compact style={{ marginBottom: '10px' }}>
+                        <Button type="default" danger onClick={deleteConversation} style={{ width: '50%' }}>Xóa cuộc trò chuyện</Button>
+                    </Input.Group>
 
-                <Input.Group compact style={{ marginBottom: '10px' }}>
-                    <Input
-                        placeholder="Nhập tin nhắn"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        style={{ width: '70%' }}
+                    <List
+                        bordered
+                        style={{ marginBottom: '10px' }}
+                        dataSource={conversations}
+                        renderItem={(item) => (
+                            <List.Item onClick={() => { setCurrentConversationId(item.id); setMessages(item.messages); }}>
+                                <strong>{item.title || 'Không có tiêu đề'}</strong>
+                            </List.Item>
+                        )}
                     />
-                    <Button type="primary" onClick={sendMessage} style={{ width: '30%' }}>Gửi</Button>
-                </Input.Group>
 
-                {currentConversationId && (
-                    <Input.Group compact>
+                    <Input.Group compact style={{ marginBottom: '10px' }}>
                         <Input
-                            placeholder="Nhập tiêu đề mới"
-                            value={newTitle}
-                            onChange={(e) => setNewTitle(e.target.value)}
+                            placeholder="Nhập tin nhắn"
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            onKeyDown={handleKeyDown}
                             style={{ width: '70%' }}
                         />
-                        <Button type="primary" onClick={updateConversationTitle} style={{ width: '30%' }}>Thay đổi tiêu đề</Button>
+                        <Button type="primary" onClick={sendMessage} style={{ width: '30%' }}>Gửi</Button>
                     </Input.Group>
-                )}
-            </Content>
-        </Layout>
+
+                    {currentConversationId && (
+                        <Input.Group compact>
+                            <Input
+                                placeholder="Nhập tiêu đề mới"
+                                value={newTitle}
+                                onChange={(e) => setNewTitle(e.target.value)}
+                                style={{ width: '70%' }}
+                            />
+                            <Button type="primary" onClick={updateConversationTitle} style={{ width: '30%' }}>Thay đổi tiêu đề</Button>
+                        </Input.Group>
+                    )}
+                </Content>
+            </Layout>
+        </div>
     );
 };
 
