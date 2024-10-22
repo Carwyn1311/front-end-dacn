@@ -3,6 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import LogoutButton from '../../Logout/Content/LogoutButton';
 import Avatar from '../../User/Content/Avatar';
 import avatarImage from '../../User/images/CHERRY.png';
+// Correct the path to where your ConversationList component is located
+import ConversationList from '../../Maincontent/Content/ConversationList'; 
 
 interface SidebarProps {
   userName: string;
@@ -14,8 +16,16 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, onLogout }) => {
   const [isAvatarMenuOpen, setAvatarMenuOpen] = useState(false);
+  const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
   const navigate = useNavigate();
+  const [messages, setMessages] = useState<any[]>([]);
   const location = useLocation();
+
+  // This function will be passed to ConversationList and handle the selection of a conversation
+  const handleSelectConversation = (conversationId: string, conversationMessages: any[]) => {
+    setSelectedConversationId(conversationId); // Save the selected conversation ID
+    setMessages(conversationMessages); // Save the messages of the selected conversation
+  };
 
   const toggleAvatarMenu = () => {
     setAvatarMenuOpen(!isAvatarMenuOpen);
@@ -65,13 +75,6 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
             <div style={{ cursor: 'pointer' }} onClick={toggleAvatarMenu}>
               <Avatar src={avatarImage} alt="User Profile Picture" size={70} />
             </div>
-            {isOpen && (
-              <div className='info-user'>
-                <h2 className="sidebar-username">{userName}</h2>
-                {email && <p className="sidebar-email">{email}</p>}
-              </div>
-
-            )}
           </>
         ) : (
           <div style={{ padding: '20px', cursor: 'pointer' }} onClick={handleLoginClick}>
@@ -89,6 +92,7 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
             </button>
           </div>
         )}
+
         {location.pathname !== '/' && (
           <div style={{ padding: '10px 0', cursor: 'pointer' }} onClick={handleBackToHome}>
             <button
@@ -105,8 +109,14 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
             </button>
           </div>
         )}
+
+        {/* Integrate ConversationList component */}
+        <div className='conversationlist'>
+          <ConversationList onSelectConversation={handleSelectConversation} />
+        </div>
       </div>
-{/* Avatar menu at the bottom */}
+
+      {/* Avatar menu at the bottom */}
       {isAvatarMenuOpen && (
         <div
           className="avatar-menu"
@@ -124,7 +134,7 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
             marginLeft: '30px'
           }}
         >
-          <ul className='form-list'style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
+          <ul className='form-list' style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
             <li style={{ padding: '5px 0', cursor: 'pointer' }} onClick={handleAdminClick}>
               Trang Admin
             </li>

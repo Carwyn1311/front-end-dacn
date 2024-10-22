@@ -1,7 +1,7 @@
 .sidebar {
   width: 340px;
   background-color: #f8fafc;
-  color: #1f2937;
+  color: #9abef0;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-size: 16px;
   position: fixed;
@@ -16,6 +16,10 @@
   justify-content: space-between; /* Ensures content is spaced between top and bottom */
 }
 
+.conversationlist{
+  padding-top: 100px;
+  padding: 10px;
+}
 .sidebar.closed {
   transform: translateX(-100%); /* Sidebar hidden */
 }

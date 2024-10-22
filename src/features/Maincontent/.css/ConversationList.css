@@ -1,0 +1,45 @@
+.conversation-list-container {
+    max-height: 400px; /* Limit height for scrollable list */
+    overflow-y: auto;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+  }
+  
+  .conversation-list-item {
+    padding: 10px 15px;
+    background-color: #fff;
+    border-bottom: 1px solid #eaeaea;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s ease;
+  }
+  
+  .conversation-list-item:hover {
+    background-color: #e6f7ff;
+  }
+  
+  .conversation-list-item strong {
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .conversation-list-item:active {
+    background-color: #bae7ff;
+  }
+  
+  .conversation-list-container::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .conversation-list-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+  
+  .conversation-list-container::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }
+  

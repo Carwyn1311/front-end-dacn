@@ -1,61 +1,45 @@
-import React, { useEffect, useState } from 'react';
-import { List, message as antdMessage } from 'antd';
-
-interface Conversation {
-  id: string;
-  title: string;
-  messages: any[];
-}
+import React, { useState, useEffect } from 'react';
+import { List } from 'antd';
+import { ConversationId } from './ConversationId';  // Import ConversationId class
+import { loadConversations } from './ConversationService';
+import '../.css/ConversationList.css';
 
 interface ConversationListProps {
-  username: string;
-  setCurrentConversationId: (id: string) => void;
-  setMessages: (messages: any[]) => void;
+  onSelectConversation: (conversationId: string, messages: any[]) => void;
 }
 
-const ConversationList: React.FC<ConversationListProps> = ({ username, setCurrentConversationId, setMessages }) => {
-  const [conversations, setConversations] = useState<Conversation[]>([]);
+const ConversationList: React.FC<ConversationListProps> = ({ onSelectConversation }) => {
+  const [conversations, setConversations] = useState<any[]>([]);
 
-  // Load conversations automatically when the component is mounted
   useEffect(() => {
-    const loadConversations = async () => {
-      if (!username) {
-        antdMessage.error("Vui lòng nhập tên người dùng.");
-        return;
-      }
-
-      try {
-        const response = await fetch(`https://chat-api-backend-x4dl.onrender.com/api/conversations/by-username?username=${username}`);
-        if (!response.ok) throw new Error('Lỗi tải cuộc trò chuyện');
-        const conversations = await response.json();
-        setConversations(conversations);
-
-        // Automatically select the first conversation if available
-        if (conversations.length > 0) {
-          const firstConversation = conversations[0];
-          setCurrentConversationId(firstConversation.id);
-          setMessages(firstConversation.messages || []);
-        }
-      } catch (error) {
-        console.error('Lỗi tải cuộc trò chuyện:', error);
-        antdMessage.error('Lỗi tải cuộc trò chuyện.');
-      }
+    const fetchConversations = async () => {
+      const data = await loadConversations();  // Use the shared loadConversations function from conversationService
+      setConversations(data);  // Update the state with loaded conversations
     };
 
-    loadConversations();
-  }, [username, setCurrentConversationId, setMessages]);
+    fetchConversations();  // Fetch conversations when the component mounts
+  }, []);  // Empty dependency array means this effect runs once on mount
+
+  const handleConversationSelect = (conversationId: string, messages: any[]) => {
+    ConversationId.storeConversationId(conversationId);  // Store selected conversation ID in session storage
+    onSelectConversation(conversationId, messages);  // Pass the selected conversation and messages to parent component
+  };
 
   return (
-    <List
-      bordered
-      style={{ marginBottom: '10px' }}
-      dataSource={conversations}
-      renderItem={(item) => (
-        <List.Item onClick={() => { setCurrentConversationId(item.id); setMessages(item.messages); }}>
-          <strong>{item.title || 'Không có tiêu đề'}</strong>
-        </List.Item>
-      )}
-    />
+    <div className="conversation-list-container">
+      <List
+        bordered
+        dataSource={conversations}
+        renderItem={(item) => (
+          <List.Item
+            className="conversation-list-item"
+            onClick={() => handleConversationSelect(item.id, item.messages)}
+          >
+            <strong>{item.title || 'Không có tiêu đề'}</strong>
+          </List.Item>
+        )}
+      />
+    </div>
   );
 };
 
