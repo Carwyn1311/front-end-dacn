@@ -237,9 +237,7 @@ const ChatWebSocket: React.FC = () => {
             <Content style={{ maxWidth: '800px', margin: '0 auto', backgroundColor: '#fff', padding: '20px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
                 <h2 style={{ textAlign: 'center', color: '#007bff', marginBottom: '20px' }}>AI Chat</h2>
 
-                {savedUsername && (
-                    <p style={{ color: 'green' }}>Tên người dùng đã lưu: {savedUsername}</p>
-                )}
+                
 
                 <List
                     bordered
@@ -257,14 +255,7 @@ const ChatWebSocket: React.FC = () => {
                     <Button icon={<UploadOutlined />} style={{ marginBottom: '10px', width: '100%' }}>Tải lên ảnh</Button>
                 </Upload>
 
-                <Input.Group compact style={{ marginBottom: '10px' }}>
-                    <Input
-                        placeholder="Nhập tên người dùng"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        style={{ width: '50%' }}
-                    />
-                </Input.Group>
+                
 
                 <Input.Group compact style={{ marginBottom: '10px' }}>
                     <Button type="default" danger onClick={deleteConversation} style={{ width: '50%' }}>Xóa cuộc trò chuyện</Button>
