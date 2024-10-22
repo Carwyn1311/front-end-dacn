@@ -266,10 +266,6 @@ const MainContent: React.FC = () => {
                         <Button icon={<UploadOutlined />} style={{ marginBottom: '10px', width: '100%' }}>Tải lên ảnh</Button>
                     </Upload>
 
-                    <Input.Group compact style={{ marginBottom: '10px' }}>
-                        <Button type="default" danger onClick={deleteConversation} style={{ width: '50%' }}>Xóa cuộc trò chuyện</Button>
-                    </Input.Group>
-
                     <List
                         bordered
                         style={{ marginBottom: '10px' }}
@@ -281,28 +277,16 @@ const MainContent: React.FC = () => {
                         )}
                     />
 
-                    <Input.Group compact style={{ marginBottom: '10px' }}>
-                        <Input
-                            placeholder="Nhập tin nhắn"
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                            style={{ width: '70%' }}
-                        />
-                        <Button type="primary" onClick={sendMessage} style={{ width: '30%' }}>Gửi</Button>
+                    <Input.Group className="input-group">
+                    <Input
+                        placeholder="Nhập tin nhắn"
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                    />
+                    <Button type="primary" onClick={sendMessage}>Gửi</Button>
                     </Input.Group>
 
-                    {currentConversationId && (
-                        <Input.Group compact>
-                            <Input
-                                placeholder="Nhập tiêu đề mới"
-                                value={newTitle}
-                                onChange={(e) => setNewTitle(e.target.value)}
-                                style={{ width: '70%' }}
-                            />
-                            <Button type="primary" onClick={updateConversationTitle} style={{ width: '30%' }}>Thay đổi tiêu đề</Button>
-                        </Input.Group>
-                    )}
                 </Content>
             </Layout>
         </div>
