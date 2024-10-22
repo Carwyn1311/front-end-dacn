@@ -235,7 +235,7 @@ const ChatWebSocket: React.FC = () => {
     return (
         <Layout style={{ padding: '20px', backgroundColor: '#f5f5f5' }}>
             <Content style={{ maxWidth: '800px', margin: '0 auto', backgroundColor: '#fff', padding: '20px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
-                <h2 style={{ textAlign: 'center', color: '#007bff', marginBottom: '20px' }}>Cherry Chat</h2>
+                <h2 style={{ textAlign: 'center', color: '#007bff', marginBottom: '20px' }}>AI Chat</h2>
 
                 {savedUsername && (
                     <p style={{ color: 'green' }}>Tên người dùng đã lưu: {savedUsername}</p>

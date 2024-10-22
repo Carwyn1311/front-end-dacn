@@ -66,10 +66,11 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
               <Avatar src={avatarImage} alt="User Profile Picture" size={70} />
             </div>
             {isOpen && (
-              <>
-                <h2>{userName}</h2>
-                {email && <p>{email}</p>}
-              </>
+              <div className='info-user'>
+                <h2 className="sidebar-username">{userName}</h2>
+                {email && <p className="sidebar-email">{email}</p>}
+              </div>
+
             )}
           </>
         ) : (
@@ -111,8 +112,8 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
           className="avatar-menu"
           style={{
             position: 'absolute',
-            bottom: '20px',
-            left: '0',
+            top: '110px',
+            left: '20px',
             backgroundColor: '#fff',
             borderRadius: '10px',
             boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
@@ -120,9 +121,10 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
             zIndex: 1,
             color: 'black',
             width: '150px',
+            marginLeft: '30px'
           }}
         >
-          <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
+          <ul className='form-list'style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
             <li style={{ padding: '5px 0', cursor: 'pointer' }} onClick={handleAdminClick}>
               Trang Admin
             </li>

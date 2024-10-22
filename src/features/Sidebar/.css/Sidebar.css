@@ -85,15 +85,34 @@
   border-radius: 5px;
 }
 
-h2 {
-  font-size: 15px;
-  margin: 5px 0;
+.info-user {
+  display: flex;
+  flex-direction: column; /* Stack username and email vertically */
+  align-items: center; /* Center the content horizontally */
+  padding: 10px; /* Add some padding around the container */
 }
 
-p {
-  font-size: 14px;
-  color: #888888;
+/* Styling for the username (h2) */
+.sidebar-username {
+  font-size: 16px; /* Set the font size to 16px */
+  font-family: 'Times New Roman', Times, serif; /* Apply Times New Roman font */
+  font-weight: bold; /* Make the text bold */
+  margin: 10px 0; /* Add some margin above and below */
+  color: #ffffff; /* White color for better contrast */
+  text-align: center; /* Center the username in the sidebar */
 }
+
+/* Styling for the email (p) */
+.sidebar-email {
+  font-size: 16px; /* Set the font size to 16px */
+  font-family: 'Times New Roman', Times, serif; /* Apply Times New Roman font */
+  color: #cccccc; /* Lighter color to differentiate from username */
+  font-weight: bold; /* Make the text bold */
+  margin: 0; /* Remove default margins */
+  text-align: center; /* Center the email as well */
+  word-break: break-word; /* Ensure email wraps if it's long */
+}
+
 
 .menu-item {
   padding: 15px 20px;
@@ -127,6 +146,7 @@ p {
   top: -20px;
   font-weight: bold;
 }
+
 
 .sidebar-menu {
   font-size: 15px;
