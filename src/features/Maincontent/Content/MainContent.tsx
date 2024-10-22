@@ -8,7 +8,7 @@ import { User } from '../../User/Content/User';
 
 const { Content } = Layout;
 
-const ChatWebSocket: React.FC = () => {
+const MainContent: React.FC = () => {
     const [username, setUsername] = useState(''); // Tên người dùng hiện tại
     const [savedUsername, setSavedUsername] = useState<string | null>(''); // Tên người dùng đã lưu
     const [message, setMessage] = useState('');
@@ -52,13 +52,18 @@ const ChatWebSocket: React.FC = () => {
         }
     }, []);
 
-    // New useEffect to automatically load conversations when username is set
+    // Tự động load lại đoạn chat mỗi giây
     useEffect(() => {
         if (username) {
-            loadConversations();
+            const intervalId = setInterval(() => {
+                loadConversations(); // Tự động tải lại đoạn chat sau mỗi giây
+            }, 1000);
+
+            return () => clearInterval(intervalId); // Cleanup interval khi component bị unmount
         }
     }, [username]);
 
+    // Set up WebSocket connection for real-time updates
     useEffect(() => {
         const socket = new SockJS('https://chat-api-backend-x4dl.onrender.com/ws-chat');
         const stompClient = new Client({
@@ -93,6 +98,7 @@ const ChatWebSocket: React.FC = () => {
         };
     }, []);
 
+    // Function to send heartbeat to keep connection alive
     const startHeartbeat = (stompClient: Client) => {
         setInterval(() => {
             if (stompClient.connected) {
@@ -105,6 +111,7 @@ const ChatWebSocket: React.FC = () => {
         }, 10000);
     };
 
+    // Function to send messages
     const sendMessage = async () => {
         if (!username || !message || !currentConversationId) {
             antdMessage.error("Vui lòng nhập tên người dùng, tạo cuộc trò chuyện và nhập tin nhắn.");
@@ -130,7 +137,7 @@ const ChatWebSocket: React.FC = () => {
             ]);
 
             setMessage('');
-            loadConversations();
+            loadConversations(); // Reload conversations after sending message
         } catch (error: unknown) {
             console.error('Lỗi gửi tin nhắn:', error);
             if (error instanceof Error) {
@@ -139,6 +146,7 @@ const ChatWebSocket: React.FC = () => {
         }
     };
 
+    // Function to delete a conversation
     const deleteConversation = async () => {
         if (!currentConversationId) {
             antdMessage.error("Vui lòng chọn cuộc trò chuyện để xóa.");
@@ -161,6 +169,7 @@ const ChatWebSocket: React.FC = () => {
         }
     };
 
+    // Function to upload images
     const uploadImage = async (options: UploadRequestOption) => {
         const file = options.file as File;
         if (!file || !username || !currentConversationId) {
@@ -195,6 +204,7 @@ const ChatWebSocket: React.FC = () => {
         }
     };
 
+    // Function to update conversation title
     const updateConversationTitle = async () => {
         if (!currentConversationId) {
             antdMessage.error("Vui lòng chọn cuộc trò chuyện.");
@@ -225,7 +235,7 @@ const ChatWebSocket: React.FC = () => {
         }
     };
 
-    // Hàm xử lý sự kiện nhấn phím Enter
+    // Handle Enter key to send message
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             sendMessage();
@@ -236,8 +246,6 @@ const ChatWebSocket: React.FC = () => {
         <Layout style={{ padding: '20px', backgroundColor: '#f5f5f5' }}>
             <Content style={{ maxWidth: '800px', margin: '0 auto', backgroundColor: '#fff', padding: '20px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
                 <h2 style={{ textAlign: 'center', color: '#007bff', marginBottom: '20px' }}>AI Chat</h2>
-
-                
 
                 <List
                     bordered
@@ -254,8 +262,6 @@ const ChatWebSocket: React.FC = () => {
                 <Upload customRequest={uploadImage} showUploadList={false}>
                     <Button icon={<UploadOutlined />} style={{ marginBottom: '10px', width: '100%' }}>Tải lên ảnh</Button>
                 </Upload>
-
-                
 
                 <Input.Group compact style={{ marginBottom: '10px' }}>
                     <Button type="default" danger onClick={deleteConversation} style={{ width: '50%' }}>Xóa cuộc trò chuyện</Button>
@@ -299,4 +305,4 @@ const ChatWebSocket: React.FC = () => {
     );
 };
 
-export default ChatWebSocket;
+export default MainContent;

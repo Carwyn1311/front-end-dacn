@@ -3,8 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import LogoutButton from '../../Logout/Content/LogoutButton';
 import Avatar from '../../User/Content/Avatar';
 import avatarImage from '../../User/images/CHERRY.png';
-// Correct the path to where your ConversationList component is located
-import ConversationList from '../../Maincontent/Content/ConversationList'; 
+import ConversationList from '../../Maincontent/Content/ConversationList';
+import ChatWebSocket from '../../Maincontent/Content/MainContent';
 
 interface SidebarProps {
   userName: string;
@@ -17,13 +17,12 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, onLogout }) => {
   const [isAvatarMenuOpen, setAvatarMenuOpen] = useState(false);
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
+  const [messages, setMessages] = useState<any[]>([]); // Store messages of the selected conversation
   const navigate = useNavigate();
-  const [messages, setMessages] = useState<any[]>([]);
   const location = useLocation();
 
-  // This function will be passed to ConversationList and handle the selection of a conversation
   const handleSelectConversation = (conversationId: string, conversationMessages: any[]) => {
-    setSelectedConversationId(conversationId); // Save the selected conversation ID
+    setSelectedConversationId(conversationId);
     setMessages(conversationMessages); // Save the messages of the selected conversation
   };
 
@@ -66,7 +65,7 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
         transition: 'width 0.3s ease',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between', // Ensures that the avatar is at the top and the menu is at the bottom
+        justifyContent: 'space-between',
       }}
     >
       <div className="profile" style={{ position: 'relative', padding: '20px' }}>
@@ -110,8 +109,8 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
           </div>
         )}
 
-        {/* Integrate ConversationList component */}
-        <div className='conversationlist'>
+        {/* Conversation List */}
+        <div className="conversationlist">
           <ConversationList onSelectConversation={handleSelectConversation} />
         </div>
       </div>
@@ -131,10 +130,10 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
             zIndex: 1,
             color: 'black',
             width: '150px',
-            marginLeft: '30px'
+            marginLeft: '30px',
           }}
         >
-          <ul className='form-list' style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
+          <ul className="form-list" style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
             <li style={{ padding: '5px 0', cursor: 'pointer' }} onClick={handleAdminClick}>
               Trang Admin
             </li>
@@ -153,6 +152,9 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
           </ul>
         </div>
       )}
+
+      {/* Pass selected conversation to ChatWebSocket */}
+
     </div>
   );
 };

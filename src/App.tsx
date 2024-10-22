@@ -25,7 +25,9 @@ const App: React.FC = () => {
 const AppContent: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);  // Lưu conversation ID sau khi tạo
+  const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
+  const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null); // Store the selected conversation ID
+  const [messages, setMessages] = useState<any[]>([]); // Store the messages for the selected conversation
   const navigate = useNavigate(); // Sử dụng useNavigate để điều hướng
 
   useEffect(() => {
@@ -59,6 +61,12 @@ const AppContent: React.FC = () => {
   // Callback khi cuộc trò chuyện mới được tạo
   const handleConversationCreated = (conversationId: string) => {
     setCurrentConversationId(conversationId);  // Lưu ID của cuộc trò chuyện
+  };
+
+  // Function to handle when a conversation is selected from the Sidebar
+  const handleSelectConversation = (conversationId: string, conversationMessages: any[]) => {
+    setSelectedConversationId(conversationId); // Lưu ID cuộc trò chuyện đã chọn
+    setMessages(conversationMessages); // Lưu danh sách tin nhắn của cuộc trò chuyện đã chọn
   };
 
   return (
@@ -104,7 +112,12 @@ const AppContent: React.FC = () => {
                   {/* Main Content Routes */}
                   <div style={{ marginTop: '80px' }}> {/* Adding margin to account for fixed header */}
                     <Routes>
-                      <Route path="/" element={<MainContent />} />
+                      <Route
+                        path="/"
+                        element={
+                          <MainContent />
+                        }
+                      />
                       <Route path="/admin" element={<AdminUser />} />
                       <Route path="/profile" element={<Profile />} />
                       <Route path="/help" element={<Help />} />
