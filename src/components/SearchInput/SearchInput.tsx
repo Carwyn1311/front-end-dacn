@@ -28,11 +28,14 @@ const SearchInput: React.FC<SearchInputProps> = ({
   width = 'auto',
   height = 'auto',
   prefixIcon
-}: SearchInputProps): JSX.Element => {
+}) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
   const handleFocus = (): void => setIsFocused(true);
   const handleBlur = (): void => setIsFocused(false);
+
+  // Generate a unique ID if 'name' is not provided to avoid duplication issues
+  const uniqueId = name || `search-input-${Math.random().toString(36).substr(2, 9)}`;
 
   return (
     <div
@@ -47,18 +50,18 @@ const SearchInput: React.FC<SearchInputProps> = ({
         height: fullHeight ? '100%' : height
       }}
     >
-      {prefixIcon != null && (
+      {prefixIcon && (
         <span style={{ marginRight: '8px', fontSize: '18px' }}>
           {prefixIcon}
         </span>
       )}
       <div style={{ flexGrow: 1, position: 'relative' }}>
         <label
-          htmlFor={name}
+          htmlFor={uniqueId}
           className={`floating-label ${isFocused || value !== '' ? 'focused' : ''}`}
           style={{
             position: 'absolute',
-            top: isFocused || value !== '' ? '-18px' : '50%', // Hover lên cách khung 3px khi input focus
+            top: isFocused || value !== '' ? '-18px' : '50%', 
             left: '8px',
             transform: 'translateY(-50%)',
             fontSize: isFocused || value !== '' ? '12px' : '16px',
@@ -70,17 +73,18 @@ const SearchInput: React.FC<SearchInputProps> = ({
         </label>
         <input
           type="text"
-          id={name}
+          id={uniqueId}
           name={name}
           value={value}
           onChange={onChange}
           placeholder={placeholder}
+          aria-label={label} // Adding aria-label for accessibility
           className={`input-field ${className}`}
           onFocus={handleFocus}
           onBlur={handleBlur}
           style={{
-            width: width || '100%', // Set width từ props
-            height: height || '35px', // Set height từ props (giả sử 35px)
+            width: fullWidth ? '100%' : width, // Set width from props
+            height: fullHeight ? '100%' : height || '35px', // Set height from props (default 35px)
             border: 'none',
             outline: 'none',
             padding: '5px',

@@ -47,15 +47,18 @@
   }
   
   /* CSS for modal container */
-.modal-overlay {
-  border-radius: 8px;
-  width: 200px;
-  padding: 0;
-  background-color: white;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  position: relative;
-  padding-top: 10px;
-}
+  .modal-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 180px;
+    padding: 0;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
 
 .conversation-options-header {
   text-align: center;

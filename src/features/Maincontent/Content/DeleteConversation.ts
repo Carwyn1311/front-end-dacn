@@ -25,12 +25,7 @@ export const loadConversations = async (): Promise<any[]> => {
   };
   
   // Hàm để xóa cuộc trò chuyện
-  export const deleteConversation = async (
-    currentConversationId: string,
-    loadConversations: () => Promise<void>,
-    setCurrentConversationId: (id: string) => void,
-    setMessages: (messages: any[]) => void
-  ): Promise<void> => {
+  export const deleteConversation = async (currentConversationId: string): Promise<void> => {
     if (!currentConversationId) {
       antdMessage.error('Vui lòng chọn cuộc trò chuyện để xóa.');
       return;
@@ -45,17 +40,16 @@ export const loadConversations = async (): Promise<any[]> => {
       );
   
       if (!response.ok) throw new Error('Lỗi xóa cuộc trò chuyện');
-      
+  
       antdMessage.success('Xóa cuộc trò chuyện thành công.');
-      setCurrentConversationId(''); // Xóa ID cuộc trò chuyện hiện tại
-      setMessages([]); // Xóa tin nhắn liên quan đến cuộc trò chuyện này
       ConversationId.clearConversationId(); // Xóa conversationId khỏi sessionStorage
-      await loadConversations(); // Tải lại danh sách cuộc trò chuyện
+  
     } catch (error) {
       console.error('Lỗi xóa cuộc trò chuyện:', error);
       antdMessage.error('Lỗi xóa cuộc trò chuyện.');
     }
   };
+  
   
   // Hàm để chọn cuộc trò chuyện
   export const selectConversation = (

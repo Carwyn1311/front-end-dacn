@@ -1,28 +1,30 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
-import { Layout, Button, Input, List, Upload, message as antdMessage } from 'antd';
+import { Layout, Button, List, Upload, message as antdMessage, Input } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import type { UploadRequestOption } from 'rc-upload/lib/interface';
 import { User } from '../../User/Content/User';
 import '../.css/MainContent.css';
 
 const { Content } = Layout;
+const { Search } = Input;
 
 interface MainContentProps {
-  conversationId: string | null; // ID của cuộc trò chuyện được chọn
-  messages: any[]; // Tin nhắn của cuộc trò chuyện được chọn
+  conversationId: string | null;
+  messages: any[];
 }
 
 const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: propsMessages }) => {
-  const [username, setUsername] = useState(''); // Tên người dùng hiện tại
+  const [username, setUsername] = useState('');
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<any[]>(propsMessages || []);
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(conversationId);
 
   const stompClientRef = useRef<Client | null>(null);
-  
-  // Function to load conversations
+
+  const memoizedMessages = useMemo(() => messages, [messages]);
+
   const loadConversations = async () => {
     if (!username) {
       antdMessage.error("Vui lòng nhập tên người dùng.");
@@ -45,14 +47,12 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
   }, [conversationId, propsMessages]);
 
   useEffect(() => {
-    // Lấy tên người dùng đã lưu từ User.ts khi ứng dụng load
     const storedUser = User.getUserData();
     if (storedUser && storedUser.username) {
-      setUsername(storedUser.username); // Đặt tên người dùng vào input
+      setUsername(storedUser.username);
     }
   }, []);
 
-  // Set up WebSocket connection for real-time updates
   useEffect(() => {
     const socket = new SockJS('https://chat-api-backend-x4dl.onrender.com/ws-chat');
     const stompClient = new Client({
@@ -87,7 +87,6 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
     };
   }, []);
 
-  // Function to send heartbeat to keep connection alive
   const startHeartbeat = (stompClient: Client) => {
     setInterval(() => {
       if (stompClient.connected) {
@@ -100,7 +99,6 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
     }, 10000);
   };
 
-  // Function to send messages
   const sendMessage = async () => {
     if (!username || !message || !currentConversationId) {
       antdMessage.error("Vui lòng nhập tên người dùng, tạo cuộc trò chuyện và nhập tin nhắn.");
@@ -126,7 +124,7 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
       ]);
 
       setMessage('');
-      loadConversations(); // Reload conversations after sending message
+      loadConversations();
     } catch (error: unknown) {
       console.error('Lỗi gửi tin nhắn:', error);
       if (error instanceof Error) {
@@ -135,7 +133,6 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
     }
   };
 
-  // Function to upload images
   const uploadImage = async (options: UploadRequestOption) => {
     const file = options.file as File;
     if (!file || !username || !currentConversationId) {
@@ -169,7 +166,6 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
     }
   };
 
-  // Handle Enter key to send message
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       sendMessage();
@@ -185,7 +181,7 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
           <List
             bordered
             style={{ height: '300px', overflowY: 'auto', marginBottom: '10px', backgroundColor: '#f9f9f9' }}
-            dataSource={messages}
+            dataSource={memoizedMessages}
             renderItem={(item) => (
               <List.Item style={{ color: item.color }}>
                 <strong>{item.sender}:</strong> {item.content}
@@ -199,13 +195,14 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
           </Upload>
 
           <Input.Group className="input-group">
-            <Input
-              placeholder="Nhập tin nhắn"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={handleKeyDown}
+          <Search
+            placeholder="Nhập tin nhắn"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onSearch={sendMessage}
+            onKeyDown={handleKeyDown}
+            enterButton="Gửi"
             />
-            <Button type="primary" onClick={sendMessage}>Gửi</Button>
           </Input.Group>
         </Content>
       </Layout>

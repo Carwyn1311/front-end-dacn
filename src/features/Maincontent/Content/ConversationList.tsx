@@ -88,34 +88,50 @@ const ConversationList: React.FC<ConversationListProps> = ({ onSelectConversatio
   };
 
   const handleConversationSelect = (conversationId: string, messages: any[]) => {
-    setSelectedConversation(conversationId); // Đặt cuộc trò chuyện đã chọn
-    ConversationId.storeConversationId(conversationId);
-    onSelectConversation(conversationId, messages);
+    const selectedConv = conversations.find(conv => conv.id === conversationId);
+    setSelectedConversation(selectedConv); // Gán cuộc trò chuyện đã chọn vào state
+    ConversationId.storeConversationId(conversationId); // Lưu ID vào sessionStorage
+    onSelectConversation(conversationId, messages); // Thực thi callback
   };
 
   const handleDeleteConversation = async () => {
-    if (selectedConversation) {
+    // Kiểm tra nếu chưa có cuộc trò chuyện nào được chọn
+    if (!selectedConversation || !selectedConversation.id) {
+      antdMessage.error('Vui lòng chọn cuộc trò chuyện để xóa.');
+      return;
+    }
+  
+    try {
+      console.log('Đang xóa cuộc trò chuyện:', selectedConversation.id);
       await deleteConversation(
-        selectedConversation.id,
-        async () => {
-          const updatedConversations = await loadConversations();
-          setConversations(updatedConversations);
-
-          // Chọn cuộc trò chuyện mới nhất sau khi xóa
-          if (updatedConversations.length > 0) {
-            const latestConversation = updatedConversations[updatedConversations.length - 1];
-            setSelectedConversation(latestConversation);
-            onSelectConversation(latestConversation.id, latestConversation.messages);
-          } else {
-            setSelectedConversation(null);
-          }
-        },
-        () => setSelectedConversation(null),
-        () => {}
+        selectedConversation.id // Chỉ cần truyền ID của cuộc trò chuyện hiện tại
       );
-      setModalVisible(false);
+  
+      // Sau khi xóa thành công, tải lại danh sách cuộc trò chuyện
+      const updatedConversations = await loadConversations();
+      setConversations(updatedConversations);
+  
+      // Nếu còn cuộc trò chuyện nào khác, chọn cuộc trò chuyện mới nhất
+      if (updatedConversations.length > 0) {
+        const latestConversation = updatedConversations[updatedConversations.length - 1];
+        setSelectedConversation(latestConversation);
+        onSelectConversation(latestConversation.id, latestConversation.messages);
+      } else {
+        // Nếu không còn cuộc trò chuyện nào, reset lại
+        setSelectedConversation(null);
+        onSelectConversation('', []);
+      }
+      
+      setModalVisible(false); // Đóng modal sau khi xóa thành công
+  
+    } catch (error) {
+      console.error('Lỗi khi xóa cuộc trò chuyện:', error);
+      antdMessage.error('Có lỗi xảy ra khi xóa cuộc trò chuyện.');
     }
   };
+  
+  
+
 
   const handleEditClick = (conversation: any) => {
     setSelectedConversation(conversation);
