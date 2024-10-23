@@ -28,8 +28,8 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
   useEffect(() => {
     // Lấy tên người dùng đã lưu từ User.ts khi ứng dụng tải
     const storedUser = User.getUserData();
-    if (storedUser && storedUser.name) {
-      setSavedUserName(storedUser.name); // Hiển thị tên người dùng đã lưu
+    if (storedUser && storedUser.username) {
+      setSavedUserName(storedUser.username); // Hiển thị tên người dùng đã lưu
     }
 
     const storedUserName = localStorage.getItem('userName') ?? '';
@@ -78,49 +78,56 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
 
   const handleLogin = async (): Promise<void> => {
     try {
-      console.log('Attempting login with:', { userName, password });
-  
-      const response = await axiosInstance.post('/auth/authenticate', {
-        username: userName,
-        password: password,
-      });
-  
-      console.log('API Response:', response.data);
-  
-      if (response.status === 200 && response.data.data.jwt) {
-        const token = response.data.data.jwt;
-  
+        console.log('Attempting login with:', { userName, password });
+    
+        const response = await axiosInstance.post('/auth/authenticate', {
+            username: userName,
+            password: password,
+        });
+    
+        console.log('API full response:', response.data);
+    
+        const token = response.data?.data?.jwt;
+    
+        if (!token) {
+            throw new Error('No token returned from API.');
+        }
+    
         // Lưu thông tin người dùng và token vào localStorage hoặc sessionStorage
         if (rememberMe) {
-          localStorage.setItem('userName', userName);
-          localStorage.setItem('password', password);
-          localStorage.setItem('rememberMe', 'true');
-          localStorage.setItem('token', token);  // Lưu token vào localStorage khi Remember Me được chọn
+            localStorage.setItem('userName', userName);
+            localStorage.setItem('password', password);
+            localStorage.setItem('rememberMe', 'true');
+            localStorage.setItem('token', token);  // Lưu token vào localStorage khi Remember Me được chọn
         } else {
-          sessionStorage.setItem('token', token);  // Lưu token vào sessionStorage khi Remember Me không được chọn
-          localStorage.removeItem('userName');
-          localStorage.removeItem('password');
-          localStorage.removeItem('rememberMe');
+            sessionStorage.setItem('token', token);  // Lưu token vào sessionStorage khi Remember Me không được chọn
+            localStorage.removeItem('userName');
+            localStorage.removeItem('password');
+            localStorage.removeItem('rememberMe');
         }
-  
+
         TokenAuthService.setToken(token); 
-  
-        // Lưu thông tin người dùng bằng User.ts
-        const user = new User(1, userName, email, 'User', 'Active');
-        User.storeUserData(user);
-  
+    
+        // Nếu API không trả về userData, chúng ta sẽ sử dụng giá trị mặc định cho người dùng
+        const user = new User({
+            id: '1',                   // Mặc định ID là 1
+            username: userName,         // Tên người dùng đã nhập
+            email: email || '',         // Email từ form hoặc rỗng nếu không có
+            role: 0,                    // Mặc định là user
+            active: true,               // Mặc định tài khoản kích hoạt
+        });
+        User.storeUserData(user, token);  // Lưu thông tin người dùng cùng với token
+    
         console.log('Logged in successfully');
         onLogin();
         navigate('/');
-      } else {
-        setError('Invalid username or password.');
-      }
     } catch (error: any) {
-      console.error('Login error:', error.response?.data?.message || error.message);
-      setError(error.response?.data?.message || 'Login failed. Please try again.');
+        console.error('Login error:', error.response?.data?.message || error.message);
+        setError(error.response?.data?.message || 'Login failed. Please try again.');
     }
-  };
-  
+};
+
+
 
   const handleRegister = async (): Promise<void> => {
     try {
@@ -173,7 +180,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
 
   const handleGoogleLoginClick = async (): Promise<void> => {
     try {
-window.location.href = 'https://chat-api-backend-x4dl.onrender.com/auth/login/google';
+  window.location.href = 'https://chat-api-backend-x4dl.onrender.com/auth/login/google';
     } catch (error: any) {
       console.error('Google Login error:', error.response?.data?.message || error.message);
       setError(error.response?.data?.message || 'Google login failed.');

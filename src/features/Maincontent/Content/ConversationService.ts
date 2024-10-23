@@ -3,12 +3,12 @@ import { User } from '../../User/Content/User';
 
 export const loadConversations = async (): Promise<any[]> => {
   const savedUser = User.getUserData();
-  if (!savedUser || !savedUser.name) {
+  if (!savedUser || !savedUser.username) {
     antdMessage.error('Vui lòng nhập tên người dùng.');
     return [];
   }
 
-  const username = savedUser.name;
+  const username = savedUser.username;
   
   try {
     const response = await fetch(`https://chat-api-backend-x4dl.onrender.com/api/conversations/by-username?username=${username}`);

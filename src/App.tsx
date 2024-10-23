@@ -35,7 +35,7 @@ const AppContent: React.FC = () => {
     const currentUser = User.getUserData();
 
     // Nếu đã đăng nhập, đặt trạng thái isLoggedIn thành true, ngược lại là false
-    if (currentUser && currentUser.name) {
+    if (currentUser && currentUser.username) {
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
@@ -87,7 +87,7 @@ const AppContent: React.FC = () => {
                 {/* Sidebar */}
                 {isSidebarOpen && (
                   <Sidebar
-                    userName={User.getUserData()?.name || ''}
+                    userName={User.getUserData()?.username || ''}
                     email={User.getUserData()?.email || ''}
                     isOpen={isSidebarOpen}
                     isLoggedIn={isLoggedIn}
@@ -105,7 +105,7 @@ const AppContent: React.FC = () => {
 
                     {/* Nút tạo cuộc trò chuyện mới trong Header */}
                     {isLoggedIn && (
-                      <CreateConversation username={User.getUserData()?.name || ''} onConversationCreated={handleConversationCreated} />
+                      <CreateConversation username={User.getUserData()?.username || ''} onConversationCreated={handleConversationCreated} />
                     )}
                   </header>
 

@@ -47,9 +47,9 @@ const MainContent: React.FC = () => {
     useEffect(() => {
         // Lấy tên người dùng đã lưu từ User.ts khi ứng dụng load
         const storedUser = User.getUserData();
-        if (storedUser && storedUser.name) {
-            setSavedUsername(storedUser.name); // Lưu tên người dùng vào trạng thái
-            setUsername(storedUser.name); // Đặt tên người dùng vào input
+        if (storedUser && storedUser.username) {
+            setSavedUsername(storedUser.username); // Lưu tên người dùng vào trạng thái
+            setUsername(storedUser.username); // Đặt tên người dùng vào input
         }
     }, []);
 
