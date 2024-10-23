@@ -9,14 +9,19 @@ import '../.css/MainContent.css';
 
 const { Content } = Layout;
 
-const MainContent: React.FC = () => {
+interface MainContentProps {
+    conversationId: string | null; // ID của cuộc trò chuyện được chọn
+    messages: any[]; // Tin nhắn của cuộc trò chuyện được chọn
+  }
+  
+  const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: propsMessages }) => {
     const [username, setUsername] = useState(''); // Tên người dùng hiện tại
     const [savedUsername, setSavedUsername] = useState<string | null>(''); // Tên người dùng đã lưu
     const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState<any[]>([]);
-    const [currentConversationId, setCurrentConversationId] = useState('');
-    const [conversations, setConversations] = useState<any[]>([]);
+    const [messages, setMessages] = useState<any[]>(propsMessages || []);
+    const [currentConversationId, setCurrentConversationId] = useState<string | null>(conversationId);
     const [newTitle, setNewTitle] = useState('');
+    const [conversations, setConversations] = useState<any[]>([]);
 
     const stompClientRef = useRef<Client | null>(null);
     
@@ -33,17 +38,22 @@ const MainContent: React.FC = () => {
             const conversations = await response.json();
             setConversations(conversations);
 
-            if (conversations.length > 0) {
-                const latestConversation = conversations[conversations.length - 1]; // Lấy cuộc trò chuyện cuối cùng
-                setCurrentConversationId(latestConversation.id);
-                setMessages(latestConversation.messages || []);
-            }
+            // if (conversations.length > 0) {
+            //     const latestConversation = conversations[conversations.length - 1]; // Lấy cuộc trò chuyện cuối cùng
+            //     setCurrentConversationId(latestConversation.id);
+            //     setMessages(latestConversation.messages || []);
+            // }
         } catch (error) {
             console.error('Lỗi tải cuộc trò chuyện:', error);
             antdMessage.error('Lỗi tải cuộc trò chuyện.');
         }
     };
 
+    useEffect(() => {
+        setCurrentConversationId(conversationId);
+        setMessages(propsMessages);
+      }, [conversationId, propsMessages]);
+      
     useEffect(() => {
         // Lấy tên người dùng đã lưu từ User.ts khi ứng dụng load
         const storedUser = User.getUserData();
@@ -54,15 +64,15 @@ const MainContent: React.FC = () => {
     }, []);
 
     // Tự động load lại đoạn chat mỗi giây
-    useEffect(() => {
-        if (username) {
-            const intervalId = setInterval(() => {
-                loadConversations(); // Tự động tải lại đoạn chat sau mỗi giây
-            }, 1000);
-
-            return () => clearInterval(intervalId); // Cleanup interval khi component bị unmount
-        }
-    }, [username]);
+    // useEffect(() => {
+    //     if (username && currentConversationId) {
+    //       const intervalId = setInterval(() => {
+    //         loadConversations(); // Tự động tải lại đoạn chat sau mỗi giây
+    //       }, 1000);
+    
+    //       return () => clearInterval(intervalId); // Cleanup interval khi component bị unmount
+    //     }
+    //   }, [username, currentConversationId]);
 
     // Set up WebSocket connection for real-time updates
     useEffect(() => {
@@ -266,16 +276,6 @@ const MainContent: React.FC = () => {
                         <Button icon={<UploadOutlined />} style={{ marginBottom: '10px', width: '100%' }}>Tải lên ảnh</Button>
                     </Upload>
 
-                    <List
-                        bordered
-                        style={{ marginBottom: '10px' }}
-                        dataSource={conversations}
-                        renderItem={(item) => (
-                            <List.Item onClick={() => { setCurrentConversationId(item.id); setMessages(item.messages); }}>
-                                <strong>{item.title || 'Không có tiêu đề'}</strong>
-                            </List.Item>
-                        )}
-                    />
 
                     <Input.Group className="input-group">
                     <Input

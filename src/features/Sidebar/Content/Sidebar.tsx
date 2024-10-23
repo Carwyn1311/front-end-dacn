@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import LogoutButton from '../../Logout/Content/LogoutButton';
 import Avatar from '../../User/Content/Avatar';
-import avatarImage from '../../User/images/CHERRY.png';
 import ConversationList from '../../Maincontent/Content/ConversationList';
-import ChatWebSocket from '../../Maincontent/Content/MainContent';
+import avatarImage from '../../User/images/CHERRY.png';
+import LogoutButton from '../../Logout/Content/LogoutButton';
 
 interface SidebarProps {
   userName: string;
@@ -12,18 +11,21 @@ interface SidebarProps {
   isOpen: boolean;
   isLoggedIn: boolean;
   onLogout: () => void;
+  onSelectConversation: (conversationId: string, messages: any[]) => void; // Thêm callback để truyền cuộc trò chuyện đã chọn
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, onLogout }) => {
+const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, onLogout, onSelectConversation }) => {
   const [isAvatarMenuOpen, setAvatarMenuOpen] = useState(false);
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
   const [messages, setMessages] = useState<any[]>([]); // Store messages of the selected conversation
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Hàm xử lý khi chọn cuộc trò chuyện
   const handleSelectConversation = (conversationId: string, conversationMessages: any[]) => {
     setSelectedConversationId(conversationId);
-    setMessages(conversationMessages); // Save the messages of the selected conversation
+    setMessages(conversationMessages); // Lưu tin nhắn của cuộc trò chuyện đã chọn
+    onSelectConversation(conversationId, conversationMessages); // Truyền cuộc trò chuyện đã chọn ra App.tsx
   };
 
   const toggleAvatarMenu = () => {
@@ -111,6 +113,7 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
 
         {/* Conversation List */}
         <div className="conversationlist">
+          {/* Truyền handleSelectConversation cho ConversationList */}
           <ConversationList onSelectConversation={handleSelectConversation} />
         </div>
       </div>
@@ -152,8 +155,6 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
           </ul>
         </div>
       )}
-
-      {/* Pass selected conversation to ChatWebSocket */}
 
     </div>
   );

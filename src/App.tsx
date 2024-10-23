@@ -92,6 +92,7 @@ const AppContent: React.FC = () => {
                     isOpen={isSidebarOpen}
                     isLoggedIn={isLoggedIn}
                     onLogout={handleLogout}
+                    onSelectConversation={handleSelectConversation} // Truyền callback để Sidebar chọn cuộc trò chuyện
                   />
                 )}
 
@@ -115,7 +116,7 @@ const AppContent: React.FC = () => {
                       <Route
                         path="/"
                         element={
-                          <MainContent />
+                          <MainContent conversationId={selectedConversationId} messages={messages} /> // Truyền dữ liệu cho MainContent
                         }
                       />
                       <Route path="/admin" element={<AdminUser />} />
