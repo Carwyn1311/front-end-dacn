@@ -5,9 +5,10 @@ import EditConversation from './EditConversation';
 import '../.css/ConversationList.css';
 import { loadConversations } from './ConversationService';
 import { deleteConversation } from './DeleteConversation';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, CloseOutlined } from '@ant-design/icons';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
+
 
 interface ConversationListProps {
   onSelectConversation: (conversationId: string, messages: any[]) => void;
@@ -140,25 +141,37 @@ const ConversationList: React.FC<ConversationListProps> = ({ onSelectConversatio
         )}
       />
 
-      <Modal
-        visible={modalVisible}
-        title="Tùy chọn"
-        onCancel={() => setModalVisible(false)}
-        footer={null}
-        centered
-      >
-        <div className="modal-overlay">
-          <div className="modal-container">
-            <Button className="modal-button" type="text" icon={<EditOutlined />} onClick={() => handleEditClick(selectedConversation)}>
-              Đổi tên
-            </Button>
-            <Button className="modal-button modal-button-danger" type="text" icon={<DeleteOutlined />} danger onClick={handleDeleteConversation}>
-              Xóa
-            </Button>
-            <button className="modal-close-button" onClick={() => setModalVisible(false)}>✕</button>
-          </div>
-        </div>
-      </Modal>
+<Modal
+      visible={modalVisible}
+      title={null} // Ẩn tiêu đề của modal
+      onCancel={() => setModalVisible(false)}
+      footer={null}
+      centered
+      className="conversation-options-modal" // Thêm lớp CSS để tùy chỉnh modal
+      closeIcon={<CloseOutlined className="custom-close-icon" />} 
+    >
+      <div className="conversation-options-header">Tùy chọn</div> 
+      <div className="conversation-options-container">
+        <Button 
+          className="conversation-option" 
+          type="text" 
+          icon={<EditOutlined />} 
+          onClick={() => handleEditClick(selectedConversation)}
+        >
+          Đổi tên
+        </Button>
+        <Button 
+          className="conversation-option-danger" 
+          type="text" 
+          icon={<DeleteOutlined />} 
+          danger 
+          onClick={handleDeleteConversation}
+        >
+          Xóa
+        </Button>
+      </div>
+    </Modal>
+
 
       {showEditForm && selectedConversation && (
         <EditConversation

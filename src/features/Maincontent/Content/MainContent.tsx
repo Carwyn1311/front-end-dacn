@@ -10,287 +10,207 @@ import '../.css/MainContent.css';
 const { Content } = Layout;
 
 interface MainContentProps {
-    conversationId: string | null; // ID của cuộc trò chuyện được chọn
-    messages: any[]; // Tin nhắn của cuộc trò chuyện được chọn
-  }
+  conversationId: string | null; // ID của cuộc trò chuyện được chọn
+  messages: any[]; // Tin nhắn của cuộc trò chuyện được chọn
+}
+
+const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: propsMessages }) => {
+  const [username, setUsername] = useState(''); // Tên người dùng hiện tại
+  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState<any[]>(propsMessages || []);
+  const [currentConversationId, setCurrentConversationId] = useState<string | null>(conversationId);
+
+  const stompClientRef = useRef<Client | null>(null);
   
-  const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: propsMessages }) => {
-    const [username, setUsername] = useState(''); // Tên người dùng hiện tại
-    const [savedUsername, setSavedUsername] = useState<string | null>(''); // Tên người dùng đã lưu
-    const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState<any[]>(propsMessages || []);
-    const [currentConversationId, setCurrentConversationId] = useState<string | null>(conversationId);
-    const [newTitle, setNewTitle] = useState('');
-    const [conversations, setConversations] = useState<any[]>([]);
+  // Function to load conversations
+  const loadConversations = async () => {
+    if (!username) {
+      antdMessage.error("Vui lòng nhập tên người dùng.");
+      return;
+    }
 
-    const stompClientRef = useRef<Client | null>(null);
-    
-    // Function to load conversations
-    const loadConversations = async () => {
-        if (!username) {
-            antdMessage.error("Vui lòng nhập tên người dùng.");
-            return;
-        }
+    try {
+      const response = await fetch(`https://chat-api-backend-x4dl.onrender.com/api/conversations/by-username?username=${username}`);
+      if (!response.ok) throw new Error('Lỗi tải cuộc trò chuyện');
+      await response.json();
+    } catch (error) {
+      console.error('Lỗi tải cuộc trò chuyện:', error);
+      antdMessage.error('Lỗi tải cuộc trò chuyện.');
+    }
+  };
 
-        try {
-            const response = await fetch(`https://chat-api-backend-x4dl.onrender.com/api/conversations/by-username?username=${username}`);
-            if (!response.ok) throw new Error('Lỗi tải cuộc trò chuyện');
-            const conversations = await response.json();
-            setConversations(conversations);
+  useEffect(() => {
+    setCurrentConversationId(conversationId);
+    setMessages(propsMessages);
+  }, [conversationId, propsMessages]);
 
-            // if (conversations.length > 0) {
-            //     const latestConversation = conversations[conversations.length - 1]; // Lấy cuộc trò chuyện cuối cùng
-            //     setCurrentConversationId(latestConversation.id);
-            //     setMessages(latestConversation.messages || []);
-            // }
-        } catch (error) {
-            console.error('Lỗi tải cuộc trò chuyện:', error);
-            antdMessage.error('Lỗi tải cuộc trò chuyện.');
-        }
-    };
+  useEffect(() => {
+    // Lấy tên người dùng đã lưu từ User.ts khi ứng dụng load
+    const storedUser = User.getUserData();
+    if (storedUser && storedUser.username) {
+      setUsername(storedUser.username); // Đặt tên người dùng vào input
+    }
+  }, []);
 
-    useEffect(() => {
-        setCurrentConversationId(conversationId);
-        setMessages(propsMessages);
-      }, [conversationId, propsMessages]);
-      
-    useEffect(() => {
-        // Lấy tên người dùng đã lưu từ User.ts khi ứng dụng load
-        const storedUser = User.getUserData();
-        if (storedUser && storedUser.username) {
-            setSavedUsername(storedUser.username); // Lưu tên người dùng vào trạng thái
-            setUsername(storedUser.username); // Đặt tên người dùng vào input
-        }
-    }, []);
+  // Set up WebSocket connection for real-time updates
+  useEffect(() => {
+    const socket = new SockJS('https://chat-api-backend-x4dl.onrender.com/ws-chat');
+    const stompClient = new Client({
+      webSocketFactory: () => socket,
+      debug: (str: any) => {
+        console.log(str);
+      },
+      onConnect: (frame: string) => {
+        console.log('Đã kết nối: ' + frame);
 
-    // Tự động load lại đoạn chat mỗi giây
-    // useEffect(() => {
-    //     if (username && currentConversationId) {
-    //       const intervalId = setInterval(() => {
-    //         loadConversations(); // Tự động tải lại đoạn chat sau mỗi giây
-    //       }, 1000);
-    
-    //       return () => clearInterval(intervalId); // Cleanup interval khi component bị unmount
-    //     }
-    //   }, [username, currentConversationId]);
-
-    // Set up WebSocket connection for real-time updates
-    useEffect(() => {
-        const socket = new SockJS('https://chat-api-backend-x4dl.onrender.com/ws-chat');
-        const stompClient = new Client({
-            webSocketFactory: () => socket,
-            debug: (str: any) => {
-                console.log(str);
-            },
-            onConnect: (frame: string) => {
-                console.log('Đã kết nối: ' + frame);
-    
-                stompClient.subscribe('/topic/messages', (messageOutput) => {
-                    console.log('Nhận được tin nhắn từ server:', messageOutput.body);
-                    const chatMessage = {
-                        sender: 'GEMINI',
-                        content: messageOutput.body,
-                        color: 'blue'
-                    };
-                    setMessages((prevMessages) => [...prevMessages, chatMessage]);
-                });
-    
-                startHeartbeat(stompClient);
-            },
+        stompClient.subscribe('/topic/messages', (messageOutput) => {
+          console.log('Nhận được tin nhắn từ server:', messageOutput.body);
+          const chatMessage = {
+            sender: 'GEMINI',
+            content: messageOutput.body,
+            color: 'blue'
+          };
+          setMessages((prevMessages) => [...prevMessages, chatMessage]);
         });
-    
-        stompClient.activate();
-        stompClientRef.current = stompClient;
-    
-        return () => {
-            if (stompClientRef.current) {
-                stompClientRef.current.deactivate();
-            }
-        };
-    }, []);
 
-    // Function to send heartbeat to keep connection alive
-    const startHeartbeat = (stompClient: Client) => {
-        setInterval(() => {
-            if (stompClient.connected) {
-                console.log('Đang gửi heartbeat...');
-                stompClient.publish({
-                    destination: "/app/ping",
-                    body: 'ping'
-                });
-            }
-        }, 10000);
+        startHeartbeat(stompClient);
+      },
+    });
+
+    stompClient.activate();
+    stompClientRef.current = stompClient;
+
+    return () => {
+      if (stompClientRef.current) {
+        stompClientRef.current.deactivate();
+      }
     };
+  }, []);
 
-    // Function to send messages
-    const sendMessage = async () => {
-        if (!username || !message || !currentConversationId) {
-            antdMessage.error("Vui lòng nhập tên người dùng, tạo cuộc trò chuyện và nhập tin nhắn.");
-            return;
-        }
+  // Function to send heartbeat to keep connection alive
+  const startHeartbeat = (stompClient: Client) => {
+    setInterval(() => {
+      if (stompClient.connected) {
+        console.log('Đang gửi heartbeat...');
+        stompClient.publish({
+          destination: "/app/ping",
+          body: 'ping'
+        });
+      }
+    }, 10000);
+  };
 
-        try {
-            const response = await fetch(`https://chat-api-backend-x4dl.onrender.com/api/conversations/${currentConversationId}/messages`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, message })
-            });
+  // Function to send messages
+  const sendMessage = async () => {
+    if (!username || !message || !currentConversationId) {
+      antdMessage.error("Vui lòng nhập tên người dùng, tạo cuộc trò chuyện và nhập tin nhắn.");
+      return;
+    }
 
-            if (!response.ok) throw new Error('Lỗi kết nối mạng');
+    try {
+      const response = await fetch(`https://chat-api-backend-x4dl.onrender.com/api/conversations/${currentConversationId}/messages`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, message })
+      });
 
-            const responseData = await response.json();
-            setMessages((prevMessages) => [
-                ...prevMessages,
-                { sender: responseData.userMessage.sender, content: responseData.userMessage.content, color: 'green' },
-                { sender: responseData.aiMessage.sender, content: responseData.aiMessage.content, color: 'blue' }
-            ]);
+      if (!response.ok) throw new Error('Lỗi kết nối mạng');
 
-            setMessage('');
-            loadConversations(); // Reload conversations after sending message
-        } catch (error: unknown) {
-            console.error('Lỗi gửi tin nhắn:', error);
-            if (error instanceof Error) {
-                antdMessage.error('Lỗi gửi tin nhắn: ' + error.message);
-            }
-        }
-    };
+      const responseData = await response.json();
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: responseData.userMessage.sender, content: responseData.userMessage.content, color: 'green' },
+        { sender: responseData.aiMessage.sender, content: responseData.aiMessage.content, color: 'blue' }
+      ]);
 
-    // Function to delete a conversation
-    const deleteConversation = async () => {
-        if (!currentConversationId) {
-            antdMessage.error("Vui lòng chọn cuộc trò chuyện để xóa.");
-            return;
-        }
+      setMessage('');
+      loadConversations(); // Reload conversations after sending message
+    } catch (error: unknown) {
+      console.error('Lỗi gửi tin nhắn:', error);
+      if (error instanceof Error) {
+        antdMessage.error('Lỗi gửi tin nhắn: ' + error.message);
+      }
+    }
+  };
 
-        try {
-            const response = await fetch(`https://chat-api-backend-x4dl.onrender.com/api/conversations/${currentConversationId}`, {
-                method: 'DELETE',
-            });
+  // Function to upload images
+  const uploadImage = async (options: UploadRequestOption) => {
+    const file = options.file as File;
+    if (!file || !username || !currentConversationId) {
+      antdMessage.error("Vui lòng chọn ảnh, nhập tên người dùng và chọn cuộc trò chuyện.");
+      return;
+    }
 
-            if (!response.ok) throw new Error('Lỗi xóa cuộc trò chuyện');
-            antdMessage.success('Xóa cuộc trò chuyện thành công.');
-            setCurrentConversationId('');
-            setMessages([]);
-            loadConversations();
-        } catch (error) {
-            console.error('Lỗi xóa cuộc trò chuyện:', error);
-            antdMessage.error('Lỗi xóa cuộc trò chuyện.');
-        }
-    };
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('username', username);
+    formData.append('conversationId', currentConversationId);
 
-    // Function to upload images
-    const uploadImage = async (options: UploadRequestOption) => {
-        const file = options.file as File;
-        if (!file || !username || !currentConversationId) {
-            antdMessage.error("Vui lòng chọn ảnh, nhập tên người dùng và chọn cuộc trò chuyện.");
-            return;
-        }
+    try {
+      const response = await fetch('https://chat-api-backend-x4dl.onrender.com/api/images/upload', {
+        method: 'POST',
+        body: formData,
+      });
 
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('username', username);
-        formData.append('conversationId', currentConversationId);
+      if (!response.ok) throw new Error('Lỗi tải lên hình ảnh');
+      const chatMessage = {
+        sender: username,
+        content: `[Đã tải lên hình ảnh]`,
+        imageUrl: URL.createObjectURL(file),
+        color: 'green',
+      };
+      setMessages((prevMessages) => [...prevMessages, chatMessage]);
+      antdMessage.success('Tải ảnh lên thành công.');
+    } catch (error) {
+      console.error('Lỗi tải lên hình ảnh:', error);
+      antdMessage.error('Lỗi tải lên hình ảnh.');
+    }
+  };
 
-        try {
-            const response = await fetch('https://chat-api-backend-x4dl.onrender.com/api/images/upload', {
-                method: 'POST',
-                body: formData,
-            });
+  // Handle Enter key to send message
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      sendMessage();
+    }
+  };
 
-            if (!response.ok) throw new Error('Lỗi tải lên hình ảnh');
-            const data = await response.json();
-            const chatMessage = {
-                sender: username,
-                content: `[Đã tải lên hình ảnh]`,
-                imageUrl: URL.createObjectURL(file),
-                color: 'green',
-            };
-            setMessages((prevMessages) => [...prevMessages, chatMessage]);
-            antdMessage.success('Tải ảnh lên thành công.');
-        } catch (error) {
-            console.error('Lỗi tải lên hình ảnh:', error);
-            antdMessage.error('Lỗi tải lên hình ảnh.');
-        }
-    };
+  return (
+    <div className="outer-frame">
+      <Layout className="layout-container" style={{ padding: '20px', backgroundColor: '#f5f5f5' }}>
+        <Content style={{ width: '800px', margin: '0 auto', backgroundColor: '#fff', padding: '20px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+          <h2 style={{ textAlign: 'center', color: '#007bff', marginBottom: '20px' }}>AI Chat</h2>
 
-    // Function to update conversation title
-    const updateConversationTitle = async () => {
-        if (!currentConversationId) {
-            antdMessage.error("Vui lòng chọn cuộc trò chuyện.");
-            return;
-        }
+          <List
+            bordered
+            style={{ height: '300px', overflowY: 'auto', marginBottom: '10px', backgroundColor: '#f9f9f9' }}
+            dataSource={messages}
+            renderItem={(item) => (
+              <List.Item style={{ color: item.color }}>
+                <strong>{item.sender}:</strong> {item.content}
+                {item.imageUrl && <img src={item.imageUrl} alt="Uploaded" style={{ maxWidth: '100%', marginTop: '10px' }} />}
+              </List.Item>
+            )}
+          />
 
-        if (!newTitle) {
-            antdMessage.error("Vui lòng nhập tiêu đề mới.");
-            return;
-        }
+          <Upload customRequest={uploadImage} showUploadList={false}>
+            <Button icon={<UploadOutlined />} style={{ marginBottom: '10px', width: '100%' }}>Tải lên ảnh</Button>
+          </Upload>
 
-        try {
-            const response = await fetch(`https://chat-api-backend-x4dl.onrender.com/api/conversations/${currentConversationId}/title`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ title: newTitle }),
-            });
-
-            if (!response.ok) throw new Error('Lỗi cập nhật tiêu đề');
-            antdMessage.success('Cập nhật tiêu đề thành công.');
-            loadConversations();
-            setNewTitle('');
-        } catch (error) {
-            console.error('Lỗi cập nhật tiêu đề:', error);
-            antdMessage.error('Lỗi cập nhật tiêu đề.');
-        }
-    };
-
-    // Handle Enter key to send message
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            sendMessage();
-        }
-    };
-
-    return (
-        <div className="outer-frame">
-            <Layout className="layout-container" style={{ padding: '20px', backgroundColor: '#f5f5f5' }}>
-                <Content style={{ width: '800px', margin: '0 auto', backgroundColor: '#fff', padding: '20px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
-                    <h2 style={{ textAlign: 'center', color: '#007bff', marginBottom: '20px' }}>AI Chat</h2>
-
-                    <List
-                    bordered
-                    style={{ height: '300px', overflowY: 'auto', marginBottom: '10px', backgroundColor: '#f9f9f9' }}
-                    dataSource={messages}
-                    renderItem={(item) => (
-                        <List.Item style={{ color: item.color }}>
-                            <strong>{item.sender}:</strong> {item.content}
-                            {item.imageUrl && <img src={item.imageUrl} alt="Uploaded" style={{ maxWidth: '100%', marginTop: '10px' }} />}
-                        </List.Item>
-                    )}
-                />
-
-
-                    <Upload customRequest={uploadImage} showUploadList={false}>
-                        <Button icon={<UploadOutlined />} style={{ marginBottom: '10px', width: '100%' }}>Tải lên ảnh</Button>
-                    </Upload>
-
-
-                    <Input.Group className="input-group">
-                    <Input
-                        placeholder="Nhập tin nhắn"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                    />
-                    <Button type="primary" onClick={sendMessage}>Gửi</Button>
-                    </Input.Group>
-
-                </Content>
-            </Layout>
-        </div>
-    );
+          <Input.Group className="input-group">
+            <Input
+              placeholder="Nhập tin nhắn"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
+            <Button type="primary" onClick={sendMessage}>Gửi</Button>
+          </Input.Group>
+        </Content>
+      </Layout>
+    </div>
+  );
 };
 
 export default MainContent;
