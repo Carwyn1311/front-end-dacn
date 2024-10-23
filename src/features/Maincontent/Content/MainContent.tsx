@@ -104,7 +104,15 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
       antdMessage.error("Vui lòng nhập tên người dùng, tạo cuộc trò chuyện và nhập tin nhắn.");
       return;
     }
-
+  
+    // Lập tức thêm tin nhắn người dùng vào giao diện
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { sender: username, content: message, color: 'green' }
+    ]);
+  
+    setMessage(''); // Reset lại input để trải nghiệm mượt mà
+  
     try {
       const response = await fetch(`https://chat-api-backend-x4dl.onrender.com/api/conversations/${currentConversationId}/messages`, {
         method: 'POST',
@@ -113,18 +121,18 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
         },
         body: JSON.stringify({ username, message })
       });
-
+  
       if (!response.ok) throw new Error('Lỗi kết nối mạng');
-
+  
       const responseData = await response.json();
+  
+      // Cập nhật tin nhắn AI từ phản hồi của server
       setMessages((prevMessages) => [
         ...prevMessages,
-        { sender: responseData.userMessage.sender, content: responseData.userMessage.content, color: 'green' },
         { sender: responseData.aiMessage.sender, content: responseData.aiMessage.content, color: 'blue' }
       ]);
-
-      setMessage('');
-      loadConversations();
+  
+      loadConversations(); // Cập nhật lại danh sách cuộc trò chuyện
     } catch (error: unknown) {
       console.error('Lỗi gửi tin nhắn:', error);
       if (error instanceof Error) {
@@ -132,7 +140,7 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
       }
     }
   };
-
+  
   const uploadImage = async (options: UploadRequestOption) => {
     const file = options.file as File;
     if (!file || !username || !currentConversationId) {
@@ -166,12 +174,6 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      sendMessage();
-    }
-  };
-
   return (
     <div className="outer-frame">
       <Layout className="layout-container" style={{ padding: '20px', backgroundColor: '#f5f5f5' }}>
@@ -195,15 +197,14 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
           </Upload>
 
           <Input.Group className="input-group">
-          <Search
-            placeholder="Nhập tin nhắn"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onSearch={sendMessage}
-            onKeyDown={handleKeyDown}
-            enterButton="Gửi"
+            <Search
+                placeholder="Nhập tin nhắn"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onSearch={sendMessage} 
+                enterButton="Gửi"
             />
-          </Input.Group>
+            </Input.Group>
         </Content>
       </Layout>
     </div>
