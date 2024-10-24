@@ -11,21 +11,23 @@ interface SidebarProps {
   isOpen: boolean;
   isLoggedIn: boolean;
   onLogout: () => void;
-  onSelectConversation: (conversationId: string, messages: any[]) => void; // Thêm callback để truyền cuộc trò chuyện đã chọn
+  onSelectConversation: (conversationId: string, messages: any[]) => void; 
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, onLogout, onSelectConversation }) => {
   const [isAvatarMenuOpen, setAvatarMenuOpen] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
-  const [messages, setMessages] = useState<any[]>([]); // Store messages of the selected conversation
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [messages, setMessages] = useState<any[]>([]); 
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Hàm xử lý khi chọn cuộc trò chuyện
+
   const handleSelectConversation = (conversationId: string, conversationMessages: any[]) => {
     setSelectedConversationId(conversationId);
-    setMessages(conversationMessages); // Lưu tin nhắn của cuộc trò chuyện đã chọn
-    onSelectConversation(conversationId, conversationMessages); // Truyền cuộc trò chuyện đã chọn ra App.tsx
+    setMessages(conversationMessages); 
+    onSelectConversation(conversationId, conversationMessages); 
   };
 
   const toggleAvatarMenu = () => {
@@ -111,14 +113,11 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
           </div>
         )}
 
-        {/* Conversation List */}
         <div className="conversationlist">
-          {/* Truyền handleSelectConversation cho ConversationList */}
           <ConversationList onSelectConversation={handleSelectConversation} />
         </div>
       </div>
-
-      {/* Avatar menu at the bottom */}
+      
       {isAvatarMenuOpen && (
         <div
           className="avatar-menu"

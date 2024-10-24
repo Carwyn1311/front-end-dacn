@@ -6,7 +6,7 @@ import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import Button from '../../../components/Button/Button';
 import SearchInput from '../../../components/SearchInput/SearchInput';
 import { FaSearch } from 'react-icons/fa';
-import Dropdown from '../../../components/Dropdown/Dropdown'; // Import Dropdown component
+import Dropdown from '../../../components/Dropdown/Dropdown';
 
 const userData = [
   { id: 1, name: 'User1', role: 'Admin', status: 'Hoạt động' },
@@ -25,6 +25,7 @@ const AdminUser: React.FC = () => {
   const [users, setUsers] = useState(userData);
   const [statusFilter, setStatusFilter] = useState<string>('Tất cả');
   const [roleFilter, setRoleFilter] = useState<string>('Tất cả');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedUser, setSelectedUser] = useState<any>(null);
 
   const handleSearchChange = (value: string) => {
@@ -115,7 +116,6 @@ const AdminUser: React.FC = () => {
             </Col>
           </Row>
 
-          {/* Dropdown lọc trạng thái và vai trò */}
           <Row gutter={16} className="admin-filter-row">
             <Col span={8}>
               <Dropdown
@@ -160,14 +160,13 @@ const AdminUser: React.FC = () => {
             )}
           />
 
-          {/* Giao diện chat với nhân viên hỗ trợ */}
           <Row className="admin-chat-row">
             <Button 
               className="admin-chat-button"
               type="primary" 
               onClick={() => navigate('/chat')}
             >
-              Chat với nhân viên hỗ trợ
+              Chat với người dùng
             </Button>
           </Row>
         </Card>
