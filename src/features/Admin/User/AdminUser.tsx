@@ -6,7 +6,10 @@ import Button from '../../../components/Button/Button';
 import SearchInput from '../../../components/SearchInput/SearchInput';
 import { FaSearch } from 'react-icons/fa';
 import Dropdown from '../../../components/Dropdown/Dropdown';
+<<<<<<< HEAD
 import CreateUserForm from '../../CreateUserForm/CreateUserForm';
+=======
+>>>>>>> 7e22e0561df075971105dfd7bcba3082d10f4a7a
 
 const userData = [
   { id: 1, name: 'User1', role: 'Admin', status: 'Hoạt động' },
@@ -19,7 +22,12 @@ const AdminUser: React.FC = () => {
   const [users, setUsers] = useState(userData);
   const [statusFilter, setStatusFilter] = useState<string>('Tất cả');
   const [roleFilter, setRoleFilter] = useState<string>('Tất cả');
+<<<<<<< HEAD
   const [isCreateUserModalOpen, setIsCreateUserModalOpen] = useState(false);
+=======
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [selectedUser, setSelectedUser] = useState<any>(null);
+>>>>>>> 7e22e0561df075971105dfd7bcba3082d10f4a7a
 
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
@@ -86,7 +94,10 @@ const AdminUser: React.FC = () => {
             </Col>
           </Row>
 
+<<<<<<< HEAD
           {/* Filter Dropdowns */}
+=======
+>>>>>>> 7e22e0561df075971105dfd7bcba3082d10f4a7a
           <Row gutter={16} className="admin-filter-row">
             <Col span={8}>
               <Dropdown
@@ -126,6 +137,7 @@ const AdminUser: React.FC = () => {
             )}
           />
 
+<<<<<<< HEAD
           {/* Create User Modal */}
           <Modal
             title="Create New User"
@@ -135,6 +147,17 @@ const AdminUser: React.FC = () => {
           >
             <CreateUserForm onUserCreated={handleUserCreated} />
           </Modal>
+=======
+          <Row className="admin-chat-row">
+            <Button 
+              className="admin-chat-button"
+              type="primary" 
+              onClick={() => navigate('/chat')}
+            >
+              Chat với người dùng
+            </Button>
+          </Row>
+>>>>>>> 7e22e0561df075971105dfd7bcba3082d10f4a7a
         </Card>
       </div>
     </div>

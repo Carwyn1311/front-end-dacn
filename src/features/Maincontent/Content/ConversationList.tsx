@@ -25,17 +25,17 @@ const ConversationList: React.FC<ConversationListProps> = ({ onSelectConversatio
     const fetchConversations = async () => {
       const data = await loadConversations();
       setConversations(data);
-
+  
       if (isFirstLoad.current && data.length > 0) {
-        const latestConversation = data[data.length - 1]; 
+        const latestConversation = data[data.length - 1];
         setSelectedConversation(latestConversation);
         onSelectConversation(latestConversation.id, latestConversation.messages);
         isFirstLoad.current = false;
       }
     };
-
+  
     fetchConversations();
-
+  
     const socket = new SockJS('https://your-websocket-server.com/ws-chat');
     const stompClient = new Client({
       webSocketFactory: () => socket,
@@ -44,14 +44,14 @@ const ConversationList: React.FC<ConversationListProps> = ({ onSelectConversatio
       },
       onConnect: (frame: string) => {
         console.log('Đã kết nối: ' + frame);
-
+  
         stompClient.subscribe('/topic/messages', (messageOutput) => {
           const chatMessage = {
             sender: 'GEMINI',
             content: messageOutput.body,
             color: 'blue'
           };
-
+  
           setConversations((prevConversations) =>
             prevConversations.map((conv) =>
               conv.id === selectedConversation?.id
@@ -62,17 +62,18 @@ const ConversationList: React.FC<ConversationListProps> = ({ onSelectConversatio
         });
       },
     });
-
+  
     stompClient.activate();
     stompClientRef.current = stompClient;
-
+  
     return () => {
       if (stompClientRef.current) {
         stompClientRef.current.deactivate();
       }
     };
-  }, [onSelectConversation]);
-
+  }, [onSelectConversation, selectedConversation?.id]); 
+  
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleConversationCreated = (conversationId: string, newConversation: any) => {
     setConversations((prevConversations) => [...prevConversations, newConversation]);
   };
@@ -126,13 +127,11 @@ const ConversationList: React.FC<ConversationListProps> = ({ onSelectConversatio
         dataSource={conversations}
         renderItem={(item) => (
           <List.Item className="conversation-list-item">
-            {/* Đảm bảo rằng tiêu đề và nút bút chì nằm ngang hàng */}
             <div className="conversation-title-container">
               <div className="conversation-title" onClick={() => handleConversationSelect(item.id, item.messages)}>
                 <strong>{item.title || 'Không có tiêu đề'}</strong>
               </div>
 
-              {/* Nút bút chì (đổi tên) nằm sát ngay sau tiêu đề */}
               <Button
                 type="text"
                 icon={<EditOutlined />}
@@ -141,7 +140,6 @@ const ConversationList: React.FC<ConversationListProps> = ({ onSelectConversatio
               />
             </div>
 
-            {/* Hiển thị các tùy chọn đổi tên và xóa phía dưới */}
             {editingConversationId === item.id && (
               <div className="conversation-actions">
                 <EditConversation

@@ -11,21 +11,21 @@ interface SidebarProps {
   isOpen: boolean;
   isLoggedIn: boolean;
   onLogout: () => void;
-  onSelectConversation: (conversationId: string, messages: any[]) => void; // Thêm callback để truyền cuộc trò chuyện đã chọn
+  onSelectConversation: (conversationId: string, messages: any[]) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, onLogout, onSelectConversation }) => {
   const [isAvatarMenuOpen, setAvatarMenuOpen] = useState(false);
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
-  const [messages, setMessages] = useState<any[]>([]); // Store messages of the selected conversation
+  const [messages, setMessages] = useState<any[]>([]);
   const navigate = useNavigate();
   const location = useLocation();
 
   // Hàm xử lý khi chọn cuộc trò chuyện
   const handleSelectConversation = (conversationId: string, conversationMessages: any[]) => {
     setSelectedConversationId(conversationId);
-    setMessages(conversationMessages); // Lưu tin nhắn của cuộc trò chuyện đã chọn
-    onSelectConversation(conversationId, conversationMessages); // Truyền cuộc trò chuyện đã chọn ra App.tsx
+    setMessages(conversationMessages);
+    onSelectConversation(conversationId, conversationMessages);
   };
 
   const toggleAvatarMenu = () => {
@@ -50,6 +50,10 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
 
   const handleLoginClick = () => {
     navigate('/login');
+  };
+
+  const handleAnalyticsClick = () => {
+    navigate('/analytics'); // Điều hướng đến trang phân tích tổng thể
   };
 
   const handleBackToHome = () => {
@@ -113,7 +117,6 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
 
         {/* Conversation List */}
         <div className="conversationlist">
-          {/* Truyền handleSelectConversation cho ConversationList */}
           <ConversationList onSelectConversation={handleSelectConversation} />
         </div>
       </div>
@@ -149,13 +152,17 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
             <li style={{ padding: '5px 0', cursor: 'pointer' }} onClick={handleInfoClick}>
               Thông tin hệ thống
             </li>
+            <li style={{ padding: '5px 0', cursor: 'pointer' }} onClick={handleAnalyticsClick}>
+              Phân tích tổng thể
+            </li>
             <li style={{ padding: '5px 0', cursor: 'pointer', color: 'red' }}>
               <LogoutButton onLogout={onLogout} />
             </li>
+            {/* Thêm mục Phân tích tổng thể */}
+           
           </ul>
         </div>
       )}
-
     </div>
   );
 };

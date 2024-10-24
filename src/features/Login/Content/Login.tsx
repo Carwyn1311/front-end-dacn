@@ -18,18 +18,18 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
   const [userName, setUserName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [rememberMe, setRememberMe] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>(''); // Thêm email cho đăng ký
+  const [email, setEmail] = useState<string>('');
   const [error, setError] = useState<string>(''); 
   const [isRegistering, setIsRegistering] = useState<boolean>(false);
-  const [savedUserName, setSavedUserName] = useState<string | null>(''); // Lưu tên người dùng đã lưu
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [savedUserName, setSavedUserName] = useState<string | null>(''); 
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Lấy tên người dùng đã lưu từ User.ts khi ứng dụng tải
     const storedUser = User.getUserData();
     if (storedUser && storedUser.username) {
-      setSavedUserName(storedUser.username); // Hiển thị tên người dùng đã lưu
+      setSavedUserName(storedUser.username); 
     }
 
     const storedUserName = localStorage.getItem('userName') ?? '';
@@ -93,30 +93,29 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
             throw new Error('No token returned from API.');
         }
     
-        // Lưu thông tin người dùng và token vào localStorage hoặc sessionStorage
+
         if (rememberMe) {
             localStorage.setItem('userName', userName);
             localStorage.setItem('password', password);
             localStorage.setItem('rememberMe', 'true');
-            localStorage.setItem('token', token);  // Lưu token vào localStorage khi Remember Me được chọn
+            localStorage.setItem('token', token);  
         } else {
-            sessionStorage.setItem('token', token);  // Lưu token vào sessionStorage khi Remember Me không được chọn
+            sessionStorage.setItem('token', token);  
             localStorage.removeItem('userName');
             localStorage.removeItem('password');
             localStorage.removeItem('rememberMe');
         }
 
         TokenAuthService.setToken(token); 
-    
-        // Nếu API không trả về userData, chúng ta sẽ sử dụng giá trị mặc định cho người dùng
+
         const user = new User({
-            id: '1',                   // Mặc định ID là 1
-            username: userName,         // Tên người dùng đã nhập
-            email: email || '',         // Email từ form hoặc rỗng nếu không có
-            role: 0,                    // Mặc định là user
-            active: true,               // Mặc định tài khoản kích hoạt
+            id: '1',                   
+            username: userName,         
+            email: email || '',        
+            role: 0,                   
+            active: true,              
         });
-        User.storeUserData(user, token);  // Lưu thông tin người dùng cùng với token
+        User.storeUserData(user, token); 
     
         console.log('Logged in successfully');
         onLogin();

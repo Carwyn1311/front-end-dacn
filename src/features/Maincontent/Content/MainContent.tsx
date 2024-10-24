@@ -105,13 +105,12 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
       return;
     }
   
-    // Lập tức thêm tin nhắn người dùng vào giao diện
     setMessages((prevMessages) => [
       ...prevMessages,
       { sender: username, content: message, color: 'green' }
     ]);
   
-    setMessage(''); // Reset lại input để trải nghiệm mượt mà
+    setMessage(''); 
   
     try {
       const response = await fetch(`https://chat-api-backend-x4dl.onrender.com/api/conversations/${currentConversationId}/messages`, {
@@ -126,13 +125,12 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
   
       const responseData = await response.json();
   
-      // Cập nhật tin nhắn AI từ phản hồi của server
       setMessages((prevMessages) => [
         ...prevMessages,
         { sender: responseData.aiMessage.sender, content: responseData.aiMessage.content, color: 'blue' }
       ]);
   
-      loadConversations(); // Cập nhật lại danh sách cuộc trò chuyện
+      loadConversations(); 
     } catch (error: unknown) {
       console.error('Lỗi gửi tin nhắn:', error);
       if (error instanceof Error) {
