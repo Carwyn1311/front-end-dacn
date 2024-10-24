@@ -19,6 +19,7 @@
 .conversationlist{
   padding-top: 100px;
   padding: 10px;
+  margin-right: 40px;
 }
 .sidebar.closed {
   transform: translateX(-100%); /* Sidebar hidden */

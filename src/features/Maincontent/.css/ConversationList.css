@@ -1,123 +1,89 @@
+/* Container for the conversation list */
 .conversation-list-container {
-    overflow-y: auto;
-    border: 1px solid #eaeaea;
-    border-radius: 8px;
-    background-color: #f8f9fa;
-    margin-top: 25px;
-    width: 250px;
-    height: 500px;
-    margin-left: -20px;
-  }
-  
-  .conversation-list-item {
-    padding: 10px 15px;
-    background-color: #fff;
-    border-bottom: 1px solid #eaeaea;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background-color 0.2s ease;
-  }
-  
-  .conversation-list-item:hover {
-    background-color: #e6f7ff;
-  }
-  
-  .conversation-list-item strong {
-    font-weight: 600;
-    color: #333;
-  }
-  
-  .conversation-list-item:active {
-    background-color: #bae7ff;
-  }
-  
-  .conversation-list-container::-webkit-scrollbar {
-    width: 8px;
-  }
-  
-  .conversation-list-container::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-  }
-  
-  .conversation-list-container::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
-  }
-  
-  /* CSS for modal container */
-  .modal-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 180px;
-    padding: 0;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-
-.conversation-options-header {
-  text-align: center;
-  font-weight: bold;
-  padding: 10px 0;
-  color: #333;
-  border-bottom: 1px solid #eaeaea;
+  overflow-y: auto;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  margin-top: 25px;
+  width: 250px;
+  height: 500px;
+  margin-right: 35px;
 }
 
-/* CSS for the button container */
-.modal-container {
+/* Conversation list item */
+.conversation-list-item {
+  padding: 10px;
+  background-color: #fff;
+  border-bottom: 1px solid #eaeaea;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s ease;
+  flex-direction: row; /* Sử dụng bố cục hàng ngang */
+}
+
+/* Hover effect for conversation list item */
+.conversation-list-item:hover {
+  background-color: #e6f7ff;
+}
+
+/* Container for the conversation title and edit button */
+.conversation-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-right: 10px; /* Khoảng cách giữa tiêu đề và nút chỉnh sửa */
+}
+
+/* Styling for the conversation title */
+.conversation-title {
+  font-weight: 600;
+  color: #333;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  white-space: nowrap; /* Đảm bảo tiêu đề không tràn xuống dòng */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Nếu tiêu đề quá dài, thêm dấu "..." */
+}
+
+/* Edit icon button styling */
+.edit-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #1890ff;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end; /* Đảm bảo biểu tượng được căn bên phải */
+}
+
+/* Hover effect for edit button */
+.edit-button:hover {
+  color: #40a9ff;
+}
+
+/* Container for the actions (rename, delete) */
+.conversation-actions {
   display: flex;
   flex-direction: column;
-  padding: 10px; /* Small padding to keep it tight */
-}
-
-/* CSS for each button */
-.modal-button {
-  display: flex;
-  align-items: center;
-  padding: 8px 10px;
-  font-size: 14px; /* Small font-size for compact design */
-  color: black;
-  justify-content: flex-start;
-  align-items: center;
-  border: none;
-  background-color: transparent;
   width: 100%;
+  margin-top: 8px;
 }
 
-.modal-button svg {
-  margin-right: 8px;
-  font-size: 18px;
-}
-
-/* Different color for delete button */
-.modal-button-danger {
+/* Delete button styling */
+.conversation-actions .delete-button {
   color: red;
-}
-
-/* Style for the close button (optional) */
-.modal-close-button {
-  background-color: transparent;
+  margin-top: 5px;
+  background: none;
   border: none;
-  font-size: 14px;
-  color: #aaa;
-  cursor: pointer;
-  float: right;
-}
-
-/* Hover effect */
-.modal-button:hover {
-  background-color: #f5f5f5;
-}
-
-/* Button alignment and layout */
-button {
   cursor: pointer;
 }
-.custom-modal{
-  margin-left: 10px;
+
+/* Hover effect for delete button */
+.conversation-actions .delete-button:hover {
+  color: darkred;
 }

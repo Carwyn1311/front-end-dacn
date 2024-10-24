@@ -136,3 +136,22 @@
 .title-input button:hover {
   background-color: #0056b3;
 }
+.conversation-list-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.conversation-actions {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.edit-button {
+  align-self: flex-start;
+}
+
+.delete-button {
+  align-self: flex-start;
+}

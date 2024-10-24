@@ -70,7 +70,7 @@ const EditConversation: React.FC<EditConversationProps> = ({ conversationId, ini
         style={{ width: '70%' }}
       />
       <Button type="primary" onClick={updateConversationTitle} style={{ width: '30%' }}>
-        Thay đổi tiêu đề
+        đổi tên
       </Button>
     </Input.Group>
   );
