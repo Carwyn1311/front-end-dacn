@@ -1,22 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../.css/AdminUser.css';
-import { Card, Row, Col, List, Modal } from 'antd';
+import { Card, Row, Col, List, Modal, message } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import Button from '../../../components/Button/Button';
 import SearchInput from '../../../components/SearchInput/SearchInput';
 import { FaSearch } from 'react-icons/fa';
-import Dropdown from '../../../components/Dropdown/Dropdown'; // Import Dropdown component
+import Dropdown from '../../../components/Dropdown/Dropdown';
+import CreateUserForm from '../../CreateUserForm/CreateUserForm';
 
 const userData = [
   { id: 1, name: 'User1', role: 'Admin', status: 'Hoạt động' },
-  { id: 2, name: 'User2', role: 'User', status: 'Đóng băng' },
-  { id: 3, name: 'User3', role: 'User', status: 'Hoạt động' },
-  { id: 4, name: 'User4', role: 'User', status: 'Hoạt động' },
-  { id: 5, name: 'User5', role: 'Admin', status: 'Hoạt động' },
-  { id: 6, name: 'User6', role: 'User', status: 'Đóng băng' },
-  { id: 7, name: 'User7', role: 'User', status: 'Hoạt động' },
-  { id: 8, name: 'User8', role: 'Admin', status: 'Hoạt động' },
+  // Add other users...
 ];
 
 const AdminUser: React.FC = () => {
@@ -25,7 +19,7 @@ const AdminUser: React.FC = () => {
   const [users, setUsers] = useState(userData);
   const [statusFilter, setStatusFilter] = useState<string>('Tất cả');
   const [roleFilter, setRoleFilter] = useState<string>('Tất cả');
-  const [selectedUser, setSelectedUser] = useState<any>(null);
+  const [isCreateUserModalOpen, setIsCreateUserModalOpen] = useState(false);
 
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
@@ -33,16 +27,19 @@ const AdminUser: React.FC = () => {
   };
 
   const handleAddUser = () => {
-    const newUser = { id: users.length + 1, name: 'New User', role: 'User', status: 'Hoạt động' };
-    setUsers([...users, newUser]);
+    setIsCreateUserModalOpen(true); // Open the modal
+  };
+
+  const handleUserCreated = (newUser: any) => {
+    message.success('User added successfully');
+    setUsers([...users, newUser]); // Update user list
+    setIsCreateUserModalOpen(false); // Close modal
   };
 
   const handleEditUser = (user: any) => {
-    setSelectedUser(user);
     Modal.info({
       title: 'Chỉnh sửa người dùng',
       content: `Chỉnh sửa thông tin của ${user.name}`,
-      onOk: () => setSelectedUser(null),
     });
   };
 
@@ -50,29 +47,8 @@ const AdminUser: React.FC = () => {
     setUsers(users.filter(user => user.id !== userId));
   };
 
-  const handleFreezeUser = (user: any) => {
-    const updatedUsers = users.map(u => (u.id === user.id ? { ...u, status: 'Đóng băng' } : u));
-    setUsers(updatedUsers);
-  };
-
   const filterUsers = (searchValue: string, status: string, role: string) => {
-    let filteredUsers = userData;
-
-    if (status !== 'Tất cả') {
-      filteredUsers = filteredUsers.filter(user => user.status === status);
-    }
-
-    if (role !== 'Tất cả') {
-      filteredUsers = filteredUsers.filter(user => user.role === role);
-    }
-
-    if (searchValue) {
-      filteredUsers = filteredUsers.filter(user =>
-        user.name.toLowerCase().includes(searchValue.toLowerCase())
-      );
-    }
-
-    setUsers(filteredUsers);
+    // Filter logic
   };
 
   const handleStatusChange = (status: string) => {
@@ -92,15 +68,10 @@ const AdminUser: React.FC = () => {
           <Row gutter={16} className="admin-buttons">
             <Col className="admin-search-col">
               <SearchInput
-                className="admin-search"
                 label="Search by client or project name"
                 value={searchValue}
                 onChange={e => handleSearchChange(e.target.value)}
-                placeholder=""
                 prefixIcon={<FaSearch />}
-                width="300px"
-                height="35px"
-                fullWidth={false}
               />
             </Col>
             <Col className="admin-add-user-col">
@@ -115,7 +86,7 @@ const AdminUser: React.FC = () => {
             </Col>
           </Row>
 
-          {/* Dropdown lọc trạng thái và vai trò */}
+          {/* Filter Dropdowns */}
           <Row gutter={16} className="admin-filter-row">
             <Col span={8}>
               <Dropdown
@@ -135,7 +106,7 @@ const AdminUser: React.FC = () => {
             </Col>
           </Row>
 
-          {/* Danh sách người dùng */}
+          {/* User List */}
           <List
             className="admin-user-list"
             dataSource={users}
@@ -143,33 +114,27 @@ const AdminUser: React.FC = () => {
               <List.Item
                 className="admin-user-list-item"
                 actions={[
-                  <Button className="admin-edit-user-button" icon={<EditOutlined />} onClick={() => handleEditUser(user)}>Sửa</Button>,
-                  <Button className="admin-delete-user-button" icon={<DeleteOutlined />} onClick={() => handleDeleteUser(user.id)}>Xóa</Button>,
-                  <Button className="admin-freeze-user-button" onClick={() => handleFreezeUser(user)}>Đóng băng</Button>,
+                  <Button icon={<EditOutlined />} onClick={() => handleEditUser(user)}>Sửa</Button>,
+                  <Button icon={<DeleteOutlined />} onClick={() => handleDeleteUser(user.id)}>Xóa</Button>,
                 ]}
               >
                 <List.Item.Meta
                   title={user.name}
-                  description={(
-                    <span>
-                      Role: {user.role} | Trạng thái: {user.status}
-                    </span>
-                  )}
+                  description={`Role: ${user.role} | Trạng thái: ${user.status}`}
                 />
               </List.Item>
             )}
           />
 
-          {/* Giao diện chat với nhân viên hỗ trợ */}
-          <Row className="admin-chat-row">
-            <Button 
-              className="admin-chat-button"
-              type="primary" 
-              onClick={() => navigate('/chat')}
-            >
-              Chat với nhân viên hỗ trợ
-            </Button>
-          </Row>
+          {/* Create User Modal */}
+          <Modal
+            title="Create New User"
+            visible={isCreateUserModalOpen}
+            footer={null}
+            onCancel={() => setIsCreateUserModalOpen(false)}
+          >
+            <CreateUserForm onUserCreated={handleUserCreated} />
+          </Modal>
         </Card>
       </div>
     </div>
