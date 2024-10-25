@@ -11,7 +11,6 @@ import CreateUserForm from '../../CreateUserForm/CreateUserForm';
 
 const userData = [
   { id: 1, name: 'User1', role: 'Admin', status: 'Hoạt động' },
-  // Add other users...
 ];
 
 const AdminUser: React.FC = () => {
@@ -109,7 +108,6 @@ const AdminUser: React.FC = () => {
             </Col>
           </Row>
 
-          {/* User List */}
           <List
             className="admin-user-list"
             dataSource={users}

@@ -3,7 +3,7 @@ import { message as antdMessage } from 'antd';
 import './Analytics.css'; // Import file CSS
 
 interface AnalyticsData {
-  totalProcessedQuestions: number;
+  totalProcessedResponses: number;
   averageResponseTime: number;
   totalUniqueUsers: number;
 }
@@ -41,7 +41,7 @@ const Analytics: React.FC = () => {
       <h3>Phân tích tổng thể</h3>
       {analyticsData ? (
         <div className="analytics-display">
-          <p>Tổng số câu hỏi đã xử lý: {analyticsData.totalProcessedQuestions}</p>
+          <p>Tổng số câu hỏi đã xử lý: {analyticsData.totalProcessedResponses}</p>
           <p>Thời gian phản hồi trung bình: {analyticsData.averageResponseTime.toFixed(2)} ms</p>
           <p>Tổng số người dùng duy nhất: {analyticsData.totalUniqueUsers}</p>
         </div>

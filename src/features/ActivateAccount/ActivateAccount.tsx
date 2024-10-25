@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../AxiosInterceptor/Content/axiosInterceptor';
 import './ActivateAccount.css'; // Import CSS cho trang
 
-const ResendActivation: React.FC = () => {
-  const [email, setEmail] = useState<string>(''); // Email của người dùng
+const ActivateAccount: React.FC = () => {
+  const [username, setUsername] = useState<string>(''); // Username của người dùng
   const [activationCode, setActivationCode] = useState<string>(''); // Mã kích hoạt từ email
   const [message, setMessage] = useState<string>(''); // Thông báo thành công
   const [error, setError] = useState<string>(''); // Thông báo lỗi
@@ -15,7 +15,7 @@ const ResendActivation: React.FC = () => {
   const handleResendActivationCode = async (): Promise<void> => {
     setIsLoading(true);
     try {
-      const response = await axiosInstance.post('/auth/resend-activation', { email });
+      const response = await axiosInstance.post('/auth/generate-new-code', { email: username });
       if (response.status === 200) {
         setMessage('Mã kích hoạt đã được gửi lại qua email của bạn.');
         setError('');
@@ -34,7 +34,11 @@ const ResendActivation: React.FC = () => {
   const handleActivateAccount = async (): Promise<void> => {
     setIsLoading(true);
     try {
-      const response = await axiosInstance.post('/auth/activate', { email, activationCode });
+      const response = await axiosInstance.post('/auth/activate', {
+        username,          // Username thay vì email
+        activationCode,    // Mã kích hoạt từ người dùng
+      });
+
       if (response.status === 200) {
         setMessage('Tài khoản đã được kích hoạt thành công.');
         setError('');
@@ -59,12 +63,12 @@ const ResendActivation: React.FC = () => {
 
   return (
     <div className="container">
-      <h2 className="header">Gửi lại mã kích hoạt</h2>
+      <h2 className="header">Kích hoạt tài khoản</h2>
       <input
-        type="email"
-        placeholder="Nhập email của bạn"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        type="text"
+        placeholder="Nhập tên đăng nhập của bạn"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
         className="input"
       />
       <input
@@ -91,4 +95,4 @@ const ResendActivation: React.FC = () => {
   );
 };
 
-export default ResendActivation;
+export default ActivateAccount;

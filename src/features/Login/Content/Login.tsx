@@ -20,7 +20,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const [error, setError] = useState<string>(''); 
-  const [isRegistering, setIsRegistering] = useState<boolean>(false);
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [savedUserName, setSavedUserName] = useState<string | null>(''); 
 
@@ -53,10 +53,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
     setError('');
   };
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setEmail(e.target.value);
-    setError('');
-  };
+
 
   const handleRememberMeChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setRememberMe(e.target.checked);
@@ -64,17 +61,14 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    if (!userName || !password || (isRegistering && !email)) {
+    if (!userName || !password) {
       setError('All fields are required.');
       return;
     }
 
-    if (isRegistering) {
-      await handleRegister();
-    } else {
-      await handleLogin();
-    }
+    await handleLogin();
   };
+
 
   const handleLogin = async (): Promise<void> => {
     try {
@@ -127,50 +121,8 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
 };
 
 
-
-  const handleRegister = async (): Promise<void> => {
-    try {
-      console.log('Attempting registration for:', { userName, password });
-
-      const response = await axiosInstance.post('/auth/register', {
-        username: userName,
-        password: password,
-        email: email, 
-      });
-
-      console.log('Registration API Response:', response.data);
-
-      if (response.status === 201) {
-        console.log('Account created successfully');
-        setError('Tài khoản đã được tạo thành công. Vui lòng kiểm tra email của bạn để nhận mã kích hoạt.');
-
-        setTimeout(() => {
-          navigate('/activate');
-        }, 2000); 
-      } else {
-        setError(response.data.message || 'Failed to create account.');
-      }
-    } catch (error: any) {
-      if (error.response && error.response.data && error.response.data.errors) {
-        const validationErrors = error.response.data.errors;
-        if (validationErrors.username) {
-          setError(validationErrors.username);
-        } else if (validationErrors.email) {
-          setError(validationErrors.email);
-        } else if (validationErrors.password) {
-          setError(validationErrors.password);
-        } else {
-          setError('Failed to create account.');
-        }
-      } else {
-        console.error('Registration error:', error.response?.data?.message || error.message);
-        setError(error.response?.data?.message || 'Failed to create account.');
-      }
-    }
-  };
-
   const handleCreateAccount = (): void => {
-    setIsRegistering(true);
+    navigate('/create-account');
   };
 
   const handleForgotPassword = (): void => {
@@ -186,13 +138,6 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
     }
   };
 
-  const handleActivateAccountClick = (): void => {
-    navigate('/activate');
-  };
-
-  const handleBackToLoginClick = (): void => {
-    setIsRegistering(false); 
-  };
 
   return (
     <div className="login-group">
@@ -200,7 +145,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
         <div className="form-group">
           <div className="login-container">
             <h3 className="text-top-label">AI CHAT</h3>
-            <h2 className="login-title">{isRegistering ? 'Register' : 'Login'}</h2>
+            <h2 className="login-title">Login</h2>
             <form className="login-form" onSubmit={handleSubmit}>
               <div className="input-group">
                 <BiUser className="user-icon" />
@@ -221,18 +166,6 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
                 />
               </div>
 
-              {isRegistering && (
-                <div className="input-group">
-                  <MdEmail className="user-icon" /> 
-                  <TextField
-                    value={email}
-                    onChange={handleEmailChange}
-                    label="Email"
-                    fullWidth={true}
-                  />
-                </div>
-              )}
-
               <div className="input-group">
                 <input
                   type="checkbox"
@@ -243,34 +176,18 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
               </div>
 
               {error && <p className="error">{error}</p>}
-              <button type="submit">{isRegistering ? 'Create Account' : 'Log in'}</button>
+              <button type="submit">Log in</button>
             </form>
-            {!isRegistering && (
               <button onClick={handleGoogleLoginClick} className="google-login-btn">
                 Log In With Google
               </button>
-            )}
             <div className="horizontal-buttons">
-              {!isRegistering && (
                 <button onClick={handleCreateAccount} className="create-account-btn">
                   Create Account
                 </button>
-              )}
-              {!isRegistering && (
                 <button onClick={handleForgotPassword} className="forgot-password-btn">
                   Forgot Password
                 </button>
-              )}
-              {isRegistering && (
-                <>
-                  <button onClick={handleActivateAccountClick} className="activate-account-btn">
-                    Activate Account
-                  </button>
-                  <button onClick={handleBackToLoginClick} className="back-to-login-btn">
-                    Back to Login
-                  </button>
-                </>
-              )}
             </div>
           </div>
         </div>
