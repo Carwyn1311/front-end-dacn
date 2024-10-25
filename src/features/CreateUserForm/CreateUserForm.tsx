@@ -12,17 +12,18 @@ interface CreateUserFormProps {
 
 const CreateUserForm: React.FC<CreateUserFormProps> = ({ onUserCreated }) => {
   const [loading, setLoading] = useState(false);
-  const [passwordVisible, setPasswordVisible] = useState(false); // Thêm trạng thái để quản lý hiển thị mật khẩu
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [passwordVisible, setPasswordVisible] = useState(false); 
 
   const onFinish = async (values: any) => {
     setLoading(true);
 
-    // Tạo đối tượng người dùng mới từ các giá trị trong form
+
     const newUser = new User({
       username: values.username,
       email: values.email,
       password: values.password,
-      role: parseInt(values.role), // Chuyển đổi string thành number
+      role: parseInt(values.role),
       active: values.active,
     });
 
@@ -31,7 +32,7 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onUserCreated }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${User.getToken()}`, // Giả sử cần token để xác thực
+          Authorization: `Bearer ${User.getToken()}`, 
         },
         body: JSON.stringify(newUser),
       });
@@ -80,7 +81,6 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onUserCreated }) => {
           name="password"
           rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
         >
-          {/* Sử dụng Input.Password với nút hiển thị/ẩn mật khẩu */}
           <Input.Password
             placeholder="Nhập mật khẩu"
             iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}

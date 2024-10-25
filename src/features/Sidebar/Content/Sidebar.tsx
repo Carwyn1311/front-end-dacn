@@ -16,12 +16,13 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, onLogout, onSelectConversation }) => {
   const [isAvatarMenuOpen, setAvatarMenuOpen] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [messages, setMessages] = useState<any[]>([]);
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Hàm xử lý khi chọn cuộc trò chuyện
   const handleSelectConversation = (conversationId: string, conversationMessages: any[]) => {
     setSelectedConversationId(conversationId);
     setMessages(conversationMessages);
@@ -53,7 +54,7 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
   };
 
   const handleAnalyticsClick = () => {
-    navigate('/analytics'); // Điều hướng đến trang phân tích tổng thể
+    navigate('/analytics');
   };
 
   const handleBackToHome = () => {
@@ -115,7 +116,6 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
           </div>
         )}
 
-        {/* Conversation List */}
         <div className="conversationlist">
           <ConversationList onSelectConversation={handleSelectConversation} />
         </div>
@@ -158,7 +158,6 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
             <li style={{ padding: '5px 0', cursor: 'pointer', color: 'red' }}>
               <LogoutButton onLogout={onLogout} />
             </li>
-            {/* Thêm mục Phân tích tổng thể */}
            
           </ul>
         </div>
