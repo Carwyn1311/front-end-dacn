@@ -66,7 +66,7 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
         stompClient.subscribe('/topic/messages', (messageOutput) => {
           console.log('Nhận được tin nhắn từ server:', messageOutput.body);
           const chatMessage = {
-            sender: 'GEMINI',
+            sender: 'Cherry',
             content: messageOutput.body,
             color: 'blue'
           };
@@ -176,7 +176,7 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
     <div className="outer-frame">
       <Layout className="layout-container" style={{ padding: '20px', backgroundColor: '#f5f5f5' }}>
         <Content style={{ width: '800px', margin: '0 auto', backgroundColor: '#fff', padding: '20px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
-          <h2 style={{ textAlign: 'center', color: '#007bff', marginBottom: '20px' }}>AI Chat</h2>
+          <h2 style={{ textAlign: 'center', color: '#007bff', marginBottom: '20px' }}>Cherry Chat</h2>
 
           <List
             bordered

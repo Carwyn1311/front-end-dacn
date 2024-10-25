@@ -63,7 +63,6 @@ const ProtectedLayout: React.FC<{
 
       <div className="main-content" style={{
         flexGrow: 1,
-        padding: '20px',
         transition: 'margin-left 0.3s',
         marginLeft: isSidebarOpen ? '250px' : '0',
         overflow: 'auto'
@@ -79,16 +78,13 @@ const ProtectedLayout: React.FC<{
           top: '0',
           left: isSidebarOpen ? '250px' : '0',
           width: isSidebarOpen ? 'calc(100% - 250px)' : '100%',
-          zIndex: '1'
+          zIndex: '1',
         }}>
-          <Button onClick={toggleSidebar} className="sidebar-toggle-button" style={{
-            fontSize: '24px',
-            cursor: 'pointer'
-          }}>
+          <Button onClick={toggleSidebar} className="sidebar-toggle-button">
             &#9776;
           </Button>
 
-          <CreateConversation
+          <CreateConversation className="create-conversation-button"
             username={userName}
             onConversationCreated={onConversationCreated}
           />
@@ -109,6 +105,22 @@ const AppContent: React.FC = () => {
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
   const [messages, setMessages] = useState<any[]>([]);
   const navigate = useNavigate();
+
+  // Lắng nghe sự kiện thay đổi kích thước màn hình
+  useEffect(() => {
+    const handleResize = () => {
+      // Ẩn sidebar nếu màn hình nhỏ hơn 1024px
+      setIsSidebarOpen(window.innerWidth >= 1024);
+    };
+
+    // Gọi handleResize khi tải trang và khi thay đổi kích thước màn hình
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     const currentUser = User.getUserData();
@@ -237,5 +249,6 @@ const AppContent: React.FC = () => {
     </div>
   );
 };
+
 
 export default App;

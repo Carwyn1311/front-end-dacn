@@ -4,12 +4,14 @@ import Button from '../../../components/Button/Button';
 
 interface CreateConversationProps {
     username: string;
-    onConversationCreated: (conversationId: string, newConversation: any) => void; // Thêm tham số newConversation
+    onConversationCreated: (conversationId: string, newConversation: any) => void;
+    className?: string; // Thêm className tùy chọn
 }
 
 const CreateConversation: React.FC<CreateConversationProps> = ({ 
     username, 
-    onConversationCreated 
+    onConversationCreated, 
+    className // Nhận className từ props
 }) => {
     const createConversation = async () => {
         if (!username) {
@@ -20,7 +22,6 @@ const CreateConversation: React.FC<CreateConversationProps> = ({
         const token = localStorage.getItem('token');
 
         try {
-            // Tạo conversation mới
             const response = await fetch('https://chat-api-backend-x4dl.onrender.com/api/conversations/create', {
                 method: 'POST',
                 headers: {
@@ -33,8 +34,7 @@ const CreateConversation: React.FC<CreateConversationProps> = ({
             if (!response.ok) throw new Error('Error creating conversation');
             const newConversation = await response.json();
 
-            // Sử dụng ngay dữ liệu vừa tạo
-            onConversationCreated(newConversation.id, newConversation); // Gửi thông tin cuộc trò chuyện vừa tạo về cho App
+            onConversationCreated(newConversation.id, newConversation); // Gửi thông tin cuộc trò chuyện mới
 
             antdMessage.success("Đã tạo cuộc trò chuyện mới.");
         } catch (error) {
@@ -47,6 +47,7 @@ const CreateConversation: React.FC<CreateConversationProps> = ({
         <Button 
             type="primary" 
             onClick={createConversation}
+            className={className} // Gán className từ props
             style={{
                 width: 'auto',
                 padding: '10px',

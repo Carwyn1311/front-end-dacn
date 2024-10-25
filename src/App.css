@@ -1,94 +1,95 @@
-/* App.css */
-
-/* Set height to 100% for the entire application */
 .app-container {
   display: flex;
   height: 100vh;
-  flex-direction: row; /* Layout in a row */
-  overflow-x: hidden; /* Prevent horizontal scroll */
+  flex-direction: row;
+  overflow-x: hidden;
 }
 
-/* Sidebar fixed to the left */
 .sidebar {
   width: 250px;
   height: 100vh;
-  position: fixed; /* Fixed to the left */
+  position: fixed;
   left: 0;
   top: 0;
-  background-color: #333; /* Sidebar background color */
+  background-color: #333;
   color: white;
   padding: 20px;
-  transition: transform 0.3s ease; /* Animation for showing/hiding sidebar */
-  overflow-y: auto; /* Vertical scroll auto */
-  overflow-x: hidden; /* No horizontal scroll */
-  z-index: 1000; /* Ensure it is above the content */
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 1000;
 }
 
-/* When sidebar is closed */
-.sidebar-closed .sidebar {
-  transform: translateX(-100%); /* Slide sidebar out of view when closed */
+.sidebar-hidden .sidebar {
+  transform: translateX(-100%);
 }
 
-/* Main content adjusted according to the sidebar */
 .main-content {
   flex-grow: 1;
   padding: 20px;
-  transition: margin-left 0.3s ease; /* Smooth transition when sidebar opens/closes */
-  overflow-y: auto; /* Vertical scroll auto */
-  overflow-x: hidden; /* Prevent horizontal scroll */
-  margin-top: 80px; /* Push content down to avoid the header */
+  transition: margin-left 0.3s ease;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-top: 80px;
 }
 
-/* When the sidebar is closed */
-.sidebar-closed .main-content {
-  margin-left: 0; /* No margin when the sidebar is closed */
+.sidebar-hidden .main-content {
+  margin-left: 0;
 }
 
-/* Larger header */
 .app-header {
   background-color: #6e1e1e;
   border-bottom: 1px solid #ddd;
-  height: 80px; /* Increase the height of the header */
+  height: 80px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
-  position: fixed; /* Fix the header at the top */
+  position: fixed;
   top: 0;
-  z-index: 999; /* Ensure header stays on top of other elements */
+  z-index: 999;
   transition: left 0.3s ease, width 0.3s ease;
-  overflow-x: hidden; /* Prevent header overflow */
+  overflow-x: hidden;
 }
 
-/* When the sidebar is open, adjust header position and width */
 .sidebar-open .app-header {
-  left: 250px;
+  margin-left: 40px;
   width: calc(100% - 250px);
-  .sidebar-toggle-button {
-    margin-left: 30px;
+
+  .create-conversation-button{
+    font-size: 30px;
+    margin-left: 25px;
   }
 }
-
-/* When the sidebar is closed, the header takes up the full width */
-.sidebar-closed .app-header {
-  left: 0;
-  width: 100%;
+.sidebar-open .sidebar-toggle-button {
+  margin-left: 15px;
 }
 
-/* Sidebar toggle button */
 .sidebar-toggle-button {
-  font-size: 24px;
-  height: 50px;
-  width: 50px;
+  font-size: 30px;
+  height: 55px;
+  width: 70px;
   cursor: pointer;
-  background: none;
+  background: rgb(9, 4, 176);
   border: none;
-  color: #333;
-  
-  /* Centering content */
+  color: #ffffff;
   display: flex;
-  justify-content: center;  /* Horizontally center */
-  align-items: center;      /* Vertically center */
+  justify-content: center;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.create-conversation-button{
+  font-size: 30px;
+  height: 55px;
+  width: 70px;
+  cursor: pointer;
+  background: rgb(9, 4, 176);
+  border: none;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20px;
 }
 
 .app-title {
@@ -96,9 +97,27 @@
   font-weight: bold;
 }
 
-/* Prevent horizontal scroll on the body */
 body {
   margin: 0;
   padding: 0;
-  overflow-x: hidden; /* Prevent horizontal scroll on body */
+  overflow-x: hidden;
+}
+
+@media (max-width: 1024px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+
+  .app-header {
+    left: 0;
+    width: 100%;
+  }
 }

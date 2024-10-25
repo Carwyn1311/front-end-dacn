@@ -4,6 +4,7 @@ import Avatar from '../../User/Content/Avatar';
 import ConversationList from '../../Maincontent/Content/ConversationList';
 import avatarImage from '../../User/images/CHERRY.png';
 import LogoutButton from '../../Logout/Content/LogoutButton';
+import '../.css/Sidebar.css';
 
 interface SidebarProps {
   userName: string;
