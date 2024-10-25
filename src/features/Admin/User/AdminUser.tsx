@@ -8,22 +8,18 @@ import { FaSearch } from 'react-icons/fa';
 import Dropdown from '../../../components/Dropdown/Dropdown';
 import CreateUserForm from '../../CreateUserForm/CreateUserForm';
 
-
 const userData = [
   { id: 1, name: 'User1', role: 'Admin', status: 'Hoạt động' },
 ];
 
 const AdminUser: React.FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState<string>('');
   const [users, setUsers] = useState(userData);
   const [statusFilter, setStatusFilter] = useState<string>('Tất cả');
   const [roleFilter, setRoleFilter] = useState<string>('Tất cả');
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [isCreateUserModalOpen, setIsCreateUserModalOpen] = useState(false);
-
 
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
@@ -52,6 +48,7 @@ const AdminUser: React.FC = () => {
   };
 
   const filterUsers = (searchValue: string, status: string, role: string) => {
+    // Chức năng lọc người dùng
   };
 
   const handleStatusChange = (status: string) => {
@@ -65,13 +62,13 @@ const AdminUser: React.FC = () => {
   };
 
   return (
-    <div className="content">
-      <div className="user-container">
+    <div className="content" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '10vh', padding: '40px' }}>
+      <div className="user-container" style={{ width: '1000%', maxWidth: '1200px', padding: '70px', backgroundColor: '#fff', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
         <Card title="Quản lý người dùng" className="admin-user-card">
           <Row gutter={16} className="admin-buttons">
             <Col className="admin-search-col">
               <SearchInput
-                label="Search by client or project name"
+                label=""
                 value={searchValue}
                 onChange={e => handleSearchChange(e.target.value)}
                 prefixIcon={<FaSearch />}
@@ -89,8 +86,8 @@ const AdminUser: React.FC = () => {
             </Col>
           </Row>
 
-          <Row gutter={16} className="admin-filter-row">
-            <Col span={8}>
+          <Row gutter={16} className="admin-filter-row" style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <Col span={8} className="admin-filter-col" style={{ marginRight: '20px' }}>
               <Dropdown
                 label="Lọc theo trạng thái"
                 options={['Tất cả', 'Hoạt động', 'Đóng băng']}
@@ -98,7 +95,7 @@ const AdminUser: React.FC = () => {
                 onChange={handleStatusChange}
               />
             </Col>
-            <Col span={8}>
+            <Col span={8} className="admin-filter-col">
               <Dropdown
                 label="Lọc theo vai trò"
                 options={['Tất cả', 'Admin', 'User']}

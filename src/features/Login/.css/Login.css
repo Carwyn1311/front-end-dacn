@@ -70,12 +70,14 @@ body {
 /* Trường input */
 .input-field {
   flex: 1;
-  padding: 14px;
-  font-size: 14px;
+  padding: 10px; /* Điều chỉnh padding */
+  font-size: 14px; /* Giữ kích thước font chữ */
   border-radius: 6px;
   border: 1px solid #ddd;
   outline: none;
   transition: border-color 0.3s ease;
+  width: 100%;
+  max-width: 260px; /* Giới hạn chiều rộng cho phù hợp với khung */
 }
 
 .input-field:focus {
@@ -154,16 +156,33 @@ footer a:hover {
 }
 
 /* Nhóm các nút nằm ngang */
+/* Container cho hai nút */
 .horizontal-buttons {
   display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  gap: 15px; /* Khoảng cách giữa hai nút */
+  margin-top: 20px;
 }
 
+/* Style chung cho cả hai nút */
 .create-account-btn,
 .forgot-password-btn {
-  flex: 1;
-  margin: 0 5px;
-  padding: 5px 10px;
-  font-size: 14px;
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #2f54eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+/* Hiệu ứng hover */
+.create-account-btn:hover,
+.forgot-password-btn:hover {
+  background-color: #1d39c4;
 }
