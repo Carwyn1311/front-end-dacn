@@ -147,19 +147,18 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
             <h3 className="text-top-label">CHERRY CHAT</h3>
             <h2 className="login-title">Login</h2>
             <form className="login-form" onSubmit={handleSubmit}>
-              <div className="input-group">
-                <BiUser className="user-icon" />
-                <TextField
-                  className='InputUserName'
-                  label="User Name"
-                  name="userName"
-                  value={userName}
-                  onChange={handleUserNameChange}
-                  fullWidth={true} // Chiều rộng đầy đủ
-                  placeholder=""
-                  prefixIcon={<i className="user-icon" />} // Icon tùy chọn
-                />
-              </div>
+            <div className="input-group">
+            <BiUser className="user-icon" />
+            <TextField
+              className="InputUserName"
+              label="Username"
+              name="userName"
+              value={userName}
+              onChange={handleUserNameChange}
+              fullWidth={true}
+              placeholder=""
+            />
+          </div>
               <div className="input-group">
                 <IoMdLock className="user-icon" />
                 <PasswordField className='InputUserName'
