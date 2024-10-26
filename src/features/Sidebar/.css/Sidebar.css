@@ -62,33 +62,37 @@
 
 .avatar-menu {
   position: absolute;
-  bottom: 20px; /* Menu at the bottom */
-  left: 0;
+  top: 100px; /* Điều chỉnh vị trí để menu nằm gần hơn */
+  left: 20px;
   background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 10px;
   z-index: 1;
   color: black;
-  width: 150px;
+  width: 130px; /* Giảm chiều rộng */
 }
 
-.avatar-menu ul {
+.avatar-menu ul.form-list {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
 
-.avatar-menu li {
+.avatar-menu ul.form-list li {
   padding: 5px 0;
   cursor: pointer;
-  transition: background-color 0.3s ease; /* Transition effect for hover */
+  text-align: center; /* Căn giữa văn bản */
 }
 
-.avatar-menu li:hover {
-  background-color: #f0f0f0; /* Hover effect for list items */
-  border-radius: 5px;
+.avatar-menu ul.form-list li:not(:last-child) {
+  margin-bottom: 5px; /* Tạo khoảng cách giữa các mục */
 }
+
+.avatar-menu ul.form-list li.logout {
+  color: red;
+}
+
 
 .info-user {
   display: flex;

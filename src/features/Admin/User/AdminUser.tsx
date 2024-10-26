@@ -1,3 +1,5 @@
+
+import '../.css/AdminUser.css';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Row, Col, List, Modal, message } from 'antd';
@@ -7,6 +9,7 @@ import SearchInput from '../../../components/SearchInput/SearchInput';
 import { FaSearch } from 'react-icons/fa';
 import Dropdown from '../../../components/Dropdown/Dropdown';
 import CreateUserForm from '../../CreateUserForm/CreateUserForm';
+
 
 const userData = [
   { id: 1, name: 'User1', role: 'Admin', status: 'Hoạt động' },
@@ -18,7 +21,6 @@ const AdminUser: React.FC = () => {
   const [users, setUsers] = useState(userData);
   const [statusFilter, setStatusFilter] = useState<string>('Tất cả');
   const [roleFilter, setRoleFilter] = useState<string>('Tất cả');
-  const [selectedUser, setSelectedUser] = useState<any>(null);
   const [isCreateUserModalOpen, setIsCreateUserModalOpen] = useState(false);
 
   const handleSearchChange = (value: string) => {
@@ -62,48 +64,42 @@ const AdminUser: React.FC = () => {
   };
 
   return (
-    <div className="content" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '10vh', padding: '40px' }}>
-      <div className="user-container" style={{ width: '1000%', maxWidth: '1200px', padding: '70px', backgroundColor: '#fff', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+    <div className="main-content">
+      <div className="user-container">
         <Card title="Quản lý người dùng" className="admin-user-card">
-          <Row gutter={16} className="admin-buttons">
-            <Col className="admin-search-col">
-              <SearchInput
-                label=""
-                value={searchValue}
-                onChange={e => handleSearchChange(e.target.value)}
-                prefixIcon={<FaSearch />}
-              />
-            </Col>
-            <Col className="admin-add-user-col">
-              <Button
-                className="admin-add-user-button"
-                type="primary"
-                icon={<PlusOutlined />}
-                onClick={handleAddUser}
-              >
-                Thêm người dùng
-              </Button>
-            </Col>
-          </Row>
+          <div className="admin-header">
+            <SearchInput
+              label="Tìm kiếm theo tên khách hàng hoặc dự án"
+              value={searchValue}
+              onChange={e => handleSearchChange(e.target.value)}
+              placeholder=" "
+              prefixIcon={<FaSearch />}
+              fullWidth={true}
+            />
+            <Button
+              className="admin-button"
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={handleAddUser}
+            >
+              Thêm người dùng
+            </Button>
+          </div>
 
-          <Row gutter={16} className="admin-filter-row" style={{ marginTop: '20px', marginBottom: '20px' }}>
-            <Col span={8} className="admin-filter-col" style={{ marginRight: '20px' }}>
-              <Dropdown
-                label="Lọc theo trạng thái"
-                options={['Tất cả', 'Hoạt động', 'Đóng băng']}
-                defaultValue="Tất cả"
-                onChange={handleStatusChange}
-              />
-            </Col>
-            <Col span={8} className="admin-filter-col">
-              <Dropdown
-                label="Lọc theo vai trò"
-                options={['Tất cả', 'Admin', 'User']}
-                defaultValue="Tất cả"
-                onChange={handleRoleChange}
-              />
-            </Col>
-          </Row>
+          <div className="admin-filter-row">
+            <Dropdown
+              label="Lọc theo trạng thái"
+              options={['Tất cả', 'Hoạt động', 'Đóng băng']}
+              defaultValue="Tất cả"
+              onChange={handleStatusChange}
+            />
+            <Dropdown
+              label="Lọc theo vai trò"
+              options={['Tất cả', 'Admin', 'User']}
+              defaultValue="Tất cả"
+              onChange={handleRoleChange}
+            />
+          </div>
 
           <List
             className="admin-user-list"
@@ -112,8 +108,8 @@ const AdminUser: React.FC = () => {
               <List.Item
                 className="admin-user-list-item"
                 actions={[
-                  <Button icon={<EditOutlined />} onClick={() => handleEditUser(user)}>Sửa</Button>,
-                  <Button icon={<DeleteOutlined />} onClick={() => handleDeleteUser(user.id)}>Xóa</Button>,
+                  <Button icon={<EditOutlined />} className="admin-button admin-edit-button" onClick={() => handleEditUser(user)}>Sửa</Button>,
+                  <Button icon={<DeleteOutlined />} className="admin-button admin-delete-button" onClick={() => handleDeleteUser(user.id)}>Xóa</Button>,
                 ]}
               >
                 <List.Item.Meta
