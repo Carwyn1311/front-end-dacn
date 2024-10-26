@@ -141,6 +141,7 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
             color: 'black',
             width: '150px',
             marginLeft: '30px',
+            height: '200px'
           }}
         >
           <ul className="form-list" style={{ listStyleType: 'none', padding: 0, margin: 0 }}>

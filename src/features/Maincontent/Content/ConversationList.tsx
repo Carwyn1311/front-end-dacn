@@ -12,9 +12,10 @@ import '../.css/ConversationList.css';
 interface ConversationListProps {
   onSelectConversation: (conversationId: string, messages: any[]) => void;
   onConversationCreated?: (conversationId: string, newConversation: any) => void;
+  className?: string;
 }
 
-const ConversationList: React.FC<ConversationListProps> = ({ onSelectConversation, onConversationCreated }) => {
+const ConversationList: React.FC<ConversationListProps> = ({ onSelectConversation, onConversationCreated, className }) => {
   const [conversations, setConversations] = useState<any[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<any>(null);
   const [editingConversationId, setEditingConversationId] = useState<string | null>(null); 
@@ -72,8 +73,7 @@ const ConversationList: React.FC<ConversationListProps> = ({ onSelectConversatio
       }
     };
   }, [onSelectConversation, selectedConversation?.id]); 
-  
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleConversationCreated = (conversationId: string, newConversation: any) => {
     setConversations((prevConversations) => [...prevConversations, newConversation]);
   };
@@ -121,7 +121,7 @@ const ConversationList: React.FC<ConversationListProps> = ({ onSelectConversatio
   };
 
   return (
-    <div className="conversation-list-container">
+    <div className={`conversation-list-container ${className || ''}`}>
       <List
         bordered
         dataSource={conversations}
