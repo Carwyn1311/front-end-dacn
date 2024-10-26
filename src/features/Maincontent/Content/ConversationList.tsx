@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { List, Button, message as antdMessage } from 'antd';
 import { ConversationId } from './ConversationId';
 import EditConversation from './EditConversation';
-import '../.css/ConversationList.css';
 import { loadConversations } from './ConversationService';
 import { deleteConversation } from './DeleteConversation';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
+import '../.css/ConversationList.css';
 
 interface ConversationListProps {
   onSelectConversation: (conversationId: string, messages: any[]) => void;

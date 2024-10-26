@@ -5,6 +5,7 @@ import ConversationList from '../../Maincontent/Content/ConversationList';
 import avatarImage from '../../User/images/CHERRY.png';
 import LogoutButton from '../../Logout/Content/LogoutButton';
 import '../.css/Sidebar.css';
+import Button from '../../../components/Button/Button';
 
 interface SidebarProps {
   userName: string;
@@ -80,7 +81,7 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
         {isLoggedIn ? (
           <>
             <div style={{ cursor: 'pointer' }} onClick={toggleAvatarMenu}>
-              <Avatar src={avatarImage} alt="User Profile Picture" size={70} />
+              <Avatar src={avatarImage} alt="User Profile Picture" size={80} />
             </div>
           </>
         ) : (
@@ -101,8 +102,10 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
         )}
 
         {location.pathname !== '/' && (
-          <div style={{ padding: '10px 0', cursor: 'pointer' }} onClick={handleBackToHome}>
-            <button
+          <div style={{ padding: '10px 0', cursor: 'pointer' }}>
+            <Button
+              onClick={handleBackToHome}
+              className='logout-button'
               style={{
                 padding: '10px',
                 width: '100%',
@@ -113,7 +116,7 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
               }}
             >
               Quay lại trang chính
-            </button>
+            </Button>
           </div>
         )}
 
