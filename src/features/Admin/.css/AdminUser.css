@@ -1,15 +1,20 @@
 .main-content {
   display: flex;
   justify-content: center;
+  align-items: center; 
   padding: 20px 0;
   box-sizing: border-box;
   background-color: #f0f2f5;
+  width: 100vw;
+  min-height: 100vh; 
+  overflow-y: auto; 
 }
 
 .user-container {
+  padding: 20px;
   width: 100%;
-  max-width: 900px;
-  padding: 40px;
+  max-width: 900px; 
+  background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
@@ -31,22 +36,30 @@
 .analytics-display h3 {
   margin-bottom: 10px;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 13px; 
   color: #333;
 }
 
 .analytics-display p {
   margin: 5px 0;
   color: #555;
-  font-size: 22px;
+  font-size: 13px; 
 }
-
 
 .admin-search-container {
   display: flex;
   align-items: center;
   gap: 10px;
-  max-width: 300px;
+  max-width: 100%; /* Đảm bảo ô tìm kiếm và nút nằm ngang nhau */
+  margin-bottom: 20px;
+}
+
+.admin-search-container input[type="text"] {
+  padding: 10px 15px; /* Đảm bảo nội dung vừa khít */
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+  flex-grow: 1; /* Để ô tìm kiếm chiếm hết không gian còn lại */
+  box-sizing: border-box;
 }
 
 .admin-button {
@@ -59,13 +72,14 @@
   border: none;
   display: flex;
   align-items: center;
+  justify-content: center;
   transition: background-color 0.3s ease;
+  white-space: nowrap;
 }
 
 .admin-button:hover {
   background-color: #40a9ff;
 }
-
 
 .admin-filter-row {
   display: flex;
@@ -75,9 +89,7 @@
 
 .admin-user-list {
   max-height: 300px;
-  overflow-y: auto;
   padding-right: 10px;
-  margin-top: 20px;
   box-sizing: content-box;
   white-space: nowrap;
 }
@@ -98,7 +110,6 @@
 .admin-user-list::-webkit-scrollbar-track {
   background-color: #f1f1f1;
 }
-
 
 .admin-edit-button,
 .admin-delete-button {
@@ -129,7 +140,6 @@
   background-color: #ff7875;
 }
 
-
 .ant-modal-title {
   font-size: 18px;
   font-weight: bold;
@@ -152,7 +162,6 @@
   font-size: 16px;
   border-radius: 8px;
 }
-
 
 .analytics-item {
   margin-bottom: 15px;
