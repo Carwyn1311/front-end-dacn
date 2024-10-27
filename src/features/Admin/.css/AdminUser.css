@@ -1,44 +1,81 @@
 /* Căn chỉnh nội dung chính */
 .main-content {
   display: flex;
-  justify-content: center;
-  padding: 20px;
+  justify-content: flex-start; /* Căn sát về phía bên trái */
+  padding: 20px 0; /* Giảm padding bên trái */
   box-sizing: border-box;
-  margin-top: 10px;
+  margin-top: 0;
+  background-color: #f0f2f5;
 }
 
 /* Container cho người dùng */
 .user-container {
-  width: 100%;
+  width: 1000%;
+  max-width: 900px;
   background-color: #fff;
-  padding: 20px;
+  padding: 70px; /* Giảm padding để vừa phải */
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Tìm kiếm người dùng và các nút chức năng */
-.admin-buttons,
-.admin-status-row {
+/* Card cho tiêu đề và phần chứa người dùng */
+.admin-user-card {
+  border: none;
+}
+
+/* Header: Tìm kiếm và nút thêm người dùng */
+/* Header: Tìm kiếm và nút thêm người dùng */
+.admin-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
 
-/* Danh sách người dùng với thanh cuộn */
-.admin-user-list {
-  max-height: 400px; /* Giới hạn chiều cao cho danh sách */
-  overflow-y: auto; /* Thêm thanh cuộn dọc nếu danh sách dài */
-  padding-right: 20px; /* Tạo khoảng trống giữa nội dung và thanh cuộn */
-  margin-bottom: 20px;
-  box-sizing: content-box; /* Đảm bảo padding không ảnh hưởng đến kích thước */
+/* Thu nhỏ khung tìm kiếm và cách nút "Thêm người dùng" */
+.admin-header .admin-search-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: auto; /* Đặt width auto để kích thước nhỏ lại theo nội dung */
+  max-width: 300px; /* Giới hạn độ rộng tối đa */
 }
 
-/* Tùy chỉnh thanh cuộn */
+.admin-header .admin-button {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 8px;
+  color: #fff;
+  background-color: #1890ff;
+  border: none;
+  display: flex;
+  align-items: center;
+  margin-left: 20px; /* Tạo khoảng cách giữa ô tìm kiếm và nút */
+}
+
+.admin-header .admin-button:hover {
+  background-color: #40a9ff;
+}
+
+/* Dropdown lọc */
+.admin-filter-row {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+/* Danh sách người dùng với thanh cuộn */
+.admin-user-list {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 10px;
+  margin-top: 20px;
+  box-sizing: content-box;
+}
+
 .admin-user-list::-webkit-scrollbar {
   width: 8px;
-  margin-right: 50px; /* Cách thanh cuộn so với nội dung */
 }
 
 .admin-user-list::-webkit-scrollbar-thumb {
@@ -55,49 +92,42 @@
 }
 
 /* Các nút hành động */
-.admin-add-user-button,
-.admin-edit-user-button,
-.admin-delete-user-button,
-.admin-freeze-user-button,
-.admin-save-status-button,
-.admin-chat-button {
-  background-color: #1890ff;
+.admin-button {
   color: white;
-  padding: 10px 20px;
   font-size: 14px;
   border-radius: 6px;
-  border: none;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
 }
 
-.admin-add-user-button:hover,
-.admin-edit-user-button:hover,
-.admin-delete-user-button:hover,
-.admin-freeze-user-button:hover,
-.admin-save-status-button:hover,
-.admin-chat-button:hover {
-  background-color: #40a9ff;
+.admin-edit-button {
+  background-color: #1a69c4;
+  margin-right: 10px;
 }
 
-.admin-edit-user-button {
-  background-color: #52c41a;
-}
-
-.admin-delete-user-button {
+.admin-delete-button {
   background-color: #ff4d4f;
 }
 
-.admin-freeze-user-button {
-  background-color: #faad14;
+.admin-edit-button:hover {
+  background-color: #3da2d1;
 }
 
-/* Căn giữa nút chat với nhân viên hỗ trợ */
-.admin-chat-row {
-  display: flex;
-  justify-content: center;
-  margin-top: 40px;
+.admin-delete-button:hover {
+  background-color: #ff7875;
 }
 
-.admin-chat-button {
-  padding: 10px 30px;
-  font-size: 16px;
+/* Modal */
+.ant-modal-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.ant-modal-content {
+  border-radius: 10px;
+}
+
+.ant-modal-footer {
+  display: none;
 }

@@ -12,7 +12,7 @@ interface TextFieldProps {
   className?: string;
   width?: string;
   height?: string;
-  prefixIcon?: React.ReactNode; // Thêm icon vào phía trước trường nhập liệu
+  prefixIcon?: React.ReactNode;
 }
 
 const TextField: React.FC<TextFieldProps> = ({
@@ -36,34 +36,45 @@ const TextField: React.FC<TextFieldProps> = ({
 
   return (
     <div
-      className={`floating-label-container ${margin}`}
       style={{
         display: 'flex',
         alignItems: 'center',
-        border: '1px solid #ccc',
-        borderRadius: '4px',
-        padding: '8px',
+        border: '1px solid #ddd',
+        borderRadius: '6px',
+        padding: '0',
+        transition: 'border-color 0.3s ease',
         width: fullWidth ? '100%' : width,
-        height: fullHeight ? '100%' : height
+        maxWidth: '300px', 
+        boxSizing: 'border-box',
+        ...(isFocused && { borderColor: '#000' }),
+        backgroundColor: '#fff', 
       }}
     >
-      {prefixIcon != null && (
-        <span style={{ marginRight: '8px', fontSize: '18px' }}>
+      {prefixIcon && (
+        <span
+          style={{
+            fontSize: '16px',
+            color: '#aaa',
+            marginLeft: '6px',
+            marginRight: '4px',
+          }}
+        >
           {prefixIcon}
         </span>
       )}
       <div style={{ flexGrow: 1, position: 'relative' }}>
         <label
           htmlFor={name}
-          className={`floating-label ${isFocused || value !== '' ? 'focused' : ''}`}
           style={{
             position: 'absolute',
-            top: isFocused || value !== '' ? '-22px' : '50%',
-            left: '8px',
-            transform: 'translateY(-50%)',
-            fontSize: isFocused || value !== '' ? '12px' : '16px',
-            transition: 'all 0.2s ease',
-            color: isFocused ? '#000' : '#aaa'
+            top: isFocused || value !== '' ? '-20px' : '50%', 
+            left: '10px',
+            transform: isFocused || value !== '' ? 'none' : 'translateY(-50%)',
+            fontSize: isFocused || value !== '' ? '12px' : '14px',
+            color: isFocused ? '#000' : '#aaa',
+            transition: 'top 0.3s ease, font-size 0.3s ease, color 0.3s ease',
+            padding: '0 4px',
+            pointerEvents: 'none',
           }}
         >
           {label}
@@ -75,18 +86,21 @@ const TextField: React.FC<TextFieldProps> = ({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className={`input-field ${className}`}
           onFocus={handleFocus}
           onBlur={handleBlur}
           style={{
             width: '100%',
             border: 'none',
             outline: 'none',
-            padding: '5px',
             fontSize: '14px',
-            backgroundColor: 'transparent'
+            padding: '10px', 
+            backgroundColor: '#fff', 
+            boxSizing: 'border-box',
+            appearance: 'textfield',
+            WebkitTextFillColor: 'currentColor',
+            caretColor: '#000',
+            backgroundClip: 'padding-box',
           }}
-          required
         />
       </div>
     </div>
