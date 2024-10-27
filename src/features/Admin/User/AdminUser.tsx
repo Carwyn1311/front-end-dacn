@@ -1,15 +1,13 @@
-
-import '../.css/AdminUser.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Row, Col, List, Modal, message } from 'antd';
+import { Card, List, Modal, message } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import Button from '../../../components/Button/Button';
 import SearchInput from '../../../components/SearchInput/SearchInput';
 import { FaSearch } from 'react-icons/fa';
 import Dropdown from '../../../components/Dropdown/Dropdown';
 import CreateUserForm from '../../CreateUserForm/CreateUserForm';
-
+import '../.css/AdminUser.css';
 
 const userData = [
   { id: 1, name: 'User1', role: 'Admin', status: 'Hoạt động' },
@@ -22,6 +20,30 @@ const AdminUser: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<string>('Tất cả');
   const [roleFilter, setRoleFilter] = useState<string>('Tất cả');
   const [isCreateUserModalOpen, setIsCreateUserModalOpen] = useState(false);
+  const [analyticsData, setAnalyticsData] = useState<any | null>(null);
+  const successMessageShownRef = useRef(false);
+
+  useEffect(() => {
+    const loadAnalytics = async () => {
+      try {
+        const response = await fetch('https://chat-api-backend-x4dl.onrender.com/api/conversations/analytics');
+        if (!response.ok) throw new Error('Không thể tải dữ liệu phân tích');
+
+        const analytics = await response.json();
+        setAnalyticsData(analytics);
+
+        if (!successMessageShownRef.current) {
+          message.success('Tải dữ liệu phân tích thành công');
+          successMessageShownRef.current = true;
+        }
+      } catch (error) {
+        console.error('Error loading analytics:', error);
+        message.error('Lỗi khi tải dữ liệu: ' + (error as Error).message);
+      }
+    };
+
+    loadAnalytics();
+  }, []);
 
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
@@ -68,6 +90,17 @@ const AdminUser: React.FC = () => {
       <div className="user-container">
         <Card title="Quản lý người dùng" className="admin-user-card">
           <div className="admin-header">
+            
+          <h3>Phân tích tổng thể</h3>
+          {analyticsData ? (
+            <div className="analytics-display">
+              <p>Tổng số câu hỏi đã xử lý: {analyticsData.totalProcessedResponses}</p>
+              <p>Thời gian phản hồi trung bình: {analyticsData.averageResponseTime.toFixed(2)} ms</p>
+              <p>Tổng số người dùng duy nhất: {analyticsData.totalUniqueUsers}</p>
+            </div>
+          ) : (
+            <p>Đang tải dữ liệu...</p>
+          )}
             <SearchInput
               label="Tìm kiếm theo tên khách hàng hoặc dự án"
               value={searchValue}
