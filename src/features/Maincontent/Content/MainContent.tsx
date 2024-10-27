@@ -10,41 +10,29 @@ import '../.css/MainContent.css';
 const { Content } = Layout;
 const { Search } = Input;
 
+interface Message {
+  sender: string;
+  content: string;
+  color: string;
+  contentType?: 'text' | 'image';
+  imageData?: string;
+}
+
 interface MainContentProps {
   conversationId: string | null;
-  messages: any[];
+  messages: Message[];
 }
 
 const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: propsMessages }) => {
   const [username, setUsername] = useState('');
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState<any[]>(propsMessages || []);
+  const [messages, setMessages] = useState<Message[]>(propsMessages || []);
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(conversationId);
 
   const stompClientRef = useRef<Client | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const memoizedMessages = useMemo(() => messages, [messages]);
-
-  const loadConversations = async () => {
-    if (!username) {
-      antdMessage.error("Vui lòng nhập tên người dùng.");
-      return;
-    }
-
-    try {
-      const response = await fetch(`https://chat-api-backend-x4dl.onrender.com/api/conversations/by-username?username=${username}`);
-      if (!response.ok) throw new Error('Lỗi tải cuộc trò chuyện');
-      await response.json();
-    } catch (error) {
-      console.error('Lỗi tải cuộc trò chuyện:', error);
-      antdMessage.error('Lỗi tải cuộc trò chuyện.');
-    }
-  };
-
-  useEffect(() => {
-    setCurrentConversationId(conversationId);
-    setMessages(propsMessages);
-  }, [conversationId, propsMessages]);
 
   useEffect(() => {
     const storedUser = User.getUserData();
@@ -54,7 +42,50 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
   }, []);
 
   useEffect(() => {
-    const socket = new SockJS('https://chat-api-backend-x4dl.onrender.com/ws-chat');
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  const loadConversations = async () => {
+    if (!username) {
+      antdMessage.error("Vui lòng nhập tên người dùng.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8080/api/conversations/by-username?username=${username}`);
+      if (!response.ok) throw new Error('Lỗi tải cuộc trò chuyện');
+      const data = await response.json();
+
+      if (data.messages) {
+        const processedMessages = data.messages.map((msg: any) => ({
+          ...msg,
+          contentType: msg.contentType || 'text',
+          imageData: msg.contentType === 'image' ? msg.content : undefined,
+          content: msg.contentType === 'image' ? '[Hình ảnh]' : msg.content
+        }));
+        setMessages(processedMessages);
+      }
+    } catch (error) {
+      console.error('Lỗi tải cuộc trò chuyện:', error);
+      antdMessage.error('Lỗi tải cuộc trò chuyện.');
+    }
+  };
+
+  useEffect(() => {
+    setCurrentConversationId(conversationId);
+    if (propsMessages) {
+      const processedMessages = propsMessages.map(msg => ({
+        ...msg,
+        contentType: msg.contentType || 'text',
+        imageData: msg.contentType === 'image' ? msg.content : undefined,
+        content: msg.contentType === 'image' ? '[Hình ảnh]' : msg.content
+      }));
+      setMessages(processedMessages);
+    }
+  }, [conversationId, propsMessages]);
+
+  useEffect(() => {
+    const socket = new SockJS('http://localhost:8080/ws-chat');
     const stompClient = new Client({
       webSocketFactory: () => socket,
       debug: (str: any) => {
@@ -65,15 +96,14 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
 
         stompClient.subscribe('/topic/messages', (messageOutput) => {
           console.log('Nhận được tin nhắn từ server:', messageOutput.body);
-          const chatMessage = {
+          const chatMessage: Message = {
             sender: 'Cherry',
             content: messageOutput.body,
-            color: 'blue'
+            color: 'blue',
+            contentType: 'text'
           };
-          setMessages((prevMessages) => [...prevMessages, chatMessage]);
+          setMessages(prevMessages => [...prevMessages, chatMessage]);
         });
-
-        startHeartbeat(stompClient);
       },
     });
 
@@ -87,50 +117,44 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
     };
   }, []);
 
-  const startHeartbeat = (stompClient: Client) => {
-    setInterval(() => {
-      if (stompClient.connected) {
-        console.log('Đang gửi heartbeat...');
-        stompClient.publish({
-          destination: "/app/ping",
-          body: 'ping'
-        });
-      }
-    }, 10000);
-  };
-
   const sendMessage = async () => {
     if (!username || !message || !currentConversationId) {
       antdMessage.error("Vui lòng nhập tên người dùng, tạo cuộc trò chuyện và nhập tin nhắn.");
       return;
     }
-  
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { sender: username, content: message, color: 'green' }
-    ]);
-  
-    setMessage(''); 
-  
+
+    const userMessage: Message = {
+      sender: username,
+      content: message,
+      color: 'green',
+      contentType: 'text'
+    };
+
+    setMessages(prevMessages => [...prevMessages, userMessage]);
+    setMessage('');
+
     try {
-      const response = await fetch(`https://chat-api-backend-x4dl.onrender.com/api/conversations/${currentConversationId}/messages`, {
+      const response = await fetch(`http://localhost:8080/api/conversations/${currentConversationId}/messages`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, message })
       });
-  
+
       if (!response.ok) throw new Error('Lỗi kết nối mạng');
-  
+
       const responseData = await response.json();
-  
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { sender: responseData.aiMessage.sender, content: responseData.aiMessage.content, color: 'blue' }
-      ]);
-  
-      loadConversations(); 
+
+      const aiMessage: Message = {
+        sender: responseData.aiMessage.sender,
+        content: responseData.aiMessage.content,
+        color: 'blue',
+        contentType: 'text'
+      };
+
+      setMessages(prevMessages => [...prevMessages, aiMessage]);
+      loadConversations();
     } catch (error: unknown) {
       console.error('Lỗi gửi tin nhắn:', error);
       if (error instanceof Error) {
@@ -138,7 +162,7 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
       }
     }
   };
-  
+
   const uploadImage = async (options: UploadRequestOption) => {
     const file = options.file as File;
     if (!file || !username || !currentConversationId) {
@@ -152,24 +176,59 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
     formData.append('conversationId', currentConversationId);
 
     try {
-      const response = await fetch('https://chat-api-backend-x4dl.onrender.com/api/images/upload', {
+      const response = await fetch('http://localhost:8080/api/images/upload', {
         method: 'POST',
         body: formData,
       });
 
       if (!response.ok) throw new Error('Lỗi tải lên hình ảnh');
-      const chatMessage = {
+
+      const responseData = await response.json();
+
+      const userImageMessage: Message = {
         sender: username,
-        content: `[Đã tải lên hình ảnh]`,
-        imageUrl: URL.createObjectURL(file),
+        content: '[Hình ảnh]',
         color: 'green',
+        contentType: 'image',
+        imageData: responseData.base64Image
       };
-      setMessages((prevMessages) => [...prevMessages, chatMessage]);
+      setMessages(prevMessages => [...prevMessages, userImageMessage]);
+
+      if (responseData.message) {
+        const aiResponseMessage: Message = {
+          sender: 'Cherry',
+          content: responseData.message,
+          color: 'blue',
+          contentType: 'text'
+        };
+        setMessages(prevMessages => [...prevMessages, aiResponseMessage]);
+      }
+
       antdMessage.success('Tải ảnh lên thành công.');
     } catch (error) {
       console.error('Lỗi tải lên hình ảnh:', error);
       antdMessage.error('Lỗi tải lên hình ảnh.');
     }
+  };
+
+  const renderMessageContent = (message: Message) => {
+    if (message.contentType === 'image' && message.imageData) {
+      return (
+        <div>
+          <div>{message.content}</div>
+          <img
+            src={`data:image/png;base64,${message.imageData}`}
+            alt="Uploaded"
+            style={{ maxWidth: '200px', maxHeight: '200px', marginTop: '10px' }}
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+              console.error('Error loading image');
+            }}
+          />
+        </div>
+      );
+    }
+    return message.content;
   };
 
   return (
@@ -182,13 +241,13 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
             bordered
             style={{ height: '300px', overflowY: 'auto', marginBottom: '10px', backgroundColor: '#f9f9f9' }}
             dataSource={memoizedMessages}
-            renderItem={(item) => (
+            renderItem={(item: Message) => (
               <List.Item style={{ color: item.color }}>
-                <strong>{item.sender}:</strong> {item.content}
-                {item.imageUrl && <img src={item.imageUrl} alt="Uploaded" style={{ maxWidth: '100%', marginTop: '10px' }} />}
+                <strong>{item.sender}:</strong> {renderMessageContent(item)}
               </List.Item>
             )}
           />
+          <div ref={messagesEndRef} />
 
           <Upload customRequest={uploadImage} showUploadList={false}>
             <Button icon={<UploadOutlined />} style={{ marginBottom: '10px', width: '100%' }}>Tải lên ảnh</Button>
@@ -196,13 +255,13 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
 
           <Input.Group className="input-group">
             <Search
-                placeholder="Nhập tin nhắn"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                onSearch={sendMessage} 
-                enterButton="Gửi"
+              placeholder="Nhập tin nhắn"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onSearch={sendMessage}
+              enterButton="Gửi"
             />
-            </Input.Group>
+          </Input.Group>
         </Content>
       </Layout>
     </div>
