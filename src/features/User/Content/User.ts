@@ -1,61 +1,80 @@
-export class User { 
+export class User {
   id: string;
   username: string;
   email: string;
   password: string;
-  role: number;  // 0 for user, 1 for admin
+  role: string;  // "USER" or "ADMIN"
   active: boolean;
   activationCode: string;
   resetToken: string;
 
   constructor(userData: Partial<User> = {}) {
-    this.id = userData.id || ''; // Giá trị mặc định là chuỗi rỗng nếu không có
-    this.username = userData.username || ''; // Giá trị mặc định là chuỗi rỗng nếu không có
-    this.email = userData.email || ''; // Giá trị mặc định là chuỗi rỗng nếu không có
-    this.password = userData.password || ''; // Giá trị mặc định là chuỗi rỗng nếu không có
-    this.role = userData.role !== undefined ? userData.role : 0; // Mặc định là user (0)
-    this.active = userData.active !== undefined ? userData.active : true; // Mặc định là tài khoản kích hoạt (true)
-    this.activationCode = userData.activationCode || ''; // Giá trị mặc định là chuỗi rỗng nếu không có
-    this.resetToken = userData.resetToken || ''; // Giá trị mặc định là chuỗi rỗng nếu không có
+    this.id = userData.id || '';
+    this.username = userData.username || '';
+    this.email = userData.email || '';
+    this.password = userData.password || '';
+    
+    // Kiểm tra role: nếu là 'ADMIN' hoặc roleAsNumber = 1 thì gán 'ADMIN', ngược lại gán 'USER'
+    if (userData.role === 'ADMIN' || userData.role === 'USER') {
+      this.role = userData.role;
+    } else if (userData.role as unknown as number === 1) {
+      this.role = 'ADMIN';
+    } else {
+      this.role = 'USER';
+    }
+
+    this.active = userData.active !== undefined ? userData.active : true;
+    this.activationCode = userData.activationCode || '';
+    this.resetToken = userData.resetToken || '';
   }
 
-  // Phương thức kiểm tra nếu người dùng là Admin (role = 1)
+  // Method to check if the user is an Admin (role = "ADMIN")
   isAdmin(): boolean {
-    return this.role === 1;
+    return this.role === 'ADMIN';
   }
 
-  // Phương thức kiểm tra nếu tài khoản người dùng đã kích hoạt
+  // Method to check if the user's account is active
   isActive(): boolean {
     return this.active;
   }
 
-  // Lưu thông tin người dùng và token vào sessionStorage
+  // Get role as a number: return 1 if "ADMIN", 0 if "USER"
+  getRoleAsNumber(): number {
+    return this.role === 'ADMIN' ? 1 : 0;
+  }
+
+  // Set role from a number: set to "ADMIN" if 1, "USER" if 0
+  setRoleFromNumber(roleNumber: number): void {
+    this.role = roleNumber === 1 ? 'ADMIN' : 'USER';
+  }
+
+  // Store user data and token in sessionStorage
   static storeUserData(user: User, token: string): void {
     const userData = JSON.stringify(user);
-    sessionStorage.setItem('user', userData);  // Lưu vào sessionStorage
-    sessionStorage.setItem('token', token);  // Lưu token vào sessionStorage
+    sessionStorage.setItem('user', userData);
+    sessionStorage.setItem('token', token);
   }
 
-  // Lưu token vào cookies
+  // Store token in cookies
   static storeTokenInCookie(token: string, expireDays: number = 1): void {
     const date = new Date();
-    date.setTime(date.getTime() + (expireDays * 24 * 60 * 60 * 1000)); // Cookie hết hạn sau số ngày đã cho
+    date.setTime(date.getTime() + expireDays * 24 * 60 * 60 * 1000);
     const expires = "expires=" + date.toUTCString();
-    document.cookie = `token=${token};${expires};path=/`; // Lưu token vào cookie
+    document.cookie = `token=${token};${expires};path=/`;
   }
 
-  // Lấy thông tin người dùng từ sessionStorage
+  // Retrieve user data from sessionStorage
   static getUserData(): User | null {
     const userData = sessionStorage.getItem('user');
     return userData ? Object.assign(new User(), JSON.parse(userData)) : null;
   }
 
-  // Lấy token từ sessionStorage
+  // Retrieve token from sessionStorage
   static getToken(): string | null {
     return sessionStorage.getItem('token');
   }
 
-  // Lấy token từ cookies
+  // Retrieve token from cookies
   static getTokenFromCookie(): string | null {
     const name = "token=";
     const decodedCookie = decodeURIComponent(document.cookie);
@@ -69,23 +88,23 @@ export class User {
     return null;
   }
 
-  // Xóa thông tin người dùng và token khỏi sessionStorage
+  // Clear user data and token from sessionStorage
   static clearUserData(): void {
     sessionStorage.removeItem('user');
-    sessionStorage.removeItem('token'); // Xóa token khỏi sessionStorage
+    sessionStorage.removeItem('token');
   }
 
-  // Xóa token khỏi cookies
+  // Clear token from cookies
   static clearTokenFromCookie(): void {
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   }
 
-  // Cập nhật thông tin người dùng đã lưu trong sessionStorage
+  // Update stored user data in sessionStorage
   static updateUserData(newUserData: Partial<User>): void {
     const currentUser = this.getUserData();
     if (currentUser) {
-      const updatedUser = Object.assign(currentUser, newUserData); // Kết hợp dữ liệu mới với đối tượng User hiện tại
-      this.storeUserData(updatedUser, this.getToken() || ''); // Cập nhật dữ liệu với token hiện tại
+      const updatedUser = Object.assign(currentUser, newUserData);
+      this.storeUserData(updatedUser, this.getToken() || '');
     }
   }
 }

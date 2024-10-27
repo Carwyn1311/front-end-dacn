@@ -93,7 +93,9 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
             localStorage.setItem('password', password);
             localStorage.setItem('rememberMe', 'true');
             localStorage.setItem('token', token);  
+            TokenAuthService.setToken(token);
         } else {
+            TokenAuthService.setSessionData('token', token);
             sessionStorage.setItem('token', token);  
             localStorage.removeItem('userName');
             localStorage.removeItem('password');
@@ -105,8 +107,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
         const user = new User({
             id: '1',                   
             username: userName,         
-            email: email || '',        
-            role: 0,                   
+            email: email || '',                           
             active: true,              
         });
         User.storeUserData(user, token); 

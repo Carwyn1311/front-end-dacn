@@ -1,38 +1,45 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Select, Switch, message } from 'antd';
-import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons'; // Import icons để hiển thị và ẩn mật khẩu
-import './CreateUserForm.css'; // Import file CSS
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import './CreateUserForm.css';
 import { User } from '../User/Content/User';
+import { TokenAuthService } from '../TokenAuthService/TokenAuthService';
 
 const { Option } = Select;
 
 interface CreateUserFormProps {
-  onUserCreated: (user: User) => void; // Callback để báo cáo khi người dùng mới được tạo
+  onUserCreated: (user: User) => void; 
 }
 
 const CreateUserForm: React.FC<CreateUserFormProps> = ({ onUserCreated }) => {
   const [loading, setLoading] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [passwordVisible, setPasswordVisible] = useState(false); 
 
   const onFinish = async (values: any) => {
     setLoading(true);
 
-
-    const newUser = new User({
+    // Tạo đối tượng người dùng mới với role là "ADMIN" hoặc "USER" tùy chọn
+    const newUser = {
       username: values.username,
       email: values.email,
       password: values.password,
-      role: parseInt(values.role),
+      role: values.role,  // Giữ nguyên giá trị "ADMIN" hoặc "USER"
       active: values.active,
-    });
+    };
 
     try {
-      const response = await fetch('https://your-api-endpoint.com/api/users', {
+      // Lấy token từ TokenAuthService
+      const token = TokenAuthService.getToken() || TokenAuthService.getSessionData('token');
+      if (!token) {
+        message.error('Bạn cần đăng nhập để thực hiện tác vụ này.');
+        setLoading(false);
+        return;
+      }
+
+      const response = await fetch('https://chat-api-backend-x4dl.onrender.com/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${User.getToken()}`, 
+          Authorization: `Bearer ${token}`, // Đính kèm token trong header
         },
         body: JSON.stringify(newUser),
       });
@@ -40,12 +47,11 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onUserCreated }) => {
       if (response.ok) {
         message.success('Tạo người dùng thành công');
         const createdUser = await response.json();
-        onUserCreated(createdUser);
+        onUserCreated(createdUser); // Không cần chuyển đổi role khi lấy từ API
       } else {
         message.error('Tạo người dùng thất bại');
       }
     } catch (error: unknown) {
-      // Sửa lỗi 'error is of type unknown'
       if (error instanceof Error) {
         message.error(`Lỗi: ${error.message}`);
       } else {
@@ -59,7 +65,8 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onUserCreated }) => {
   return (
     <div className="create-user-form">
       <h2 className="form-title">Tạo người dùng mới</h2>
-      <Form layout="vertical" onFinish={onFinish} initialValues={{ role: '0', active: true }}>
+      <Form layout="vertical" onFinish={onFinish} initialValues={{ role: 'USER', active: true }}>
+        
         <Form.Item
           label="Tên đăng nhập"
           name="username"
@@ -88,19 +95,20 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onUserCreated }) => {
           />
         </Form.Item>
 
+        {/* Form.Item cho Vai trò */}
         <Form.Item
           label="Vai trò"
-          name="role"
+          name="role"  // Đặt tên cho Form.Item để lấy giá trị từ Select
           rules={[{ required: true, message: 'Vui lòng chọn vai trò!' }]}
         >
-          <Select>
-            <Option value="0">Người dùng</Option>
-            <Option value="1">Quản trị viên</Option>
+          <Select placeholder="Chọn vai trò"> {/* Thêm placeholder cho Select */}
+            <Option value="USER">Người dùng</Option>
+            <Option value="ADMIN">Quản trị viên</Option>
           </Select>
         </Form.Item>
 
         <Form.Item label="Kích hoạt" name="active" valuePropName="checked" className="short-switch">
-          <Switch defaultChecked />
+          <Switch defaultChecked /> {/* Không disable, mặc định true */}
         </Form.Item>
 
         <Form.Item>
