@@ -29,13 +29,18 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onUserCreated }) => {
     try {
       // Lấy token từ TokenAuthService
       const token = TokenAuthService.getToken() || TokenAuthService.getSessionData('token');
+      
+      // Kiểm tra token và payload
+      console.log("Token:", token);
+      console.log("Payload:", JSON.stringify(newUser));
+
       if (!token) {
         message.error('Bạn cần đăng nhập để thực hiện tác vụ này.');
         setLoading(false);
         return;
       }
 
-      const response = await fetch('https://chat-api-backend-x4dl.onrender.com/users', {
+      const response = await fetch('https://chat-api-backend-x4dl.onrender.com/admin/users/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,11 +52,16 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onUserCreated }) => {
       if (response.ok) {
         message.success('Tạo người dùng thành công');
         const createdUser = await response.json();
-        onUserCreated(createdUser); // Không cần chuyển đổi role khi lấy từ API
+        onUserCreated(createdUser);
       } else {
-        message.error('Tạo người dùng thất bại');
+        // Nếu phản hồi từ máy chủ không thành công
+        const errorData = await response.json(); // In chi tiết lỗi từ API nếu có
+        console.error("Error response:", errorData);
+        message.error(`Tạo người dùng thất bại: ${errorData.message || "Unknown error"}`);
       }
-    } catch (error: unknown) {
+    } catch (error) {
+      // Nếu `fetch` gặp lỗi
+      console.error("Fetch error:", error);
       if (error instanceof Error) {
         message.error(`Lỗi: ${error.message}`);
       } else {
