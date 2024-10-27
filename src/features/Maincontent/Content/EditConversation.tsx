@@ -44,10 +44,7 @@ const EditConversation: React.FC<EditConversationProps> = ({ conversationId, ini
       antdMessage.success('Cập nhật tiêu đề thành công.');
 
       ConversationId.storeConversationId(currentConversationId);
-      
-
       onUpdate();
-
       setNewTitle('');
     } catch (error) {
       console.error('Lỗi cập nhật tiêu đề:', error);
@@ -61,10 +58,14 @@ const EditConversation: React.FC<EditConversationProps> = ({ conversationId, ini
         placeholder="Nhập tiêu đề mới"
         value={newTitle}
         onChange={(e) => setNewTitle(e.target.value)}
-        style={{ width: '70%' }}
+        style={{ width: 'calc(100% - 80px)', height: '40px' }} // Adjust width and height
       />
-      <Button type="primary" onClick={updateConversationTitle} style={{ width: '30%' }}>
-        đổi tên
+      <Button 
+        type="primary" 
+        onClick={updateConversationTitle} 
+        style={{ width: '80px', height: '40px' }} // Matches input height
+      >
+        Đổi tên
       </Button>
     </Input.Group>
   );

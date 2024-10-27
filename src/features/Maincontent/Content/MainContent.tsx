@@ -22,8 +22,23 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(conversationId);
 
   const stompClientRef = useRef<Client | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null); // Ref for the end of messages
 
   const memoizedMessages = useMemo(() => messages, [messages]);
+
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom(); // Initial scroll to bottom on component mount
+  }, []);
+
+  useEffect(() => {
+    scrollToBottom(); // Scroll to the bottom whenever messages change
+  }, [messages]);
 
   const loadConversations = async () => {
     if (!username) {
@@ -189,6 +204,7 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
               </List.Item>
             )}
           />
+          <div ref={messagesEndRef} /> {/* Scroll to this element */}
 
           <Upload customRequest={uploadImage} showUploadList={false}>
             <Button icon={<UploadOutlined />} style={{ marginBottom: '10px', width: '100%' }}>Tải lên ảnh</Button>
@@ -202,7 +218,7 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
                 onSearch={sendMessage} 
                 enterButton="Gửi"
             />
-            </Input.Group>
+          </Input.Group>
         </Content>
       </Layout>
     </div>
