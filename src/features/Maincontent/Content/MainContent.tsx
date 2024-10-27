@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
-import { Layout, Button, List, Upload, message as antdMessage, Input } from 'antd';
+import { Layout, Button, List, Upload, message as antdMessage, Input, Spin } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import type { UploadRequestOption } from 'rc-upload/lib/interface';
 import { User } from '../../User/Content/User';
@@ -16,6 +16,7 @@ interface Message {
   color: string;
   contentType?: 'text' | 'image';
   imageData?: string;
+  isLoading?: boolean;
 }
 
 interface MainContentProps {
@@ -28,6 +29,7 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>(propsMessages || []);
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(conversationId);
+  const [isLoading, setIsLoading] = useState(false);
 
   const stompClientRef = useRef<Client | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -52,7 +54,7 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/api/conversations/by-username?username=${username}`);
+      const response = await fetch(`https://chat-api-backend-x4dl.onrender.com/api/conversations/by-username?username=${username}`);
       if (!response.ok) throw new Error('Lỗi tải cuộc trò chuyện');
       const data = await response.json();
 
@@ -85,7 +87,7 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
   }, [conversationId, propsMessages]);
 
   useEffect(() => {
-    const socket = new SockJS('http://localhost:8080/ws-chat');
+    const socket = new SockJS('https://chat-api-backend-x4dl.onrender.com/ws-chat');
     const stompClient = new Client({
       webSocketFactory: () => socket,
       debug: (str: any) => {
@@ -130,11 +132,20 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
       contentType: 'text'
     };
 
-    setMessages(prevMessages => [...prevMessages, userMessage]);
+    const loadingMessage: Message = {
+      sender: 'Cherry',
+      content: 'Đang gửi...',
+      color: 'blue',
+      contentType: 'text',
+      isLoading: true
+    };
+
+    setMessages(prevMessages => [...prevMessages, userMessage, loadingMessage]);
     setMessage('');
+    setIsLoading(true);
 
     try {
-      const response = await fetch(`http://localhost:8080/api/conversations/${currentConversationId}/messages`, {
+      const response = await fetch(`https://chat-api-backend-x4dl.onrender.com/api/conversations/${currentConversationId}/messages`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -146,20 +157,27 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
 
       const responseData = await response.json();
 
-      const aiMessage: Message = {
-        sender: responseData.aiMessage.sender,
-        content: responseData.aiMessage.content,
-        color: 'blue',
-        contentType: 'text'
-      };
+      // Remove loading message and add AI response
+      setMessages(prevMessages => {
+        const filteredMessages = prevMessages.filter(msg => !msg.isLoading);
+        return [...filteredMessages, {
+          sender: responseData.aiMessage.sender,
+          content: responseData.aiMessage.content,
+          color: 'blue',
+          contentType: 'text'
+        }];
+      });
 
-      setMessages(prevMessages => [...prevMessages, aiMessage]);
       loadConversations();
     } catch (error: unknown) {
       console.error('Lỗi gửi tin nhắn:', error);
       if (error instanceof Error) {
         antdMessage.error('Lỗi gửi tin nhắn: ' + error.message);
       }
+      // Remove loading message on error
+      setMessages(prevMessages => prevMessages.filter(msg => !msg.isLoading));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -170,48 +188,78 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
       return;
     }
 
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('username', username);
-    formData.append('conversationId', currentConversationId);
+    // Create a preview of the image
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const previewImage = e.target?.result as string;
+      const base64Data = previewImage.split(',')[1];
 
-    try {
-      const response = await fetch('http://localhost:8080/api/images/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) throw new Error('Lỗi tải lên hình ảnh');
-
-      const responseData = await response.json();
-
-      const userImageMessage: Message = {
+      // Add image preview message immediately
+      const previewMessage: Message = {
         sender: username,
         content: '[Hình ảnh]',
         color: 'green',
         contentType: 'image',
-        imageData: responseData.base64Image
+        imageData: base64Data
       };
-      setMessages(prevMessages => [...prevMessages, userImageMessage]);
 
-      if (responseData.message) {
-        const aiResponseMessage: Message = {
-          sender: 'Cherry',
-          content: responseData.message,
-          color: 'blue',
-          contentType: 'text'
-        };
-        setMessages(prevMessages => [...prevMessages, aiResponseMessage]);
+      const loadingMessage: Message = {
+        sender: 'Cherry',
+        content: 'Đang xử lý ảnh...',
+        color: 'blue',
+        contentType: 'text',
+        isLoading: true
+      };
+
+      setMessages(prevMessages => [...prevMessages, previewMessage, loadingMessage]);
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('username', username);
+      formData.append('conversationId', currentConversationId);
+
+      try {
+        const response = await fetch('https://chat-api-backend-x4dl.onrender.com/api/images/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) throw new Error('Lỗi tải lên hình ảnh');
+
+        const responseData = await response.json();
+
+        // Remove loading message and add AI response
+        setMessages(prevMessages => {
+          const filteredMessages = prevMessages.filter(msg => !msg.isLoading);
+          return [...filteredMessages, {
+            sender: 'Cherry',
+            content: responseData.message,
+            color: 'blue',
+            contentType: 'text'
+          }];
+        });
+
+        antdMessage.success('Tải ảnh lên thành công.');
+      } catch (error) {
+        console.error('Lỗi tải lên hình ảnh:', error);
+        antdMessage.error('Lỗi tải lên hình ảnh.');
+        // Remove loading message on error
+        setMessages(prevMessages => prevMessages.filter(msg => !msg.isLoading));
       }
+    };
 
-      antdMessage.success('Tải ảnh lên thành công.');
-    } catch (error) {
-      console.error('Lỗi tải lên hình ảnh:', error);
-      antdMessage.error('Lỗi tải lên hình ảnh.');
-    }
+    reader.readAsDataURL(file);
   };
 
   const renderMessageContent = (message: Message) => {
+    if (message.isLoading) {
+      return (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {message.content} <Spin size="small" />
+        </div>
+      );
+    }
+
     if (message.contentType === 'image' && message.imageData) {
       return (
         <div>
@@ -260,6 +308,7 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
               onChange={(e) => setMessage(e.target.value)}
               onSearch={sendMessage}
               enterButton="Gửi"
+              disabled={isLoading}
             />
           </Input.Group>
         </Content>
