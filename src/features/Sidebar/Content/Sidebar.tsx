@@ -54,11 +54,7 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
   const handleLoginClick = () => {
     navigate('/login');
   };
-
-  const handleAnalyticsClick = () => {
-    navigate('/analytics');
-  };
-
+  
   const handleBackToHome = () => {
     navigate('/');
   };
@@ -156,9 +152,6 @@ const Sidebar: React.FC<SidebarProps> = ({ userName, email, isOpen, isLoggedIn, 
             </li>
             <li style={{ padding: '5px 0', cursor: 'pointer' }} onClick={handleInfoClick}>
               Thông tin hệ thống
-            </li>
-            <li style={{ padding: '5px 0', cursor: 'pointer' }} onClick={handleAnalyticsClick}>
-              Phân tích tổng thể
             </li>
             <li style={{ padding: '5px 0', cursor: 'pointer', color: 'red' }}>
               <LogoutButton onLogout={onLogout} />
