@@ -51,11 +51,11 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
   };
 
   useEffect(() => {
-    scrollToBottom(); // Initial scroll to bottom on component mount
+    scrollToBottom();
   }, []);
 
   useEffect(() => {
-    scrollToBottom(); // Scroll to the bottom whenever messages change
+    scrollToBottom(); 
 
   }, [messages]);
 
@@ -66,7 +66,7 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
     }
 
     try {
-      const response = await fetch(`https://chat-api-backend-ky64.onrender.com/api/conversations/by-username?username=${username}`);
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/conversations/by-username?username=${username}`);
       if (!response.ok) throw new Error('Lỗi tải cuộc trò chuyện');
       const data = await response.json();
 
@@ -99,7 +99,7 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
   }, [conversationId, propsMessages]);
 
   useEffect(() => {
-    const socket = new SockJS('https://chat-api-backend-ky64.onrender.com/ws-chat');
+    const socket = new SockJS(`${process.env.REACT_APP_BASE_URL}/ws-chat`);
     const stompClient = new Client({
       webSocketFactory: () => socket,
       debug: (str: any) => {
@@ -157,7 +157,7 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
     setIsLoading(true);
 
     try {
-      const response = await fetch(`https://chat-api-backend-ky64.onrender.com/api/conversations/${currentConversationId}/messages`, {
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/conversations/${currentConversationId}/messages`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -231,7 +231,7 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
       formData.append('conversationId', currentConversationId);
 
       try {
-        const response = await fetch('https://chat-api-backend-ky64.onrender.com/api/images/upload', {
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/images/upload`, {
           method: 'POST',
           body: formData,
         });

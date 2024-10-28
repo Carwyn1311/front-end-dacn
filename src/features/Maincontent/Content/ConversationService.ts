@@ -17,7 +17,7 @@ export const loadConversations = async (): Promise<any[]> => {
   const username = savedUser.username;
   
   try {
-    const response = await fetch(`https://chat-api-backend-ky64.onrender.com/api/conversations/by-username?username=${username}`);
+    const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/conversations/by-username?username=${username}`);
     if (!response.ok) throw new Error('Lỗi tải cuộc trò chuyện');
     
     const data = await response.json();

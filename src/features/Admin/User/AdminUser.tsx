@@ -26,7 +26,7 @@ const AdminUser: React.FC = () => {
   useEffect(() => {
     const loadAnalytics = async () => {
       try {
-        const response = await fetch('https://chat-api-backend-ky64.onrender.com/api/conversations/analytics');
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/conversations/analytics`);
         if (!response.ok) throw new Error('Không thể tải dữ liệu phân tích');
 
         const analytics = await response.json();
