@@ -25,17 +25,25 @@ interface MainContentProps {
 }
 
 const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: propsMessages }) => {
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState(() => {
+    const currentUser = User.getUserData();
+    return currentUser?.username || ''; // Lấy `username` từ dữ liệu người dùng nếu có
+  });
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>(propsMessages || []);
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(conversationId);
   const [isLoading, setIsLoading] = useState(false);
 
   const stompClientRef = useRef<Client | null>(null);
-  const messagesEndRef = useRef<HTMLDivElement | null>(null); // Ref for the end of messages
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const memoizedMessages = useMemo(() => messages, [messages]);
-
+  useEffect(() => {
+    const storedUser = User.getUserData();
+    if (storedUser && storedUser.username) {
+      setUsername(storedUser.username);
+    }
+  })
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -58,7 +66,7 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
     }
 
     try {
-      const response = await fetch(`https://chat-api-backend-x4dl.onrender.com/api/conversations/by-username?username=${username}`);
+      const response = await fetch(`https://chat-api-backend-ky64.onrender.com/api/conversations/by-username?username=${username}`);
       if (!response.ok) throw new Error('Lỗi tải cuộc trò chuyện');
       const data = await response.json();
 
@@ -91,7 +99,7 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
   }, [conversationId, propsMessages]);
 
   useEffect(() => {
-    const socket = new SockJS('https://chat-api-backend-x4dl.onrender.com/ws-chat');
+    const socket = new SockJS('https://chat-api-backend-ky64.onrender.com/ws-chat');
     const stompClient = new Client({
       webSocketFactory: () => socket,
       debug: (str: any) => {
@@ -149,7 +157,7 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
     setIsLoading(true);
 
     try {
-      const response = await fetch(`https://chat-api-backend-x4dl.onrender.com/api/conversations/${currentConversationId}/messages`, {
+      const response = await fetch(`https://chat-api-backend-ky64.onrender.com/api/conversations/${currentConversationId}/messages`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -223,7 +231,7 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
       formData.append('conversationId', currentConversationId);
 
       try {
-        const response = await fetch('https://chat-api-backend-x4dl.onrender.com/api/images/upload', {
+        const response = await fetch('https://chat-api-backend-ky64.onrender.com/api/images/upload', {
           method: 'POST',
           body: formData,
         });

@@ -31,7 +31,7 @@ const EditConversation: React.FC<EditConversationProps> = ({ conversationId, ini
     }
 
     try {
-      const response = await fetch(`https://chat-api-backend-x4dl.onrender.com/api/conversations/${currentConversationId}/title`, {
+      const response = await fetch(`https://chat-api-backend-ky64.onrender.com/api/conversations/${currentConversationId}/title`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

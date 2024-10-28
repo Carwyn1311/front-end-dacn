@@ -37,7 +37,7 @@ const ConversationList: React.FC<ConversationListProps> = ({ onSelectConversatio
   
     fetchConversations();
   
-    const socket = new SockJS('https://chat-api-backend-x4dl.onrender.com');
+    const socket = new SockJS('https://chat-api-backend-ky64.onrender.com');
     const stompClient = new Client({
       webSocketFactory: () => socket,
       debug: (str: any) => {

@@ -25,7 +25,7 @@ const CreateConversation: React.FC<CreateConversationProps> = ({
         const token = localStorage.getItem('token');
 
         try {
-            const response = await fetch('https://chat-api-backend-x4dl.onrender.com/api/conversations/create', {
+            const response = await fetch('https://chat-api-backend-ky64.onrender.com/api/conversations/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

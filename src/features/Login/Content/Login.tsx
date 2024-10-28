@@ -132,7 +132,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
 
   const handleGoogleLoginClick = async (): Promise<void> => {
     try {
-  window.location.href = 'https://chat-api-backend-x4dl.onrender.com/auth/login/google';
+  window.location.href = 'https://chat-api-backend-ky64.onrender.com/auth/login/google';
     } catch (error: any) {
       console.error('Google Login error:', error.response?.data?.message || error.message);
       setError(error.response?.data?.message || 'Google login failed.');
