@@ -212,7 +212,6 @@ const AppContent: React.FC = () => {
         <Route 
           path="/" 
           element={renderProtectedRoute(MainContent, { 
-            conversationId: selectedConversationId, 
             messages: messages 
           })} 
         />

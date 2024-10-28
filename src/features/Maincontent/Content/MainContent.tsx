@@ -32,19 +32,23 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
   const [isLoading, setIsLoading] = useState(false);
 
   const stompClientRef = useRef<Client | null>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null); // Ref for the end of messages
 
   const memoizedMessages = useMemo(() => messages, [messages]);
 
-  useEffect(() => {
-    const storedUser = User.getUserData();
-    if (storedUser && storedUser.username) {
-      setUsername(storedUser.username);
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  useEffect(() => {
+    scrollToBottom(); // Initial scroll to bottom on component mount
   }, []);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    scrollToBottom(); // Scroll to the bottom whenever messages change
+
   }, [messages]);
 
   const loadConversations = async () => {
@@ -296,7 +300,6 @@ const MainContent: React.FC<MainContentProps> = ({ conversationId, messages: pro
             )}
           />
           <div ref={messagesEndRef} />
-
           <Upload customRequest={uploadImage} showUploadList={false}>
             <Button icon={<UploadOutlined />} style={{ marginBottom: '10px', width: '100%' }}>Tải lên ảnh</Button>
           </Upload>

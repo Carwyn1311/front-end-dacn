@@ -1,18 +1,21 @@
 import React from 'react';
 import { message as antdMessage } from 'antd';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import Button from '../../../components/Button/Button';
 
 interface CreateConversationProps {
     username: string;
     onConversationCreated: (conversationId: string, newConversation: any) => void;
-    className?: string; // Thêm className tùy chọn
+    className?: string;
 }
 
 const CreateConversation: React.FC<CreateConversationProps> = ({ 
     username, 
     onConversationCreated, 
-    className // Nhận className từ props
+    className 
 }) => {
+    const navigate = useNavigate(); // Khởi tạo useNavigate
+
     const createConversation = async () => {
         if (!username) {
             antdMessage.error("Vui lòng nhập tên người dùng.");
@@ -34,9 +37,12 @@ const CreateConversation: React.FC<CreateConversationProps> = ({
             if (!response.ok) throw new Error('Error creating conversation');
             const newConversation = await response.json();
 
-            onConversationCreated(newConversation.id, newConversation); // Gửi thông tin cuộc trò chuyện mới
-
+            onConversationCreated(newConversation.id, newConversation);
             antdMessage.success("Đã tạo cuộc trò chuyện mới.");
+
+            // Điều hướng về trang chính
+            navigate('/'); // Thay đổi '/' thành đường dẫn trang chính của bạn
+
         } catch (error) {
             console.error('Error creating conversation:', error);
             antdMessage.error('Error creating conversation.');
@@ -47,7 +53,7 @@ const CreateConversation: React.FC<CreateConversationProps> = ({
         <Button 
             type="primary" 
             onClick={createConversation}
-            className={className} // Gán className từ props
+            className={className}
             style={{
                 width: 'auto',
                 padding: '10px',
