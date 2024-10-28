@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Input, Button, Tag, Form, message } from 'antd';
 import './Profile.css';
 
-const Profile = () => {
+const Profile: React.FC = () => {
   // Quản lý trạng thái của người dùng
   const [userInfo, setUserInfo] = useState({
     fullName: 'Lê Trọng Phúc',
@@ -24,14 +24,22 @@ const Profile = () => {
     issuedBy: 'Cục Cảnh Sát QLHC về TTXH'
   });
 
+  // Tải dữ liệu từ localStorage khi trang load
+  useEffect(() => {
+    const savedUserInfo = localStorage.getItem('userInfo');
+    if (savedUserInfo) {
+      setUserInfo(JSON.parse(savedUserInfo));
+    }
+  }, []);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserInfo({ ...userInfo, [name]: value });
   };
 
   const handleSave = () => {
-    // Xử lý logic lưu thông tin
-    message.success('Thông tin của bạn đã được lưu!');
+    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+    message.success('Thông tin của bạn đã được lưu vào trình duyệt!');
   };
 
   return (
