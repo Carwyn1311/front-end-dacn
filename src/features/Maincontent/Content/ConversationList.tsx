@@ -8,6 +8,7 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 import '../.css/ConversationList.css';
+import { User } from '../../User/Content/User';
 
 interface ConversationListProps {
   onSelectConversation: (conversationId: string, messages: any[]) => void;
@@ -37,7 +38,8 @@ const ConversationList: React.FC<ConversationListProps> = ({ onSelectConversatio
   
     fetchConversations();
   
-    const socket = new SockJS(`${process.env.REACT_APP_BASE_URL}`);
+    const token = User.getToken(); // Lấy token từ sessionStorage hoặc cookie
+    const socket = new SockJS(`${process.env.REACT_APP_BASE_URL}?token=${token}`);
     const stompClient = new Client({
       webSocketFactory: () => socket,
       debug: (str: any) => {
@@ -72,7 +74,8 @@ const ConversationList: React.FC<ConversationListProps> = ({ onSelectConversatio
         stompClientRef.current.deactivate();
       }
     };
-  }, [onSelectConversation, selectedConversation?.id]); 
+  }, [onSelectConversation, selectedConversation?.id]);
+  
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleConversationCreated = (conversationId: string, newConversation: any) => {
     setConversations((prevConversations) => [...prevConversations, newConversation]);

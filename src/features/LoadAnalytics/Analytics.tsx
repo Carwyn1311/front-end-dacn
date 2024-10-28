@@ -10,22 +10,20 @@ interface AnalyticsData {
 
 const Analytics: React.FC = () => {
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
-  const successMessageShownRef = useRef(false); // Sử dụng useRef để theo dõi trạng thái thông báo đã hiển thị
+  const successMessageShownRef = useRef(false); 
 
-  // Gọi API để tải dữ liệu phân tích khi component được render
   useEffect(() => {
     const loadAnalytics = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/conversations/analytics`);
+        const response = await fetch(`https://chat-api-backend-ky64.onrender.com/api/conversations/analytics`);
         if (!response.ok) throw new Error('Không thể tải dữ liệu phân tích');
 
         const analytics: AnalyticsData = await response.json();
         setAnalyticsData(analytics);
 
-        // Chỉ hiển thị thông báo thành công một lần
         if (!successMessageShownRef.current) {
           antdMessage.success('Tải dữ liệu phân tích thành công');
-          successMessageShownRef.current = true; // Đánh dấu thông báo đã được hiển thị
+          successMessageShownRef.current = true;
         }
       } catch (error) {
         console.error('Error loading analytics:', error);
@@ -33,20 +31,28 @@ const Analytics: React.FC = () => {
       }
     };
 
-    loadAnalytics(); // Gọi hàm loadAnalytics khi component được render
-  }, []); // Dependency array rỗng để chỉ gọi một lần khi component mount
+    loadAnalytics();
+  }, []);
 
   return (
     <div className="analytics-container">
-      <h3>Phân tích tổng thể</h3>
       {analyticsData ? (
         <div className="analytics-display">
-          <p>Tổng số câu hỏi đã xử lý: {analyticsData.totalProcessedResponses}</p>
-          <p>Thời gian phản hồi trung bình: {analyticsData.averageResponseTime.toFixed(2)} ms</p>
-          <p>Tổng số người dùng duy nhất: {analyticsData.totalUniqueUsers}</p>
+          <div className="analytics-item">
+            <span className="analytics-label">Tổng số câu hỏi đã xử lý:</span>
+            <span className="analytics-value">{analyticsData.totalProcessedResponses}</span>
+          </div>
+          <div className="analytics-item">
+            <span className="analytics-label">Thời gian phản hồi trung bình: </span>
+            <span className="analytics-value">{analyticsData.averageResponseTime.toFixed(2)} ms</span>
+          </div>
+          <div className="analytics-item">
+            <span className="analytics-label">Tổng số người dùng đã sử dụng chatbot (phản hồi câu hỏi với người dùng): </span>
+            <span className="analytics-value">{analyticsData.totalUniqueUsers}</span>
+          </div>
         </div>
       ) : (
-        <p>Đang tải dữ liệu...</p> // Hiển thị thông báo đang tải trong khi chờ dữ liệu
+        <p className="analytics-loading">Đang tải dữ liệu...</p>
       )}
     </div>
   );

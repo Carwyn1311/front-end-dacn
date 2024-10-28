@@ -8,42 +8,46 @@ import { FaSearch } from 'react-icons/fa';
 import Dropdown from '../../../components/Dropdown/Dropdown';
 import CreateUserForm from '../../CreateUserForm/CreateUserForm';
 import '../.css/AdminUser.css';
-
-const userData = [
-  { id: 1, name: 'User1', role: 'Admin', status: 'Hoạt động' },
-];
+import Analytics from '../../LoadAnalytics/Analytics';
 
 const AdminUser: React.FC = () => {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState<string>('');
-  const [users, setUsers] = useState(userData);
+  const [users, setUsers] = useState<any[]>([]);
   const [statusFilter, setStatusFilter] = useState<string>('Tất cả');
   const [roleFilter, setRoleFilter] = useState<string>('Tất cả');
   const [isCreateUserModalOpen, setIsCreateUserModalOpen] = useState(false);
-  const [analyticsData, setAnalyticsData] = useState<any | null>(null);
+  const token = localStorage.getItem('jwtToken'); // Giả định token đã được lưu sau khi đăng nhập
   const successMessageShownRef = useRef(false);
 
   useEffect(() => {
-    const loadAnalytics = async () => {
-      try {
-        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/conversations/analytics`);
-        if (!response.ok) throw new Error('Không thể tải dữ liệu phân tích');
-
-        const analytics = await response.json();
-        setAnalyticsData(analytics);
-
-        if (!successMessageShownRef.current) {
-          message.success('Tải dữ liệu phân tích thành công');
-          successMessageShownRef.current = true;
-        }
-      } catch (error) {
-        console.error('Error loading analytics:', error);
-        message.error('Lỗi khi tải dữ liệu: ' + (error as Error).message);
-      }
-    };
-
-    loadAnalytics();
+    loadUsers();
   }, []);
+
+  // Hàm tải danh sách người dùng từ API
+  const loadUsers = async () => {
+    try {
+      const response = await fetch('https://chat-api-backend-ky64.onrender.com/admin/users', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`, // Thêm JWT token vào tiêu đề Authorization
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Không thể tải danh sách người dùng');
+      }
+
+      const usersData = await response.json();
+      setUsers(usersData);
+      message.success('Tải danh sách người dùng thành công');
+    } catch (error) {
+      console.error('Error loading users:', error);
+      message.error('Lỗi khi tải danh sách người dùng: ' + (error as Error).message);
+    }
+  };
 
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
@@ -54,25 +58,47 @@ const AdminUser: React.FC = () => {
     setIsCreateUserModalOpen(true); 
   };
 
-  const handleUserCreated = (newUser: any) => {
-    message.success('User added successfully');
-    setUsers([...users, newUser]); 
-    setIsCreateUserModalOpen(false); 
+  const handleUserCreated = async (newUser: any) => {
+    try {
+      const response = await fetch('https://chat-api-backend-ky64.onrender.com/admin/users/create', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUser),
+      });
+      if (!response.ok) throw new Error('Không thể tạo người dùng mới');
+
+      const createdUser = await response.json();
+      message.success('Tạo người dùng thành công');
+      setUsers([...users, createdUser]); 
+      setIsCreateUserModalOpen(false); 
+    } catch (error) {
+      console.error('Error creating user:', error);
+      message.error('Lỗi khi tạo người dùng: ' + (error as Error).message);
+    }
   };
 
-  const handleEditUser = (user: any) => {
-    Modal.info({
-      title: 'Chỉnh sửa người dùng',
-      content: `Chỉnh sửa thông tin của ${user.name}`,
-    });
-  };
-
-  const handleDeleteUser = (userId: number) => {
-    setUsers(users.filter(user => user.id !== userId));
+  const handleDeleteUser = async (userId: string) => {
+    try {
+      await fetch(`https://chat-api-backend-ky64.onrender.com/admin/users/${userId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      message.success('Xóa người dùng thành công');
+      setUsers(users.filter((user) => user.id !== userId));
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      message.error('Lỗi khi xóa người dùng: ' + (error as Error).message);
+    }
   };
 
   const filterUsers = (searchValue: string, status: string, role: string) => {
-    // Chức năng lọc người dùng
+    // Chức năng lọc người dùng theo searchValue, status, và role
   };
 
   const handleStatusChange = (status: string) => {
@@ -86,25 +112,18 @@ const AdminUser: React.FC = () => {
   };
 
   return (
-    <div className="main-content">
+    <div className="admin-user-content">
       <div className="user-container">
         <Card title="Quản lý người dùng" className="admin-user-card">
           <div className="admin-header">
-            
-          <h3>Phân tích tổng thể</h3>
-          {analyticsData ? (
-            <div className="analytics-display">
-              <p>Tổng số câu hỏi đã xử lý: {analyticsData.totalProcessedResponses}</p>
-              <p>Thời gian phản hồi trung bình: {analyticsData.averageResponseTime.toFixed(2)} ms</p>
-              <p>Tổng số người dùng duy nhất: {analyticsData.totalUniqueUsers}</p>
+            <h3 className="analytics-title">Phân tích tổng thể</h3>
+            <div className='analytics'>
+              <Analytics />
             </div>
-          ) : (
-            <p>Đang tải dữ liệu...</p>
-          )}
             <SearchInput
-              label="Tìm kiếm theo tên khách hàng hoặc dự án"
+              label="Tìm kiếm theo tên người dùng"
               value={searchValue}
-              onChange={e => handleSearchChange(e.target.value)}
+              onChange={(e) => handleSearchChange(e.target.value)}
               placeholder=" "
               prefixIcon={<FaSearch />}
               fullWidth={true}
@@ -141,20 +160,20 @@ const AdminUser: React.FC = () => {
               <List.Item
                 className="admin-user-list-item"
                 actions={[
-                  <Button icon={<EditOutlined />} className="admin-button admin-edit-button" onClick={() => handleEditUser(user)}>Sửa</Button>,
+                  <Button icon={<EditOutlined />} className="admin-button admin-edit-button" onClick={() => handleAddUser()}>Sửa</Button>,
                   <Button icon={<DeleteOutlined />} className="admin-button admin-delete-button" onClick={() => handleDeleteUser(user.id)}>Xóa</Button>,
                 ]}
               >
                 <List.Item.Meta
-                  title={user.name}
-                  description={`Role: ${user.role} | Trạng thái: ${user.status}`}
+                  title={user.username}
+                  description={`Email: ${user.email} | Role: ${user.role} | Trạng thái: ${user.active ? 'Hoạt động' : 'Đóng băng'}`}
                 />
               </List.Item>
             )}
           />
 
           <Modal
-            title="Create New User"
+            title="Tạo người dùng mới"
             visible={isCreateUserModalOpen}
             footer={null}
             onCancel={() => setIsCreateUserModalOpen(false)}

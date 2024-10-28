@@ -40,7 +40,7 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onUserCreated }) => {
         return;
       }
 
-      const response = await fetch('https://chat-api-backend-x4dl.onrender.com/admin/users/create', {
+      const response = await fetch('https://chat-api-backend-ky64.onrender.com/admin/users/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

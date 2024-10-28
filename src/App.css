@@ -3,6 +3,7 @@
   height: 100vh;
   flex-direction: row;
   overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .sidebar {
@@ -28,7 +29,6 @@
   flex-grow: 1;
   padding: 20px;
   transition: margin-left 0.3s ease;
-  overflow-y: auto;
   overflow-x: hidden;
   margin-top: 80px;
 }
