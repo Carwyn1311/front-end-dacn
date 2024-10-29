@@ -20,10 +20,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const [error, setError] = useState<string>(''); 
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [savedUserName, setSavedUserName] = useState<string | null>(''); 
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,8 +50,6 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
     setError('');
   };
 
-
-
   const handleRememberMeChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setRememberMe(e.target.checked);
   };
@@ -69,58 +64,55 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
     await handleLogin();
   };
 
-
   const handleLogin = async (): Promise<void> => {
     try {
-        console.log('Attempting login with:', { userName, password });
+      console.log('Attempting login with:', { userName, password });
     
       const response = await axiosInstance.post(`/auth/authenticate`, {
             username: userName,
             password: password,
-        });
-    
-        console.log('API full response:', response.data);
-    
-        const token = response.data?.data?.jwt;
-    
-        if (!token) {
-            throw new Error('No token returned from API.');
-        }
-    
+      });
 
-        if (rememberMe) {
-            localStorage.setItem('userName', userName);
-            localStorage.setItem('password', password);
-            localStorage.setItem('rememberMe', 'true');
-            localStorage.setItem('token', token);  
-            TokenAuthService.setToken(token);
-        } else {
-            TokenAuthService.setSessionData('token', token);
-            sessionStorage.setItem('token', token);  
-            localStorage.removeItem('userName');
-            localStorage.removeItem('password');
-            localStorage.removeItem('rememberMe');
-        }
+      const token = response.data?.data?.jwt;
 
-        TokenAuthService.setToken(token); 
+      if (!token) {
+          throw new Error('No token returned from API.');
+      }
+      
+      const role = userName === 'admin' && password === '123456' ? 'ADMIN' : 'USER';
+      console.log("Role được xác định là:", role);
 
-        const user = new User({
-            id: '1',                   
-            username: userName,         
-            email: email || '',                           
-            active: true,              
-        });
-        User.storeUserData(user, token); 
-    
-        console.log('Logged in successfully');
-        onLogin();
-        navigate('/');
+      const user = new User({
+        id: '1',                   
+        username: userName,         
+        email: email || '', 
+        role,                     
+        active: true,              
+      });
+
+      if (rememberMe) {
+          localStorage.setItem('userName', userName);
+          localStorage.setItem('password', password);
+          localStorage.setItem('rememberMe', 'true');
+          localStorage.setItem('token', token);  
+      } else {
+          sessionStorage.setItem('token', token);
+          localStorage.removeItem('userName');
+          localStorage.removeItem('password');
+          localStorage.removeItem('rememberMe');
+      }
+
+      TokenAuthService.setToken(token);
+      User.storeUserData(user, token);
+
+      console.log('Logged in successfully');
+      onLogin();
+      navigate('/');
     } catch (error: any) {
-        console.error('Login error:', error.response?.data?.message || error.message);
-        setError(error.response?.data?.message || 'Login failed. Please try again.');
+      console.error('Login error:', error.response?.data?.message || error.message);
+      setError(error.response?.data?.message || 'Login failed. Please try again.');
     }
-};
-
+  };
 
   const handleCreateAccount = (): void => {
     navigate('/create-account');
@@ -132,13 +124,12 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
 
   const handleGoogleLoginClick = async (): Promise<void> => {
     try {
-  window.location.href = `${process.env.REACT_APP_BASE_URL}/auth/login/google`;
+      window.location.href = `${process.env.REACT_APP_BASE_URL}/auth/login/google`;
     } catch (error: any) {
       console.error('Google Login error:', error.response?.data?.message || error.message);
       setError(error.response?.data?.message || 'Google login failed.');
     }
   };
-
 
   return (
     <div className="login-group">
@@ -148,21 +139,22 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
             <h3 className="text-top-label">CHERRY CHAT</h3>
             <h2 className="login-title">Login</h2>
             <form className="login-form" onSubmit={handleSubmit}>
-            <div className="input-group">
-            <BiUser className="user-icon" />
-            <TextField
-              className="InputUserName"
-              label="Username"
-              name="userName"
-              value={userName}
-              onChange={handleUserNameChange}
-              fullWidth={true}
-              placeholder=""
-            />
-          </div>
+              <div className="input-group">
+                <BiUser className="user-icon" />
+                <TextField
+                  className="InputUserName"
+                  label="Username"
+                  name="userName"
+                  value={userName}
+                  onChange={handleUserNameChange}
+                  fullWidth={true}
+                  placeholder=""
+                />
+              </div>
               <div className="input-group">
                 <IoMdLock className="user-icon" />
-                <PasswordField className='InputUserName'
+                <PasswordField
+                  className="InputUserName"
                   value={password}
                   onChange={handlePasswordChange}
                   label="Password"

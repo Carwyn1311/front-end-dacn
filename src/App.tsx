@@ -101,19 +101,17 @@ const ProtectedLayout: React.FC<{
 const AppContent: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
   const [messages, setMessages] = useState<any[]>([]);
   const navigate = useNavigate();
 
-  // Lắng nghe sự kiện thay đổi kích thước màn hình
   useEffect(() => {
     const handleResize = () => {
-      // Ẩn sidebar nếu màn hình nhỏ hơn 1024px
       setIsSidebarOpen(window.innerWidth >= 1024);
     };
 
-    // Gọi handleResize khi tải trang và khi thay đổi kích thước màn hình
     handleResize();
     window.addEventListener('resize', handleResize);
     
@@ -123,11 +121,16 @@ const AppContent: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const currentUser = User.getUserData();
+    const user = User.getUserData();
     const currentPath = window.location.pathname;
     
-    if (currentUser?.username) {
+    if (user) {
       setIsLoggedIn(true);
+      setCurrentUser(user);
+
+      // In ra quyền của người dùng trong console
+      console.log(`Quyền của người dùng hiện tại: ${user.role}`);
+
       if (currentPath === '/login') {
         navigate('/');
       }
@@ -138,12 +141,19 @@ const AppContent: React.FC = () => {
 
   const handleLogin = () => {
     setIsLoggedIn(true);
+    const user = User.getUserData();
+    setCurrentUser(user);
+
+    // In ra quyền của người dùng sau khi đăng nhập
+    console.log(`Quyền của người dùng sau khi đăng nhập: ${user?.role}`);
+    
     navigate('/');
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
     User.clearUserData();
+    setCurrentUser(null);
     navigate('/login');
   };
 
@@ -160,10 +170,12 @@ const AppContent: React.FC = () => {
     setMessages(conversationMessages);
   };
 
+  // Hàm render tuyến đường công khai
   const renderPublicRoute = (Component: React.ComponentType<any>, props: any = {}) => {
     return isLoggedIn ? <Navigate to="/" /> : <Component {...props} />;
   };
 
+  // Hàm render tuyến đường bảo mật (cần đăng nhập)
   const renderProtectedRoute = (Component: React.ComponentType<any>, props: any = {}) => {
     if (!isLoggedIn) {
       return <Navigate to="/login" />;
@@ -175,8 +187,8 @@ const AppContent: React.FC = () => {
         toggleSidebar={toggleSidebar}
         isLoggedIn={isLoggedIn}
         handleLogout={handleLogout}
-        userName={User.getUserData()?.username || ''}
-        email={User.getUserData()?.email || ''}
+        userName={currentUser?.username || ''}
+        email={currentUser?.email || ''}
         onSelectConversation={handleSelectConversation}
         onConversationCreated={handleConversationCreated}
       >
@@ -190,9 +202,17 @@ const AppContent: React.FC = () => {
     );
   };
 
+  // Hàm render tuyến đường dành riêng cho Admin
+  const renderAdminRoute = (Component: React.ComponentType<any>, props: any = {}) => {
+    if (!isLoggedIn) return <Navigate to="/login" />;
+    if (!currentUser?.isAdmin()) return <Navigate to="/" />; // Chuyển hướng nếu không phải là admin
+    return renderProtectedRoute(Component, props);
+  };
+  
   return (
     <div className={`app-container ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
       <Routes>
+        {/* Các tuyến đường công khai */}
         <Route 
           path="/login" 
           element={renderPublicRoute(Login, { onLogin: handleLogin })} 
@@ -209,16 +229,14 @@ const AppContent: React.FC = () => {
           path="/forgot-password" 
           element={renderPublicRoute(ForgotPassword)} 
         />
+
+        {/* Các tuyến đường bảo mật */}
         <Route 
           path="/" 
           element={renderProtectedRoute(MainContent, { 
             conversationId: selectedConversationId, 
             messages: messages 
           })} 
-        />
-        <Route 
-          path="/admin" 
-          element={renderProtectedRoute(AdminUser)} 
         />
         <Route 
           path="/profile" 
@@ -241,6 +259,12 @@ const AppContent: React.FC = () => {
           element={renderProtectedRoute(Analytics)} 
         />
 
+        {/* Tuyến đường chỉ dành cho Admin */}
+        <Route 
+          path="/admin" 
+          element={renderAdminRoute(AdminUser)} 
+        />
+
         <Route 
           path="*" 
           element={isLoggedIn ? <Navigate to="/" /> : <Navigate to="/login" />} 
@@ -249,6 +273,5 @@ const AppContent: React.FC = () => {
     </div>
   );
 };
-
 
 export default App;
