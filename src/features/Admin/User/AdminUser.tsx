@@ -27,7 +27,7 @@ const AdminUser: React.FC = () => {
   // Hàm tải danh sách người dùng từ API
   const loadUsers = async () => {
     try {
-      const response = await fetch('https://chat-api-backend-ky64.onrender.com/admin/users', {
+      const response = await fetch('https://chat-api-backend-56ja.onrender.com/admin/users', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`, // Thêm JWT token vào tiêu đề Authorization
@@ -60,7 +60,7 @@ const AdminUser: React.FC = () => {
 
   const handleUserCreated = async (newUser: any) => {
     try {
-      const response = await fetch('https://chat-api-backend-ky64.onrender.com/admin/users/create', {
+      const response = await fetch('https://chat-api-backend-56ja.onrender.com/admin/users/create', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -82,7 +82,7 @@ const AdminUser: React.FC = () => {
 
   const handleDeleteUser = async (userId: string) => {
     try {
-      await fetch(`https://chat-api-backend-ky64.onrender.com/admin/users/${userId}`, {
+      await fetch(`https://chat-api-backend-56ja.onrender.com/admin/users/${userId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
