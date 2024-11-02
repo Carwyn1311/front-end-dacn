@@ -115,9 +115,11 @@ body {
   .main-content {
     margin-left: 0;
   }
+}
 
-  .app-header {
-    left: 0;
-    width: 100%;
-  }
+.app-header {
+  padding: 0px;
+  left: 0;
+  width: 100%;
+  background-color: rgb(177, 255, 255);
 }
