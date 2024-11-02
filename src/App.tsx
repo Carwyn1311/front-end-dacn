@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import './App.css';
 import MainContent from './features/Maincontent/Content/MainContent';
 import Button from './components/Button/Button';
+import { Header } from 'antd/es/layout/layout';
+import TitleBar from './features/Header/Content/TitleBar';
+
 
 const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -33,6 +36,7 @@ const App: React.FC = () => {
           <Button onClick={toggleSidebar} className="sidebar-toggle-button">
             &#9776;
           </Button>
+          <TitleBar />
         </header>
 
         <div style={{ marginTop: '80px' }}>
