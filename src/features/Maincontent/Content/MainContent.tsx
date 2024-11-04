@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Layout } from 'antd';
 import ImageSlider from '../../ImageSlider/Content/ImageSlider';
 import MenuSlider from '../../ImageSlider/Content/MenuSlider';
+import PaymentForm from '../../Payment/Content/PaymentForm';
 
 const { Content } = Layout;
 
@@ -36,6 +37,12 @@ const MainContent: React.FC = () => {
     setSlides(updatedSlides);
   };
 
+  // Handler function for PaymentForm onSubmit
+  const handlePaymentSubmit = (formData: any) => {
+    console.log('Form submitted:', formData);
+    // Xử lý dữ liệu form ở đây
+  };
+
   return (
     <Layout className="main-content-layout">
       {/* MenuSlider for adding, editing, and deleting slides */}
@@ -47,6 +54,9 @@ const MainContent: React.FC = () => {
       <Content className="main-content">
         <p>Welcome to the MainContent component!</p>
         <p>This is a placeholder text for demonstration purposes.</p>
+        
+        {/* Pass handlePaymentSubmit as onSubmit prop */}
+        <PaymentForm onSubmit={handlePaymentSubmit} /> 
       </Content>
     </Layout>
   );
