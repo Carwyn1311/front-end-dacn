@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import InputDay from '../../../components/InputDay/InputDay';
-import TextField from '../../../components/TextField/TextField';
-
+import { Input, Button, DatePicker, Form } from 'antd';
+import { DatePickerProps } from 'antd/es/date-picker';
+import dayjs from 'dayjs';
 
 interface PaymentFormProps {
   onSubmit: (formData: PaymentFormData) => void;
@@ -10,7 +10,7 @@ interface PaymentFormProps {
 interface PaymentFormData {
   cardNumber: string;
   cardHolder: string;
-  expirationDate: Date | null; // Thay đổi kiểu dữ liệu cho ngày tháng
+  expirationDate: Date | null;
   cvv: string;
 }
 
@@ -18,7 +18,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onSubmit }) => {
   const [formData, setFormData] = useState<PaymentFormData>({
     cardNumber: '',
     cardHolder: '',
-    expirationDate: null, // Khởi tạo là null
+    expirationDate: null,
     cvv: '',
   });
 
@@ -27,8 +27,9 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onSubmit }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleDateChange = (date: Date | null) => {
-    setFormData({ ...formData, expirationDate: date });
+  const handleDateChange = (date: DatePickerProps['value'] | null) => {
+    // Convert date from moment to JavaScript Date object
+    setFormData({ ...formData, expirationDate: date ? date.toDate() : null });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -37,40 +38,73 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <TextField
+    <Form onFinish={handleSubmit} layout="vertical" className="payment-form">
+      {/* Card Number */}
+      <Form.Item
         label="Card Number"
         name="cardNumber"
-        value={formData.cardNumber}
-        onChange={handleChange}
-        placeholder=""
-        fullWidth
-      />
-      <TextField
+        rules={[{ required: true, message: 'Please enter your card number!' }]}
+      >
+        <Input
+          name="cardNumber"
+          value={formData.cardNumber}
+          onChange={handleChange}
+          placeholder="Card Number"
+        />
+      </Form.Item>
+
+      {/* Card Holder */}
+      <Form.Item
         label="Card Holder"
         name="cardHolder"
-        value={formData.cardHolder}
-        onChange={handleChange}
-        placeholder=""
-        fullWidth
-      />
-      <InputDay
+        rules={[{ required: true, message: 'Please enter the card holder name!' }]}
+      >
+        <Input
+          name="cardHolder"
+          value={formData.cardHolder}
+          onChange={handleChange}
+          placeholder="Card Holder"
+        />
+      </Form.Item>
+
+      {/* Expiration Date */}
+      <Form.Item
         label="Expiration Date"
         name="expirationDate"
-        value={formData.expirationDate}
-        onChange={handleDateChange}
-        width="100%"
-      />
-      <TextField
+        rules={[{ required: true, message: 'Please select the expiration date!' }]}
+      >
+        <DatePicker
+          name="expirationDate"
+          value={formData.expirationDate ? dayjs(formData.expirationDate) : null}
+          onChange={handleDateChange}
+          format="MM/YYYY"
+          placeholder="MM/YYYY"
+          picker="month"
+        />
+      </Form.Item>
+
+      {/* CVV */}
+      <Form.Item
         label="CVV"
         name="cvv"
-        value={formData.cvv}
-        onChange={handleChange}
-        placeholder=""
-        fullWidth
-      />
-      <button type="submit">Submit Payment</button>
-    </form>
+        rules={[{ required: true, message: 'Please enter your CVV!' }]}
+      >
+        <Input
+          type="number"
+          name="cvv"
+          value={formData.cvv}
+          onChange={handleChange}
+          placeholder="CVV"
+        />
+      </Form.Item>
+
+      {/* Submit Button */}
+      <Form.Item>
+        <Button type="primary" htmlType="submit" block>
+          Submit Payment
+        </Button>
+      </Form.Item>
+    </Form>
   );
 };
 

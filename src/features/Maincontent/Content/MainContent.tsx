@@ -4,6 +4,9 @@ import ImageSlider from '../../ImageSlider/Content/ImageSlider';
 import MenuSlider from '../../ImageSlider/Content/MenuSlider';
 import PaymentForm from '../../Payment/Content/PaymentForm';
 
+// Import CSS for styling PaymentForm (from the Payment folder)
+import '../../Payment/.css/PaymentForm.css'; 
+
 const { Content } = Layout;
 
 interface Slide {

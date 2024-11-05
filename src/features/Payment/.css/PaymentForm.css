@@ -1,0 +1,39 @@
+/* Container chính cho form */
+.payment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Khoảng cách giữa các trường */
+    max-width: 400px;
+    margin: auto;
+}
+
+/* Các trường nhập liệu */
+.payment-form input[type="text"],
+.payment-form input[type="date"],
+.payment-form input[type="number"],
+.payment-form input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* Nút submit */
+.payment-form input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.payment-form input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* Đảm bảo nhãn không bị chèn vào các trường nhập liệu */
+.payment-form label {
+    font-size: 14px;
+}
