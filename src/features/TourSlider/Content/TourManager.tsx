@@ -1,33 +1,12 @@
 // TourManager.tsx
-import React, { useState } from 'react';
-import TourSlider from './TourSlider';
+import React, { useContext, useState } from 'react';
+import { TourContext } from './TourContext';
+import TextField from '../../../components/TextField/TextField';
 import '../.css/TourManager.css';
 
-interface TourItem {
-  id: number;
-  image: string;
-  discount: string;
-  duration: string;
-  price: string;
-  title: string;
-  subtitle: string;
-}
-
-const TourManager = () => {
-  const [tours, setTours] = useState<TourItem[]>([
-    {
-      id: 1,
-      image: 'image1.jpg',
-      discount: 'Giảm 3.000.000đ/khách',
-      duration: '5 ngày 3 đêm',
-      price: '69.999.000đ',
-      title: 'Du Lịch Maldives - Tết Nguyên Đán 2025',
-      subtitle: 'Tết 2025 | Tour Maldives',
-    },
-  ]);
-
-  const [newTour, setNewTour] = useState<TourItem>({
-    id: Date.now(),
+const TourManager: React.FC = () => {
+  const { tours, addTour, deleteTour } = useContext(TourContext) ?? { tours: [], addTour: () => {}, deleteTour: () => {} };
+  const [newTour, setNewTour] = useState({
     image: '',
     discount: '',
     duration: '',
@@ -36,74 +15,79 @@ const TourManager = () => {
     subtitle: '',
   });
 
-  const addTour = () => {
-    setTours([...tours, newTour]);
-    setNewTour({
-      id: Date.now(),
-      image: '',
-      discount: '',
-      duration: '',
-      price: '',
-      title: '',
-      subtitle: '',
-    });
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setNewTour((prev) => ({ ...prev, [name]: value }));
   };
 
-  const deleteTour = (id: number) => {
-    setTours(tours.filter((tour) => tour.id !== id));
+  const handleAddTour = () => {
+    addTour({ ...newTour, id: Date.now() });
+    setNewTour({ image: '', discount: '', duration: '', price: '', title: '', subtitle: '' });
   };
 
   return (
     <div className="tour-manager">
       <h2>Quản lý Tour</h2>
       <div className="tour-manager-form">
-        <input
-          type="text"
-          placeholder="Image URL"
+        <TextField
+          label="Image URL"
+          name="image"
           value={newTour.image}
-          onChange={(e) => setNewTour({ ...newTour, image: e.target.value })}
+          onChange={handleInputChange}
+          placeholder="Nhập URL hình ảnh"
+          className="tour-input"
         />
-        <input
-          type="text"
-          placeholder="Discount"
+        <TextField
+          label="Discount"
+          name="discount"
           value={newTour.discount}
-          onChange={(e) => setNewTour({ ...newTour, discount: e.target.value })}
+          onChange={handleInputChange}
+          placeholder="Nhập giảm giá"
+          className="tour-input"
         />
-        <input
-          type="text"
-          placeholder="Duration"
+        <TextField
+          label="Duration"
+          name="duration"
           value={newTour.duration}
-          onChange={(e) => setNewTour({ ...newTour, duration: e.target.value })}
+          onChange={handleInputChange}
+          placeholder="Nhập thời gian"
+          className="tour-input"
         />
-        <input
-          type="text"
-          placeholder="Price"
+        <TextField
+          label="Price"
+          name="price"
           value={newTour.price}
-          onChange={(e) => setNewTour({ ...newTour, price: e.target.value })}
+          onChange={handleInputChange}
+          placeholder="Nhập giá"
+          className="tour-input"
         />
-        <input
-          type="text"
-          placeholder="Title"
+        <TextField
+          label="Title"
+          name="title"
           value={newTour.title}
-          onChange={(e) => setNewTour({ ...newTour, title: e.target.value })}
+          onChange={handleInputChange}
+          placeholder="Nhập tiêu đề"
+          className="tour-input"
         />
-        <input
-          type="text"
-          placeholder="Subtitle"
+        <TextField
+          label="Subtitle"
+          name="subtitle"
           value={newTour.subtitle}
-          onChange={(e) => setNewTour({ ...newTour, subtitle: e.target.value })}
+          onChange={handleInputChange}
+          placeholder="Nhập phụ đề"
+          className="tour-input"
         />
-        <button onClick={addTour}>Thêm Tour</button>
+        <button onClick={handleAddTour} className="add-tour-button">Thêm Tour</button>
       </div>
 
-      <TourSlider items={tours} itemsPerView={3} interval={5000} />
-
-      {tours.map((tour) => (
-        <div key={tour.id} className="tour-item">
-          <p>{tour.title}</p>
-          <button onClick={() => deleteTour(tour.id)}>Xóa</button>
-        </div>
-      ))}
+      <div className="tour-list">
+        {tours.map((tour) => (
+          <div key={tour.id} className="tour-item">
+            <p>{tour.title}</p>
+            <button onClick={() => deleteTour(tour.id)} className="delete-tour-button">Xóa</button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

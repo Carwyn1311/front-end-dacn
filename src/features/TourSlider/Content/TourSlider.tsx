@@ -1,73 +1,54 @@
 // TourSlider.tsx
-import React, { useState, useEffect } from 'react';
-import { IconButton } from '@mui/material';
+import React, { useContext, useEffect, useState } from 'react';
+import { TourContext } from './TourContext';
+import { Button } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import '../.css/TourSlider.css';
 
-interface TourItem {
-  id: number;
-  image: string;
-  discount: string;
-  duration: string;
-  price: string;
-  title: string;
-  subtitle: string;
-}
-
 interface TourSliderProps {
-  items: TourItem[];
   itemsPerView: number;
-  interval?: number;
-  className?: string;
+  interval: number;
 }
 
-const TourSlider: React.FC<TourSliderProps> = ({
-  items,
-  itemsPerView,
-  interval = 5000,
-  className,
-}) => {
+const TourSlider: React.FC<TourSliderProps> = ({ itemsPerView, interval }) => {
+  const { tours } = useContext(TourContext) ?? { tours: [] };
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      goToNext();
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % tours.length);
     }, interval);
 
     return () => clearInterval(timer);
-  }, [currentIndex, interval]);
+  }, [currentIndex, interval, tours.length]);
 
-  const goToNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % items.length);
-  };
-
-  const goToPrevious = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + items.length) % items.length);
-  };
+  if (tours.length === 0) return <p>Không có tour nào để hiển thị</p>;
 
   return (
-    <div className={`tour-slider ${className}`}>
-      <div className="tour-slider-container" style={{ transform: `translateX(-${currentIndex * 100 / itemsPerView}%)` }}>
-        {items.map((item) => (
+    <div className="tour-slider">
+      <div className="tour-slider-container" style={{ transform: `translateX(-${(currentIndex * 100) / itemsPerView}%)` }}>
+        {tours.map((item) => (
           <div key={item.id} className="tour-item" style={{ flex: `0 0 ${100 / itemsPerView}%` }}>
             <img src={item.image} alt={item.title} className="tour-image" />
             <div className="tour-info">
               <div className="tour-discount">{item.discount}</div>
-              <div className="tour-duration">{item.duration}</div>
-              <h3 className="tour-title">{item.title}</h3>
-              <p className="tour-subtitle">{item.subtitle}</p>
-              <div className="tour-price">{item.price}</div>
-              <button className="tour-button">Mua tour</button>
+              <div className="tour-price-tag">
+                <span>Giá từ</span>
+                <div className="tour-price">{item.price}</div>
+                <span>{item.duration}</span>
+              </div>
+              <div className="tour-details">
+                <p className="tour-date">Tết 2025</p>
+                <p className="tour-country">Tour {item.subtitle}</p>
+                <h3 className="tour-title">{item.title}</h3>
+              </div>
+              <Button type="primary" className="tour-button">Mua tour</Button>
             </div>
           </div>
         ))}
       </div>
-      <IconButton onClick={goToPrevious} className="tour-nav-button left">
-        <LeftOutlined />
-      </IconButton>
-      <IconButton onClick={goToNext} className="tour-nav-button right">
-        <RightOutlined />
-      </IconButton>
+      <Button icon={<LeftOutlined />} onClick={() => setCurrentIndex((prev) => (prev - 1 + tours.length) % tours.length)} className="tour-nav-button left" />
+      <Button icon={<RightOutlined />} onClick={() => setCurrentIndex((prev) => (prev + 1) % tours.length)} className="tour-nav-button right" />
     </div>
   );
 };

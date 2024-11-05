@@ -7,6 +7,7 @@ import PaymentForm from '../../Payment/Content/PaymentForm';
 // Import CSS for styling PaymentForm (from the Payment folder)
 import '../../Payment/.css/PaymentForm.css'; 
 import TourManager from '../../TourSlider/Content/TourManager';
+import TourSlider from '../../TourSlider/Content/TourSlider';
 
 const { Content } = Layout;
 
@@ -44,7 +45,6 @@ const MainContent: React.FC = () => {
   // Handler function for PaymentForm onSubmit
   const handlePaymentSubmit = (formData: any) => {
     console.log('Form submitted:', formData);
-    // Xử lý dữ liệu form ở đây
   };
 
   return (
@@ -56,12 +56,16 @@ const MainContent: React.FC = () => {
       <ImageSlider slides={slides} />
 
       <Content className="main-content">
+          <div>
+          <h1>Quản lý Tour</h1>
+          <TourManager />
+        </div>
         <p>Welcome to the MainContent component!</p>
         <p>This is a placeholder text for demonstration purposes.</p>
         
         {/* Pass handlePaymentSubmit as onSubmit prop */}
         <PaymentForm onSubmit={handlePaymentSubmit} /> 
-        <TourManager />
+        <TourSlider itemsPerView={3} interval={5000} />
       </Content>
     </Layout>
   );
