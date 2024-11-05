@@ -6,6 +6,7 @@ import PaymentForm from '../../Payment/Content/PaymentForm';
 
 // Import CSS for styling PaymentForm (from the Payment folder)
 import '../../Payment/.css/PaymentForm.css'; 
+import TourManager from '../../TourSlider/Content/TourManager';
 
 const { Content } = Layout;
 
@@ -60,6 +61,7 @@ const MainContent: React.FC = () => {
         
         {/* Pass handlePaymentSubmit as onSubmit prop */}
         <PaymentForm onSubmit={handlePaymentSubmit} /> 
+        <TourManager />
       </Content>
     </Layout>
   );

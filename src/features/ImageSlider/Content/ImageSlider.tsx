@@ -1,6 +1,8 @@
 // ImageSlider.tsx
 import React, { useState, useEffect } from 'react';
+import { IconButton } from '@mui/material';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
+import { styled } from '@mui/material/styles';
 import '../.css/ImageSlider.css';
 
 interface Slide {
@@ -40,6 +42,17 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ slides }) => {
     setCurrentSlide((prevSlide) => (prevSlide - 1 + slides.length) % slides.length);
   };
 
+  const NavButton = styled(IconButton)({
+    position: 'absolute',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    color: 'white',
+    '&:hover': {
+      backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    },
+  });
+
   return (
     <div
       className="slider-container"
@@ -52,12 +65,12 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ slides }) => {
         <button className="slider-button">XEM THÊM</button>
       </div>
 
-      <button className="slider-nav-button left" onClick={goToPreviousSlide}>
-        <LeftOutlined />
-      </button>
-      <button className="slider-nav-button right" onClick={goToNextSlide}>
-        <RightOutlined />
-      </button>
+      <NavButton className="slider-nav-button left" onClick={goToPreviousSlide} style={{ left: '10px' }}>
+        <LeftOutlined style={{ fontSize: '2rem' }} />
+      </NavButton>
+      <NavButton className="slider-nav-button right" onClick={goToNextSlide} style={{ right: '10px' }}>
+        <RightOutlined style={{ fontSize: '2rem' }} />
+      </NavButton>
     </div>
   );
 };

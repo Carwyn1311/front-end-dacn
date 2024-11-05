@@ -1,0 +1,82 @@
+/* TourManager.css */
+
+.tour-manager {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tour-manager h2 {
+    font-size: 1.8rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .tour-manager-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .tour-manager-form input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .tour-manager-form input:focus {
+    border-color: #3f51b5;
+  }
+  
+  .tour-manager-form button {
+    padding: 12px;
+    background-color: #3f51b5;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .tour-manager-form button:hover {
+    background-color: #303f9f;
+  }
+  
+  .tour-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .tour-item p {
+    margin: 0;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .tour-item button {
+    background-color: #e53935;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .tour-item button:hover {
+    background-color: #c62828;
+  }
+  
