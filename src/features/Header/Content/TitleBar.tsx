@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Input } from 'antd';
+import { Layout } from 'antd';
 import { MailOutlined, PhoneOutlined, EnvironmentOutlined, SearchOutlined } from '@ant-design/icons';
 import '../.css/TitleBar.css';
 
