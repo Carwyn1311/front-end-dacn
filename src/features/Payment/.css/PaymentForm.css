@@ -1,10 +1,22 @@
 /* Container chính cho form */
+.payment-form-container {
+    display: flex;
+    justify-content: space-between; /* Đẩy ảnh và form sang hai bên */
+    align-items: flex-start; /* Căn trên cùng */
+    gap: 20px; /* Khoảng cách giữa ảnh và form */
+}
+
+/* Container của ảnh */
+.payment-form-container .image-container {
+    max-width: 300px; /* Đặt giới hạn chiều rộng cho ảnh */
+}
+
+/* Container của form */
 .payment-form {
+    flex: 1; /* Để form chiếm phần không gian còn lại */
     display: flex;
     flex-direction: column;
     gap: 16px; /* Khoảng cách giữa các trường */
-    max-width: 400px;
-    margin-left: auto; /* Đẩy form sang bên phải */
     padding: 24px;
     background-color: #f9f9f9; /* Nền sáng cho form */
     border-radius: 8px;
