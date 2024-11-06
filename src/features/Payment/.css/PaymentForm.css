@@ -4,7 +4,11 @@
     flex-direction: column;
     gap: 16px; /* Khoảng cách giữa các trường */
     max-width: 400px;
-    margin: auto;
+    margin-left: auto; /* Đẩy form sang bên phải */
+    padding: 24px;
+    background-color: #f9f9f9; /* Nền sáng cho form */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ cho container */
 }
 
 /* Các trường nhập liệu */
@@ -13,27 +17,42 @@
 .payment-form input[type="number"],
 .payment-form input[type="submit"] {
     width: 100%;
-    padding: 10px;
+    padding: 12px; /* Tăng khoảng cách bên trong trường */
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
     box-sizing: border-box;
+    transition: all 0.3s ease; /* Hiệu ứng khi chuyển đổi trạng thái */
+}
+
+/* Hiệu ứng focus cho trường nhập liệu */
+.payment-form input[type="text"]:focus,
+.payment-form input[type="date"]:focus,
+.payment-form input[type="number"]:focus {
+    border-color: #4096ff; /* Đổi màu viền khi focus */
+    box-shadow: 0 0 8px rgba(64, 150, 255, 0.5); /* Đổ bóng khi focus */
+    outline: none; /* Bỏ đường viền outline mặc định */
 }
 
 /* Nút submit */
 .payment-form input[type="submit"] {
-    background-color: #4CAF50;
+    background-color: #4096ff; /* Màu xanh chính cho nút */
     color: white;
     border: none;
     cursor: pointer;
     font-size: 16px;
+    transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu khi hover */
+    border-radius: 4px;
 }
 
 .payment-form input[type="submit"]:hover {
-    background-color: #45a049;
+    background-color: #1677ff; /* Màu xanh đậm hơn khi hover */
 }
 
 /* Đảm bảo nhãn không bị chèn vào các trường nhập liệu */
 .payment-form label {
     font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 4px;
+    color: #333; /* Màu chữ đậm hơn */
 }

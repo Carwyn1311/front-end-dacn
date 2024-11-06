@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import { Layout } from 'antd';
+import { Layout, Form, Input, Button } from 'antd';
 import ImageSlider from '../../ImageSlider/Content/ImageSlider';
 import MenuSlider from '../../ImageSlider/Content/MenuSlider';
 import PaymentForm from '../../Payment/Content/PaymentForm';
-
-// Import CSS for styling PaymentForm (from the Payment folder)
-import '../../Payment/.css/PaymentForm.css'; 
-import TourManager from '../../TourSlider/Content/TourManager';
-import TourSlider from '../../TourSlider/Content/TourSlider';
+import TitleBar from '../../Header/Content/TitleBar';
+import '../.css/MainContent.css';
 
 const { Content } = Layout;
 
@@ -18,7 +15,6 @@ interface Slide {
   price: string;
 }
 
-// Initial slides data
 const initialSlides: Slide[] = [
   {
     image: '/path/to/image1.jpg',
@@ -37,35 +33,70 @@ const initialSlides: Slide[] = [
 const MainContent: React.FC = () => {
   const [slides, setSlides] = useState<Slide[]>(initialSlides);
 
-  // Update slides handler for MenuSlider
   const handleUpdateSlides = (updatedSlides: Slide[]) => {
     setSlides(updatedSlides);
   };
 
-  // Handler function for PaymentForm onSubmit
   const handlePaymentSubmit = (formData: any) => {
     console.log('Form submitted:', formData);
   };
 
+  const handleTourSubmit = (values: any) => {
+    console.log('Tour form submitted:', values);
+  };
+
   return (
     <Layout className="main-content-layout">
-      {/* MenuSlider for adding, editing, and deleting slides */}
-      <MenuSlider slides={slides} onUpdateSlides={handleUpdateSlides} />
-
-      {/* ImageSlider displays the slides */}
-      <ImageSlider slides={slides} />
+      {/* Header */}
+      <TitleBar />
 
       <Content className="main-content">
-          <div>
+        {/* MenuSlider for adding, editing, and deleting slides */}
+        <MenuSlider slides={slides} onUpdateSlides={handleUpdateSlides} />
+
+        {/* ImageSlider displays the slides */}
+        <ImageSlider slides={slides} />
+
+        {/* Form quản lý Tour */}
+        <div className="tour-management">
           <h1>Quản lý Tour</h1>
-          <TourManager />
+          <Form className="tour-form" onFinish={handleTourSubmit}>
+            <Form.Item
+              label="Tên Tour"
+              name="tourName"
+              rules={[{ required: true, message: 'Vui lòng nhập tên tour!' }]}
+            >
+              <Input placeholder="Nhập tên tour" />
+            </Form.Item>
+
+            <Form.Item
+              label="Địa điểm"
+              name="location"
+              rules={[{ required: true, message: 'Vui lòng nhập địa điểm!' }]}
+            >
+              <Input placeholder="Nhập địa điểm" />
+            </Form.Item>
+
+            <Form.Item
+              label="Giá"
+              name="price"
+              rules={[{ required: true, message: 'Vui lòng nhập giá!' }]}
+            >
+              <Input placeholder="Nhập giá" />
+            </Form.Item>
+
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </Form.Item>
+          </Form>
         </div>
-        <p>Welcome to the MainContent component!</p>
-        <p>This is a placeholder text for demonstration purposes.</p>
-        
-        {/* Pass handlePaymentSubmit as onSubmit prop */}
-        <PaymentForm onSubmit={handlePaymentSubmit} /> 
-        <TourSlider itemsPerView={3} interval={5000} />
+
+        {/* Payment Form */}
+        <div className="payment-container">
+          <PaymentForm onSubmit={handlePaymentSubmit} className="payment-form" />
+        </div>
       </Content>
     </Layout>
   );

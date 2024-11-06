@@ -159,11 +159,33 @@
 .main-content-layout {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end; /* Căn TitleBar sang bên phải */
   padding: 20px;
 }
 
+.titlebar-container {
+  width: 100%; /* Đảm bảo nó chiếm hết chiều rộng */
+  display: flex;
+  justify-content: flex-end; /* Căn sang bên phải */
+}
+
 .main-content {
-  margin-top: 20px;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 20px;
+}
+
+.payment-container {
+  display: flex;
+  justify-content: flex-end; /* Căn PaymentForm sang bên phải */
+  width: 100%;
+}
+
+.payment-form {
+  max-width: 400px;
+  padding: 24px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 
 interface PaymentFormProps {
   onSubmit: (formData: PaymentFormData) => void;
+  className?: string; // Thêm thuộc tính className
 }
 
 interface PaymentFormData {
@@ -14,7 +15,7 @@ interface PaymentFormData {
   cvv: string;
 }
 
-const PaymentForm: React.FC<PaymentFormProps> = ({ onSubmit }) => {
+const PaymentForm: React.FC<PaymentFormProps> = ({ onSubmit, className }) => {
   const [formData, setFormData] = useState<PaymentFormData>({
     cardNumber: '',
     cardHolder: '',
@@ -28,7 +29,6 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onSubmit }) => {
   };
 
   const handleDateChange = (date: DatePickerProps['value'] | null) => {
-    // Convert date from moment to JavaScript Date object
     setFormData({ ...formData, expirationDate: date ? date.toDate() : null });
   };
 
@@ -38,7 +38,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onSubmit }) => {
   };
 
   return (
-    <Form onFinish={handleSubmit} layout="vertical" className="payment-form">
+    <Form onFinish={handleSubmit} layout="vertical" className={`payment-form ${className}`}>
       {/* Card Number */}
       <Form.Item
         label="Card Number"
