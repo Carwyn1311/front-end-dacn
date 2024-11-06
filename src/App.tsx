@@ -7,6 +7,7 @@ import { TourProvider } from './features/TourSlider/Content/TourContext';
 import { MailOutlined, PhoneOutlined, EnvironmentOutlined, UserOutlined, SearchOutlined } from '@ant-design/icons';
 import Sidebar from './features/Sidebar/Content/Sidebar';
 import { BrowserRouter } from 'react-router-dom';
+import BookingForm from './features/BookingForm/Content/BookingForm';
 
 const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -23,7 +24,7 @@ const App: React.FC = () => {
             isOpen={isSidebarOpen} 
             isLoggedIn={true} 
             onLogout={() => console.log('Logged out')} 
-          /> {/* Gắn Sidebar */}
+          />
 
           <div
             className="main-content"
@@ -34,9 +35,7 @@ const App: React.FC = () => {
               overflow: 'auto',
             }}
           >
-            {/* Header */}
             <header className="app-header">
-              {/* Top bar with contact info */}
               <div className="top-bar">
                 <div className="contact-info">
                   <MailOutlined /> info@saigontourist.net
@@ -52,7 +51,6 @@ const App: React.FC = () => {
                 </div>
               </div>
 
-              {/* Navigation bar with logo and menu */}
               <div className="nav-bar">
                 <div className="logo">
                   <img src="/path-to-your-logo.png" alt="Saigontourist Logo" className="logo-image" />
@@ -74,9 +72,10 @@ const App: React.FC = () => {
               </Button>
             </header>
 
-            {/* Main content */}
             <div style={{ marginTop: '130px' }}>
               <MainContent />
+              {/* Thêm BookingForm */}
+              <BookingForm />
             </div>
           </div>
         </div>
