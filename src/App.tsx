@@ -1,5 +1,4 @@
-// App.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import MainContent from './features/Maincontent/Content/MainContent';
 import Button from './components/Button/Button';
@@ -10,28 +9,47 @@ import { BrowserRouter } from 'react-router-dom';
 import BookingForm from './features/BookingForm/Content/BookingForm';
 
 const App: React.FC = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 1000);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const handleResize = () => {
+    const isMobileView = window.innerWidth < 600;
+    setIsMobile(isMobileView);
+
+    if (window.innerWidth < 1000) {
+      setIsSidebarOpen(false);
+    } else {
+      setIsSidebarOpen(true);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <BrowserRouter>
       <TourProvider>
         <div style={{ display: 'flex', height: '100vh' }}>
-          <Sidebar 
-            isOpen={isSidebarOpen} 
-            isLoggedIn={true} 
-            onLogout={() => console.log('Logged out')} 
-          />
+          {!isMobile && (
+            <Sidebar 
+              isOpen={isSidebarOpen} 
+              isLoggedIn={true} 
+              onLogout={() => console.log('Logged out')} 
+            />
+          )}
 
           <div
             className="main-content"
             style={{
               flexGrow: 1,
               transition: 'margin-left 0.3s',
-              marginLeft: isSidebarOpen ? '250px' : '0',
+              marginLeft: isSidebarOpen && !isMobile ? '250px' : '0',
               overflow: 'auto',
             }}
           >
@@ -74,7 +92,6 @@ const App: React.FC = () => {
 
             <div style={{ marginTop: '130px' }}>
               <MainContent />
-              {/* Thêm BookingForm */}
               <BookingForm />
             </div>
           </div>
