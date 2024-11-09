@@ -13,6 +13,7 @@ import TourDetail from './MyComponent/MyComponent/TourDetail';
 import Gallery from './MyComponent/MyComponent/Gallery';
 import Tabs from './MyComponent/MyComponent/Tabs';
 import { TourProgramContent, TourPolicyContent, TourVisaContent } from './MyComponent/MyComponent/TourProgramContent';
+import PostManagement from './MyComponent/MyComponent/PostManagement'; // Import component quản lý bài viết
 
 const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -121,6 +122,9 @@ const App: React.FC = () => {
               <Gallery images={images} />
               {/* Thêm Tabs */}
               <Tabs tabs={tabs} />
+
+              {/* Thêm component PostManagement */}
+              <PostManagement />
             </div>
           </div>
         </div>
