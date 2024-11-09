@@ -1,155 +1,75 @@
 /* Cỡ chữ chung cho toàn bộ trang */
 body {
   font-size: 12px;
-}
-
-.app-header {
-  width: 100%;
-  position: fixed;
-  top: 0;
-  z-index: 100;
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-}
-
-.top-bar {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 20px;
-  background-color: #0073e6;
-  color: #ffffff;
-}
-
-.contact-info, .user-options {
-  display: flex;
-  align-items: center;
-}
-
-.contact-info span.separator, .user-options span.separator {
-  margin: 0 8px;
-  color: #ffffff;
-}
-
-.user-options .language {
-  font-size: 14px;
-  margin-left: 8px;
-}
-
-.nav-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
-  background-color: #005bb5;
-  color: #ffffff;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-}
-
-.logo-image {
-  height: 40px;
-  margin-right: 8px;
-}
-
-.logo-text {
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: #ffffff;
-}
-
-.navigation {
-  display: flex;
-  gap: 20px;
-}
-
-.navigation a {
-  text-decoration: none;
-  color: #ffffff;
-  font-weight: 500;
-  font-size: 0.95rem;
-  transition: color 0.3s ease;
-}
-
-.navigation a:hover {
-  color: #ffcc00;
-}
-
-.search-bar {
-  display: flex;
-  align-items: center;
-}
-
-.search-bar .search-icon {
-  font-size: 1.3rem;
-  color: #ffffff;
-  background-color: #ff9800;
-  border-radius: 4px;
-  padding: 5px;
-  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
 }
 
 /* CSS cho Sidebar */
 .sidebar {
   width: 250px;
   background-color: #f4f4f4;
-  transition: width 0.3s;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: 101; /* Sidebar nằm dưới app-header */
+  overflow-y: auto;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease; /* Hiệu ứng chuyển động cho sidebar */
 }
 
 .sidebar-open {
-  width: 250px;
+  transform: translateX(0); /* Hiển thị sidebar khi mở */
 }
 
 .sidebar-closed {
-  width: 0;
-  overflow: hidden;
+  transform: translateX(-100%); /* Ẩn sidebar khi đóng */
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 50;
 }
 
 /* Định dạng Sidebar cho thiết bị di động */
 @media (max-width: 600px) {
   .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    z-index: 10;
-    background-color: #f4f4f4;
-    overflow-y: auto;
-    width: 70%; /* Đặt sidebar chiếm 70% màn hình khi mở trên di động */
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-  }
-
-  .sidebar-open {
-    transform: translateX(0);
-  }
-
-  .sidebar-closed {
-    transform: translateX(-100%);
+    width: 70%;
   }
 
   .app-header {
-    padding: 5px 10px;
+    padding: 0px;
+    margin-left: -20px;
   }
 
   .top-bar, .nav-bar {
     padding: 5px 10px;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
   }
 
-  .contact-info, .user-options, .navigation, .search-bar {
+  .contact-info, .user-options {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .navigation, .search-bar {
     width: 100%;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
   }
 
   .navigation a {
-    margin: 5px 0;
+    margin: 3px 0;
   }
 
   .logo {
@@ -157,11 +77,16 @@ body {
     width: 100%;
   }
 
+  .logo-text {
+    font-size: 1rem;
+  }
+
   .main-content {
     margin-left: 0 !important;
   }
 }
 
+/* Định dạng cho các màn hình có chiều rộng dưới 768px */
 @media (max-width: 768px) {
   .nav-bar {
     flex-direction: column;
@@ -173,7 +98,119 @@ body {
   }
 
   .contact-info, .user-options {
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    gap: 5px;
+    font-size: 0.85rem;
   }
+
+  .navigation a {
+    font-size: 0.85rem;
+    padding: 2px 5px;
+  }
+}
+
+/* App Header */
+.app-header {
+  width: 100%;
+  position: fixed;
+  margin-left: -20px;
+  top: 0;
+  z-index: 102; /* Đảm bảo app-header nằm trên cùng */
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top Bar */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 15px;
+  background-color: #0073e6;
+  color: #ffffff;
+  font-size: 0.85rem;
+}
+
+.contact-info, .user-options {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.contact-info span.separator, .user-options span.separator {
+  margin: 0 5px;
+  color: #ffffff;
+}
+
+/* Language Toggle */
+.user-options .language {
+  font-size: 12px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.user-options .language:hover {
+  color: #ffcc00;
+}
+
+/* Navigation Bar */
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+  background-color: #005bb5;
+  color: #ffffff;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-image {
+  height: 35px;
+  margin-right: 8px;
+}
+
+.logo-text {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+.navigation {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.navigation a {
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 0.85rem;
+  transition: color 0.3s ease;
+}
+
+.navigation a:hover {
+  color: #ffcc00;
+}
+
+.search-icon {
+  font-size: 1rem;
+  color: #ffffff;
+  background-color: #ff9800;
+  border-radius: 4px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+/* Main Content */
+.main-content {
+  margin-top: 120px; /* Khoảng cách để không bị header che */
+  padding: 20px;
+  transition: margin-left 0.3s ease;
 }
