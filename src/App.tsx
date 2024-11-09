@@ -6,8 +6,13 @@ import Button from './components/Button/Button';
 import { TourProvider } from './features/TourSlider/Content/TourContext';
 import { MailOutlined, PhoneOutlined, EnvironmentOutlined, UserOutlined, SearchOutlined } from '@ant-design/icons';
 import Sidebar from './features/Sidebar/Content/Sidebar';
-import { BrowserRouter, Routes } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import BookingForm from './features/BookingForm/Content/BookingForm';
+import MyComponent from './MyComponent/MyComponent/MyComponent'; // Đảm bảo đường dẫn này đúng với cấu trúc thư mục của bạn
+import TourDetail from './MyComponent/MyComponent/TourDetail';
+import Gallery from './MyComponent/MyComponent/Gallery';
+import Tabs from './MyComponent/MyComponent/Tabs';
+import { TourProgramContent, TourPolicyContent, TourVisaContent } from './MyComponent/MyComponent/TourProgramContent';
 
 const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -35,13 +40,11 @@ const App: React.FC = () => {
     <BrowserRouter>
       <TourProvider>
         <div style={{ display: 'flex', height: '100vh' }}>
-          {!isMobile && (
-            <Sidebar 
-              isOpen={isSidebarOpen} 
-              isLoggedIn={true} 
-              onLogout={() => console.log('Logged out')} 
-            />
-          )}
+          <Sidebar 
+            isOpen={isSidebarOpen} 
+            isLoggedIn={true} 
+            onLogout={() => console.log('Logged out')} 
+          />
 
           <div
             className="main-content"
@@ -90,9 +93,6 @@ const App: React.FC = () => {
             </header>
 
             <div style={{ marginTop: '130px' }}>
-              <Routes>
-                {/* Thêm các route của bạn tại đây */}
-              </Routes>
               <MainContent />
               {/* Thêm BookingForm */}
               <BookingForm />
