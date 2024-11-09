@@ -1,6 +1,6 @@
 // App.tsx
 import React, { useState } from 'react';
-import './App.css';
+import './App.css'; // Đảm bảo import đúng file CSS tổng thể
 import MainContent from './features/Maincontent/Content/MainContent';
 import Button from './components/Button/Button';
 import { TourProvider } from './features/TourSlider/Content/TourContext';
@@ -13,7 +13,7 @@ import TourDetail from './MyComponent/MyComponent/TourDetail';
 import Gallery from './MyComponent/MyComponent/Gallery';
 import Tabs from './MyComponent/MyComponent/Tabs';
 import { TourProgramContent, TourPolicyContent, TourVisaContent } from './MyComponent/MyComponent/TourProgramContent';
-import PostManagement from './MyComponent/MyComponent/PostManagement';
+import PostManagement from './MyComponent/MyComponent/PostManagement'; // Import component PostManagement
 
 const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);

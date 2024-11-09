@@ -159,6 +159,23 @@
   margin-bottom: 20px;
 }
 
+.ant-upload {
+  display: block;
+  margin-top: 10px;
+}
+
+.image-preview {
+  margin-top: 10px;
+  max-height: 200px;
+  display: block;
+}
+
+.image-name {
+  margin-top: 5px;
+  font-style: italic;
+}
+
+
 .input-title,
 .input-content {
   margin-bottom: 15px;
