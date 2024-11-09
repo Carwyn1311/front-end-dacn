@@ -61,6 +61,18 @@
     background-color: #1677ff; /* Màu xanh đậm hơn khi hover */
 }
 
+/* Hiệu ứng hover cho lựa chọn thanh toán (radio button) */
+.payment-form .ant-radio-wrapper {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng chuyển đổi */
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.payment-form .ant-radio-wrapper:hover {
+    background-color: #f0f8ff; /* Màu nền khi trỏ chuột vào */
+    box-shadow: 0 0 8px rgba(64, 150, 255, 0.3); /* Đổ bóng nhẹ khi hover */
+}
+
 /* Đảm bảo nhãn không bị chèn vào các trường nhập liệu */
 .payment-form label {
     font-size: 14px;

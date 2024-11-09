@@ -8,6 +8,11 @@ import { MailOutlined, PhoneOutlined, EnvironmentOutlined, UserOutlined, SearchO
 import Sidebar from './features/Sidebar/Content/Sidebar';
 import { BrowserRouter } from 'react-router-dom';
 import BookingForm from './features/BookingForm/Content/BookingForm';
+import MyComponent from './MyComponent/MyComponent/MyComponent'; // Đảm bảo đường dẫn này đúng với cấu trúc thư mục của bạn
+import TourDetail from './MyComponent/MyComponent/TourDetail';
+import Gallery from './MyComponent/MyComponent/Gallery';
+import Tabs from './MyComponent/MyComponent/Tabs';
+import { TourProgramContent, TourPolicyContent, TourVisaContent } from './MyComponent/MyComponent/TourProgramContent';
 
 const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -15,6 +20,21 @@ const App: React.FC = () => {
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
+  const images = [
+    { src: '/image1.jpg', alt: 'Image 1' },
+    { src: '/image2.jpg', alt: 'Image 2' },
+    { src: '/image3.jpg', alt: 'Image 3' },
+    { src: '/image4.jpg', alt: 'Image 4' },
+    { src: '/image5.jpg', alt: 'Image 5' },
+    { src: '/image6.jpg', alt: 'Image 6' },
+  ];
+
+  const tabs = [
+    { name: "Chương trình Tour", content: <TourProgramContent /> },
+    { name: "Chính sách Tour", content: <TourPolicyContent /> },
+    { name: "Thủ tục & Visa", content: <TourVisaContent /> },
+  ];
 
   return (
     <BrowserRouter>
@@ -76,6 +96,31 @@ const App: React.FC = () => {
               <MainContent />
               {/* Thêm BookingForm */}
               <BookingForm />
+              {/* Thêm MyComponent */}
+              <MyComponent
+                title="Khám phá Úc cùng Saigontourist"
+                content="Tham gia tour du lịch đến Melbourne và Sydney để tận hưởng kỳ nghỉ Tết Nguyên Đán không thể quên với những trải nghiệm độc đáo."
+                imageUrl="/img1.jpg"
+              />
+              {/* Thêm component TourDetail */}
+              <TourDetail
+                departureDate="27/01/2025"
+                tourCode="STSTOB-2025-00049"
+                price="79.999.000"
+                childPrice="63.999.200"
+                babyPrice="0"
+                details={[
+                  "Đón Tết Nguyên Đán 2025 nơi xứ sở chuột túi với hành trình qua những thành phố nổi tiếng.",
+                  "Thăm Melbourne, thưởng lãm cảnh đẹp của vườn thực vật Fitzroy Garden, gặp gỡ tận mắt vô số động vật đặc hữu nước Úc.",
+                  "Tham quan Thành phố Cảng Sydney danh tiếng, chiêm ngưỡng các biểu tượng của nước Úc: Nhà hát con sò, cầu cảng Sydney.",
+                  "Trải nghiệm độc đáo với tàu lửa hơi nước, cáp treo qua thung lũng Jamison khám phá Blue Mountain.",
+                  "Thưởng thức bữa tiệc vị giác thú vị trên du thuyền Sydney Showboat sang trọng."
+                ]}
+              />
+              {/* Thêm Gallery */}
+              <Gallery images={images} />
+              {/* Thêm Tabs */}
+              <Tabs tabs={tabs} />
             </div>
           </div>
         </div>

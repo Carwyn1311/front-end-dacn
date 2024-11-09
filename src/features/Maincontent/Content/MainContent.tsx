@@ -6,6 +6,8 @@ import PaymentForm from '../../Payment/Content/PaymentForm';
 import TitleBar from '../../Header/Content/TitleBar';
 import '../.css/MainContent.css';
 
+
+
 const { Content } = Layout;
 
 interface Slide {
@@ -97,6 +99,11 @@ const MainContent: React.FC = () => {
         <div className="payment-container">
           <PaymentForm onSubmit={handlePaymentSubmit} className="payment-form" />
         </div>
+        <div className="myComponentContainer">
+      <h1 className="myComponentHeading">Payment!</h1>
+    </div>
+    
+
       </Content>
     </Layout>
   );

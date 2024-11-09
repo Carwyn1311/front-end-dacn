@@ -80,7 +80,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onSubmit, className }) => {
     <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
       {/* Thêm ảnh bên trái */}
       <div style={{ marginRight: '20px' }}>
-        <img src="/src/features/User/images/momo.png" alt="Description of image" style={{ maxWidth: '300px', height: 'auto' }} />
+      <img src="/src/features/User/images/momo.jpg" alt="MoMo payment logo" style={{ maxWidth: '300px', height: 'auto' }} />
       </div>
 
       {/* Form bên phải */}
