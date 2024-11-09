@@ -1,5 +1,4 @@
-// App.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import MainContent from './features/Maincontent/Content/MainContent';
 import Button from './components/Button/Button';
@@ -15,43 +14,31 @@ import Tabs from './MyComponent/MyComponent/Tabs';
 import { TourProgramContent, TourPolicyContent, TourVisaContent } from './MyComponent/MyComponent/TourProgramContent';
 
 const App: React.FC = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 1000);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const images = [
-    { src: '/image1.jpg', alt: 'Image 1' },
-    { src: '/image2.jpg', alt: 'Image 2' },
-    { src: '/image3.jpg', alt: 'Image 3' },
-    { src: '/image4.jpg', alt: 'Image 4' },
-    { src: '/image5.jpg', alt: 'Image 5' },
-    { src: '/image6.jpg', alt: 'Image 6' },
-  ];
-
-  const tabs = [
-    { name: "Chương trình Tour", content: <TourProgramContent /> },
-    { name: "Chính sách Tour", content: <TourPolicyContent /> },
-    { name: "Thủ tục & Visa", content: <TourVisaContent /> },
-  ];
-
   return (
     <BrowserRouter>
       <TourProvider>
         <div style={{ display: 'flex', height: '100vh' }}>
-          <Sidebar 
-            isOpen={isSidebarOpen} 
-            isLoggedIn={true} 
-            onLogout={() => console.log('Logged out')} 
-          />
+          {!isMobile && (
+            <Sidebar 
+              isOpen={isSidebarOpen} 
+              isLoggedIn={true} 
+              onLogout={() => console.log('Logged out')} 
+            />
+          )}
 
           <div
             className="main-content"
             style={{
               flexGrow: 1,
               transition: 'margin-left 0.3s',
-              marginLeft: isSidebarOpen ? '250px' : '0',
+              marginLeft: isSidebarOpen && !isMobile ? '250px' : '0',
               overflow: 'auto',
             }}
           >
@@ -94,7 +81,6 @@ const App: React.FC = () => {
 
             <div style={{ marginTop: '130px' }}>
               <MainContent />
-              {/* Thêm BookingForm */}
               <BookingForm />
               {/* Thêm MyComponent */}
               <MyComponent

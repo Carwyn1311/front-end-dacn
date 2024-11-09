@@ -1,3 +1,8 @@
+/* Cỡ chữ chung cho toàn bộ trang */
+body {
+  font-size: 12px;
+}
+
 .app-header {
   width: 100%;
   position: fixed;
@@ -5,6 +10,8 @@
   z-index: 1;
   background-color: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
 }
 
 .top-bar {
@@ -55,8 +62,12 @@
   color: #ffffff;
 }
 
+.navigation {
+  display: flex;
+  gap: 20px;
+}
+
 .navigation a {
-  margin: 0 12px;
   text-decoration: none;
   color: #ffffff;
   font-weight: 500;
@@ -68,6 +79,11 @@
   color: #ffcc00;
 }
 
+.search-bar {
+  display: flex;
+  align-items: center;
+}
+
 .search-bar .search-icon {
   font-size: 1.3rem;
   color: #ffffff;
@@ -75,4 +91,54 @@
   border-radius: 4px;
   padding: 5px;
   cursor: pointer;
+}
+
+/* Các thay đổi cho giao diện điện thoại */
+@media (max-width: 600px) {
+  .app-header {
+    flex-direction: column;
+    padding: 5px 10px;
+  }
+
+  .top-bar, .nav-bar {
+    flex-direction: column;
+    padding: 5px 10px;
+    align-items: flex-start;
+  }
+
+  .contact-info, .user-options, .navigation, .search-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .navigation a {
+    margin: 5px 0;
+  }
+
+  .logo {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-bar {
+    flex-direction: column;
+  }
+
+  .navigation {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .contact-info, .user-options {
+    flex-direction: column;
+    align-items: center;
+  }
 }

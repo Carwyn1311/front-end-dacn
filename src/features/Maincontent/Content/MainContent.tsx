@@ -3,7 +3,6 @@ import { Layout, Form, Input, Button } from 'antd';
 import ImageSlider from '../../ImageSlider/Content/ImageSlider';
 import MenuSlider from '../../ImageSlider/Content/MenuSlider';
 import PaymentForm from '../../Payment/Content/PaymentForm';
-import TitleBar from '../../Header/Content/TitleBar';
 import '../.css/MainContent.css';
 
 
@@ -49,8 +48,6 @@ const MainContent: React.FC = () => {
 
   return (
     <Layout className="main-content-layout">
-      {/* Header */}
-      <TitleBar />
 
       <Content className="main-content">
         {/* MenuSlider for adding, editing, and deleting slides */}
