@@ -20,6 +20,7 @@ body {
   transition: transform 0.3s ease; /* Hiệu ứng chuyển động cho sidebar */
 }
 
+
 .sidebar-open {
   transform: translateX(0); /* Hiển thị sidebar khi mở */
 }
@@ -215,3 +216,24 @@ body {
   transition: margin-left 0.3s ease;
 }
 
+.sidebar-toggle-button {
+  background-color: transparent; /* Nền trong suốt */
+  border: none; /* Bỏ viền */
+  cursor: pointer; /* Con trỏ chuột */
+  font-size: 24px; /* Kích thước biểu tượng */
+  padding: 8px; /* Khoảng cách nội bộ */
+  display: flex;
+  background-color: #ff9800;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%; /* Hình tròn */
+  transition: background-color 0.3s ease; /* Hiệu ứng hover */
+}
+
+.sidebar-toggle-button:hover {
+  background-color: #f0f0f0; /* Nền nhẹ khi hover */
+}
+
+.sidebar-toggle-button:focus {
+  outline: none; /* Bỏ đường viền mặc định khi nhấn */
+}

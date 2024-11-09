@@ -4,7 +4,7 @@ import './App.css'; // Đảm bảo import đúng file CSS tổng thể
 import MainContent from './features/Maincontent/Content/MainContent';
 import Button from './components/Button/Button';
 import { TourProvider } from './features/TourSlider/Content/TourContext';
-import { MailOutlined, PhoneOutlined, EnvironmentOutlined, UserOutlined, SearchOutlined } from '@ant-design/icons';
+import { MailOutlined, PhoneOutlined, EnvironmentOutlined, UserOutlined, SearchOutlined, ArrowLeftOutlined, MenuOutlined } from '@ant-design/icons';
 import Sidebar from './features/Sidebar/Content/Sidebar';
 import { BrowserRouter } from 'react-router-dom';
 import BookingForm from './features/BookingForm/Content/BookingForm';
@@ -80,41 +80,31 @@ const App: React.FC = () => {
             <header className="app-header">
               <div className="top-bar">
                 <div className="contact-info">
-                  <MailOutlined /> info@saigontourist.net
-                  <span className="separator">|</span>
-                  <PhoneOutlined /> {language === 'en' ? 'Hotline' : 'Đường dây nóng'}: 1900 1808
+                  <Button onClick={toggleSidebar} className="sidebar-toggle-button">
+                    {isSidebarOpen ? <ArrowLeftOutlined /> : <MenuOutlined />}
+                  </Button>
                 </div>
-                <div className="user-options">
-                  <EnvironmentOutlined /> {language === 'en' ? 'Select departure point' : 'Chọn điểm khởi hành'}
-                  <span className="separator">|</span>
+                <div
+                  className="user-options"
+                  style={{
+                    right: '5px', // Luôn căn phải
+                    top: '0',
+                    transition: 'transform 0.3s, margin-right 0.3s', // Hiệu ứng mượt khi thay đổi vị trí
+                    transform: isSidebarOpen ? 'translateX(-250px)' : 'translateX(0)', // Dịch sang trái 250px khi sidebar mở
+                    marginRight: isSidebarOpen ? '10px' : '0px', // Cách bên phải 10px khi sidebar đóng
+                    overflow: 'auto',
+                  }}
+                >
                   <UserOutlined /> {language === 'en' ? 'Login' : 'Đăng nhập'}
-                  <span className="separator">|</span>
                   <SearchOutlined className="search-icon" />
                   <span className="language" onClick={toggleLanguage}>
                     {language === 'en' ? '🇬🇧 English' : '🇻🇳 Tiếng Việt'}
                   </span>
                 </div>
               </div>
-
-              <div className="nav-bar">
-                <div className="logo">
-                  <img src="/path-to-your-logo.png" alt="Saigontourist Logo" className="logo-image" />
-                  <span className="logo-text">SAIGONTOURIST TRAVEL</span>
-                </div>
-                <nav className="navigation">
-                  <a href="/">{language === 'en' ? 'HOME' : 'TRANG CHỦ'}</a>
-                  <a href="/domestic-tours">{language === 'en' ? 'DOMESTIC TOURS' : 'TOUR TRONG NƯỚC'}</a>
-                  <a href="/international-tours">{language === 'en' ? 'INTERNATIONAL TOURS' : 'TOUR NƯỚC NGOÀI'}</a>
-                  <a href="/services">{language === 'en' ? 'TOUR SERVICES' : 'DỊCH VỤ DU LỊCH'}</a>
-                  <a href="/contact">{language === 'en' ? 'CONTACT' : 'LIÊN HỆ'}</a>
-                </nav>
-              </div>
-              <Button onClick={toggleSidebar} className="sidebar-toggle-button">
-                &#9776;
-              </Button>
             </header>
 
-            <div style={{ marginTop: '130px' }}>
+            <div style={{ marginTop: '0px' }}>
               <MainContent />
               {/* Thêm BookingForm */}
               <BookingForm />
