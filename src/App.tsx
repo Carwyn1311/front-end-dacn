@@ -2,6 +2,9 @@
 import React, { useState } from 'react';
 import './App.css';
 import MainContent from './features/Maincontent/Content/MainContent';
+import Button from './components/Button/Button';
+import { TourProvider } from './features/TourSlider/Content/TourContext';
+import { MailOutlined, PhoneOutlined, EnvironmentOutlined, UserOutlined, SearchOutlined } from '@ant-design/icons';
 import Sidebar from './features/Sidebar/Content/Sidebar';
 import { BrowserRouter } from 'react-router-dom';
 import BookingForm from './features/BookingForm/Content/BookingForm';
@@ -10,9 +13,10 @@ import TourDetail from './MyComponent/MyComponent/TourDetail';
 import Gallery from './MyComponent/MyComponent/Gallery';
 import Tabs from './MyComponent/MyComponent/Tabs';
 import { TourProgramContent, TourPolicyContent, TourVisaContent } from './MyComponent/MyComponent/TourProgramContent';
+import PostManagement from './MyComponent/MyComponent/PostManagement';
 
 const App: React.FC = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [language, setLanguage] = useState('en'); // 'en' for English, 'vn' for Vietnamese
 
   const toggleSidebar = () => {
@@ -53,53 +57,62 @@ const App: React.FC = () => {
 
   return (
     <BrowserRouter>
-      <div style={{ display: 'flex', height: '100vh' }}>
-        {isSidebarOpen && (
-          <div className="overlay" onClick={closeSidebar}></div>
-        )}
-        <Sidebar 
-          isOpen={isSidebarOpen} 
-          isLoggedIn={true} 
-          onLogout={() => console.log('Logged out')} 
-        />
+      <TourProvider>
+        <div style={{ display: 'flex', height: '100vh' }}>
+          {isSidebarOpen && (
+            <div className="overlay" onClick={closeSidebar}></div>
+          )}
+          <Sidebar 
+            isOpen={isSidebarOpen} 
+            isLoggedIn={true} 
+            onLogout={() => console.log('Logged out')} 
+          />
 
-        <div className="main-content" style={{ flexGrow: 1, overflow: 'auto' }}>
-          <header className="app-header">
-            <div className="top-bar">
-              <div className="contact-info">
-                <MailOutlined /> info@anhytravel.net
-                <span className="separator">|</span>
-                <PhoneOutlined /> {language === 'en' ? 'Hotline' : 'Đường dây nóng'}: 1900 1808
+          <div
+            className="main-content"
+            style={{
+              flexGrow: 1,
+              transition: 'margin-left 0.3s',
+              marginLeft: isSidebarOpen ? '250px' : '0',
+              overflow: 'auto',
+            }}
+          >
+            <header className="app-header">
+              <div className="top-bar">
+                <div className="contact-info">
+                  <MailOutlined /> info@saigontourist.net
+                  <span className="separator">|</span>
+                  <PhoneOutlined /> {language === 'en' ? 'Hotline' : 'Đường dây nóng'}: 1900 1808
+                </div>
+                <div className="user-options">
+                  <EnvironmentOutlined /> {language === 'en' ? 'Select departure point' : 'Chọn điểm khởi hành'}
+                  <span className="separator">|</span>
+                  <UserOutlined /> {language === 'en' ? 'Login' : 'Đăng nhập'}
+                  <span className="separator">|</span>
+                  <SearchOutlined className="search-icon" />
+                  <span className="language" onClick={toggleLanguage}>
+                    {language === 'en' ? '🇬🇧 English' : '🇻🇳 Tiếng Việt'}
+                  </span>
+                </div>
               </div>
-              <div className="user-options">
-                <EnvironmentOutlined /> {language === 'en' ? 'Select departure point' : 'Chọn điểm khởi hành'}
-                <span className="separator">|</span>
-                <UserOutlined /> {language === 'en' ? 'Login' : 'Đăng nhập'}
-                <span className="separator">|</span>
-                <SearchOutlined className="search-icon" />
-                <span className="language" onClick={toggleLanguage}>
-                  {language === 'en' ? '🇬🇧 English' : '🇻🇳 Tiếng Việt'}
-                </span>
-              </div>
-            </div>
 
-            <div className="nav-bar">
-              <div className="logo">
-                <img src="/path-to-your-logo.png" alt="Saigontourist Logo" className="logo-image" />
-                <span className="logo-text">SAIGONTOURIST TRAVEL</span>
+              <div className="nav-bar">
+                <div className="logo">
+                  <img src="/path-to-your-logo.png" alt="Saigontourist Logo" className="logo-image" />
+                  <span className="logo-text">SAIGONTOURIST TRAVEL</span>
+                </div>
+                <nav className="navigation">
+                  <a href="/">{language === 'en' ? 'HOME' : 'TRANG CHỦ'}</a>
+                  <a href="/domestic-tours">{language === 'en' ? 'DOMESTIC TOURS' : 'TOUR TRONG NƯỚC'}</a>
+                  <a href="/international-tours">{language === 'en' ? 'INTERNATIONAL TOURS' : 'TOUR NƯỚC NGOÀI'}</a>
+                  <a href="/services">{language === 'en' ? 'TOUR SERVICES' : 'DỊCH VỤ DU LỊCH'}</a>
+                  <a href="/contact">{language === 'en' ? 'CONTACT' : 'LIÊN HỆ'}</a>
+                </nav>
               </div>
-              <nav className="navigation">
-                <a href="/">{language === 'en' ? 'HOME' : 'TRANG CHỦ'}</a>
-                <a href="/domestic-tours">{language === 'en' ? 'DOMESTIC TOURS' : 'TOUR TRONG NƯỚC'}</a>
-                <a href="/international-tours">{language === 'en' ? 'INTERNATIONAL TOURS' : 'TOUR NƯỚC NGOÀI'}</a>
-                <a href="/services">{language === 'en' ? 'TOUR SERVICES' : 'DỊCH VỤ DU LỊCH'}</a>
-                <a href="/contact">{language === 'en' ? 'CONTACT' : 'LIÊN HỆ'}</a>
-              </nav>
-            </div>
-            <Button onClick={toggleSidebar} className="sidebar-toggle-button">
-              &#9776;
-            </Button>
-          </header>
+              <Button onClick={toggleSidebar} className="sidebar-toggle-button">
+                &#9776;
+              </Button>
+            </header>
 
             <div style={{ marginTop: '130px' }}>
               <MainContent />
@@ -130,6 +143,8 @@ const App: React.FC = () => {
               <Gallery images={images} />
               {/* Thêm Tabs */}
               <Tabs tabs={tabs} />
+              {/* Thêm component PostManagement */}
+              <PostManagement />
             </div>
           </div>
         </div>
