@@ -7,7 +7,7 @@ body {
   width: 100%;
   position: fixed;
   top: 0;
-  z-index: 1;
+  z-index: 100;
   background-color: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -93,24 +93,59 @@ body {
   cursor: pointer;
 }
 
-/* Các thay đổi cho giao diện điện thoại */
+/* CSS cho Sidebar */
+.sidebar {
+  width: 250px;
+  background-color: #f4f4f4;
+  transition: width 0.3s;
+  position: relative;
+}
+
+.sidebar-open {
+  width: 250px;
+}
+
+.sidebar-closed {
+  width: 0;
+  overflow: hidden;
+}
+
+/* Định dạng Sidebar cho thiết bị di động */
 @media (max-width: 600px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 10;
+    background-color: #f4f4f4;
+    overflow-y: auto;
+    width: 70%; /* Đặt sidebar chiếm 70% màn hình khi mở trên di động */
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar-open {
+    transform: translateX(0);
+  }
+
+  .sidebar-closed {
+    transform: translateX(-100%);
+  }
+
   .app-header {
-    flex-direction: column;
     padding: 5px 10px;
   }
 
   .top-bar, .nav-bar {
-    flex-direction: column;
     padding: 5px 10px;
+    flex-direction: column;
     align-items: flex-start;
   }
 
   .contact-info, .user-options, .navigation, .search-bar {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
     width: 100%;
+    align-items: flex-start;
   }
 
   .navigation a {

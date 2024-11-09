@@ -5,8 +5,10 @@ import Button from './components/Button/Button';
 import { TourProvider } from './features/TourSlider/Content/TourContext';
 import { MailOutlined, PhoneOutlined, EnvironmentOutlined, UserOutlined, SearchOutlined } from '@ant-design/icons';
 import Sidebar from './features/Sidebar/Content/Sidebar';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Routes } from 'react-router-dom';
 import BookingForm from './features/BookingForm/Content/BookingForm';
+
+// Thêm các thành phần trang tương ứng với từng route nếu cần
 
 const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 1000);
@@ -35,14 +37,21 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <TourProvider>
-        <div style={{ display: 'flex', height: '100vh' }}>
-          {!isMobile && (
+        <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
+          <div
+            style={{
+              position: isMobile ? 'fixed' : 'relative',
+              zIndex: isSidebarOpen ? 10 : 0,
+              width: isSidebarOpen ? (isMobile ? '70%' : '250px') : '0',
+              transition: 'width 0.3s',
+            }}
+          >
             <Sidebar 
               isOpen={isSidebarOpen} 
               isLoggedIn={true} 
               onLogout={() => console.log('Logged out')} 
             />
-          )}
+          </div>
 
           <div
             className="main-content"
@@ -91,6 +100,9 @@ const App: React.FC = () => {
             </header>
 
             <div style={{ marginTop: '130px' }}>
+              <Routes>
+                {/* Thêm các route của bạn tại đây */}
+              </Routes>
               <MainContent />
               <BookingForm />
             </div>
