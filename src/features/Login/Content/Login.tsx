@@ -68,18 +68,24 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
     try {
       console.log('Attempting login with:', { userName, password });
     
-      const response = await axiosInstance.post(`/auth/authenticate`, {
-            username: userName,
-            password: password,
+      const response = await axiosInstance.post('/api/login', {
+        username: userName,
+        password: password,
       });
 
-      const token = response.data?.data?.jwt;
+      // Kiểm tra toàn bộ phản hồi từ API
+      console.log('API response:', response.data);
+
+      // Xử lý phản hồi và lấy token
+      const token = response.data?.jwt || response.data?.data?.jwt;
 
       if (!token) {
-          throw new Error('No token returned from API.');
+        throw new Error('No token returned from API.');
       }
-      
-      const role = userName === 'admin' && password === '123456' ? 'ADMIN' : 'USER';
+
+      localStorage.setItem('jwt', token);
+
+      const role = userName === 'duong' && password === '11111111' ? 'ADMIN' : 'USER';
       console.log("Role được xác định là:", role);
 
       const user = new User({
@@ -91,15 +97,15 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
       });
 
       if (rememberMe) {
-          localStorage.setItem('userName', userName);
-          localStorage.setItem('password', password);
-          localStorage.setItem('rememberMe', 'true');
-          localStorage.setItem('token', token);  
+        localStorage.setItem('userName', userName);
+        localStorage.setItem('password', password);
+        localStorage.setItem('rememberMe', 'true');
+        localStorage.setItem('token', token);  
       } else {
-          sessionStorage.setItem('token', token);
-          localStorage.removeItem('userName');
-          localStorage.removeItem('password');
-          localStorage.removeItem('rememberMe');
+        sessionStorage.setItem('token', token);
+        localStorage.removeItem('userName');
+        localStorage.removeItem('password');
+        localStorage.removeItem('rememberMe');
       }
 
       TokenAuthService.setToken(token);
