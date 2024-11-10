@@ -4,7 +4,7 @@ import './App.css'; // Đảm bảo import đúng file CSS tổng thể
 import MainContent from './features/Maincontent/Content/MainContent';
 import Button from './components/Button/Button';
 import { TourProvider } from './features/TourSlider/Content/TourContext';
-import { MailOutlined, PhoneOutlined, EnvironmentOutlined, UserOutlined, SearchOutlined, ArrowLeftOutlined, MenuOutlined } from '@ant-design/icons';
+import { UserOutlined, SearchOutlined, ArrowLeftOutlined, MenuOutlined } from '@ant-design/icons';
 import Sidebar from './features/Sidebar/Content/Sidebar';
 import { BrowserRouter } from 'react-router-dom';
 import BookingForm from './features/BookingForm/Content/BookingForm';

@@ -162,20 +162,27 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isLoggedIn, onLogout }) => {
         { key: 'service-6', label: 'Dịch vụ Free Easy', onClick: () => handleMenuClick('/dich-vu/free-easy') },
       ],
     },
+    //...(isAdmin
+      //? [
+        {
+          key: 'admin',
+          icon: <UserOutlined />,
+          label: 'Trang Admin',
+          children: [
+            { key: 'manage-users', label: 'Quản lý User', onClick: () => handleMenuClick('/admin/manage-users') },
+            { key: 'domestic-tours', label: 'Quản lý Tour Trong Nước', onClick: () => handleMenuClick('/admin/domestic-tours') },
+            { key: 'international-tours', label: 'Quản lý Tour Nước Ngoài', onClick: () => handleMenuClick('/admin/international-tours') },
+            { key: 'tour-stats', label: 'Thống Kê Tour', onClick: () => handleMenuClick('/admin/tour-stats') },
+            { key: 'payment-management', label: 'Quản lý Thanh Toán', onClick: () => handleMenuClick('/admin/payment-management') },
+            { key: 'home-board-management', label: 'Quản lý Bảng Tin Trang Chủ', onClick: () => handleMenuClick('/admin/home-board-management') },
+          ],
+        },
     {
       key: 'contact',
       icon: <PhoneOutlined />,
       label: 'Liên hệ',
       onClick: () => handleMenuClick('/contact'),
     },
-    //...(isAdmin
-      //? [
-          {
-            key: 'admin',
-            icon: <UserOutlined />,
-            label: 'Trang Admin',
-            onClick: () => handleMenuClick('/admin'),
-          },
         ];
       ///: []),
   //];
