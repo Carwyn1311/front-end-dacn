@@ -1,6 +1,6 @@
 import React from 'react';
 import '../.css/MyComponent.css';
-
+import '../.css/AntDesignOverrides.css';
 interface MyComponentProps {
   title: string;
   content: string;

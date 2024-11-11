@@ -1,6 +1,6 @@
 import React from 'react';
-import '../.css/MyComponent.css';
-
+import '../.css/TourDetail.css';
+import '../.css/AntDesignOverrides.css';
 interface TourDetailsProps {
     departureDate: string;
     tourCode: string;

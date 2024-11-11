@@ -1,5 +1,5 @@
 import React from 'react';
-
+import '../.css/AntDesignOverrides.css';
 export const TourProgramContent = () => (
   <div>
     <h2>SỰ KIỆN ĐẶC BIỆT NGÀY 4/11/2024</h2>

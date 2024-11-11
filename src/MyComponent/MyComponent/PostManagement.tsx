@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { Button, Input, List, Modal, Upload } from 'antd';
+import { Button, Input, List, Modal, Upload, DatePicker } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons';
-import '../.css/MyComponent.css';
+import '../.css/PostManagement.css';
+import '../.css/AntDesignOverrides.css';
 
 interface Post {
     id: number;
     title: string;
     content: string;
+    date: string; // Thêm thuộc tính ngày cho bài viết (YYYY-MM-DD format)
     imageUrl?: string | null;
-    imageName?: string | null; // Thêm thuộc tính imageName để lưu tên file ảnh
+    imageName?: string | null;
 }
 
 const PostManagement: React.FC = () => {
@@ -16,21 +18,34 @@ const PostManagement: React.FC = () => {
     const [newTitle, setNewTitle] = useState<string>('');
     const [newContent, setNewContent] = useState<string>('');
     const [newImage, setNewImage] = useState<string | null>(null);
-    const [newImageName, setNewImageName] = useState<string | null>(null); // Thêm state để lưu tên file ảnh
+    const [newImageName, setNewImageName] = useState<string | null>(null);
+    const [newDate, setNewDate] = useState<string>('');
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [editingIndex, setEditingIndex] = useState<number | null>(null);
     const [editTitle, setEditTitle] = useState<string>('');
     const [editContent, setEditContent] = useState<string>('');
     const [editImage, setEditImage] = useState<string | null>(null);
-    const [editImageName, setEditImageName] = useState<string | null>(null); // State cho tên file ảnh khi chỉnh sửa
+    const [editImageName, setEditImageName] = useState<string | null>(null);
+    const [editDate, setEditDate] = useState<string>('');
+    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [sortType, setSortType] = useState<'az' | 'za' | 'dateAsc' | 'dateDesc'>('az');
+    const [filterDate, setFilterDate] = useState<string>('');
 
     const handleAddPost = () => {
-        if (newTitle.trim() !== '' && newContent.trim() !== '') {
-            setPosts([...posts, { id: Date.now(), title: newTitle, content: newContent, imageUrl: newImage, imageName: newImageName }]);
+        if (newTitle.trim() !== '' && newContent.trim() !== '' && newDate !== '') {
+            setPosts([...posts, {
+                id: Date.now(),
+                title: newTitle,
+                content: newContent,
+                date: newDate,
+                imageUrl: newImage,
+                imageName: newImageName,
+            }]);
             setNewTitle('');
             setNewContent('');
             setNewImage(null);
-            setNewImageName(null); // Reset lại tên file ảnh
+            setNewImageName(null);
+            setNewDate('');
         }
     };
 
@@ -44,18 +59,20 @@ const PostManagement: React.FC = () => {
         setEditTitle(post.title);
         setEditContent(post.content);
         setEditImage(post.imageUrl || null);
-        setEditImageName(post.imageName || null); // Đặt tên file ảnh khi chỉnh sửa
+        setEditImageName(post.imageName || null);
+        setEditDate(post.date);
     };
 
     const handleSaveEdit = () => {
         setPosts(posts.map(post => 
-            (post.id === editingIndex ? { ...post, title: editTitle, content: editContent, imageUrl: editImage, imageName: editImageName } : post)
+            (post.id === editingIndex ? { ...post, title: editTitle, content: editContent, date: editDate, imageUrl: editImage, imageName: editImageName } : post)
         ));
         setIsEditing(false);
         setEditTitle('');
         setEditContent('');
         setEditImage(null);
         setEditImageName(null);
+        setEditDate('');
         setEditingIndex(null);
     };
 
@@ -63,14 +80,47 @@ const PostManagement: React.FC = () => {
         if (info.file.status === 'done' || info.file.status === 'uploading') {
             const imageUrl = URL.createObjectURL(info.file.originFileObj);
             setImage(imageUrl);
-            setImageName(info.file.name); // Lưu tên file ảnh
+            setImageName(info.file.name);
         }
     };
+
+    const handleSort = (type: 'az' | 'za' | 'dateAsc' | 'dateDesc') => {
+        setSortType(type);
+    };
+
+    const filteredPosts = posts
+        .filter(post => post.title.toLowerCase().includes(searchTerm.toLowerCase()))
+        .filter(post => (filterDate ? post.date === filterDate : true))
+        .sort((a, b) => {
+            if (sortType === 'az') return a.title.localeCompare(b.title);
+            if (sortType === 'za') return b.title.localeCompare(a.title);
+            if (sortType === 'dateAsc') return new Date(a.date).getTime() - new Date(b.date).getTime();
+            if (sortType === 'dateDesc') return new Date(b.date).getTime() - new Date(a.date).getTime();
+            return 0;
+        });
 
     return (
         <div className="post-management-container">
             <h1>Quản lý bài viết</h1>
             <div>
+                <Input
+                    placeholder="Tìm kiếm bài viết"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    style={{ marginBottom: '10px', width: '100%' }}
+                />
+                <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+                    <Button onClick={() => handleSort('az')}>Sắp xếp A-Z</Button>
+                    <Button onClick={() => handleSort('za')}>Sắp xếp Z-A</Button>
+                    <Button onClick={() => handleSort('dateAsc')}>Ngày tăng dần</Button>
+                    <Button onClick={() => handleSort('dateDesc')}>Ngày giảm dần</Button>
+                </div>
+                <DatePicker
+                    placeholder="Lọc theo ngày"
+                    onChange={(date, dateString) => setFilterDate(dateString as string)}
+                    style={{ marginBottom: '10px', width: '100%' }}
+                />
+                {/* Input và các nút thêm bài viết */}
                 <Input
                     placeholder="Nhập tiêu đề bài viết"
                     value={newTitle}
@@ -83,6 +133,11 @@ const PostManagement: React.FC = () => {
                     onChange={(e) => setNewContent(e.target.value)}
                     style={{ marginBottom: '10px', width: '100%' }}
                     rows={4}
+                />
+                <DatePicker
+                    placeholder="Chọn ngày"
+                    onChange={(date, dateString) => setNewDate(dateString as string)}
+                    style={{ marginBottom: '10px', width: '100%' }}
                 />
                 <Upload
                     beforeUpload={() => false}
@@ -98,23 +153,14 @@ const PostManagement: React.FC = () => {
             </div>
             <List
                 bordered
-                dataSource={posts}
+                dataSource={filteredPosts}
                 renderItem={(post) => (
                     <List.Item
                         actions={[
-                            <Button
-                                type="link"
-                                icon={<EditOutlined />}
-                                onClick={() => handleEditPost(post)}
-                            >
+                            <Button type="link" icon={<EditOutlined />} onClick={() => handleEditPost(post)}>
                                 Sửa
                             </Button>,
-                            <Button
-                                type="link"
-                                danger
-                                icon={<DeleteOutlined />}
-                                onClick={() => handleDeletePost(post.id)}
-                            >
+                            <Button type="link" danger icon={<DeleteOutlined />} onClick={() => handleDeletePost(post.id)}>
                                 Xóa
                             </Button>,
                         ]}
@@ -124,6 +170,7 @@ const PostManagement: React.FC = () => {
                             description={
                                 <>
                                     <p>{post.content}</p>
+                                    <small>Ngày: {post.date}</small>
                                     {post.imageName && <p>📎 {post.imageName}</p>}
                                     {post.imageUrl && <img src={post.imageUrl} alt="Post" style={{ maxHeight: '100px', display: 'block', marginTop: '10px' }} />}
                                 </>
@@ -151,6 +198,12 @@ const PostManagement: React.FC = () => {
                     onChange={(e) => setEditContent(e.target.value)}
                     style={{ marginBottom: '10px', width: '100%' }}
                     rows={4}
+                />
+                <DatePicker
+                    placeholder="Chỉnh sửa ngày"
+                    value={editDate ? new Date(editDate) : null}
+                    onChange={(date, dateString) => setEditDate(dateString as string)}
+                    style={{ marginBottom: '10px', width: '100%' }}
                 />
                 <Upload
                     beforeUpload={() => false}

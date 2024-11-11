@@ -15,6 +15,7 @@ import Tabs from './MyComponent/MyComponent/Tabs';
 import { TourProgramContent, TourPolicyContent, TourVisaContent } from './MyComponent/MyComponent/TourProgramContent';
 import PostManagement from './MyComponent/MyComponent/PostManagement'; // Import component PostManagement
 import Login from './features/Login/Content/Login';
+import Breadcrumb from './MyComponent/MyComponent/Breadcrumb';
 
 const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -54,6 +55,12 @@ const App: React.FC = () => {
       name: language === 'en' ? 'Procedures & Visa' : 'Thủ tục & Visa',
       content: <TourVisaContent />,
     },
+  ];
+  const breadcrumbItems = [
+    { label: 'Trang chủ', url: '/' },
+    { label: 'Kế hoạch của bạn', url: '/plan' },
+    { label: 'Tour khám phá Đà Lạt', url: '/plan/tour-dalat' },
+    { label: 'Ngày 1: Khám phá trung tâm thành phố' } // Current page
   ];
 
   return (
@@ -136,11 +143,13 @@ const App: React.FC = () => {
               <Tabs tabs={tabs} />
               {/* Thêm component PostManagement */}
               <PostManagement />
+              <Breadcrumb items={breadcrumbItems} />
             </div>
           </div>
         </div>
       </TourProvider>
     </BrowserRouter>
+    
   );
 };
 

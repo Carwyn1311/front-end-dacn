@@ -1,6 +1,6 @@
 import React from 'react';
-import '../.css/MyComponent.css';
-
+import '../.css/Gallery.css';
+import '../.css/AntDesignOverrides.css';
 interface Image {
   src: string;
   alt: string;

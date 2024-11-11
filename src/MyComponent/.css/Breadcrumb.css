@@ -1,0 +1,27 @@
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+  }
+  
+  .breadcrumb-link {
+    text-decoration: none;
+    color: #007bff;
+    transition: color 0.3s;
+  }
+  
+  .breadcrumb-link:hover {
+    color: #0056b3;
+  }
+  
+  .breadcrumb-separator {
+    margin: 0 5px;
+    color: #6c757d;
+  }
+  
+  .breadcrumb-current {
+    color: #6c757d;
+    font-weight: bold;
+  }
+  

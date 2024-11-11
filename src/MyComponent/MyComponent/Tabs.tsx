@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import '../.css/MyComponent.css';
-
+import '../.css/Tabs.css';
+import '../.css/AntDesignOverrides.css';
 interface TabsProps {
   tabs: { name: string; content: React.ReactNode }[];
 }
