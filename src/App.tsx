@@ -103,7 +103,9 @@ const App: React.FC = () => {
                     overflow: 'auto',
                   }}
                 >
-                  <UserOutlined /> {language === 'en' ? 'Login' : 'Đăng nhập'}
+                  <Button className='button-login'>
+                    <UserOutlined /> {language === 'en' ? 'Login' : 'Đăng nhập'}
+                  </Button>
                   <SearchOutlined className="search-icon" />
                   <span className="language" onClick={toggleLanguage}>
                     {language === 'en' ? '🇬🇧 English' : '🇻🇳 Tiếng Việt'}
@@ -111,39 +113,8 @@ const App: React.FC = () => {
                 </div>
               </div>
             </header>
-
             <div style={{ marginTop: '0px' }}>
               <MainContent />
-              {/* Thêm BookingForm */}
-              <BookingForm />
-              {/* Thêm MyComponent */}
-              <MyComponent
-                title="Khám phá Úc cùng Saigontourist"
-                content="Tham gia tour du lịch đến Melbourne và Sydney để tận hưởng kỳ nghỉ Tết Nguyên Đán không thể quên với những trải nghiệm độc đáo."
-                imageUrl="/img1.jpg"
-              />
-              {/* Thêm component TourDetail */}
-              <TourDetail
-                departureDate="27/01/2025"
-                tourCode="STSTOB-2025-00049"
-                price="79.999.000"
-                childPrice="63.999.200"
-                babyPrice="0"
-                details={[
-                  "Đón Tết Nguyên Đán 2025 nơi xứ sở chuột túi với hành trình qua những thành phố nổi tiếng.",
-                  "Thăm Melbourne, thưởng lãm cảnh đẹp của vườn thực vật Fitzroy Garden, gặp gỡ tận mắt vô số động vật đặc hữu nước Úc.",
-                  "Tham quan Thành phố Cảng Sydney danh tiếng, chiêm ngưỡng các biểu tượng của nước Úc: Nhà hát con sò, cầu cảng Sydney.",
-                  "Trải nghiệm độc đáo với tàu lửa hơi nước, cáp treo qua thung lũng Jamison khám phá Blue Mountain.",
-                  "Thưởng thức bữa tiệc vị giác thú vị trên du thuyền Sydney Showboat sang trọng."
-                ]}
-              />
-              {/* Thêm Gallery */}
-              <Gallery images={images} />
-              {/* Thêm Tabs */}
-              <Tabs tabs={tabs} />
-              {/* Thêm component PostManagement */}
-              <PostManagement />
-              <Breadcrumb items={breadcrumbItems} />
             </div>
           </div>
         </div>
