@@ -15,12 +15,7 @@ interface MenuSliderProps {
 }
 
 const MenuSlider: React.FC<MenuSliderProps> = ({ slides, onUpdateSlides }) => {
-  const [currentSlide, setCurrentSlide] = useState<Slide>({
-    image: '',
-    title: '',
-    subtitle: '',
-    price: '',
-  });
+  const [currentSlide, setCurrentSlide] = useState<Slide>({ image: '', title: '', subtitle: '', price: '' });
   const [isEditing, setIsEditing] = useState<number | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

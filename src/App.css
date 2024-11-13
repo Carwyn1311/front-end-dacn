@@ -40,6 +40,23 @@ body {
   z-index: 50;
 }
 
+/* Main Content */
+.main-content {
+  flex-grow: 1;
+  margin-top: 60px; /* Khoảng cách để không bị header che */
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+}
+
+.main-content.sidebar-open {
+  margin-left: 250px; /* Kích thước ngang của sidebar */
+}
+
+
+.app-header.sidebar-open {
+  margin-left: 250px; /* Phù hợp với chiều rộng của sidebar */
+}
+
 /* Định dạng Sidebar cho thiết bị di động */
 @media (max-width: 600px) {
   .sidebar {
@@ -114,14 +131,17 @@ body {
 .app-header {
   width: 100%;
   position: fixed;
-  margin-left: -20px;
   top: 0;
+  left: 0;
+  width: 100%;
   z-index: 102; /* Đảm bảo app-header nằm trên cùng */
   background-color: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
 }
+
+
 
 /* Top Bar */
 .top-bar {
@@ -212,7 +232,6 @@ body {
 /* Main Content */
 .main-content {
   margin-top: 60px; /* Khoảng cách để không bị header che */
-  padding: 20px;
   transition: margin-left 0.3s ease;
 }
 

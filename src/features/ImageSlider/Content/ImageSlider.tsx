@@ -1,4 +1,3 @@
-// ImageSlider.tsx
 import React, { useState, useEffect } from 'react';
 import { IconButton } from '@mui/material';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
@@ -21,7 +20,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ slides }) => {
   const [showTextOverlay, setShowTextOverlay] = useState(false);
 
   useEffect(() => {
-    const textOverlayTimeout = setTimeout(() => setShowTextOverlay(true), 500); 
+    const textOverlayTimeout = setTimeout(() => setShowTextOverlay(true), 500);
     const interval = setInterval(() => {
       goToNextSlide();
     }, 5000);
@@ -54,10 +53,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ slides }) => {
   });
 
   return (
-    <div
-      className="slider-container"
-      style={{ backgroundImage: `url(${slides[currentSlide].image})` }}
-    >
+    <div className="slider-container" style={{ backgroundImage: `url(${slides[currentSlide].image})` }}>
       <div className={`slider-overlay ${showTextOverlay ? 'show' : ''}`}>
         <h2 className="slider-title">{slides[currentSlide].title}</h2>
         <h1 className="slider-subtitle">{slides[currentSlide].subtitle}</h1>

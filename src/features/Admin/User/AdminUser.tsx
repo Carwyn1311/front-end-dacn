@@ -115,71 +115,7 @@ const AdminUser: React.FC = () => {
     <div className="admin-user-content">
       <div className="user-container">
         <Card title="Quản lý người dùng" className="admin-user-card">
-          <div className="admin-header">
-            <h3 className="analytics-title">Phân tích tổng thể</h3>
-            <div className='analytics'>
-              <Analytics />
-            </div>
-            <SearchInput
-              label="Tìm kiếm theo tên người dùng"
-              value={searchValue}
-              onChange={(e) => handleSearchChange(e.target.value)}
-              placeholder=" "
-              prefixIcon={<FaSearch />}
-              fullWidth={true}
-            />
-            <Button
-              className="admin-button"
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={handleAddUser}
-            >
-              Thêm người dùng
-            </Button>
-          </div>
-
-          <div className="admin-filter-row">
-            <Dropdown
-              label="Lọc theo trạng thái"
-              options={['Tất cả', 'Hoạt động', 'Đóng băng']}
-              defaultValue="Tất cả"
-              onChange={handleStatusChange}
-            />
-            <Dropdown
-              label="Lọc theo vai trò"
-              options={['Tất cả', 'Admin', 'User']}
-              defaultValue="Tất cả"
-              onChange={handleRoleChange}
-            />
-          </div>
-
-          <List
-            className="admin-user-list"
-            dataSource={users}
-            renderItem={user => (
-              <List.Item
-                className="admin-user-list-item"
-                actions={[
-                  <Button icon={<EditOutlined />} className="admin-button admin-edit-button" onClick={() => handleAddUser()}>Sửa</Button>,
-                  <Button icon={<DeleteOutlined />} className="admin-button admin-delete-button" onClick={() => handleDeleteUser(user.id)}>Xóa</Button>,
-                ]}
-              >
-                <List.Item.Meta
-                  title={user.username}
-                  description={`Email: ${user.email} | Role: ${user.role} | Trạng thái: ${user.active ? 'Hoạt động' : 'Đóng băng'}`}
-                />
-              </List.Item>
-            )}
-          />
-
-          <Modal
-            title="Tạo người dùng mới"
-            visible={isCreateUserModalOpen}
-            footer={null}
-            onCancel={() => setIsCreateUserModalOpen(false)}
-          >
-            <CreateUserForm onUserCreated={handleUserCreated} />
-          </Modal>
+          
         </Card>
       </div>
     </div>

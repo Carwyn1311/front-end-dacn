@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
 import { IoMdLock } from 'react-icons/io';
 import { BiUser } from 'react-icons/bi';
-import { MdEmail } from 'react-icons/md'; // Import biểu tượng email
 import { useNavigate } from 'react-router-dom';
 import '../.css/Login.css';
 import TextField from '../../../components/TextField/TextField';

@@ -18,13 +18,13 @@ interface Slide {
 
 const initialSlides: Slide[] = [
   {
-    image: '/path/to/image1.jpg',
+    image: '',
     title: 'KHUYẾN MÃI DU LỊCH ÚC',
     subtitle: 'MELBOURNE - SYDNEY',
     price: 'Giá shock: 64.999.000đ/khách',
   },
   {
-    image: '/path/to/image2.jpg',
+    image: '',
     title: 'KHUYẾN MÃI DU LỊCH NHẬT BẢN',
     subtitle: 'TOKYO - KYOTO',
     price: 'Giá shock: 54.999.000đ/khách',
