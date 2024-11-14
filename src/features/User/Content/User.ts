@@ -13,11 +13,11 @@ export class User {
     this.username = userData.username || '';
     this.email = userData.email || '';
     this.password = userData.password || '';
-    
+
     // Kiểm tra role: nếu là 'ADMIN' hoặc roleAsNumber = 1 thì gán 'ADMIN', ngược lại gán 'USER'
     if (userData.role === 'ADMIN' || userData.role === 'USER') {
       this.role = userData.role;
-    } else if (userData.role as unknown as number === 1) {
+    } else if ((userData.role as unknown as number) === 1) {
       this.role = 'ADMIN';
     } else {
       this.role = 'USER';
@@ -28,34 +28,39 @@ export class User {
     this.resetToken = userData.resetToken || '';
   }
 
-  // Method to check if the user is an Admin (role = "ADMIN")
+  // Kiểm tra nếu người dùng là Admin
   isAdmin(): boolean {
     return this.role === 'ADMIN';
   }
 
-  // Method to check if the user's account is active
+  // Kiểm tra nếu tài khoản người dùng đang hoạt động
   isActive(): boolean {
     return this.active;
   }
 
-  // Get role as a number: return 1 if "ADMIN", 0 if "USER"
+  // Lấy role dưới dạng số: trả về 1 nếu "ADMIN", 0 nếu "USER"
   getRoleAsNumber(): number {
     return this.role === 'ADMIN' ? 1 : 0;
   }
 
-  // Set role from a number: set to "ADMIN" if 1, "USER" if 0
+  // Đặt role từ số: đặt thành "ADMIN" nếu 1, "USER" nếu 0
   setRoleFromNumber(roleNumber: number): void {
     this.role = roleNumber === 1 ? 'ADMIN' : 'USER';
   }
 
-  // Store user data and token in sessionStorage
-  static storeUserData(user: User, token: string): void {
+  // Lưu dữ liệu người dùng và token vào sessionStorage hoặc localStorage dựa vào rememberMe
+  static storeUserData(user: User, token: string, rememberMe: boolean): void {
     const userData = JSON.stringify(user);
-    sessionStorage.setItem('user', userData);
-    sessionStorage.setItem('token', token);
+    if (rememberMe) {
+      localStorage.setItem('user', userData);
+      localStorage.setItem('token', token);
+    } else {
+      sessionStorage.setItem('user', userData);
+      sessionStorage.setItem('token', token);
+    }
   }
 
-  // Store token in cookies
+  // Lưu token vào cookies với thời gian hết hạn tùy chọn
   static storeTokenInCookie(token: string, expireDays: number = 1): void {
     const date = new Date();
     date.setTime(date.getTime() + expireDays * 24 * 60 * 60 * 1000);
@@ -63,18 +68,18 @@ export class User {
     document.cookie = `token=${token};${expires};path=/`;
   }
 
-  // Retrieve user data from sessionStorage
+  // Lấy dữ liệu người dùng từ sessionStorage hoặc localStorage
   static getUserData(): User | null {
-    const userData = sessionStorage.getItem('user');
+    const userData = sessionStorage.getItem('user') || localStorage.getItem('user');
     return userData ? Object.assign(new User(), JSON.parse(userData)) : null;
   }
 
-  // Retrieve token from sessionStorage
+  // Lấy token từ sessionStorage hoặc localStorage
   static getToken(): string | null {
-    return sessionStorage.getItem('token');
+    return sessionStorage.getItem('token') || localStorage.getItem('token');
   }
 
-  // Retrieve token from cookies
+  // Lấy token từ cookies
   static getTokenFromCookie(): string | null {
     const name = "token=";
     const decodedCookie = decodeURIComponent(document.cookie);
@@ -88,23 +93,25 @@ export class User {
     return null;
   }
 
-  // Clear user data and token from sessionStorage
+  // Xóa dữ liệu người dùng và token khỏi sessionStorage và localStorage
   static clearUserData(): void {
     sessionStorage.removeItem('user');
     sessionStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
   }
 
-  // Clear token from cookies
+  // Xóa token khỏi cookies
   static clearTokenFromCookie(): void {
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   }
 
-  // Update stored user data in sessionStorage
+  // Cập nhật dữ liệu người dùng đã lưu trong sessionStorage hoặc localStorage
   static updateUserData(newUserData: Partial<User>): void {
     const currentUser = this.getUserData();
     if (currentUser) {
       const updatedUser = Object.assign(currentUser, newUserData);
-      this.storeUserData(updatedUser, this.getToken() || '');
+      this.storeUserData(updatedUser, this.getToken() || '', localStorage.getItem('user') !== null);
     }
   }
 }

@@ -39,14 +39,15 @@ const TextField: React.FC<TextFieldProps> = ({
       style={{
         display: 'flex',
         alignItems: 'center',
-        border: '1px solid #ddd',
+        borderWidth: '1px',
+        borderStyle: 'solid',
+        borderColor: isFocused ? '#000' : '#ddd', // Chỉ định borderColor khi focus
         borderRadius: '6px',
         padding: '0',
         transition: 'border-color 0.3s ease',
         width: fullWidth ? '100%' : width,
         maxWidth: '300px', 
         boxSizing: 'border-box',
-        ...(isFocused && { borderColor: '#000' }),
         backgroundColor: '#fff', 
       }}
     >

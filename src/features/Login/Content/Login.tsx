@@ -17,15 +17,13 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
   const [userName, setUserName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [rememberMe, setRememberMe] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>('');
   const [error, setError] = useState<string>(''); 
-  const [savedUserName, setSavedUserName] = useState<string | null>(''); 
   const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = User.getUserData();
     if (storedUser && storedUser.username) {
-      setSavedUserName(storedUser.username); 
+      setUserName(storedUser.username); 
     }
 
     const storedUserName = localStorage.getItem('userName') ?? '';
@@ -72,27 +70,25 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
         password: password,
       });
 
-      // Kiểm tra toàn bộ phản hồi từ API
       console.log('API response:', response.data);
 
-      // Xử lý phản hồi và lấy token
       const token = response.data?.jwt || response.data?.data?.jwt;
+      const role = response.data?.role;
+      const email = response.data?.email;
+      const userId = response.data?.userId || '1';
 
-      if (!token) {
-        throw new Error('No token returned from API.');
+      if (!token || !role) {
+        throw new Error('No token or role returned from API.');
       }
-
       localStorage.setItem('jwt', token);
 
-      const role = userName === 'duong' && password === '11111111' ? 'ADMIN' : 'USER';
-      console.log("Role được xác định là:", role);
-
       const user = new User({
-        id: '1',                   
-        username: userName,         
-        email: email || '', 
-        role,                     
-        active: true,              
+        id: userId,
+        username: userName,
+        email: email || '',
+        password: password,
+        role: role,
+        active: true
       });
 
       if (rememberMe) {
@@ -106,11 +102,17 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
         localStorage.removeItem('password');
         localStorage.removeItem('rememberMe');
       }
+      // Lưu thông tin người dùng và token vào User.ts
+      User.storeUserData(user, token, rememberMe);
 
+      // Đặt token vào TokenAuthService
       TokenAuthService.setToken(token);
-      User.storeUserData(user, token);
+
+      // Hiển thị quyền của người dùng vừa đăng nhập
+      console.log(`Quyền của user vừa đăng nhập là: ${role}`);
 
       console.log('Logged in successfully');
+      
       onLogin();
       navigate('/');
     } catch (error: any) {
