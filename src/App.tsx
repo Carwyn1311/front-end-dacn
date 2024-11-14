@@ -18,7 +18,7 @@ const App: React.FC = () => {
 };
 
 const AppContent: React.FC = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Đặt mặc định là đóng
   const [language, setLanguage] = useState('en');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
@@ -57,12 +57,12 @@ const AppContent: React.FC = () => {
     User.clearUserData();
     setIsLoggedIn(false);
     setUsername('');
-    navigate('/login');
+    navigate('/');
   };
 
   return (
     <TourProvider>
-      <div style={{ display: 'flex', height: '100vh' }}>
+      <div className={`app-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
         {isSidebarOpen && <div className="overlay" onClick={closeSidebar}></div>}
 
         <Sidebar
@@ -79,15 +79,7 @@ const AppContent: React.FC = () => {
                   {isSidebarOpen ? <ArrowLeftOutlined /> : <MenuOutlined />}
                 </Button>
               </div>
-              <div
-                className="user-options"
-                style={{
-                  right: '5px',
-                  top: '0',
-                  transition: 'transform 0.3s, margin-right 0.3s',
-                  overflow: 'auto',
-                }}
-              >
+              <div className="user-options">
                 {isLoggedIn ? (
                   <span className="username">{username}</span>
                 ) : (
