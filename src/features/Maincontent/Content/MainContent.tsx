@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { Layout, Form, Input, Button } from 'antd';
-import ImageSlider from '../../ImageSlider/Content/ImageSlider';
-import MenuSlider from '../../ImageSlider/Content/MenuSlider';
 import PaymentForm from '../../Payment/Content/PaymentForm';
 import '../.css/MainContent.css';
-
-
+import ImageSlider from '../../../components/ImageSlider/ImageSlider';
 
 const { Content } = Layout;
 
@@ -18,13 +15,13 @@ interface Slide {
 
 const initialSlides: Slide[] = [
   {
-    image: '',
+    image: '', // Bạn có thể thêm đường dẫn hình ảnh thực tế
     title: 'KHUYẾN MÃI DU LỊCH ÚC',
     subtitle: 'MELBOURNE - SYDNEY',
     price: 'Giá shock: 64.999.000đ/khách',
   },
   {
-    image: '',
+    image: '', // Bạn có thể thêm đường dẫn hình ảnh thực tế
     title: 'KHUYẾN MÃI DU LỊCH NHẬT BẢN',
     subtitle: 'TOKYO - KYOTO',
     price: 'Giá shock: 54.999.000đ/khách',
@@ -48,13 +45,12 @@ const MainContent: React.FC = () => {
 
   return (
     <Layout className="main-content-layout">
-
       <Content className="main-content">
-        {/* MenuSlider for adding, editing, and deleting slides */}
-        <MenuSlider slides={slides} onUpdateSlides={handleUpdateSlides} />
-
-        {/* ImageSlider displays the slides */}
-        <ImageSlider slides={slides} />
+        
+        {/* Phần hiển thị ImageSlider */}
+        <div className="slider-display">
+          <ImageSlider slides={slides} className="main-image-slider" />
+        </div>
 
         {/* Form quản lý Tour */}
         <div className="tour-management">
@@ -92,15 +88,15 @@ const MainContent: React.FC = () => {
           </Form>
         </div>
 
-        {/* Payment Form */}
+        {/* Form Thanh toán */}
         <div className="payment-container">
           <PaymentForm onSubmit={handlePaymentSubmit} className="payment-form" />
         </div>
-        <div className="myComponentContainer">
-      <h1 className="myComponentHeading">Payment!</h1>
-    </div>
-    
 
+        {/* Tiêu đề cho phần thanh toán */}
+        <div className="myComponentContainer">
+          <h1 className="myComponentHeading">Payment!</h1>
+        </div>
       </Content>
     </Layout>
   );

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { IconButton } from '@mui/material';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { styled } from '@mui/material/styles';
-import '../.css/ImageSlider.css';
 
 interface Slide {
   image: string;
@@ -13,47 +12,51 @@ interface Slide {
 
 interface ImageSliderProps {
   slides: Slide[];
+  className?: string;
 }
 
-const ImageSlider: React.FC<ImageSliderProps> = ({ slides }) => {
+const ImageSlider: React.FC<ImageSliderProps> = React.memo(({ slides, className = '' }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showTextOverlay, setShowTextOverlay] = useState(false);
 
+  // Định nghĩa các hàm trước khi sử dụng trong useEffect
+  const goToNextSlide = useCallback(() => {
+    setShowTextOverlay(false);
+    setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
+  }, [slides.length]);
+
+  const goToPreviousSlide = useCallback(() => {
+    setShowTextOverlay(false);
+    setCurrentSlide((prevSlide) => (prevSlide - 1 + slides.length) % slides.length);
+  }, [slides.length]);
+
   useEffect(() => {
     const textOverlayTimeout = setTimeout(() => setShowTextOverlay(true), 500);
-    const interval = setInterval(() => {
-      goToNextSlide();
-    }, 5000);
+    const interval = setInterval(goToNextSlide, 5000);
 
     return () => {
       clearInterval(interval);
       clearTimeout(textOverlayTimeout);
     };
-  }, [currentSlide]);
+  }, [currentSlide, goToNextSlide]);
 
-  const goToNextSlide = () => {
-    setShowTextOverlay(false);
-    setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
-  };
-
-  const goToPreviousSlide = () => {
-    setShowTextOverlay(false);
-    setCurrentSlide((prevSlide) => (prevSlide - 1 + slides.length) % slides.length);
-  };
-
-  const NavButton = styled(IconButton)({
-    position: 'absolute',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    color: 'white',
-    '&:hover': {
-      backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    },
-  });
+  const NavButton = useMemo(
+    () =>
+      styled(IconButton)({
+        position: 'absolute',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        color: 'white',
+        '&:hover': {
+          backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        },
+      }),
+    []
+  );
 
   return (
-    <div className="slider-container" style={{ backgroundImage: `url(${slides[currentSlide].image})` }}>
+    <div className={`slider-container ${className}`} style={{ backgroundImage: `url(${slides[currentSlide].image})` }}>
       <div className={`slider-overlay ${showTextOverlay ? 'show' : ''}`}>
         <h2 className="slider-title">{slides[currentSlide].title}</h2>
         <h1 className="slider-subtitle">{slides[currentSlide].subtitle}</h1>
@@ -69,6 +72,6 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ slides }) => {
       </NavButton>
     </div>
   );
-};
+});
 
 export default ImageSlider;

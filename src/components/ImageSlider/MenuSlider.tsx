@@ -1,6 +1,4 @@
-// MenuSlider.tsx
-import React, { useState } from 'react';
-import '../.css/MenuSlider.css';
+import React, { useState, useCallback } from 'react';
 
 interface Slide {
   image: string;
@@ -12,28 +10,29 @@ interface Slide {
 interface MenuSliderProps {
   slides: Slide[];
   onUpdateSlides: (updatedSlides: Slide[]) => void;
+  className?: string;
 }
 
-const MenuSlider: React.FC<MenuSliderProps> = ({ slides, onUpdateSlides }) => {
+const MenuSlider: React.FC<MenuSliderProps> = React.memo(({ slides, onUpdateSlides, className = '' }) => {
   const [currentSlide, setCurrentSlide] = useState<Slide>({ image: '', title: '', subtitle: '', price: '' });
   const [isEditing, setIsEditing] = useState<number | null>(null);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setCurrentSlide({ ...currentSlide, [name]: value });
-  };
+    setCurrentSlide((prevSlide) => ({ ...prevSlide, [name]: value }));
+  }, []);
 
-  const handleAddSlide = () => {
+  const handleAddSlide = useCallback(() => {
     onUpdateSlides([...slides, currentSlide]);
     setCurrentSlide({ image: '', title: '', subtitle: '', price: '' });
-  };
+  }, [slides, currentSlide, onUpdateSlides]);
 
-  const handleEditSlide = (index: number) => {
+  const handleEditSlide = useCallback((index: number) => {
     setCurrentSlide(slides[index]);
     setIsEditing(index);
-  };
+  }, [slides]);
 
-  const handleSaveEdit = () => {
+  const handleSaveEdit = useCallback(() => {
     if (isEditing !== null) {
       const updatedSlides = [...slides];
       updatedSlides[isEditing] = currentSlide;
@@ -41,15 +40,15 @@ const MenuSlider: React.FC<MenuSliderProps> = ({ slides, onUpdateSlides }) => {
       setIsEditing(null);
       setCurrentSlide({ image: '', title: '', subtitle: '', price: '' });
     }
-  };
+  }, [isEditing, currentSlide, slides, onUpdateSlides]);
 
-  const handleDeleteSlide = (index: number) => {
+  const handleDeleteSlide = useCallback((index: number) => {
     const updatedSlides = slides.filter((_, i) => i !== index);
     onUpdateSlides(updatedSlides);
-  };
+  }, [slides, onUpdateSlides]);
 
   return (
-    <div className="menu-slider">
+    <div className={`menu-slider ${className}`}>
       <h2>Manage Slides</h2>
       <div className="form">
         <input
@@ -101,6 +100,6 @@ const MenuSlider: React.FC<MenuSliderProps> = ({ slides, onUpdateSlides }) => {
       </ul>
     </div>
   );
-};
+});
 
 export default MenuSlider;

@@ -8,6 +8,7 @@ import Sidebar from './features/Sidebar/Content/Sidebar';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import Login from './features/Login/Content/Login';
 import { User } from './features/User/Content/User';
+import AutoSearch from './components/AutoSearchField/AutoSearch';
 
 const App: React.FC = () => {
   return (
@@ -18,11 +19,28 @@ const App: React.FC = () => {
 };
 
 const AppContent: React.FC = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Đặt mặc định là đóng
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [language, setLanguage] = useState('en');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
   const navigate = useNavigate();
+  const [selectedItem, setSelectedItem] = useState<string>('');
+
+  const handleSelectItem = (item: string) => {
+    console.log('Mục đã chọn:', item);
+    setSelectedItem(item);
+  };
+
+  const items = [
+    'Apple',
+    'Banana',
+    'Orange',
+    'Grapes',
+    'Pineapple',
+    'Strawberry',
+    'Blueberry',
+    'Watermelon',
+  ];
 
   useEffect(() => {
     const user = User.getUserData();
@@ -80,17 +98,21 @@ const AppContent: React.FC = () => {
                 </Button>
               </div>
               <div className="user-options">
+                  {selectedItem && (
+                    <p style={{ marginTop: '20px' }}>
+                      Mục bạn đã chọn: <strong>{selectedItem}</strong>
+                    </p>
+                  )}
                 {isLoggedIn ? (
-                  <span className="username">{username}</span>
+                  <Button className="username">{username}</Button>
                 ) : (
                   <Button className="button-login" onClick={() => navigate('/login')}>
                     <UserOutlined /> {language === 'en' ? 'Login' : 'Đăng nhập'}
                   </Button>
                 )}
-                <SearchOutlined className="search-icon" />
-                <span className="language" onClick={toggleLanguage}>
+                <Button className="language" onClick={toggleLanguage}>
                   {language === 'en' ? '🇬🇧 English' : '🇻🇳 Tiếng Việt'}
-                </span>
+                </Button>
               </div>
             </div>
           </header>
