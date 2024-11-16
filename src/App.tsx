@@ -3,12 +3,15 @@ import './App.css';
 import MainContent from './features/Maincontent/Content/MainContent';
 import Button from './components/Button/Button';
 import { TourProvider } from './features/TourSlider/Content/TourContext';
-import { UserOutlined, SearchOutlined, ArrowLeftOutlined, MenuOutlined } from '@ant-design/icons';
+import { UserOutlined, SearchOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { RiMenuUnfold4Fill } from 'react-icons/ri'; // Import từ react-icons
 import Sidebar from './features/Sidebar/Content/Sidebar';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import Login from './features/Login/Content/Login';
 import { User } from './features/User/Content/User';
 import AutoSearch from './components/AutoSearchField/AutoSearch';
+import { HiChevronDoubleLeft, HiOutlineMenu } from "react-icons/hi";
+
 
 const App: React.FC = () => {
   return (
@@ -93,8 +96,9 @@ const AppContent: React.FC = () => {
           <header className="app-header">
             <div className="top-bar">
               <div className="contact-info">
+                {/* Cập nhật nút toggle */}
                 <Button onClick={toggleSidebar} className="sidebar-toggle-button">
-                  {isSidebarOpen ? <ArrowLeftOutlined /> : <MenuOutlined />}
+                  {isSidebarOpen ? <HiChevronDoubleLeft /> : <HiOutlineMenu />}
                 </Button>
               </div>
               <div className="user-options">

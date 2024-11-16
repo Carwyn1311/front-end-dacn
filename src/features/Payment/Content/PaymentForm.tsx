@@ -78,10 +78,12 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onSubmit, className }) => {
 
   return (
     <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-      {/* Thêm ảnh bên trái */}
-      <div style={{ marginRight: '20px' }}>
-      <img src="/src/features/User/images/momo.jpg" alt="MoMo payment logo" style={{ maxWidth: '300px', height: 'auto' }} />
-      </div>
+      {/* Hiển thị ảnh MoMo chỉ khi người dùng chọn phương thức thanh toán là MoMo */}
+      {paymentMethod === 'momo' && (
+        <div style={{ marginRight: '20px' }}>
+          <img src="/momo.jpg" alt="MoMo payment logo" style={{ maxWidth: '300px', height: 'auto' }} />
+        </div>
+      )}
 
       {/* Form bên phải */}
       <Form onFinish={handleSubmit} layout="vertical" className={`payment-form ${className}`} style={{ flex: 1 }}>

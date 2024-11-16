@@ -122,20 +122,26 @@ body {
 
 /* Sidebar Toggle Button */
 .sidebar-toggle-button {
-  background-color: #ff9800;
+  background-color: #fefefe; /* Xanh dương tươi */
+  color: #000000; /* Màu chữ trắng để tương phản */
   border: none;
   cursor: pointer;
   font-size: 24px;
-  padding: 8px;
-  border-radius: 50%;
+  padding: 12px; /* Tăng padding để nút nhìn cân đối hơn */
+  border-radius: 20%; /* Giữ dạng hình tròn */
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Hiệu ứng hover */
 }
 
 .sidebar-toggle-button:hover {
-  background-color: #f0f0f0;
+  background-color: #0056b3; /* Màu đậm hơn khi hover */
+  transform: scale(1.1); /* Phóng to nhẹ khi rê chuột */
+}
+.sidebar-toggle-button:active {
+  background-color: #004085; /* Màu tối hơn khi nhấn */
+  transform: scale(0.95); /* Co lại nhẹ khi nhấn */
 }
 
 /* Search Icon */
