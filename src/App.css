@@ -55,12 +55,6 @@ body {
   transition: margin-left 0.3s ease, width 0.3s ease;
 }
 
-/* Dịch chuyển main-content khi sidebar mở */
-.app-container.sidebar-open .main-content {
-  margin-left: 250px;
-  width: calc(100% - 250px);
-}
-
 /* Content Wrapper */
 .content-wrapper {
   width: 100%;
@@ -69,7 +63,7 @@ body {
 
 /* Dịch chuyển content-wrapper khi sidebar mở */
 .app-container.sidebar-open .content-wrapper {
-  width: calc(100% - 250px);
+  /*width: calc(100% - 250px); */
 }
 
 /* App Header */

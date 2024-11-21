@@ -3,14 +3,13 @@ import './App.css';
 import MainContent from './features/Maincontent/Content/MainContent';
 import Button from './components/Button/Button';
 import { TourProvider } from './features/TourSlider/Content/TourContext';
-import { UserOutlined, SearchOutlined, ArrowLeftOutlined } from '@ant-design/icons';
-import { RiMenuUnfold4Fill } from 'react-icons/ri'; // Import từ react-icons
+import { UserOutlined } from '@ant-design/icons';
 import Sidebar from './features/Sidebar/Content/Sidebar';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import Login from './features/Login/Content/Login';
 import { User } from './features/User/Content/User';
-import AutoSearch from './components/AutoSearchField/AutoSearch';
 import { HiChevronDoubleLeft, HiOutlineMenu } from "react-icons/hi";
+import AdminRoutes from './features/Admin/Content/AdminRoutes';
 
 
 const App: React.FC = () => {
@@ -27,23 +26,6 @@ const AppContent: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
   const navigate = useNavigate();
-  const [selectedItem, setSelectedItem] = useState<string>('');
-
-  const handleSelectItem = (item: string) => {
-    console.log('Mục đã chọn:', item);
-    setSelectedItem(item);
-  };
-
-  const items = [
-    'Apple',
-    'Banana',
-    'Orange',
-    'Grapes',
-    'Pineapple',
-    'Strawberry',
-    'Blueberry',
-    'Watermelon',
-  ];
 
   useEffect(() => {
     const user = User.getUserData();
@@ -102,11 +84,6 @@ const AppContent: React.FC = () => {
                 </Button>
               </div>
               <div className="user-options">
-                  {selectedItem && (
-                    <p style={{ marginTop: '20px' }}>
-                      Mục bạn đã chọn: <strong>{selectedItem}</strong>
-                    </p>
-                  )}
                 {isLoggedIn ? (
                   <Button className="username">{username}</Button>
                 ) : (
@@ -125,6 +102,7 @@ const AppContent: React.FC = () => {
             <Routes>
               <Route path="/" element={<MainContent />} />
               <Route path="/login" element={<Login onLogin={onLogin} />} />
+              <Route path="/admin/*" element={<AdminRoutes />} />
             </Routes>
           </div>
         </div>
