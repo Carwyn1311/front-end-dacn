@@ -74,7 +74,7 @@ const AppContent: React.FC = () => {
           onLogout={onLogout}
         />
 
-        <div className={`main-content ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+        <div className="app-main-content">
           <header className="app-header">
             <div className="top-bar">
               <div className="contact-info">

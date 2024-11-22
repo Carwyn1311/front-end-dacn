@@ -5,11 +5,14 @@ body {
   padding: 0;
   font-family: Arial, sans-serif;
 }
-
 /* App Container */
 .app-container {
   display: flex;
-  height: 100vh;
+  height: 100vh; /* Chiều cao 100% chiều cao màn hình */
+  width: 90vw; /* Chiều ngang 90% chiều rộng màn hình */
+  position: relative;
+  transition: all 0.3s ease; /* Hiệu ứng mượt */
+  box-sizing: border-box; /* Đảm bảo padding và border không vượt quá chiều rộng/chiều cao */
 }
 
 /* CSS cho Sidebar */
@@ -41,29 +44,31 @@ body {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 50;
   display: none;
+  transition: opacity 0.3s ease;
 }
 
-/* Hiển thị overlay khi sidebar mở */
+/* Hiển thị overlay khi sidebar mở 
 .app-container.sidebar-open .overlay {
-  display: block;
-}
+   display: block; 
+} 
 
 /* Main Content */
-.main-content {
+.app-main-content {
+  width: 90vw;
   flex-grow: 1;
-  padding: 20px;
-  transition: margin-left 0.3s ease, width 0.3s ease;
+  height: 100vh;
+  margin-left: 0; /* Không dịch chuyển sang phải */
+  box-sizing: border-box;
+  transition: all 0.3s ease; /* Mượt khi thu nhỏ */
 }
+
+
 
 /* Content Wrapper */
 .content-wrapper {
-  width: 100%;
+  width: 90vw;
+  height: calc(100vh - 60px);
   transition: margin-left 0.3s ease, width 0.3s ease;
-}
-
-/* Dịch chuyển content-wrapper khi sidebar mở */
-.app-container.sidebar-open .content-wrapper {
-  /*width: calc(100% - 250px); */
 }
 
 /* App Header */
@@ -176,6 +181,10 @@ body {
     flex-direction: column;
   }
 
+  .sidebar {
+    width: 70%; /* Sidebar thu nhỏ trên thiết bị nhỏ */
+  }
+
   .navigation {
     flex-wrap: wrap;
     justify-content: center;
@@ -185,6 +194,10 @@ body {
     flex-direction: row;
     gap: 5px;
     font-size: 0.85rem;
+  }
+
+  .app-container.sidebar-open .app-main-content {
+    width: calc(100% - 70%); /* Tự động điều chỉnh */
   }
 }
 

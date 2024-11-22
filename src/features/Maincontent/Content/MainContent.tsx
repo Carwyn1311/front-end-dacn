@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { Layout, Form, Input, Button } from 'antd';
+import { Form, Input, Button } from 'antd';
 import PaymentForm from '../../Payment/Content/PaymentForm';
 import '../.css/MainContent.css';
 import ImageSlider from '../../../components/ImageSlider/ImageSlider';
-
-const { Content } = Layout;
 
 interface Slide {
   image: string;
@@ -44,9 +42,7 @@ const MainContent: React.FC = () => {
   };
 
   return (
-    <Layout className="main-content-layout">
-      <Content className="main-content">
-        
+      <div className="main-content">
         {/* Phần hiển thị ImageSlider */}
         <div className="slider-display">
           <ImageSlider slides={slides} className="main-image-slider" />
@@ -97,8 +93,7 @@ const MainContent: React.FC = () => {
         <div className="myComponentContainer">
           <h1 className="myComponentHeading">Payment!</h1>
         </div>
-      </Content>
-    </Layout>
+      </div>
   );
 };
 
