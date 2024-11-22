@@ -83,10 +83,12 @@ const AppContent: React.FC = () => {
           <header className="app-header">
             <div className="top-bar">
               <div className="contact-info">
-                {/* Nút toggle sidebar */}
                 <Button onClick={toggleSidebar} className="sidebar-toggle-button">
                   {isSidebarOpen ? <HiChevronDoubleLeft /> : <HiOutlineMenu />}
                 </Button>
+              </div>
+              <div className="contact-info">
+                <label> DPT Travel </label>
               </div>
               <div className="user-options">
                   {selectedItem && (

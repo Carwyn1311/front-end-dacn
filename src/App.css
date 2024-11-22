@@ -39,8 +39,8 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 50;
   display: none;
@@ -54,23 +54,15 @@ body {
 
 /* Main Content */
 .app-main-content {
-  width: 90vw;
+  width: 100vw;
   flex-grow: 1;
+  margin-top: 55px;
   height: 100vh;
   margin-left: 0; /* Không dịch chuyển sang phải */
   box-sizing: border-box;
   transition: all 0.3s ease; /* Mượt khi thu nhỏ */
 }
 
-<<<<<<< HEAD
-
-=======
-/* Dịch chuyển main-content khi sidebar mở */
-.app-container.sidebar-open .main-content {
-  margin-left: 250px;
-  width: calc(100% - 250px);
-}
->>>>>>> 4c200099a06d4ec683cd22830ed2cbc2314c5e11
 
 /* Content Wrapper */
 .content-wrapper {
@@ -81,24 +73,28 @@ body {
 
 /* App Header */
 .app-header {
-  width: 100%;
+  width: 100vw;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 102;
-  background-color: #ffffff;
+  margin-left: 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   transition: margin-left 0.3s ease, width 0.3s ease;
 }
 
+/* Khi sidebar mở, thu nhỏ app-main-content */
+.app-container.sidebar-open .app-main-content {
+  width: calc(100vw - 250px); /* Trừ đi chiều rộng của sidebar */
+}
+
 /* Dịch chuyển app-header khi sidebar mở */
 .app-container.sidebar-open .app-header {
   margin-left: 250px;
-  width: calc(100% - 250px);
+  width: calc(100vw - 250px);
 }
-
 /* Top Bar */
 .top-bar {
   display: flex;
@@ -115,6 +111,10 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.user-options{
+  margin-right: 20px;
 }
 
 .user-options .language {
@@ -206,6 +206,10 @@ body {
 
   .app-container.sidebar-open .app-main-content {
     width: calc(100% - 70%); /* Tự động điều chỉnh */
+  }
+
+  .app-main-content {
+    width: 100vw; /* Trở lại chiếm toàn bộ chiều ngang trên màn hình nhỏ */
   }
 }
 
