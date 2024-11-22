@@ -5,12 +5,15 @@ import './App.css';
 import MainContent from './features/Maincontent/Content/MainContent';
 import Button from './components/Button/Button';
 import { TourProvider } from './features/TourSlider/Content/TourContext';
-import { UserOutlined } from '@ant-design/icons';
-import { HiChevronDoubleLeft, HiOutlineMenu } from 'react-icons/hi';
+import { UserOutlined, SearchOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { RiMenuUnfold4Fill } from 'react-icons/ri'; // Import từ react-icons
 import Sidebar from './features/Sidebar/Content/Sidebar';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import Login from './features/Login/Content/Login';
 import { User } from './features/User/Content/User';
+import AutoSearch from './components/AutoSearchField/AutoSearch';
+import { HiChevronDoubleLeft, HiOutlineMenu } from "react-icons/hi";
+
 
 const App: React.FC = () => {
   return (
@@ -85,13 +88,11 @@ const AppContent: React.FC = () => {
                 </Button>
               </div>
               <div className="user-options">
-                {/* Hiển thị mục đã chọn nếu có */}
-                {selectedItem && (
-                  <p style={{ marginTop: '20px' }}>
-                    Mục bạn đã chọn: <strong>{selectedItem}</strong>
-                  </p>
-                )}
-                {/* Hiển thị tên người dùng nếu đã đăng nhập */}
+                  {selectedItem && (
+                    <p style={{ marginTop: '20px' }}>
+                      Mục bạn đã chọn: <strong>{selectedItem}</strong>
+                    </p>
+                  )}
                 {isLoggedIn ? (
                   <Button className="username">{username}</Button>
                 ) : (
@@ -113,6 +114,7 @@ const AppContent: React.FC = () => {
               <Route path="/travel/mien-bac/ha-noi" element={<TravelPageHaNoi />} />
               <Route path="/" element={<MainContent />} />
               <Route path="/login" element={<Login onLogin={onLogin} />} />
+              <Route path="/admin/*" element={<AdminRoutes />} />
             </Routes>
             {/* <Routes></Routes> */}
           </div>

@@ -115,7 +115,7 @@ const AdminUser: React.FC = () => {
     <div className="admin-user-content">
       <div className="user-container">
         <Card title="Quản lý người dùng" className="admin-user-card">
-          
+          <h3>USer</h3> 
         </Card>
       </div>
     </div>

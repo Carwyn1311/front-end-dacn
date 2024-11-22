@@ -176,6 +176,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isLoggedIn, onLogout }) => {
             { key: 'tour-stats', label: 'Thống Kê Tour', onClick: () => handleMenuClick('/admin/tour-stats') },
             { key: 'payment-management', label: 'Quản lý Thanh Toán', onClick: () => handleMenuClick('/admin/payment-management') },
             { key: 'home-board-management', label: 'Quản lý Bảng Tin Trang Chủ', onClick: () => handleMenuClick('/admin/home-board-management') },
+            { key: 'manager-tour', label: 'Quản lý Tour Slider', onClick: () => handleMenuClick('/admin/home-board-management') },
           ],
         },
     {
