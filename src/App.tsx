@@ -13,6 +13,7 @@ import Login from './features/Login/Content/Login';
 import { User } from './features/User/Content/User';
 import AutoSearch from './components/AutoSearchField/AutoSearch';
 import { HiChevronDoubleLeft, HiOutlineMenu } from "react-icons/hi";
+import AdminRoutes from './features/Admin/Content/AdminRoutes';
 
 
 const App: React.FC = () => {
