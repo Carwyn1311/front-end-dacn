@@ -41,6 +41,14 @@ const MainContent: React.FC = () => {
     console.log('Tour form submitted:', values);
   };
 
+  React.useEffect(() => {
+    const storedSlides = localStorage.getItem('slides');
+    if (storedSlides) {
+      setSlides(JSON.parse(storedSlides)); // Đọc dữ liệu từ localStorage
+    }
+  }, []);
+  
+
   return (
     <div className="main-content">
       <div className="slider-display">

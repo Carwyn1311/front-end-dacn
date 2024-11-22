@@ -19,7 +19,6 @@ const ImageSlider: React.FC<ImageSliderProps> = React.memo(({ slides, className 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showTextOverlay, setShowTextOverlay] = useState(false);
 
-  // Định nghĩa các hàm trước khi sử dụng trong useEffect
   const goToNextSlide = useCallback(() => {
     setShowTextOverlay(false);
     setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);

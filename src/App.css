@@ -8,11 +8,16 @@ body {
 /* App Container */
 .app-container {
   display: flex;
-  height: 100vh; /* Chiều cao 100% chiều cao màn hình */
-  width: 90vw; /* Chiều ngang 90% chiều rộng màn hình */
-  position: relative;
-  transition: all 0.3s ease; /* Hiệu ứng mượt */
-  box-sizing: border-box; /* Đảm bảo padding và border không vượt quá chiều rộng/chiều cao */
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    overflow-x: hidden;
+
+    /* Căn giữa nội dung */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
 }
 
 /* CSS cho Sidebar */
@@ -34,19 +39,6 @@ body {
   transform: translateX(0);
 }
 
-/* Overlay */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 50;
-  display: none;
-  transition: opacity 0.3s ease;
-}
-
 /* Hiển thị overlay khi sidebar mở 
 .app-container.sidebar-open .overlay {
    display: block; 
@@ -54,19 +46,24 @@ body {
 
 /* Main Content */
 .app-main-content {
-  width: 100vw;
-  flex-grow: 1;
-  margin-top: 55px;
-  height: 100vh;
-  margin-left: 0; /* Không dịch chuyển sang phải */
-  box-sizing: border-box;
-  transition: all 0.3s ease; /* Mượt khi thu nhỏ */
+  margin-top: 60px;
+  display: flex;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+
+    /* Căn giữa nội dung */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
 }
 
 
 /* Content Wrapper */
 .content-wrapper {
-  width: 90vw;
+  width: 100vw;
+  padding: 20px;
   height: calc(100vh - 60px);
   transition: margin-left 0.3s ease, width 0.3s ease;
 }
@@ -86,8 +83,8 @@ body {
 }
 
 /* Khi sidebar mở, thu nhỏ app-main-content */
-.app-container.sidebar-open .app-main-content {
-  width: calc(100vw - 250px); /* Trừ đi chiều rộng của sidebar */
+.app-container.sidebar-open {
+  width: calc(100vw); /* Trừ đi chiều rộng của sidebar */
 }
 
 /* Dịch chuyển app-header khi sidebar mở */

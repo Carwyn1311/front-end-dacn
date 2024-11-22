@@ -14,6 +14,8 @@ import { User } from './features/User/Content/User';
 import AutoSearch from './components/AutoSearchField/AutoSearch';
 import { HiChevronDoubleLeft, HiOutlineMenu } from "react-icons/hi";
 import AdminRoutes from './features/Admin/Content/AdminRoutes';
+import AdminUser from './features/Admin/Content/AdminUser';
+import AdminTourManagement from './features/Admin/Content/AdminTourManagement';
 
 
 const App: React.FC = () => {
@@ -71,8 +73,6 @@ const AppContent: React.FC = () => {
   return (
     <TourProvider>
       <div className={`app-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
-        {isSidebarOpen && <div className="overlay" onClick={closeSidebar}></div>}
-
         <Sidebar
           isOpen={isSidebarOpen}
           isLoggedIn={isLoggedIn}
@@ -118,9 +118,14 @@ const AppContent: React.FC = () => {
               <Route path="/" element={<MainContent />} />
               <Route path="/login" element={<Login onLogin={onLogin} />} />
               <Route path="/admin/*" element={<AdminRoutes />} />
+              <Route path="/admin/manage-users" element={<AdminUser />} />
+              <Route path="/admin/img-slider" element={<AdminTourManagement />} />
             </Routes>
             {/* <Routes></Routes> */}
           </div>
+        </div>
+        <div className="content-bottom">
+
         </div>
       </div>
     </TourProvider>

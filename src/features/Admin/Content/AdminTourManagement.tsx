@@ -2,8 +2,27 @@ import React from 'react';
 import { TourProvider } from '../../TourSlider/Content/TourContext';
 import TourManager from '../../TourSlider/Content/TourManager';
 import TourSlider from '../../TourSlider/Content/TourSlider';
+import MenuSlider from '../../../components/ImageSlider/MenuSlider';
+
+interface Slide {
+  image: string;
+  title: string;
+  subtitle: string;
+  price: string;
+}
 
 const AdminTourManagement: React.FC = () => {
+  
+  const [slides, setSlides] = React.useState<Slide[]>([
+    { image: 'image1.jpg', title: 'Slide 1', subtitle: 'Subtitle 1', price: '$100' },
+    { image: 'image2.jpg', title: 'Slide 2', subtitle: 'Subtitle 2', price: '$200' },
+  ]);
+
+  const handleUpdateSlides = (updatedSlides: Slide[]) => {
+    setSlides(updatedSlides);
+    localStorage.setItem('slides', JSON.stringify(updatedSlides)); // Lưu vào localStorage
+  };
+
   return (
     <TourProvider>
       <div className="admin-tour-management">
@@ -11,11 +30,9 @@ const AdminTourManagement: React.FC = () => {
 
         {/* Quản lý tour: thêm, xóa */}
         <TourManager />
-
-        {/* Hiển thị slider để xem trước */}
         <div className="preview-section">
           <h2>Xem trước tour</h2>
-          <TourSlider itemsPerView={3} interval={5000} />
+          <MenuSlider slides={slides} onUpdateSlides={handleUpdateSlides} />
         </div>
       </div>
     </TourProvider>
