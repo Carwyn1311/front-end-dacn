@@ -1,0 +1,48 @@
+.travel-layout {
+    min-height: 100vh;
+    background-color: #f0f2f5; /* Màu nền nhẹ nhàng */
+  }
+  
+  .travel-header {
+    background-color: #a7cbed; /* Màu xanh đậm cho header */
+    padding: 16px;
+  }
+  
+  .header-title {
+    color: white;
+    text-align: center;
+    margin: 0;
+  }
+  
+  .travel-content {
+    padding: 24px;
+  }
+  
+  .travel-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .travel-card {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng cho card */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .travel-card:hover {
+    transform: scale(1.03); /* Hiệu ứng phóng to nhẹ khi hover */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .travel-image {
+    border-bottom: 2px solid #1890ff; /* Viền dưới hình */
+  }
+  
+  .travel-footer {
+    text-align: center;
+    padding: 12px;
+    background-color: #001529; /* Footer đồng màu với header */
+    color: white;
+  }
+  

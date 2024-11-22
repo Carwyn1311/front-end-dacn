@@ -1,6 +1,6 @@
 /* Cỡ chữ chung cho toàn bộ trang */
 body {
-  font-size: 12px;
+  font-size: 10px;
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
@@ -62,7 +62,15 @@ body {
   transition: all 0.3s ease; /* Mượt khi thu nhỏ */
 }
 
+<<<<<<< HEAD
 
+=======
+/* Dịch chuyển main-content khi sidebar mở */
+.app-container.sidebar-open .main-content {
+  margin-left: 250px;
+  width: calc(100% - 250px);
+}
+>>>>>>> 4c200099a06d4ec683cd22830ed2cbc2314c5e11
 
 /* Content Wrapper */
 .content-wrapper {
