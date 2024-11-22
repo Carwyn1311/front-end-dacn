@@ -42,7 +42,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isLoggedIn, onLogout }) => {
       onClick: () => handleMenuClick('/'),
     },
     {
-      key: 'domestic-tours',
+      key: 'domestic-travel',
       icon: <AppstoreOutlined />,
       label: 'Tour trong nước',
       children: [
@@ -50,13 +50,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isLoggedIn, onLogout }) => {
           type: 'group',
           label: 'Miền Bắc',
           children: [
-            { key: 'north-1', label: 'Đông Bắc - Tây Bắc', onClick: () => handleMenuClick('/tours/mien-bac/dong-bac-tay-bac') },
-            { key: 'north-2', label: 'Hà Nội', onClick: () => handleMenuClick('/tours/mien-bac/ha-noi') },
-            { key: 'north-3', label: 'Hạ Long', onClick: () => handleMenuClick('/tours/mien-bac/ha-long') },
-            { key: 'north-4', label: 'Sapa', onClick: () => handleMenuClick('/tours/mien-bac/sapa') },
-            { key: 'north-5', label: 'Ninh Bình', onClick: () => handleMenuClick('/tours/mien-bac/ninh-binh') },
-            { key: 'north-6', label: 'Hải Phòng', onClick: () => handleMenuClick('/tours/mien-bac/hai-phong') },
-            { key: 'north-7', label: 'Thanh Hóa', onClick: () => handleMenuClick('/tours/mien-bac/thanh-hoa') },
+            { key: 'north-1', label: 'Đông Bắc - Tây Bắc', onClick: () => handleMenuClick('/travel/dongbac-taybac'), // Liên kết đến route
+            },
+            { key: 'north-2', label: 'Hà Nội', onClick: () => handleMenuClick('/travel/mien-bac/ha-noi') },
+            { key: 'north-3', label: 'Hạ Long', onClick: () => handleMenuClick('/travel/mien-bac/ha-long') },
+            { key: 'north-4', label: 'Sapa', onClick: () => handleMenuClick('/travel/mien-bac/sapa') },
+            { key: 'north-5', label: 'Ninh Bình', onClick: () => handleMenuClick('/travel/mien-bac/ninh-binh') },
+            { key: 'north-6', label: 'Hải Phòng', onClick: () => handleMenuClick('/travel/mien-bac/hai-phong') },
+            { key: 'north-7', label: 'Thanh Hóa', onClick: () => handleMenuClick('/travel/mien-bac/thanh-hoa') },
           ],
         },
         {

@@ -1,6 +1,6 @@
 /* Cỡ chữ chung cho toàn bộ trang */
 body {
-  font-size: 12px;
+  font-size: 10px;
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
@@ -57,8 +57,16 @@ body {
 
 /* Dịch chuyển main-content khi sidebar mở */
 .app-container.sidebar-open .main-content {
-  margin-left: 250px;
-  width: calc(100% - 250px);
+  margin-left: 150px; /* Kích thước khớp với sidebar */
+  width: calc(100% - 150px); /* Trừ đi đúng kích thước sidebar */
+  transition: margin-left 0.3s ease, width 0.3s ease; /* Thêm hiệu ứng mượt mà */
+}
+
+/* Khi sidebar đóng */
+.app-container .main-content {
+  margin-left: 0;
+  width: 100%;
+  transition: margin-left 0.3s ease, width 0.3s ease; /* Giữ hiệu ứng nhất quán */
 }
 
 /* Content Wrapper */

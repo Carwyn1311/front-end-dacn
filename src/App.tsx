@@ -1,17 +1,16 @@
+import TravelPageDongBac from './features/AllTours/Tours/TravelPageDongBac';
+import TravelPageHaNoi from './features/AllTours/Tours/TravelPageHaNoi';
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import MainContent from './features/Maincontent/Content/MainContent';
 import Button from './components/Button/Button';
 import { TourProvider } from './features/TourSlider/Content/TourContext';
-import { UserOutlined, SearchOutlined, ArrowLeftOutlined } from '@ant-design/icons';
-import { RiMenuUnfold4Fill } from 'react-icons/ri'; // Import từ react-icons
+import { UserOutlined } from '@ant-design/icons';
+import { HiChevronDoubleLeft, HiOutlineMenu } from 'react-icons/hi';
 import Sidebar from './features/Sidebar/Content/Sidebar';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import Login from './features/Login/Content/Login';
 import { User } from './features/User/Content/User';
-import AutoSearch from './components/AutoSearchField/AutoSearch';
-import { HiChevronDoubleLeft, HiOutlineMenu } from "react-icons/hi";
-
 
 const App: React.FC = () => {
   return (
@@ -26,24 +25,8 @@ const AppContent: React.FC = () => {
   const [language, setLanguage] = useState('en');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
+  const [selectedItem, setSelectedItem] = useState<string>(''); // Thêm khai báo biến selectedItem
   const navigate = useNavigate();
-  const [selectedItem, setSelectedItem] = useState<string>('');
-
-  const handleSelectItem = (item: string) => {
-    console.log('Mục đã chọn:', item);
-    setSelectedItem(item);
-  };
-
-  const items = [
-    'Apple',
-    'Banana',
-    'Orange',
-    'Grapes',
-    'Pineapple',
-    'Strawberry',
-    'Blueberry',
-    'Watermelon',
-  ];
 
   useEffect(() => {
     const user = User.getUserData();
@@ -96,17 +79,19 @@ const AppContent: React.FC = () => {
           <header className="app-header">
             <div className="top-bar">
               <div className="contact-info">
-                {/* Cập nhật nút toggle */}
+                {/* Nút toggle sidebar */}
                 <Button onClick={toggleSidebar} className="sidebar-toggle-button">
                   {isSidebarOpen ? <HiChevronDoubleLeft /> : <HiOutlineMenu />}
                 </Button>
               </div>
               <div className="user-options">
-                  {selectedItem && (
-                    <p style={{ marginTop: '20px' }}>
-                      Mục bạn đã chọn: <strong>{selectedItem}</strong>
-                    </p>
-                  )}
+                {/* Hiển thị mục đã chọn nếu có */}
+                {selectedItem && (
+                  <p style={{ marginTop: '20px' }}>
+                    Mục bạn đã chọn: <strong>{selectedItem}</strong>
+                  </p>
+                )}
+                {/* Hiển thị tên người dùng nếu đã đăng nhập */}
                 {isLoggedIn ? (
                   <Button className="username">{username}</Button>
                 ) : (
@@ -114,6 +99,7 @@ const AppContent: React.FC = () => {
                     <UserOutlined /> {language === 'en' ? 'Login' : 'Đăng nhập'}
                   </Button>
                 )}
+                {/* Nút chuyển đổi ngôn ngữ */}
                 <Button className="language" onClick={toggleLanguage}>
                   {language === 'en' ? '🇬🇧 English' : '🇻🇳 Tiếng Việt'}
                 </Button>
@@ -123,9 +109,12 @@ const AppContent: React.FC = () => {
 
           <div className="content-wrapper">
             <Routes>
+              <Route path="/travel/dongbac-taybac" element={<TravelPageDongBac />} />
+              <Route path="/travel/mien-bac/ha-noi" element={<TravelPageHaNoi />} />
               <Route path="/" element={<MainContent />} />
               <Route path="/login" element={<Login onLogin={onLogin} />} />
             </Routes>
+            {/* <Routes></Routes> */}
           </div>
         </div>
       </div>

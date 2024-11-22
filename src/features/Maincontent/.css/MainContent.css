@@ -195,15 +195,26 @@
 .main-image-slider {
   position: relative;
   width: 100%;
-  height: 400px; /* Đặt chiều cao cho slider, bạn có thể điều chỉnh */
+  height: 400px; /* Đặt chiều cao cho slider */
   overflow: hidden;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #f0f0f0; /* Màu nền tạm thời nếu không có hình ảnh */
+  border-radius: 12px; /* Góc bo tròn mềm mại hơn */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Bóng mờ sâu hơn và nhẹ nhàng hơn */
+  background-color: #e9ecef; /* Màu nền nhã nhặn và trung tính hơn */
   background-size: cover;
   background-position: center;
-  transition: background-image 0.5s ease-in-out;
+  transition: background-image 0.6s ease-in-out; /* Hiệu ứng chuyển mượt mà hơn */
+  display: flex; /* Để dễ canh chỉnh nội dung bên trong */
+  align-items: center; /* Căn giữa nội dung theo chiều dọc */
+  justify-content: center; /* Căn giữa nội dung theo chiều ngang */
 }
+
+/* Hiệu ứng khi hover (tùy chọn nếu muốn thêm tương tác) */
+.main-image-slider:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Làm nổi bật khi hover */
+  transform: scale(1.02); /* Zoom nhẹ khi người dùng di chuột qua */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng chuyển */
+}
+
 
 /* Overlay cho văn bản trong mỗi slide */
 .main-image-slider .slider-overlay {
