@@ -55,51 +55,6 @@ const MainContent: React.FC = () => {
         <ImageSlider slides={slides} className="main-image-slider" />
       </div>
 
-      {/* Form quản lý Tour */}
-      <div className="tour-management">
-        <h1>Quản lý Tour</h1>
-        <Form className="tour-form" onFinish={handleTourSubmit}>
-          <Form.Item
-            label="Tên Tour"
-            name="tourName"
-            rules={[{ required: true, message: 'Vui lòng nhập tên tour!' }]}
-          >
-            <Input placeholder="Nhập tên tour" />
-          </Form.Item>
-
-          <Form.Item
-            label="Địa điểm"
-            name="location"
-            rules={[{ required: true, message: 'Vui lòng nhập địa điểm!' }]}
-          >
-            <Input placeholder="Nhập địa điểm" />
-          </Form.Item>
-
-          <Form.Item
-            label="Giá"
-            name="price"
-            rules={[{ required: true, message: 'Vui lòng nhập giá!' }]}
-          >
-            <Input placeholder="Nhập giá" />
-          </Form.Item>
-
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
-
-      {/* Form Thanh toán */}
-      <div className="payment-container">
-        <PaymentForm onSubmit={handlePaymentSubmit} className="payment-form" />
-      </div>
-
-      {/* Tiêu đề cho phần thanh toán */}
-      <div className="myComponentContainer">
-        <h1 className="myComponentHeading">Payment!</h1>
-      </div>
     </div>
   );
 };
