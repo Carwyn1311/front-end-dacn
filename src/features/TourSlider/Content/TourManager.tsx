@@ -5,7 +5,7 @@ import TextField from '../../../components/TextField/TextField';
 import '../.css/TourManager.css';
 
 const TourManager: React.FC = () => {
-  const { tours, addTour, deleteTour } = useContext(TourContext) ?? { tours: [], addTour: () => {}, deleteTour: () => {} };
+  const { tours } = useContext(TourContext) ?? { tours: [], addTour: () => {}, deleteTour: () => {} };
   const [newTour, setNewTour] = useState({
     image: '',
     discount: '',
@@ -21,7 +21,6 @@ const TourManager: React.FC = () => {
   };
 
   const handleAddTour = () => {
-    addTour({ ...newTour, id: Date.now() });
     setNewTour({ image: '', discount: '', duration: '', price: '', title: '', subtitle: '' });
   };
 
@@ -84,7 +83,6 @@ const TourManager: React.FC = () => {
         {tours.map((tour) => (
           <div key={tour.id} className="tour-item">
             <p>{tour.title}</p>
-            <button onClick={() => deleteTour(tour.id)} className="delete-tour-button">Xóa</button>
           </div>
         ))}
       </div>

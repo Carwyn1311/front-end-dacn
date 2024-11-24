@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { Form, Input, Button } from 'antd';
 import PaymentForm from '../../Payment/Content/PaymentForm';
 import '../.css/MainContent.css';
+import { TourContextProvider } from '../../TourSlider/Content/TourContext';
 import ImageSlider from '../../../components/ImageSlider/ImageSlider';
+import TourSlider from '../../TourSlider/Content/TourSlider';
 
 interface Slide {
   image: string;
@@ -47,15 +49,22 @@ const MainContent: React.FC = () => {
       setSlides(JSON.parse(storedSlides)); // Đọc dữ liệu từ localStorage
     }
   }, []);
-  
+
 
   return (
-    <div className="main-content">
-      <div className="slider-display">
-        <ImageSlider slides={slides} className="main-image-slider" />
+    <TourContextProvider>
+      <div className="main-content">
+        <div className="slider-display" style={{ padding: '10px'}} >
+          <ImageSlider slides={slides} className="main-image-slider" />
+        </div>
+        <div className="info-tour-new" style={{ padding: '40px'}}>
+          <h2 className="info-tour-2025"  style={{ padding: '20px'}}>TOUR TẾT 2025</h2>
+          <div style={{ margin: '20px auto', maxWidth: '1200px', padding: '30px' }}>
+            <TourSlider interval={4000} /> {/* Thời gian chuyển cảnh là 4 giây */}
+          </div>
+        </div>
       </div>
-
-    </div>
+    </TourContextProvider>
   );
 };
 

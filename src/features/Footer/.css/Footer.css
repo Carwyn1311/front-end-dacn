@@ -1,4 +1,4 @@
-.footer {
+.footer-app{
     background-color: #012e5d;
     color: #fff;
     padding: 0px;
@@ -12,6 +12,7 @@
     gap: 20px;
     max-width: 1200px;
     margin: 0 auto;
+    padding: 15px;
   }
   
   .footer-brand {

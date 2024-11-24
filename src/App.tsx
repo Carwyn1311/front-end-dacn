@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import MainContent from './features/Maincontent/Content/MainContent';
 import Button from './components/Button/Button';
-import { TourProvider } from './features/TourSlider/Content/TourContext';
 import { UserOutlined, SearchOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import { RiMenuUnfold4Fill } from 'react-icons/ri'; // Import từ react-icons
 import Sidebar from './features/Sidebar/Content/Sidebar';
@@ -73,7 +72,6 @@ const AppContent: React.FC = () => {
   };
 
   return (
-    <TourProvider>
       <div className={`app-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
         <Sidebar
           isOpen={isSidebarOpen}
@@ -133,7 +131,6 @@ const AppContent: React.FC = () => {
         </div>
         
       </div>
-    </TourProvider>
   );
 };
 

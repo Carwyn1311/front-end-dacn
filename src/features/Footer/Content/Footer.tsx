@@ -4,7 +4,7 @@ import FooterCard from "./FooterCard";
 
 const Footer: React.FC = () => {
     return (
-      <footer className="footer">
+      <footer className="footer-app">
         <div className="footer-wrapper">
           {/* Logo và thông tin thương hiệu */}
           <div className="footer-brand">
@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
               className="footer-logo"
             />
             <p className="footer-tagline">
-              Lữ hành Saigontourist, thương hiệu lữ hành hàng đầu Việt Nam
+              Lữ hành DPT Travel, thương hiệu lữ hành dẫn đầu xu hướng tại Việt Nam
             </p>
             <p className="footer-subtitle">Thương hiệu quốc gia</p>
             <div className="footer-awards">
@@ -22,8 +22,8 @@ const Footer: React.FC = () => {
               <span>⭐</span>
               <span>🏅</span>
             </div>
-            <p className="footer-contact">Tổng đài: 1900 1808</p>
-            <p className="footer-contact">Email: info@saigontourist.net</p>
+            <p className="footer-contact">Tổng đài: 1900 XXXX</p>
+            <p className="footer-contact">Email: info@dpttravel.net</p>
           </div>
   
           {/* Dịch vụ */}

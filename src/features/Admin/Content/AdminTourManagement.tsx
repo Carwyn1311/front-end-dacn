@@ -1,5 +1,4 @@
 import React from 'react';
-import { TourProvider } from '../../TourSlider/Content/TourContext';
 import TourManager from '../../TourSlider/Content/TourManager';
 import TourSlider from '../../TourSlider/Content/TourSlider';
 import MenuSlider from '../../../components/ImageSlider/MenuSlider';
@@ -24,7 +23,6 @@ const AdminTourManagement: React.FC = () => {
   };
 
   return (
-    <TourProvider>
       <div className="admin-tour-management">
         <h1>Quản Lý Tour</h1>
 
@@ -33,9 +31,9 @@ const AdminTourManagement: React.FC = () => {
         <div className="preview-section">
           <h2>Xem trước tour</h2>
           <MenuSlider slides={slides} onUpdateSlides={handleUpdateSlides} />
+          <TourManager></TourManager>
         </div>
       </div>
-    </TourProvider>
   );
 };
 

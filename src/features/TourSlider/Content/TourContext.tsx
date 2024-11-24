@@ -1,37 +1,17 @@
-// TourContext.tsx
-import React, { createContext, useState, ReactNode } from 'react';
+import React, { createContext, ReactNode, useState } from 'react';
+import { tours as initialTours, Tour } from './tours';
 
-interface TourItem {
-  id: number;
-  image: string;
-  discount: string;
-  duration: string;
-  price: string;
-  title: string;
-  subtitle: string;
+interface TourContextProps {
+  tours: Tour[];
 }
 
-interface TourContextType {
-  tours: TourItem[];
-  addTour: (tour: TourItem) => void;
-  deleteTour: (id: number) => void;
-}
+export const TourContext = createContext<TourContextProps | null>(null);
 
-export const TourContext = createContext<TourContextType | undefined>(undefined);
-
-export const TourProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [tours, setTours] = useState<TourItem[]>([]);
-
-  const addTour = (tour: TourItem) => {
-    setTours((prevTours) => [...prevTours, { ...tour, id: Date.now() }]);
-  };
-
-  const deleteTour = (id: number) => {
-    setTours((prevTours) => prevTours.filter((tour) => tour.id !== id));
-  };
+export const TourContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [tours] = useState<Tour[]>(initialTours);
 
   return (
-    <TourContext.Provider value={{ tours, addTour, deleteTour }}>
+    <TourContext.Provider value={{ tours }}>
       {children}
     </TourContext.Provider>
   );
