@@ -10,7 +10,7 @@ const FooterCard: React.FC = () => {
           src="/images/thequocte.gif"
           alt="Thẻ Quốc Tế"
           className="footer-card-icon"
-          style={{ width: '100%', height: '85%'}}
+          style={{ width: '50%', height: '25%'}}
         />
       </div>
 

@@ -93,11 +93,11 @@ const AppContent: React.FC = () => {
                 <label> DPT Travel </label>
               </div>
               <div className="user-options">
-                  {selectedItem && (
-                    <p style={{ marginTop: '20px' }}>
-                      Mục bạn đã chọn: <strong>{selectedItem}</strong>
-                    </p>
-                  )}
+                {selectedItem && (
+                  <p style={{ marginTop: '20px' }}>
+                    Mục bạn đã chọn: <strong>{selectedItem}</strong>
+                  </p>
+                )}
                 {isLoggedIn ? (
                   <Button className="username">{username}</Button>
                 ) : (
@@ -123,14 +123,15 @@ const AppContent: React.FC = () => {
               <Route path="/admin/manage-users" element={<AdminUser />} />
               <Route path="/admin/img-slider" element={<AdminTourManagement />} />
             </Routes>
-            {/* <Routes></Routes> */}
-            <Footer />
+            <div className="content-bottom">
+                <div className='content01'>
+                  <Footer />
+                </div>
+            </div>
 
           </div>
         </div>
-        <div className="content-bottom">
-
-        </div>
+        
       </div>
     </TourProvider>
   );
