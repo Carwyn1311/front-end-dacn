@@ -1,0 +1,85 @@
+/* Container chính */
+.img-transition-container {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  /* Hình nền lớn */
+  .image-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  .background-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(70%);
+  }
+  
+  /* Overlay form (vị trí trái hoặc phải) */
+  .overlay-form {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 40%;
+    max-width: 500px;
+    background-color: rgba(0, 0, 50, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .overlay-form.left {
+    left: 10%;
+  }
+  
+  .overlay-form.right {
+    right: 10%;
+  }
+  
+  /* Nội dung form */
+  .form-container {
+    color: #fff;
+  }
+  
+  .form-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .form-subtitle {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .form-description {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .form-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff5722;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .form-button:hover {
+    background-color: #e64a19;
+  }
+  

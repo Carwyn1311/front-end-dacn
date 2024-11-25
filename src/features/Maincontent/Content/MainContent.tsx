@@ -5,6 +5,7 @@ import '../.css/MainContent.css';
 import { TourContextProvider } from '../../TourSlider/Content/TourContext';
 import ImageSlider from '../../../components/ImageSlider/ImageSlider';
 import TourSlider from '../../TourSlider/Content/TourSlider';
+import ImgTransition from '../../ImgTransition/Content/ImgTransition';
 
 interface Slide {
   image: string;
@@ -62,6 +63,17 @@ const MainContent: React.FC = () => {
           <div style={{ margin: '20px auto', maxWidth: '1200px', padding: '30px' }}>
             <TourSlider interval={4000} /> {/* Thời gian chuyển cảnh là 4 giây */}
           </div>
+        </div>
+        <div className='img-transition'>
+          <ImgTransition
+            imageUrl="/images/ha-long-1.jpg"
+            title="Tin mới"
+            subtitle="2 THÁNG CUỐI NĂM 2024..."
+            description="Vào 7:30 sáng ngày 9.11.2024, Công ty Dịch vụ Lữ hành Saigontourist..."
+            buttonText="Xem thêm"
+            buttonUrl="/details"
+            position="right"
+          />
         </div>
       </div>
     </TourContextProvider>
