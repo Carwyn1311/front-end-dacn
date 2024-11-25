@@ -1,85 +1,69 @@
-/* Container chính */
-.img-transition-container {
-    position: relative;
-    height: 100vh;
-    overflow: hidden;
-  }
-  
-  /* Hình nền lớn */
-  .image-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
-  
-  .background-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(70%);
-  }
-  
-  /* Overlay form (vị trí trái hoặc phải) */
-  .overlay-form {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    width: 40%;
-    max-width: 500px;
-    background-color: rgba(0, 0, 50, 0.8);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  }
-  
-  .overlay-form.left {
-    left: 10%;
-  }
-  
-  .overlay-form.right {
-    right: 10%;
-  }
-  
-  /* Nội dung form */
-  .form-container {
-    color: #fff;
-  }
-  
-  .form-title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .form-subtitle {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-  
-  .form-description {
-    font-size: 16px;
-    margin-bottom: 20px;
-  }
-  
-  .form-button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #ff5722;
-    color: #fff;
-    font-size: 14px;
-    font-weight: bold;
-    text-transform: uppercase;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .form-button:hover {
-    background-color: #e64a19;
-  }
-  
+.promotionWrapper {
+  margin-top: 40px;
+  background-attachment: fixed; /* Hình nền cố định khi cuộn */
+  width: 100%;
+  background-size: cover; /* Hình nền bao phủ */
+  background-position: center; /* Hình nền canh giữa */
+  color: #ffffff; /* Màu chữ */
+}
+
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.promotion-box-kiritm {
+  background: rgba(0, 0, 0, 0.6); /* Nền đen mờ */
+  border-radius: 10px;
+  padding: 20px;
+  color: #ffffff;
+}
+
+.top-box-header {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffdd57; /* Màu vàng nổi bật */
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.content-box-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #ffffff;
+}
+
+.text-description {
+  font-size: 16px;
+  color: #ddd;
+  margin-bottom: 20px;
+}
+
+.action-box-description {
+  text-align: center;
+}
+
+.btn.btn-kiritm.buy-tour {
+  background-color: #ff6700;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn.btn-kiritm.buy-tour:hover {
+  background-color: #d85500;
+  transform: scale(1.05);
+}

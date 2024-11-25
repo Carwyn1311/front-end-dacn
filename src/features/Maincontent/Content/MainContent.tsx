@@ -55,11 +55,11 @@ const MainContent: React.FC = () => {
   return (
     <TourContextProvider>
       <div className="main-content">
-        <div className="slider-display" style={{ padding: '10px'}} >
+        <div className="slider-display" style={{ padding: '10px' }} >
           <ImageSlider slides={slides} className="main-image-slider" />
         </div>
-        <div className="info-tour-new" style={{ padding: '40px'}}>
-          <h2 className="info-tour-2025"  style={{ padding: '20px'}}>TOUR TẾT 2025</h2>
+        <div className="info-tour-new" style={{ padding: '40px' }}>
+          <h2 className="info-tour-2025" style={{ padding: '20px' }}>TOUR TẾT 2025</h2>
           <div style={{ margin: '20px auto', maxWidth: '1200px', padding: '30px' }}>
             <TourSlider interval={4000} /> {/* Thời gian chuyển cảnh là 4 giây */}
           </div>
@@ -67,12 +67,12 @@ const MainContent: React.FC = () => {
         <div className='img-transition'>
           <ImgTransition
             imageUrl="/images/ha-long-1.jpg"
-            title="Tin mới"
-            subtitle="2 THÁNG CUỐI NĂM 2024..."
-            description="Vào 7:30 sáng ngày 9.11.2024, Công ty Dịch vụ Lữ hành Saigontourist..."
+            title="Đón 7 Chuyến Tàu Biển Quốc Tế"
+            subtitle="Tin Nổi Bật"
+            description="Saigontourist đón và phục vụ hơn 20,600 du khách quốc tế đến Việt Nam từ tháng 11/2024."
             buttonText="Xem thêm"
-            buttonUrl="/details"
-            position="right"
+            buttonUrl="https://www.saigontourist.net/vi/chi-tiet/668"
+            position="left"
           />
         </div>
       </div>
