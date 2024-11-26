@@ -52,30 +52,49 @@ const ImgTransition: React.FC<ImgTransitionProps> = ({
             md={12}
             lg={10}
             style={{
-              background: 'rgba(0, 0, 0, 0.7)', // Nền đen mờ
-              borderRadius: '10px',
-              padding: '20px',
+              background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6))', // Hiệu ứng gradient
+              borderRadius: '15px', // Bo góc mượt hơn
+              padding: '25px',
+              boxShadow: '0 8px 15px rgba(0, 0, 0, 0.3)', // Đổ bóng đẹp hơn
+              transition: 'transform 0.3s ease', // Hiệu ứng hover
             }}
+            onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.03)')} // Hover scale lên
+            onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')} // Trả lại kích thước khi không hover
           >
             <Card
               bordered={false}
               style={{ background: 'transparent' }}
               title={
-                <h2 style={{ color: '#ffdd57', textTransform: 'uppercase', marginBottom: '10px' }}>
+                <h2 style={{ color: '#ffdd57', textTransform: 'uppercase', marginBottom: '10px', fontSize: '16px' }}>
                   {subtitle}
                 </h2>
               }
             >
-              <h3 style={{ color: '#fff', fontWeight: 'bold', marginBottom: '15px' }}>{title}</h3>
-              <p style={{ color: '#ddd', marginBottom: '20px' }}>{description}</p>
+              <h3 style={{ color: '#fff', fontWeight: 'bold', marginBottom: '15px', fontSize: '22px' }}>
+                {title}
+              </h3>
+              <p style={{ color: '#ddd', marginBottom: '20px', fontSize: '14px', lineHeight: '1.6' }}>
+                {description}
+              </p>
               <Button
                 type="primary"
                 size="large"
                 style={{
                   backgroundColor: '#ff6700',
                   borderColor: '#ff6700',
-                  borderRadius: '5px',
+                  borderRadius: '25px', // Nút bo tròn hơn
                   fontWeight: 'bold',
+                  padding: '10px 20px',
+                  fontSize: '14px',
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#ff4500'; // Đổi màu nền khi hover
+                  e.currentTarget.style.transform = 'scale(1.1)'; // Phóng to nhẹ khi hover
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#ff6700'; // Trả về màu gốc
+                  e.currentTarget.style.transform = 'scale(1)';
                 }}
                 onClick={handleButtonClick}
               >

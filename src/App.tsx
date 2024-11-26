@@ -121,11 +121,7 @@ const AppContent: React.FC = () => {
               <Route path="/admin/manage-users" element={<AdminUser />} />
               <Route path="/admin/img-slider" element={<AdminTourManagement />} />
             </Routes>
-            <div className="content-bottom">
-                <div className='content01'>
-                  <Footer />
-                </div>
-            </div>
+
 
           </div>
         </div>

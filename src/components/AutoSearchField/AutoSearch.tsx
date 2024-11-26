@@ -1,9 +1,10 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { Dropdown, MenuProps } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 interface AutoSearchProps {
-  items: string[];
-  onSelectItem: (item: string) => void;
+  items: { name: string; url: string; description?: string }[]; 
+  onSelectItem: (item: string, url: string) => void;
   label?: string;
   placeholder?: string;
   prefix?: React.ReactNode;
@@ -12,6 +13,8 @@ interface AutoSearchProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   width?: string;
   height?: string;
+  buttonText?: string;
+  buttonUrl?: string;
 }
 
 const AutoSearch: React.FC<AutoSearchProps> = ({
@@ -25,6 +28,8 @@ const AutoSearch: React.FC<AutoSearchProps> = ({
   onChange,
   width = '100%',
   height = 'auto',
+  buttonText, 
+  buttonUrl,  
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>(value);
   const [isFocused, setIsFocused] = useState<boolean>(false);
@@ -43,15 +48,15 @@ const AutoSearch: React.FC<AutoSearchProps> = ({
   const filteredItems = useMemo(
     () =>
       items.filter((item) =>
-        item.toLowerCase().includes(searchTerm.toLowerCase())
+        item.name.toLowerCase().includes(searchTerm.toLowerCase())
       ),
     [items, searchTerm]
   );
 
   const handleItemSelect = useCallback(
-    (item: string) => {
-      setSearchTerm(item);
-      onSelectItem(item);
+    (item: { name: string; url: string }) => {
+      setSearchTerm(item.name);
+      onSelectItem(item.name, item.url);
       setVisible(false);
     },
     [onSelectItem]
@@ -61,7 +66,12 @@ const AutoSearch: React.FC<AutoSearchProps> = ({
     () =>
       filteredItems.map((item, index) => ({
         key: index.toString(),
-        label: item,
+        label: (
+          <div>
+            <span>{item.name}</span>
+            {item.description && <small style={{ display: 'block', color: '#aaa' }}>{item.description}</small>}
+          </div>
+        ),
         onClick: () => handleItemSelect(item),
       })),
     [filteredItems, handleItemSelect]
@@ -81,7 +91,7 @@ const AutoSearch: React.FC<AutoSearchProps> = ({
         alignItems: 'center',
         backgroundColor: '#ffffff',
         color: '#333',
-        zIndex: 1, // Đảm bảo input không bị che
+        zIndex: 1, 
       }}
     >
       {prefix != null && (
@@ -89,12 +99,10 @@ const AutoSearch: React.FC<AutoSearchProps> = ({
       )}
       <div style={{ flexGrow: 1, position: 'relative', zIndex: 1 }}>
         <label
-          className={`floating-label ${
-            isFocused || searchTerm !== '' ? 'focused' : ''
-          }`}
+          className={`floating-label ${isFocused || searchTerm !== '' ? 'focused' : ''}`}
           style={{
             position: 'absolute',
-            top: isFocused || searchTerm !== '' ? '-18px' : '50%',
+            top: isFocused || searchTerm !== '' ? '-10px' : '50%',
             left: '8px',
             transform: 'translateY(-50%)',
             fontSize: isFocused || searchTerm !== '' ? '12px' : '16px',
@@ -128,7 +136,7 @@ const AutoSearch: React.FC<AutoSearchProps> = ({
       {visible && filteredItems.length > 0 && (
         <Dropdown
           menu={{ items: menuItems }}
-          overlayStyle={{ width: '100%', top: '10px' }} // Di chuyển xuống thêm 10px
+          overlayStyle={{ width: '100%', top: '55px' }} // Di chuyển xuống thêm 30px
           open={visible}
           onOpenChange={setVisible}
           getPopupContainer={(triggerNode) => triggerNode.parentNode as HTMLElement}
@@ -138,13 +146,29 @@ const AutoSearch: React.FC<AutoSearchProps> = ({
             style={{
               maxHeight: '200px',
               overflowY: 'auto',
-              marginTop: '10px', // Đảm bảo dropdown nằm dưới input
+              marginTop: '10px', 
               position: 'absolute',
               width: '100%',
-              zIndex: 0, // Đảm bảo dropdown không che input
+              zIndex: 0, 
             }}
           />
         </Dropdown>
+      )}
+      {buttonText && buttonUrl && (
+        <button
+          onClick={() => window.location.href = buttonUrl}
+          style={{
+            marginTop: '10px',
+            padding: '8px 12px',
+            backgroundColor: '#ff6700',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+          }}
+        >
+          {buttonText}
+        </button>
       )}
     </div>
   );

@@ -138,4 +138,21 @@
   left: 50%; /* Căn giữa theo chiều ngang */
   transform: translate(-50%, -50%); /* Đảm bảo căn giữa chính xác */
   padding: 30px;
+  margin-top: 90px;
+}
+
+.search-input{
+  font-size: 45px; /* Kích thước chữ */
+  margin-top: 10px;
+  font-weight: bold; /* In đậm */
+  text-align: center; /* Căn giữa theo chiều ngang */
+  margin: 0;
+  position: absolute;
+  left: 50%; /* Căn giữa theo chiều ngang */
+  transform: translate(-50%, -50%); /* Đảm bảo căn giữa chính xác */
+  padding: 30px;
+}
+.info-tour-new{
+  display: flex;
+  gap: 10px;
 }
