@@ -5,7 +5,7 @@ import { ButtonType } from 'antd/lib/button';
 interface ButtonProps {
   onClick?: () => void;
   style?: React.CSSProperties;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
   type?: ButtonType;
   icon?: React.ReactNode;

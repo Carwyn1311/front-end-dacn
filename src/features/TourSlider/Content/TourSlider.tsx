@@ -1,16 +1,16 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { TourContext } from './TourContext';
-import { Button } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import '../.css/TourSlider.css';
+import Button from '../../../components/Button/Button';
 
 interface TourSliderProps {
   interval: number; // Interval for auto-slide
 }
 
 const TourSlider: React.FC<TourSliderProps> = ({ interval }) => {
-  const itemsPerView = 3; // Fixed number of items per view
+  const itemsPerView = 5; // Hiển thị 5 mục mỗi lượt
   const { tours } = useContext(TourContext) ?? { tours: [] };
   const [currentIndex, setCurrentIndex] = useState(0);
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -34,8 +34,8 @@ const TourSlider: React.FC<TourSliderProps> = ({ interval }) => {
         setTimeout(() => {
           sliderRef.current!.style.transition = 'none';
           setCurrentIndex(0);
-        }, 500); // Match CSS transition duration
-        return prevIndex; // Temporarily hold the last index
+        }, 500);
+        return prevIndex;
       }
       return prevIndex + 1;
     });
@@ -48,8 +48,8 @@ const TourSlider: React.FC<TourSliderProps> = ({ interval }) => {
         setTimeout(() => {
           sliderRef.current!.style.transition = 'none';
           setCurrentIndex(tours.length - 1);
-        }, 500); // Match CSS transition duration
-        return tours.length - 1; // Temporarily hold the first index
+        }, 500);
+        return tours.length - 1;
       }
       return prevIndex - 1;
     });
@@ -63,7 +63,7 @@ const TourSlider: React.FC<TourSliderProps> = ({ interval }) => {
 
   const handleTourClick = (url: string) => {
     if (url) {
-      navigate(url); // Navigate to the provided URL
+      navigate(url);
     }
   };
 
@@ -74,10 +74,6 @@ const TourSlider: React.FC<TourSliderProps> = ({ interval }) => {
       <div
         ref={sliderRef}
         className="tour-slider-container"
-        style={{
-          display: 'flex',
-          gap: '20px', // Ensure proper spacing between items
-        }}
       >
         {clonedTours.map((item, index) => (
           <div key={index} className="tour-item">
@@ -94,7 +90,7 @@ const TourSlider: React.FC<TourSliderProps> = ({ interval }) => {
                     <span>Giá từ:</span>
                     <strong>{item.price}</strong>
                   </div>
-                  <span className="tour-duration">{item.duration}</span>
+                  <span className="tour-duration">/ {item.duration}</span>
                 </div>
                 <Button
                   type="primary"
@@ -106,7 +102,6 @@ const TourSlider: React.FC<TourSliderProps> = ({ interval }) => {
               </div>
             </div>
           </div>
-
         ))}
       </div>
 
