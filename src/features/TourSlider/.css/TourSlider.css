@@ -1,9 +1,9 @@
+/* General styles for the TourSlider */
 .tour-slider {
   position: relative;
   width: 100%;
   overflow: hidden;
-  padding: 20px 0;
-  background-color: #f9f9f9; /* Nền sáng */
+  padding: 30px;
 }
 
 .tour-slider-container {
@@ -13,51 +13,42 @@
 }
 
 .tour-item {
-  flex: 0 0 calc(20% - 20px); /* 100% / 5 itemsPerView */
-  margin-right: 20px;
+  width: 30%; /* Adjust based on how many items you want per view */
+  padding: 15px;
+  box-sizing: border-box;
 }
 
 .tour-card {
-  background: #fff; /* Nền trắng */
-  border-radius: 10px; /* Bo góc mềm mại */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+  position: relative;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.tour-card:hover {
-  transform: translateY(-5px); /* Hiệu ứng nổi khi hover */
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Đổ bóng rõ hơn */
 }
 
 .tour-image-container {
   position: relative;
-  overflow: hidden;
-  height: 150px; /* Chiều cao hình ảnh */
 }
 
 .tour-image {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
   transition: transform 0.3s ease;
 }
 
-.tour-card:hover .tour-image {
-  transform: scale(1.1); /* Phóng to nhẹ khi hover */
+.tour-image:hover {
+  transform: scale(1.05);
 }
 
 .tour-badge {
   position: absolute;
   top: 10px;
   left: 10px;
-  background-color: #ff6700; /* Màu cam nổi bật */
-  color: #fff;
+  background-color: rgba(255, 0, 0, 0.7);
+  color: white;
   padding: 5px 10px;
-  font-size: 12px;
-  font-weight: bold;
+  font-size: 14px;
   border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .tour-info {
@@ -65,80 +56,74 @@
 }
 
 .tour-title {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
-  margin: 0 0 10px;
   color: #333;
 }
 
 .tour-destination {
   font-size: 14px;
-  color: #777;
-  margin: 0 0 10px;
+  color: #7f8c8d;
 }
 
 .tour-meta {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  font-size: 14px;
-  margin-bottom: 15px;
-  color: #333;
+  margin-top: 10px;
 }
 
 .tour-price {
-  color: #ff6700;
-  font-weight: bold;
+  font-size: 16px;
+  color: #e74c3c;
 }
 
 .tour-duration {
-  font-size: 12px;
-  color: #888;
+  font-size: 14px;
+  color: #7f8c8d;
 }
 
 .tour-button {
-  background-color: #ff6700;
-  border-color: #ff6700;
-  color: #fff;
-  font-weight: bold;
   width: 100%;
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #e74c3c;
+  color: white;
   border-radius: 5px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  text-align: center;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
 }
 
 .tour-button:hover {
-  background-color: #e65c00;
-  transform: translateY(-2px);
+  background-color: #c0392b;
 }
 
-/* Navigation Buttons */
-.tour-nav-button {
+/* Dots Navigation Styles */
+.dots-navigation {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  bottom: 20px;
+  width: 100%;
   z-index: 10;
-  background: #fff;
-  border: 1px solid #ddd;
+  left: 50%;
+  margin-bottom: -20px;
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+  background-color: rgba(0, 0, 0, 0.5);
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.tour-nav-button.left {
-  left: 10px;
+.dot.active {
+  background-color: #e74c3c;
 }
 
-.tour-nav-button.right {
-  right: 10px;
-}
-
-.tour-nav-button:hover {
-  background-color: #ff6700;
-  color: #fff;
-  transform: scale(1.1);
+.dot:hover {
+  background-color: #c0392b;
 }
