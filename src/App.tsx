@@ -17,6 +17,7 @@ import AdminUser from './features/Admin/Content/AdminUser';
 import AdminTourManagement from './features/Admin/Content/AdminTourManagement';
 import Footer from './features/Footer/Content/Footer';
 import FooterCard from './features/Footer/Content/FooterCard';
+import ScrollToTopButton from './features/ScrollToTopButton/Content/ScrollToTopButton';
 
 
 const App: React.FC = () => {
@@ -121,7 +122,7 @@ const AppContent: React.FC = () => {
               <Route path="/admin/manage-users" element={<AdminUser />} />
               <Route path="/admin/img-slider" element={<AdminTourManagement />} />
             </Routes>
-
+            <ScrollToTopButton className="button-to-in-top" />
 
           </div>
         </div>
