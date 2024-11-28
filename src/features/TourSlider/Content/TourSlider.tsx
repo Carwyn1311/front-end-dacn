@@ -1,23 +1,22 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { TourContext } from './TourContext';
-import { Button } from 'antd';
-import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import Button from '../../../components/Button/Button';
 import '../.css/TourSlider.css';
 
 interface TourSliderProps {
-  interval: number; // Interval for auto-slide
+  interval: number;
 }
 
 const TourSlider: React.FC<TourSliderProps> = ({ interval }) => {
-  const itemsPerView = 3; // Fixed number of items per view
+  const itemsPerView = 5;
   const { tours } = useContext(TourContext) ?? { tours: [] };
   const [currentIndex, setCurrentIndex] = useState(0);
   const sliderRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   // Clone tours for infinite sliding
-  const clonedTours = [...tours, ...tours.slice(0, itemsPerView)];
+  const clonedTours = tours.length > 0 ? [...tours, ...tours] : [];
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -27,58 +26,57 @@ const TourSlider: React.FC<TourSliderProps> = ({ interval }) => {
     return () => clearInterval(timer);
   }, [interval, currentIndex]);
 
+  // Move to the next item, wrapping around at the end
   const moveNext = () => {
-    setCurrentIndex((prevIndex) => {
-      const isLastSlide = prevIndex >= tours.length;
-      if (isLastSlide) {
-        setTimeout(() => {
-          sliderRef.current!.style.transition = 'none';
-          setCurrentIndex(0);
-        }, 500); // Match CSS transition duration
-        return prevIndex; // Temporarily hold the last index
-      }
-      return prevIndex + 1;
-    });
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % tours.length);
   };
 
+  // Move to the previous item, wrapping around at the start
   const movePrev = () => {
-    setCurrentIndex((prevIndex) => {
-      const isFirstSlide = prevIndex === 0;
-      if (isFirstSlide) {
-        setTimeout(() => {
-          sliderRef.current!.style.transition = 'none';
-          setCurrentIndex(tours.length - 1);
-        }, 500); // Match CSS transition duration
-        return tours.length - 1; // Temporarily hold the first index
-      }
-      return prevIndex - 1;
-    });
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + tours.length) % tours.length);
   };
 
   useEffect(() => {
     if (!sliderRef.current) return;
     sliderRef.current.style.transition = 'transform 0.5s ease-in-out';
+    // Adjust the transform for sliding, based on the current index
     sliderRef.current.style.transform = `translateX(-${(currentIndex * 100) / itemsPerView}%)`;
   }, [currentIndex]);
 
   const handleTourClick = (url: string) => {
     if (url) {
-      navigate(url); // Navigate to the provided URL
+      navigate(url);
     }
   };
 
   if (tours.length === 0) return <p>Không có tour nào để hiển thị</p>;
 
+  // Render Dots Navigation
+  const renderDots = () => {
+    const dots = [];
+    for (let i = 0; i < tours.length; i++) {
+      dots.push(
+        <span
+          key={i}
+          className={`dot ${i === currentIndex ? 'active' : ''}`}
+          onClick={() => setCurrentIndex(i)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              setCurrentIndex(i);
+            }
+          }}
+          aria-label={`Go to slide ${i + 1}`}
+        />
+      );
+    }
+    return dots;
+  };
+
   return (
     <div className="tour-slider">
-      <div
-        ref={sliderRef}
-        className="tour-slider-container"
-        style={{
-          display: 'flex',
-          gap: '20px', // Ensure proper spacing between items
-        }}
-      >
+      <div ref={sliderRef} className="tour-slider-container">
         {clonedTours.map((item, index) => (
           <div key={index} className="tour-item">
             <div className="tour-card">
@@ -94,7 +92,7 @@ const TourSlider: React.FC<TourSliderProps> = ({ interval }) => {
                     <span>Giá từ:</span>
                     <strong>{item.price}</strong>
                   </div>
-                  <span className="tour-duration">{item.duration}</span>
+                  <span className="tour-duration">/ {item.duration}</span>
                 </div>
                 <Button
                   type="primary"
@@ -106,21 +104,13 @@ const TourSlider: React.FC<TourSliderProps> = ({ interval }) => {
               </div>
             </div>
           </div>
-
         ))}
       </div>
 
-      {/* Navigation Buttons */}
-      <Button
-        icon={<LeftOutlined />}
-        onClick={movePrev}
-        className="tour-nav-button left"
-      />
-      <Button
-        icon={<RightOutlined />}
-        onClick={moveNext}
-        className="tour-nav-button right"
-      />
+      {/* Dots Navigation */}
+      <div className="dots-navigation">
+        {renderDots()}
+      </div>
     </div>
   );
 };

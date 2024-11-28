@@ -11,8 +11,9 @@
 
 /* Main Content Container */
 .main-content {
+  font-family: Arial, sans-serif;
   padding: 20px;
-  gap: 20px;
+  gap: 40px;
   background-color: var(--text-light);
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -137,8 +138,8 @@
   position: absolute;
   left: 50%; /* Căn giữa theo chiều ngang */
   transform: translate(-50%, -50%); /* Đảm bảo căn giữa chính xác */
-  padding: 30px;
-  margin-top: 90px;
+  display: flex;
+  margin-top: 65px;
 }
 
 .search-input{
@@ -149,10 +150,26 @@
   margin: 0;
   position: absolute;
   left: 50%; /* Căn giữa theo chiều ngang */
+  z-index: 999999;
   transform: translate(-50%, -50%); /* Đảm bảo căn giữa chính xác */
-  padding: 30px;
 }
 .info-tour-new{
   display: flex;
-  gap: 10px;
+  width: 100vw;
+  margin-top: 10px;
+  gap: 20px;
+}
+
+.TourSlider{
+  margin-top: 100px;
+
+}
+
+.search-input, .info-tour-2025, .TourSlider{
+  gap: 20px;
+  padding: 20px;
+}
+
+.img-transition{
+  margin-top: 20px;
 }

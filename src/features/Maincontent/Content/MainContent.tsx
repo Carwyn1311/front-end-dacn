@@ -70,22 +70,22 @@ const MainContent: React.FC = () => {
   return (
     <TourContextProvider>
       <div className="main-content">
-        <div className="slider-display" style={{ padding: '10px' }} >
+        <div className="slider-display" >
           <ImageSlider slides={slides} className="main-image-slider" />
         </div>
-        <div className="info-tour-new" style={{ padding: '40px', gap: '10px' }}>
+        <div className="info-tour-new">
           <div className="search-input">
-          <AutoSearch
-            items={itemsWithUrls}
-            onSelectItem={handleSelectItem}
-            label="Search for Tour...."
-            placeholder=""
-            width='600px'
-            height='50px'
-          />
+            <AutoSearch
+              items={itemsWithUrls}
+              onSelectItem={handleSelectItem}
+              label="Search for Tour...."
+              placeholder=""
+              width='600px'
+              height='50px'
+            />
           </div>
-          <h2 className="info-tour-2025" style={{ padding: '20px' }}>TOUR TẾT 2025</h2>
-          <div style={{ margin: '20px auto', maxWidth: '1200px', padding: '30px'}}>
+          <h2 className="info-tour-2025">TOUR TẾT 2025</h2>
+          <div className="TourSlider">
             <TourSlider interval={4000} /> {/* Thời gian chuyển cảnh là 4 giây */}
           </div>
         </div>

@@ -91,13 +91,13 @@ const AutoSearch: React.FC<AutoSearchProps> = ({
         alignItems: 'center',
         backgroundColor: '#ffffff',
         color: '#333',
-        zIndex: 1, 
+        zIndex: 1000, 
       }}
     >
       {prefix != null && (
-        <span style={{ marginRight: '8px', fontSize: '18px', zIndex: 1 }}>{prefix}</span>
+        <span style={{ marginRight: '8px', fontSize: '18px', zIndex: 1000 }}>{prefix}</span>
       )}
-      <div style={{ flexGrow: 1, position: 'relative', zIndex: 1 }}>
+      <div style={{ flexGrow: 1, position: 'relative', zIndex: 1000 }}>
         <label
           className={`floating-label ${isFocused || searchTerm !== '' ? 'focused' : ''}`}
           style={{
@@ -108,7 +108,7 @@ const AutoSearch: React.FC<AutoSearchProps> = ({
             fontSize: isFocused || searchTerm !== '' ? '12px' : '16px',
             transition: 'all 0.2s ease',
             color: isFocused ? '#000' : '#aaa',
-            zIndex: 1,
+            zIndex: 1000,
           }}
         >
           {label}
@@ -149,7 +149,7 @@ const AutoSearch: React.FC<AutoSearchProps> = ({
               marginTop: '10px', 
               position: 'absolute',
               width: '100%',
-              zIndex: 0, 
+              zIndex: 9999, 
             }}
           />
         </Dropdown>
