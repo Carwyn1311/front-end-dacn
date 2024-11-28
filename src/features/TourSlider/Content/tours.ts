@@ -12,7 +12,7 @@ export interface Tour {
   export const tours: Tour[] = [
     {
       id: 1,
-      image: '/path-to-image/tour1.jpg',
+      image: '/images/ha-long-1.jpg',
       title: 'Tour Du Lịch Úc',
       subtitle: 'Melbourne - Sydney',
       price: '64.999.000đ',
@@ -22,7 +22,7 @@ export interface Tour {
     },
     {
       id: 2,
-      image: '/path-to-image/tour2.jpg',
+      image: '/images/Tokyo_japan.jpg',
       title: 'Tour Du Lịch Nhật Bản',
       subtitle: 'Tokyo - Kyoto',
       price: '54.999.000đ',
@@ -32,7 +32,7 @@ export interface Tour {
     },
     {
       id: 3,
-      image: '/path-to-image/tour3.jpg',
+      image: '/images/america.jpg',
       title: 'Tour Du Lịch Mỹ',
       subtitle: 'New York - Los Angeles',
       price: '84.999.000đ',
@@ -42,7 +42,7 @@ export interface Tour {
     },
     {
       id: 4,
-      image: '/path-to-image/tour4.jpg',
+      image: 'i/images/korea.jpg',
       title: 'Tour Du Lịch Hàn Quốc',
       subtitle: 'Seoul - Busan',
       price: '44.999.000đ',
@@ -52,7 +52,7 @@ export interface Tour {
     },
     {
       id: 5,
-      image: '/path-to-image/tour5.jpg',
+      image: '/images/Paris.jpg',
       title: 'Tour Du Lịch Pháp',
       subtitle: 'Paris - Lyon',
       price: '94.999.000đ',
@@ -60,6 +60,17 @@ export interface Tour {
       duration: '9 ngày',
       url: '/tours/du-lich-phap',
     },
+    {
+      id: 6,
+      image: '/images/TrungQuoc-1.jpg',
+      title: 'Tour Du Lịch Trung Quốc',
+      subtitle: 'Thâm Quyến',
+      price: '94.999.000đ',
+      discount: '12%',
+      duration: '9 ngày',
+      url: '/tours/nuoc-ngoai/chau-a/trung-quoc',
+    },
+
   ];
   
   

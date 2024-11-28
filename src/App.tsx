@@ -88,6 +88,7 @@ const AppContent: React.FC = () => {
               <div className="contact-info">
                 <Button onClick={toggleSidebar} className="sidebar-toggle-button">
                   {isSidebarOpen ? <HiChevronDoubleLeft /> : <HiOutlineMenu />}
+                
                 </Button>
               </div>
               <div className="contact-info">
