@@ -247,3 +247,19 @@ body {
   height: 50px;
   background-color: #000000;
 }
+/* CSS cho nút back */
+.back-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: transparent;
+  border: none;
+  color: #1e88e5;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.back-button:hover {
+  color: #ffcc00;
+}

@@ -3,9 +3,7 @@ import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
 import { IoMdLock } from 'react-icons/io';
 import { BiUser } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
-import '../.css/Login.css';
-import TextField from '../../../components/TextField/TextField';
-import PasswordField from '../../../components/PasswordField/PasswordField';
+import { TextField, Checkbox, FormControlLabel, Button, Typography, Box, Container } from '@mui/material';
 import { TokenAuthService } from '../../TokenAuthService/TokenAuthService';
 import { User } from '../../User/Content/User';
 
@@ -63,14 +61,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
 
   const handleLogin = async (): Promise<void> => {
     try {
-      console.log('Attempting login with:', { userName, password });
-    
-      const response = await axiosInstance.post('/api/login', {
-        username: userName,
-        password: password,
-      });
-
-      console.log('API response:', response.data);
+      const response = await axiosInstance.post('/api/login', { username: userName, password: password });
 
       const token = response.data?.jwt || response.data?.data?.jwt;
       const role = response.data?.role;
@@ -102,21 +93,11 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
         localStorage.removeItem('password');
         localStorage.removeItem('rememberMe');
       }
-      // Lưu thông tin người dùng và token vào User.ts
       User.storeUserData(user, token, rememberMe);
-
-      // Đặt token vào TokenAuthService
       TokenAuthService.setToken(token);
-
-      // Hiển thị quyền của người dùng vừa đăng nhập
-      console.log(`Quyền của user vừa đăng nhập là: ${role}`);
-
-      console.log('Logged in successfully');
-      
       onLogin();
       navigate('/');
     } catch (error: any) {
-      console.error('Login error:', error.response?.data?.message || error.message);
       setError(error.response?.data?.message || 'Login failed. Please try again.');
     }
   };
@@ -129,75 +110,87 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
     navigate('/forgot-password');
   };
 
-  const handleGoogleLoginClick = async (): Promise<void> => {
-    try {
-      window.location.href = `${process.env.REACT_APP_BASE_URL}/auth/login/google`;
-    } catch (error: any) {
-      console.error('Google Login error:', error.response?.data?.message || error.message);
-      setError(error.response?.data?.message || 'Google login failed.');
-    }
-  };
-
   return (
-    <div className="login-group">
-      <div>
-        <div className="form-group">
-          <div className="login-container">
-            <h3 className="text-top-label">CHERRY CHAT</h3>
-            <h2 className="login-title">Login</h2>
-            <form className="login-form" onSubmit={handleSubmit}>
-              <div className="input-group">
-                <BiUser className="user-icon" />
-                <TextField
-                  className="InputUserName"
-                  label="Username"
-                  name="userName"
-                  value={userName}
-                  onChange={handleUserNameChange}
-                  fullWidth={true}
-                  placeholder=""
-                />
-              </div>
-              <div className="input-group">
-                <IoMdLock className="user-icon" />
-                <PasswordField
-                  className="InputUserName"
-                  value={password}
-                  onChange={handlePasswordChange}
-                  label="Password"
-                  fullWidth={true}
-                />
-              </div>
-
-              <div className="input-group">
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={handleRememberMeChange}
-                />
-                <label>Remember me</label>
-              </div>
-
-              {error && <p className="error">{error}</p>}
-              <button type="submit">Log in</button>
-            </form>
-            <div className="horizontal-buttons">
-                <button onClick={handleCreateAccount} className="create-account-btn">
-                  Create Account
-                </button>
-                <button onClick={handleForgotPassword} className="forgot-password-btn">
-                  Forgot Password
-                </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <footer>
-        <p style={{ textAlign: 'center', fontSize: '16px', marginTop: '20px', color: 'blue' }}>
-          © 2024 AI CHAT. <strong>Version 4.3.0.0 [20231608]</strong>
-        </p>
-      </footer>
-    </div>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+        backgroundImage: 'url(/images/Tokyo_japan.jpg)', // Đặt đường dẫn tới ảnh background
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      <Container
+        maxWidth="xs"
+        sx={{
+          backgroundColor: 'rgba(255, 255, 255, 0.8)', // Làm mờ background
+          padding: 4,
+          borderRadius: 2,
+          boxShadow: 3,
+        }}
+      >
+        <Typography variant="h4" align="center" gutterBottom>
+          CHERRY CHAT
+        </Typography>
+        <Typography variant="h6" align="center" gutterBottom>
+          Login
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="Username"
+            fullWidth
+            variant="outlined"
+            margin="normal"
+            value={userName}
+            onChange={handleUserNameChange}
+            InputProps={{
+              startAdornment: <BiUser />,
+            }}
+          />
+          <TextField
+            label="Password"
+            type="password"
+            fullWidth
+            variant="outlined"
+            margin="normal"
+            value={password}
+            onChange={handlePasswordChange}
+            InputProps={{
+              startAdornment: <IoMdLock />,
+            }}
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={rememberMe}
+                onChange={handleRememberMeChange}
+                color="primary"
+              />
+            }
+            label="Remember me"
+          />
+          {error && <Typography color="error">{error}</Typography>}
+          <Button type="submit" variant="contained" fullWidth sx={{ marginTop: 2 }}>
+            Log in
+          </Button>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}>
+            <Button variant="text" onClick={handleCreateAccount}>
+              Create Account
+            </Button>
+            <Button variant="text" onClick={handleForgotPassword}>
+              Forgot Password
+            </Button>
+          </Box>
+        </form>
+        <footer style={{ textAlign: 'center', marginTop: '20px' }}>
+          <Typography variant="body2" color="textSecondary">
+            © 2024 AI CHAT. <strong>Version 4.3.0.0 [20231608]</strong>
+          </Typography>
+        </footer>
+      </Container>
+    </Box>
   );
 };
 
