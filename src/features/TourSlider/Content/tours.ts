@@ -12,7 +12,7 @@ export interface Tour {
   export const tours: Tour[] = [
     {
       id: 1,
-      image: '/path-to-image/tour1.jpg',
+      image: '/images/ha-long-1.jpg',
       title: 'Tour Du Lịch Úc',
       subtitle: 'Melbourne - Sydney',
       price: '64.999.000đ',
@@ -22,7 +22,7 @@ export interface Tour {
     },
     {
       id: 2,
-      image: '/path-to-image/tour2.jpg',
+      image: '/image6.jpg',
       title: 'Tour Du Lịch Nhật Bản',
       subtitle: 'Tokyo - Kyoto',
       price: '54.999.000đ',

@@ -39,8 +39,12 @@ body {
   transform: translateX(0);
 }
 
+.content-wrapper .app-container.sidebar-open .sidebar {
+  display: block;
+}
+
 /* Hiển thị overlay khi sidebar mở */
-.app-container.sidebar-open .overlay .content-wrapper {
+.app-container.sidebar-open .content-wrapper {
    display: block; 
 } 
 
@@ -93,7 +97,7 @@ body {
   width: calc(100vw - 250px);
 }
 
-.app-container.sidebar-open .content-wrapper {
+.sidebar-open .content-wrapper {
   margin-left: 250px;
   width: calc(100vw - 250px);
 }

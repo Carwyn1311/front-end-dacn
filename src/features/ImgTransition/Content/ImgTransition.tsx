@@ -57,6 +57,8 @@ const ImgTransition: React.FC<ImgTransitionProps> = ({
               padding: '25px',
               boxShadow: '0 8px 15px rgba(0, 0, 0, 0.3)', // Đổ bóng đẹp hơn
               transition: 'transform 0.3s ease', // Hiệu ứng hover
+              marginLeft: '100px',
+              marginRight: '100px'
             }}
             onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.03)')} // Hover scale lên
             onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')} // Trả lại kích thước khi không hover

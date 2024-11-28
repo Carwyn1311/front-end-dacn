@@ -102,7 +102,7 @@ const AutoSearch: React.FC<AutoSearchProps> = ({
           className={`floating-label ${isFocused || searchTerm !== '' ? 'focused' : ''}`}
           style={{
             position: 'absolute',
-            top: isFocused || searchTerm !== '' ? '-10px' : '50%',
+            top: isFocused || searchTerm !== '' ? '-3px' : '50%',
             left: '8px',
             transform: 'translateY(-50%)',
             fontSize: isFocused || searchTerm !== '' ? '12px' : '16px',

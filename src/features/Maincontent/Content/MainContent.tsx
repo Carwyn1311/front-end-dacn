@@ -74,16 +74,15 @@ const MainContent: React.FC = () => {
           <ImageSlider slides={slides} className="main-image-slider" />
         </div>
         <div className="info-tour-new">
-          <div className="search-input">
-            <AutoSearch
-              items={itemsWithUrls}
-              onSelectItem={handleSelectItem}
-              label="Search for Tour...."
-              placeholder=""
-              width='600px'
-              height='50px'
-            />
-          </div>
+          <AutoSearch
+            className='search-input'
+            items={itemsWithUrls}
+            onSelectItem={handleSelectItem}
+            label="Search for Tour...."
+            placeholder=""
+            width='50%'
+            height='60px'
+          />
           <h2 className="info-tour-2025">TOUR TẾT 2025</h2>
           <div className="TourSlider">
             <TourSlider interval={4000} /> {/* Thời gian chuyển cảnh là 4 giây */}
@@ -100,11 +99,11 @@ const MainContent: React.FC = () => {
             position="left"
           />
         </div>
-      </div>
-      <div className="content-bottom">
-        <div className='content01'>
-          <CommitmentSection />
-          <Footer />
+        <div className="content-bottom">
+          <div className='content01'>
+            <CommitmentSection />
+            <Footer />
+          </div>
         </div>
       </div>
     </TourContextProvider>

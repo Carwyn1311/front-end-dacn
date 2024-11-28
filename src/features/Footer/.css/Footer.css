@@ -1,5 +1,6 @@
 .footer-app{
     background-color: #012e5d;
+
     color: #fff;
     padding: 0px;
     font-family: Arial, sans-serif;
@@ -10,7 +11,7 @@
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 20px;
-    max-width: 1200px;
+    width: 100%;
     margin: 0 auto;
     padding: 15px;
   }
