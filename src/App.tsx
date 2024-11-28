@@ -6,21 +6,16 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import MainContent from './features/Maincontent/Content/MainContent';
 import Button from './components/Button/Button';
-import { UserOutlined, SearchOutlined, ArrowLeftOutlined } from '@ant-design/icons';
-import { RiMenuUnfold4Fill } from 'react-icons/ri'; // Import từ react-icons
+import { UserOutlined } from '@ant-design/icons';
+import { HiChevronDoubleLeft, HiOutlineMenu } from 'react-icons/hi';
 import Sidebar from './features/Sidebar/Content/Sidebar';
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import Login from './features/Login/Content/Login';
 import { User } from './features/User/Content/User';
-import AutoSearch from './components/AutoSearchField/AutoSearch';
-import { HiChevronDoubleLeft, HiOutlineMenu } from "react-icons/hi";
+import ScrollToTopButton from './features/ScrollToTopButton/Content/ScrollToTopButton';
 import AdminRoutes from './features/Admin/Content/AdminRoutes';
 import AdminUser from './features/Admin/Content/AdminUser';
 import AdminTourManagement from './features/Admin/Content/AdminTourManagement';
-import Footer from './features/Footer/Content/Footer';
-import FooterCard from './features/Footer/Content/FooterCard';
-import ScrollToTopButton from './features/ScrollToTopButton/Content/ScrollToTopButton';
-
 
 const App: React.FC = () => {
   return (
@@ -35,8 +30,9 @@ const AppContent: React.FC = () => {
   const [language, setLanguage] = useState('en');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
-  const [selectedItem, setSelectedItem] = useState<string>(''); // Thêm khai báo biến selectedItem
+  const [selectedItem, setSelectedItem] = useState<string>('');
   const navigate = useNavigate();
+  const location = useLocation(); // Dùng hook useLocation để lấy đường dẫn hiện tại
 
   useEffect(() => {
     const user = User.getUserData();
@@ -63,7 +59,7 @@ const AppContent: React.FC = () => {
     if (user) {
       setIsLoggedIn(true);
       setUsername(user.username);
-      navigate('/');
+      navigate('/'); // Điều hướng về trang chính
     }
   };
 
@@ -71,24 +67,26 @@ const AppContent: React.FC = () => {
     User.clearUserData();
     setIsLoggedIn(false);
     setUsername('');
-    navigate('/');
+    navigate('/'); // Điều hướng về trang chính khi đăng xuất
   };
 
-  return (
-      <div className={`app-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
-        <Sidebar
-          isOpen={isSidebarOpen}
-          isLoggedIn={isLoggedIn}
-          onLogout={onLogout}
-        />
+  const isLoginPage = location.pathname === '/login'; // Kiểm tra nếu đang ở trang login
 
-        <div className="app-main-content">
+  return (
+    <div className={`app-container ${isSidebarOpen ? 'sidebar-open' : ''} ${isLoginPage ? 'login-page' : ''}`}>
+      {/* Chỉ hiển thị Sidebar và Header khi không ở trang Login */}
+      {!isLoginPage && (
+        <>
+          <Sidebar
+            isOpen={isSidebarOpen}
+            isLoggedIn={isLoggedIn}
+            onLogout={onLogout}
+          />
           <header className="app-header">
             <div className="top-bar">
               <div className="contact-info">
                 <Button onClick={toggleSidebar} className="sidebar-toggle-button">
                   {isSidebarOpen ? <HiChevronDoubleLeft /> : <HiOutlineMenu />}
-                
                 </Button>
               </div>
               <div className="contact-info">
@@ -107,32 +105,29 @@ const AppContent: React.FC = () => {
                     <UserOutlined /> {language === 'en' ? 'Login' : 'Đăng nhập'}
                   </Button>
                 )}
-                {/* Nút chuyển đổi ngôn ngữ */}
                 <Button className="language" onClick={toggleLanguage}>
                   {language === 'en' ? '🇬🇧 English' : '🇻🇳 Tiếng Việt'}
                 </Button>
               </div>
             </div>
           </header>
+        </>
+      )}
 
-          <div className="content-wrapper">
-            <Routes>
-              <Route path="/travel/dongbac-taybac" element={<TravelPageDongBac />} />
-              <Route path="/travel/mien-bac/ha-noi" element={<TravelPageHaNoi />} />
-              <Route path="/travel/mien-bac/ha-long" element={<TravelPageHaLong />} />
-              <Route path="/travel/mien-bac/sapa" element={<TravelPageSapa />} />
-              <Route path="/" element={<MainContent />} />
-              <Route path="/login" element={<Login onLogin={onLogin} />} />
-              <Route path="/admin/*" element={<AdminRoutes />} />
-              <Route path="/admin/manage-users" element={<AdminUser />} />
-              <Route path="/admin/img-slider" element={<AdminTourManagement />} />
-            </Routes>
-            <ScrollToTopButton className="button-to-in-top" />
-
-          </div>
-        </div>
-        
+      <div className="content-wrapper">
+        <Routes>
+          <Route path="/travel/dongbac-taybac" element={<TravelPageDongBac />} />
+          <Route path="/travel/mien-bac/ha-noi" element={<TravelPageHaNoi />} />
+          <Route path="/travel/mien-bac/ha-long" element={<TravelPageHaLong />} />
+          <Route path="/travel/mien-bac/sapa" element={<TravelPageSapa />} />
+          <Route path="/" element={<MainContent />} />
+          <Route path="/login" element={<Login onLogin={onLogin} />} />
+          <Route path="/admin/*" element={<AdminRoutes />} />
+          <Route path="/admin/manage-users" element={<AdminUser />} />
+          <Route path="/admin/img-slider" element={<AdminTourManagement />} />
+        </Routes>
       </div>
+    </div>
   );
 };
 
