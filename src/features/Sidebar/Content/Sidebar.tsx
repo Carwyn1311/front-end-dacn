@@ -51,7 +51,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isLoggedIn, onLogout }) => {
           label: 'Miền Bắc',
           children: [
             { key: 'north-1', label: 'Đông Bắc - Tây Bắc', onClick: () => handleMenuClick('/travel/dongbac-taybac'), // Liên kết đến route
-            },
+              },
             { key: 'north-2', label: 'Hà Nội', onClick: () => handleMenuClick('/travel/mien-bac/ha-noi') },
             { key: 'north-3', label: 'Hạ Long', onClick: () => handleMenuClick('/travel/mien-bac/ha-long') },
             { key: 'north-4', label: 'Sapa', onClick: () => handleMenuClick('/travel/mien-bac/sapa') },

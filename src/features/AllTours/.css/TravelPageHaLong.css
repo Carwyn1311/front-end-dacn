@@ -1,0 +1,54 @@
+.halong-layout {
+    background-color: #f8f8f8;
+  }
+  
+  .halong-header {
+    position: relative;
+    text-align: center;
+    color: white;
+    height: 300px;
+    /* background: url('/path/to/halong-background.jpg') no-repeat center center; */
+    background-size: cover;
+  }
+  
+  .header-background {
+    background: rgba(236, 235, 243, 0.4);
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .header-title {
+    color: white;
+    font-size: 24px;
+  }
+  
+  .halong-content {
+    padding: 20px;
+  }
+  
+  .tour-highlights,
+  .buy-reasons,
+  .brand-info,
+  .app-info {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+  }
+  
+  .program-button {
+    margin-top: 10px;
+  }
+  
+  .tour-image-card {
+    border-radius: 8px;
+  }
+  
+  .halong-footer {
+    text-align: center;
+    padding: 10px 0;
+    background-color: #c5b7de;
+    color: white;
+  }
+  

@@ -1,60 +1,16 @@
 import React from 'react';
-import { Layout, Typography, Row, Col, Card, Image, Table, Button, List } from 'antd';
-import '../.css/TravelPageDongBac.css'; // Đảm bảo đường dẫn CSS chính xác
+import { Layout, Typography, Row, Col, Card, Image, List, Button } from 'antd';
+import '../.css/TravelPageHaLong.css'; // Đảm bảo đường dẫn chính xác
 
 const { Header, Content, Footer } = Layout;
 const { Title, Paragraph } = Typography;
 
-const TravelPageDongBac: React.FC = () => {
-  const tourData = [
-    {
-      key: '1',
-      departureDate: '02/12/2024',
-      tourCode: 'STN084-2024-02823',
-      price: '12.079.000',
-      childPrice: '8.050.000',
-      babyPrice: '4.000.000',
-    },
-  ];
-
-  const columns = [
-    {
-      title: 'Khởi Hành',
-      dataIndex: 'departureDate',
-      key: 'departureDate',
-    },
-    {
-      title: 'Mã Tour',
-      dataIndex: 'tourCode',
-      key: 'tourCode',
-    },
-    {
-      title: 'Giá',
-      dataIndex: 'price',
-      key: 'price',
-    },
-    {
-      title: 'Giá Trẻ Em',
-      dataIndex: 'childPrice',
-      key: 'childPrice',
-    },
-    {
-      title: 'Giá Em Bé',
-      dataIndex: 'babyPrice',
-      key: 'babyPrice',
-      render: () => (
-        <Button type="primary" className="buy-button">
-          Mua Online
-        </Button>
-      ),
-    },
-  ];
-
+const HalongTravelPage: React.FC = () => {
   const highlights = [
-    'Khởi hành thứ 2: 02/12/2024',
-    'Vượt đèo Mã Pí Lèng - một trong “Tứ đại danh đèo” của vùng núi biên viễn phía Bắc',
-    'Chiêm ngưỡng cảnh sắc đầy hùng vĩ và thơ mộng của thác Bản Giốc - một trong bốn thác nước là đường biên giới tự nhiên lớn nhất thế giới',
-    'Đến hồ Ba Bể - viên ngọc trong xanh giữa núi rừng Đông Bắc, thưởng ngoạn phong cảnh của một trong 100 hồ nước đẹp nhất toàn cầu',
+    'Khởi hành thứ 6: 15/12/2024',
+    'Khám phá vịnh Hạ Long - Di sản thiên nhiên thế giới được UNESCO công nhận',
+    'Tham quan động Thiên Cung, hang Đầu Gỗ với những kỳ quan thiên nhiên tuyệt đẹp',
+    'Thưởng thức hải sản tươi ngon và đặc sản vùng biển Hạ Long',
   ];
 
   const reasons = [
@@ -72,18 +28,18 @@ const TravelPageDongBac: React.FC = () => {
   ];
 
   return (
-    <Layout className="travel-layout">
+    <Layout className="halong-layout">
       {/* Header */}
-      <Header className="travel-header">
+      <Header className="halong-header">
         <div className="header-background">
           <Title level={2} className="header-title">
-            Du lịch Hà Giang – Đồng Văn – Sông Nho Quế – Hồ Ba Bể – Bản Giốc – Lạng Sơn
+            Du lịch Hạ Long – Khám phá kỳ quan thiên nhiên thế giới
           </Title>
         </div>
       </Header>
 
       {/* Content */}
-      <Content className="travel-content">
+      <Content className="halong-content">
         <Row gutter={[16, 16]} className="tour-info-row">
           {/* Highlights */}
           <Col xs={24} sm={16}>
@@ -127,8 +83,8 @@ const TravelPageDongBac: React.FC = () => {
                 className="tour-image-card"
                 cover={
                   <Image
-                    alt={`Image ${idx + 1}`}
-                    src={`/image1${idx + 1}.jpg`} // Thay bằng đường dẫn ảnh thực tế
+                    alt={`Hạ Long Image ${idx + 1}`}
+                    src={`/path/to/halong-image${idx + 1}.jpg`} // Thay bằng đường dẫn ảnh thực tế
                     preview={false}
                   />
                 }
@@ -166,11 +122,11 @@ const TravelPageDongBac: React.FC = () => {
       </Content>
 
       {/* Footer */}
-      <Footer className="travel-footer">
+      <Footer className="halong-footer">
         <Paragraph>© 2024 Saigontourist. Tất cả các quyền được bảo lưu.</Paragraph>
       </Footer>
     </Layout>
   );
 };
 
-export default TravelPageDongBac;
+export default HalongTravelPage;

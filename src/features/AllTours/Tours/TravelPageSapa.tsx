@@ -1,60 +1,17 @@
 import React from 'react';
-import { Layout, Typography, Row, Col, Card, Image, Table, Button, List } from 'antd';
-import '../.css/TravelPageDongBac.css'; // Đảm bảo đường dẫn CSS chính xác
+import { Layout, Typography, Row, Col, Card, Image, List, Button } from 'antd';
+import '../.css/TravelPageSapa.css'; // Đảm bảo đường dẫn CSS chính xác
 
 const { Header, Content, Footer } = Layout;
 const { Title, Paragraph } = Typography;
 
-const TravelPageDongBac: React.FC = () => {
-  const tourData = [
-    {
-      key: '1',
-      departureDate: '02/12/2024',
-      tourCode: 'STN084-2024-02823',
-      price: '12.079.000',
-      childPrice: '8.050.000',
-      babyPrice: '4.000.000',
-    },
-  ];
-
-  const columns = [
-    {
-      title: 'Khởi Hành',
-      dataIndex: 'departureDate',
-      key: 'departureDate',
-    },
-    {
-      title: 'Mã Tour',
-      dataIndex: 'tourCode',
-      key: 'tourCode',
-    },
-    {
-      title: 'Giá',
-      dataIndex: 'price',
-      key: 'price',
-    },
-    {
-      title: 'Giá Trẻ Em',
-      dataIndex: 'childPrice',
-      key: 'childPrice',
-    },
-    {
-      title: 'Giá Em Bé',
-      dataIndex: 'babyPrice',
-      key: 'babyPrice',
-      render: () => (
-        <Button type="primary" className="buy-button">
-          Mua Online
-        </Button>
-      ),
-    },
-  ];
-
+const TravelPageSapa: React.FC = () => {
   const highlights = [
-    'Khởi hành thứ 2: 02/12/2024',
-    'Vượt đèo Mã Pí Lèng - một trong “Tứ đại danh đèo” của vùng núi biên viễn phía Bắc',
-    'Chiêm ngưỡng cảnh sắc đầy hùng vĩ và thơ mộng của thác Bản Giốc - một trong bốn thác nước là đường biên giới tự nhiên lớn nhất thế giới',
-    'Đến hồ Ba Bể - viên ngọc trong xanh giữa núi rừng Đông Bắc, thưởng ngoạn phong cảnh của một trong 100 hồ nước đẹp nhất toàn cầu',
+    'Khởi hành thứ 7: 20/12/2024',
+    'Khám phá Fansipan – nóc nhà Đông Dương với khung cảnh ngoạn mục',
+    'Tham quan bản Cát Cát – ngôi làng cổ xinh đẹp với văn hóa truyền thống đặc sắc',
+    'Chiêm ngưỡng thung lũng Mường Hoa – cánh đồng ruộng bậc thang tuyệt đẹp',
+    'Thưởng thức ẩm thực Sapa với các món ăn đặc trưng vùng cao như lẩu cá hồi, thịt lợn cắp nách',
   ];
 
   const reasons = [
@@ -72,18 +29,18 @@ const TravelPageDongBac: React.FC = () => {
   ];
 
   return (
-    <Layout className="travel-layout">
+    <Layout className="sapa-layout">
       {/* Header */}
-      <Header className="travel-header">
+      <Header className="sapa-header">
         <div className="header-background">
           <Title level={2} className="header-title">
-            Du lịch Hà Giang – Đồng Văn – Sông Nho Quế – Hồ Ba Bể – Bản Giốc – Lạng Sơn
+            Du lịch Sapa – Thưởng ngoạn vẻ đẹp vùng cao Tây Bắc
           </Title>
         </div>
       </Header>
 
       {/* Content */}
-      <Content className="travel-content">
+      <Content className="sapa-content">
         <Row gutter={[16, 16]} className="tour-info-row">
           {/* Highlights */}
           <Col xs={24} sm={16}>
@@ -106,14 +63,18 @@ const TravelPageDongBac: React.FC = () => {
           <Col xs={24} sm={8}>
             <Card className="buy-reasons">
               <Title level={4}>Vì sao nên mua tour online?</Title>
-              <List
-                dataSource={reasons}
-                renderItem={(item) => (
-                  <List.Item>
-                    <Paragraph>{item}</Paragraph>
-                  </List.Item>
-                )}
-              />
+              <div className="reasons-buttons">
+                {reasons.map((reason, index) => (
+                  <Button
+                    key={index}
+                    type="primary"
+                    className="reason-button"
+                    onClick={() => alert(`Bạn chọn: ${reason}`)} // Gắn hành động khi nhấn
+                  >
+                    {reason}
+                  </Button>
+                ))}
+              </div>
             </Card>
           </Col>
         </Row>
@@ -127,8 +88,8 @@ const TravelPageDongBac: React.FC = () => {
                 className="tour-image-card"
                 cover={
                   <Image
-                    alt={`Image ${idx + 1}`}
-                    src={`/image1${idx + 1}.jpg`} // Thay bằng đường dẫn ảnh thực tế
+                    alt={`Sapa Image ${idx + 1}`}
+                    src={`/path/to/sapa-image${idx + 1}.jpg`} // Thay bằng đường dẫn ảnh thực tế
                     preview={false}
                   />
                 }
@@ -166,11 +127,11 @@ const TravelPageDongBac: React.FC = () => {
       </Content>
 
       {/* Footer */}
-      <Footer className="travel-footer">
+      <Footer className="sapa-footer">
         <Paragraph>© 2024 Saigontourist. Tất cả các quyền được bảo lưu.</Paragraph>
       </Footer>
     </Layout>
   );
 };
 
-export default TravelPageDongBac;
+export default TravelPageSapa;

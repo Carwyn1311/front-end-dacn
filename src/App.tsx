@@ -1,5 +1,7 @@
 import TravelPageDongBac from './features/AllTours/Tours/TravelPageDongBac';
 import TravelPageHaNoi from './features/AllTours/Tours/TravelPageHaNoi';
+import TravelPageHaLong from './features/AllTours/Tours/TravelPageHaLong';
+import TravelPageSapa from './features/AllTours/Tours/TravelPageSapa';
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import MainContent from './features/Maincontent/Content/MainContent';
@@ -115,6 +117,8 @@ const AppContent: React.FC = () => {
             <Routes>
               <Route path="/travel/dongbac-taybac" element={<TravelPageDongBac />} />
               <Route path="/travel/mien-bac/ha-noi" element={<TravelPageHaNoi />} />
+              <Route path="/travel/mien-bac/ha-long" element={<TravelPageHaLong />} />
+              <Route path="/travel/mien-bac/sapa" element={<TravelPageSapa />} />
               <Route path="/" element={<MainContent />} />
               <Route path="/login" element={<Login onLogin={onLogin} />} />
               <Route path="/admin/*" element={<AdminRoutes />} />
