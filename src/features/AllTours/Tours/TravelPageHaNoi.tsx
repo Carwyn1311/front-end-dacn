@@ -1,93 +1,112 @@
-import '../.css/TravelPageHaNoi.css';
- // Đảm bảo đường dẫn CSS chính xác
+import '../.css/TravelPageHaNoi.css'; 
 import React from 'react';
-import { Layout, Typography, Row, Col, Card, Image } from 'antd';
+import { Layout, Typography, Row, Col, Card, Image, Button } from 'antd';
 
 const { Header, Content, Footer } = Layout;
 const { Title, Paragraph } = Typography;
 
 const TravelPageHaNoi: React.FC = () => {
+  const highlights = [
+    'Khám phá thủ đô ngàn năm văn hiến',
+    'Tham quan Hồ Gươm - biểu tượng của Hà Nội',
+    'Thăm Văn Miếu - Quốc Tử Giám, trường đại học đầu tiên của Việt Nam',
+    'Khám phá phố cổ Hà Nội với nét truyền thống độc đáo',
+  ];
+
+  const reasons = [
+    'An toàn - Bảo mật',
+    'Tiện lợi, tiết kiệm thời gian',
+    'Không tính phí giao dịch',
+    'Giao dịch bảo đảm',
+    'Nhận thêm ưu đãi',
+  ];
+
+  const brandInfo = [
+    'Thành lập từ năm 1975',
+    'Thương hiệu lữ hành hàng đầu',
+    'Thương hiệu quốc gia',
+  ];
+
   return (
     <Layout className="travel-layout">
       {/* Header */}
       <Header className="travel-header">
-        <Title level={2} className="header-title">Du lịch Hà Nội</Title>
+        <div className="header-background">
+          <Title level={2} className="header-title">
+            Du lịch Hà Nội – Khám phá thủ đô ngàn năm văn hiến
+          </Title>
+        </div>
       </Header>
 
       {/* Content */}
       <Content className="travel-content">
-        <div className="travel-container">
-          <Title level={3} className="travel-subtitle">Khám phá thủ đô ngàn năm văn hiến</Title>
-          <Paragraph className="travel-description">
-            Hà Nội, thủ đô của Việt Nam, không chỉ nổi tiếng với nét đẹp cổ kính, mà còn là trung tâm văn hóa, chính trị và kinh tế hàng đầu. 
-            Với những di tích lịch sử, ẩm thực đặc sắc và văn hóa phong phú, Hà Nội là điểm đến không thể bỏ qua khi đến Việt Nam.
-          </Paragraph>
+        <Row gutter={[16, 16]} className="tour-info-row">
+          {/* Highlights */}
+          <Col xs={24} sm={16}>
+            <Card className="tour-highlights">
+              <Title level={4}>Tour này có gì hay</Title>
+              {highlights.map((item, index) => (
+                <Paragraph key={index} className="highlight-item">
+                  - {item}
+                </Paragraph>
+              ))}
+              <Button type="default" className="program-button">
+                In chương trình tour
+              </Button>
+            </Card>
+          </Col>
 
-          <Row gutter={[16, 16]} justify="center">
-            {/* Hồ Gươm */}
-            <Col xs={24} sm={12} md={8}>
+          {/* Reasons to buy */}
+          <Col xs={24} sm={8}>
+            <Card className="buy-reasons">
+              <Title level={4}>Vì sao nên mua tour online?</Title>
+              {reasons.map((item, index) => (
+                <Paragraph key={index}>{item}</Paragraph>
+              ))}
+            </Card>
+          </Col>
+        </Row>
+
+        {/* Images Section */}
+        <Row gutter={[16, 16]}>
+          {[...Array(6)].map((_, idx) => (
+            <Col xs={24} sm={12} md={8} key={idx}>
               <Card
                 hoverable
-                className="travel-card"
+                className="tour-image-card"
                 cover={
                   <Image
-                    alt="Hồ Gươm"
-                    src="/assets/images/ho-guom.jpg"
+                    alt={`Image ${idx + 1}`}
+                    src={`/assets/images/ha-noi-image${idx + 1}.jpg`} // Thay bằng đường dẫn ảnh thực tế
                     preview={false}
-                    className="travel-image"
                   />
                 }
-              >
-                <Title level={4}>Hồ Gươm</Title>
-                <Paragraph>
-                  Hồ Gươm, biểu tượng của Hà Nội, nằm giữa trung tâm thành phố. Nơi đây nổi tiếng với Tháp Rùa và cầu Thê Húc dẫn đến đền Ngọc Sơn.
-                </Paragraph>
-              </Card>
+              />
             </Col>
+          ))}
+        </Row>
 
-            {/* Văn Miếu - Quốc Tử Giám */}
-            <Col xs={24} sm={12} md={8}>
-              <Card
-                hoverable
-                className="travel-card"
-                cover={
-                  <Image
-                    alt="Văn Miếu - Quốc Tử Giám"
-                    src="/assets/images/van-mieu.jpg"
-                    preview={false}
-                    className="travel-image"
-                  />
-                }
-              >
-                <Title level={4}>Văn Miếu - Quốc Tử Giám</Title>
-                <Paragraph>
-                  Là trường đại học đầu tiên của Việt Nam, Văn Miếu - Quốc Tử Giám là nơi tôn vinh truyền thống học tập và văn hóa của dân tộc.
-                </Paragraph>
-              </Card>
-            </Col>
-
-            {/* Phố cổ Hà Nội */}
-            <Col xs={24} sm={12} md={8}>
-              <Card
-                hoverable
-                className="travel-card"
-                cover={
-                  <Image
-                    alt="Phố cổ Hà Nội"
-                    src="/assets/images/pho-co.jpg"
-                    preview={false}
-                    className="travel-image"
-                  />
-                }
-              >
-                <Title level={4}>Phố cổ Hà Nội</Title>
-                <Paragraph>
-                  Phố cổ Hà Nội là nơi giao thoa giữa nét truyền thống và hiện đại, với 36 phố phường nổi tiếng và ẩm thực đường phố phong phú.
-                </Paragraph>
-              </Card>
-            </Col>
-          </Row>
-        </div>
+        {/* Brand Info */}
+        <Row gutter={[16, 16]} style={{ marginTop: 20 }}>
+          <Col xs={24} sm={12}>
+            <Card className="brand-info">
+              <Title level={4}>Thương hiệu uy tín</Title>
+              {brandInfo.map((item, index) => (
+                <Paragraph key={index}>{item}</Paragraph>
+              ))}
+            </Card>
+          </Col>
+          <Col xs={24} sm={12}>
+            <Card className="app-info">
+              <Title level={4}>Tải app</Title>
+              <Image
+                alt="App download"
+                src="/assets/images/app-image.jpg" // Thay bằng ảnh ứng dụng thực tế
+                preview={false}
+              />
+            </Card>
+          </Col>
+        </Row>
       </Content>
 
       {/* Footer */}

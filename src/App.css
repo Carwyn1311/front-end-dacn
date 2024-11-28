@@ -254,18 +254,37 @@ body {
   background-color: #000000;
 }
 /* CSS cho nút back */
+/* Nút Quay lại (Back button) chỉ hiển thị trên trang login */
 .back-button {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 20px;
+  left: 20px;
   background-color: transparent;
+  color: #000;
   border: none;
-  color: #1e88e5;
-  font-size: 1.5rem;
+  padding: 10px;
+  font-size: 18px;
   cursor: pointer;
-  transition: color 0.3s ease;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: white;
+  color: #000000; /* Màu biểu tượng đen */
+  border: 2px solid rgb(255, 255, 255); /* Viền màu trắng */
+  padding: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 30%; /* Bo tròn */
+  transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease;
 }
 
 .back-button:hover {
-  color: #ffcc00;
+  background-color: #f0f0f0; /* Màu nền khi hover */
+  color: #000; /* Màu biểu tượng khi hover */
+  transform: scale(1.1); /* Hiệu ứng nảy nhẹ khi hover */
 }

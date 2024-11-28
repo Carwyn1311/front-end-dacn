@@ -118,6 +118,21 @@ const TravelPageDongBac: React.FC = () => {
           </Col>
         </Row>
 
+        {/* Price Table */}
+        <Row gutter={[16, 16]}>
+          <Col xs={24}>
+            <Card className="tour-price-card">
+              <Title level={4}>Thông tin giá tour</Title>
+              <Table
+                columns={columns}
+                dataSource={tourData}
+                pagination={false}
+                bordered
+              />
+            </Card>
+          </Col>
+        </Row>
+
         {/* Images Section */}
         <Row gutter={[16, 16]}>
           {[...Array(6)].map((_, idx) => (

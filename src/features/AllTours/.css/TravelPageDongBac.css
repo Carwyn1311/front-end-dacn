@@ -7,12 +7,12 @@
   text-align: center;
   color: white;
   height: 300px;
-  /* background: url('/path/to/your/background.jpg') no-repeat center center; */
   background-size: cover;
+  /* background: url('/path/to/your/background-image.jpg') no-repeat center center; Chỉnh sửa để sử dụng hình ảnh nền */
 }
 
 .header-background {
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.4); /* Màu nền mờ */
   height: 100%;
   display: flex;
   justify-content: center;
@@ -21,39 +21,92 @@
 
 .header-title {
   color: white;
-  font-size: 24px;
+  font-size: 36px; /* Tăng kích thước chữ để nổi bật hơn */
+  font-weight: bold; /* Làm đậm tiêu đề */
   padding: 0 20px;
+  text-transform: uppercase; /* Viết hoa toàn bộ tiêu đề */
 }
 
 .travel-content {
-  padding: 20px;
+  padding: 40px 20px; /* Tăng padding để không gian rộng rãi hơn */
 }
 
 .tour-info-row {
-  margin-bottom: 20px;
+  margin-bottom: 40px; /* Tăng khoảng cách giữa các phần */
 }
 
-.tour-details,
-.customer-support {
+.tour-highlights,
+.buy-reasons {
   background: #ffffff;
   border-radius: 8px;
   padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm bóng cho các card */
 }
 
-.customer-support .call-back-button {
-  margin-top: 10px;
-  width: 100%;
-}
-
-.tour-table .buy-button {
+.tour-highlights .program-button,
+.buy-reasons .program-button {
   background-color: #ff6600;
   border: none;
   color: white;
+  width: 100%;
+  padding: 12px 0;
+  font-size: 16px;
+  margin-top: 20px;
+  border-radius: 8px; /* Bo góc cho nút */
 }
 
-.travel-footer {
+.tour-image-card img {
+  border-radius: 8px; /* Bo góc cho hình ảnh */
+  transition: transform 0.3s ease; /* Hiệu ứng zoom khi hover */
+}
+
+.tour-image-card:hover img {
+  transform: scale(1.05); /* Hiệu ứng phóng to hình ảnh khi hover */
+}
+
+.tour-price-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tour-table {
+  margin-top: 20px;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tour-table th,
+.tour-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.tour-footer {
+  background-color: #333333;
   text-align: center;
   padding: 10px 0;
-  background-color: #333333;
   color: white;
+  font-size: 14px;
+}
+
+.brand-info {
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.app-info {
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.app-info img {
+  width: 100%;
+  border-radius: 8px;
 }

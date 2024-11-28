@@ -42,7 +42,7 @@ export interface Tour {
     },
     {
       id: 4,
-      image: 'i/images/korea.jpg',
+      image: '/images/korea.jpg',
       title: 'Tour Du Lịch Hàn Quốc',
       subtitle: 'Seoul - Busan',
       price: '44.999.000đ',

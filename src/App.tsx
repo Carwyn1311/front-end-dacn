@@ -1,21 +1,21 @@
+import React, { useState, useEffect } from 'react';
+import './App.css';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { UserOutlined } from '@ant-design/icons';
+import { HiChevronDoubleLeft, HiOutlineMenu } from 'react-icons/hi';
+import { RiArrowGoBackLine } from 'react-icons/ri'; // Import biểu tượng "Quay lại"
+import Sidebar from './features/Sidebar/Content/Sidebar';
+import Button from './components/Button/Button';
+import MainContent from './features/Maincontent/Content/MainContent';
+import Login from './features/Login/Content/Login';
+import { User } from './features/User/Content/User';
+import AdminRoutes from './features/Admin/Content/AdminRoutes';
+import AdminUser from './features/Admin/Content/AdminUser';
+import AdminTourManagement from './features/Admin/Content/AdminTourManagement';
 import TravelPageDongBac from './features/AllTours/Tours/TravelPageDongBac';
 import TravelPageHaNoi from './features/AllTours/Tours/TravelPageHaNoi';
 import TravelPageHaLong from './features/AllTours/Tours/TravelPageHaLong';
 import TravelPageSapa from './features/AllTours/Tours/TravelPageSapa';
-import React, { useState, useEffect } from 'react';
-import './App.css';
-import MainContent from './features/Maincontent/Content/MainContent';
-import Button from './components/Button/Button';
-import { UserOutlined } from '@ant-design/icons';
-import { HiChevronDoubleLeft, HiOutlineMenu } from 'react-icons/hi';
-import Sidebar from './features/Sidebar/Content/Sidebar';
-import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import Login from './features/Login/Content/Login';
-import { User } from './features/User/Content/User';
-import ScrollToTopButton from './features/ScrollToTopButton/Content/ScrollToTopButton';
-import AdminRoutes from './features/Admin/Content/AdminRoutes';
-import AdminUser from './features/Admin/Content/AdminUser';
-import AdminTourManagement from './features/Admin/Content/AdminTourManagement';
 
 const App: React.FC = () => {
   return (
@@ -127,6 +127,13 @@ const AppContent: React.FC = () => {
           <Route path="/admin/img-slider" element={<AdminTourManagement />} />
         </Routes>
       </div>
+
+      {/* Nút Quay lại chỉ hiển thị khi đang ở trang login */}
+      {isLoginPage && (
+        <Button className="back-button" onClick={() => navigate('/')}>
+          <RiArrowGoBackLine size={24} />
+        </Button>
+      )}
     </div>
   );
 };
