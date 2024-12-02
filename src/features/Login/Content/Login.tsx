@@ -61,7 +61,14 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
 
   const handleLogin = async (): Promise<void> => {
     try {
-      const response = await axiosInstance.post('/api/login', { username: userName, password: password });
+      console.log('Attempting login with:', { userName, password });
+    
+      const response = await axiosInstance.post('/api/login', {
+        username: userName,
+        password: password,
+      });
+
+      console.log('API response:', response.data);
 
       const token = response.data?.jwt || response.data?.data?.jwt;
       const role = response.data?.role;
@@ -93,11 +100,19 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
         localStorage.removeItem('password');
         localStorage.removeItem('rememberMe');
       }
+
       User.storeUserData(user, token, rememberMe);
       TokenAuthService.setToken(token);
+
+      // Log the role of the user
+      console.log(`Quyền của user vừa đăng nhập là: ${role}`);
+
+      console.log('Logged in successfully');
+      
       onLogin();
       navigate('/');
     } catch (error: any) {
+      console.error('Login error:', error.response?.data?.message || error.message);
       setError(error.response?.data?.message || 'Login failed. Please try again.');
     }
   };
@@ -117,7 +132,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
         justifyContent: 'center',
         alignItems: 'center',
         minHeight: '100vh',
-        backgroundImage: 'url(/images/Tokyo_japan.jpg)', // Đặt đường dẫn tới ảnh background
+        backgroundImage: 'url(/images/Tokyo_japan.jpg)', // Background image
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
@@ -125,7 +140,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
       <Container
         maxWidth="xs"
         sx={{
-          backgroundColor: 'rgba(255, 255, 255, 0.8)', // Làm mờ background
+          backgroundColor: 'rgba(255, 255, 255, 0.8)', // Make the background slightly opaque
           padding: 4,
           borderRadius: 2,
           boxShadow: 3,

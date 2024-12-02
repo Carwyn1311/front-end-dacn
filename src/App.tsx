@@ -85,14 +85,15 @@ const AppContent: React.FC = () => {
           <header className="app-header">
             <div className="top-bar">
               <div className="contact-info">
-                <Button onClick={toggleSidebar} className="sidebar-toggle-button">
+              <Button onClick={toggleSidebar} className="sidebar-toggle-button">
                   {isSidebarOpen ? <HiChevronDoubleLeft /> : <HiOutlineMenu />}
                 </Button>
               </div>
-              <div className="contact-info">
-                <label> DPT Travel </label>
-              </div>
               <div className="user-options">
+
+                <Button onClick={() => navigate('/admin')}>
+                  Admin
+                </Button>
                 {selectedItem && (
                   <p style={{ marginTop: '20px' }}>
                     Mục bạn đã chọn: <strong>{selectedItem}</strong>

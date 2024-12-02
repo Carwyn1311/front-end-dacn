@@ -43,6 +43,7 @@ body {
   display: block;
 }
 
+
 /* Hiển thị overlay khi sidebar mở */
 .app-container.sidebar-open .content-wrapper {
    display: block; 
@@ -127,9 +128,6 @@ body {
   gap: 10px;
 }
 
-.user-options{
-  margin-right: 20px;
-}
 
 .user-options .language {
   font-size: 12px;
@@ -182,7 +180,6 @@ body {
   }
 
   .top-bar {
-    flex-direction: column;
     align-items: center;
   }
 
@@ -288,3 +285,4 @@ body {
   color: #000; /* Màu biểu tượng khi hover */
   transform: scale(1.1); /* Hiệu ứng nảy nhẹ khi hover */
 }
+
