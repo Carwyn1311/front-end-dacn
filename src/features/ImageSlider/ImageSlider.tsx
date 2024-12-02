@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { IconButton } from '@mui/material';
-import { LeftOutlined, RightOutlined } from '@ant-design/icons';
-import { styled } from '@mui/material/styles';
+import React, { useState, useEffect, useCallback } from 'react';
+import './.css/ImageSlider.css';
+import Button from '../../components/Button/Button';
 
 interface Slide {
   image: string;
@@ -29,6 +28,11 @@ const ImageSlider: React.FC<ImageSliderProps> = React.memo(({ slides, className 
     setCurrentSlide((prevSlide) => (prevSlide - 1 + slides.length) % slides.length);
   }, [slides.length]);
 
+  const goToSlide = (index: number) => {
+    setShowTextOverlay(false);
+    setCurrentSlide(index);
+  };
+
   useEffect(() => {
     const textOverlayTimeout = setTimeout(() => setShowTextOverlay(true), 500);
     const interval = setInterval(goToNextSlide, 5000);
@@ -39,23 +43,8 @@ const ImageSlider: React.FC<ImageSliderProps> = React.memo(({ slides, className 
     };
   }, [currentSlide, goToNextSlide]);
 
-  const NavButton = useMemo(
-    () =>
-      styled(IconButton)({
-        position: 'absolute',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        color: 'white',
-        '&:hover': {
-          backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        },
-      }),
-    []
-  );
-
   return (
-    <div className={`slider-container ${className}`} style={{ backgroundImage: `url(${slides[currentSlide].image})` }}>
+    <section className={`slider-container ${className}`} style={{ backgroundImage: `url(${slides[currentSlide].image})` }}>
       <div className={`slider-overlay ${showTextOverlay ? 'show' : ''}`}>
         <h2 className="slider-title">{slides[currentSlide].title}</h2>
         <h1 className="slider-subtitle">{slides[currentSlide].subtitle}</h1>
@@ -63,13 +52,25 @@ const ImageSlider: React.FC<ImageSliderProps> = React.memo(({ slides, className 
         <button className="slider-button">XEM THÊM</button>
       </div>
 
-      <NavButton className="slider-nav-button left" onClick={goToPreviousSlide} style={{ left: '10px' }}>
-        <LeftOutlined style={{ fontSize: '2rem' }} />
-      </NavButton>
-      <NavButton className="slider-nav-button right" onClick={goToNextSlide} style={{ right: '10px' }}>
-        <RightOutlined style={{ fontSize: '2rem' }} />
-      </NavButton>
-    </div>
+      {/* Dấu chấm điều hướng */}
+      <div className="slider-dots">
+        {slides.map((_, index) => (
+          <span
+            key={index}
+            className={`dot ${index === currentSlide ? 'active' : ''}`}
+            onClick={() => goToSlide(index)}
+          />
+        ))}
+      </div>
+
+      {/* Navigation Buttons (if needed) */}
+      <Button className="slider-nav-button left" onClick={goToPreviousSlide} style={{ left: '10px' }}>
+        <span className="material-icons">chevron_left</span>
+      </Button>
+      <Button className="slider-nav-button right" onClick={goToNextSlide} style={{ right: '10px' }}>
+        <span className="material-icons">chevron_right</span>
+      </Button>
+    </section>
   );
 });
 
