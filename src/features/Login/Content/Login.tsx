@@ -73,7 +73,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
       const token = response.data?.jwt || response.data?.data?.jwt;
       const role = response.data?.role;
       const email = response.data?.email;
-      const userId = response.data?.userId || '1';
+      const userId = response.data?.userId;
 
       if (!token || !role) {
         throw new Error('No token or role returned from API.');
@@ -92,12 +92,14 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
       if (rememberMe) {
         localStorage.setItem('userName', userName);
         localStorage.setItem('password', password);
+        localStorage.setItem('role', role);
         localStorage.setItem('rememberMe', 'true');
         localStorage.setItem('token', token);  
       } else {
         sessionStorage.setItem('token', token);
         localStorage.removeItem('userName');
         localStorage.removeItem('password');
+        localStorage.setItem('role', role);
         localStorage.removeItem('rememberMe');
       }
 

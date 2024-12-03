@@ -102,7 +102,6 @@ const MainContent: React.FC = () => {
         <div className="content-bottom">
           <div className='content01'>
             <CommitmentSection />
-            <Footer />
           </div>
         </div>
       </div>

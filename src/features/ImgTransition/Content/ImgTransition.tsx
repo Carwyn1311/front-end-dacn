@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Card, Row, Col } from 'antd';
 import 'antd/dist/reset.css'; // Đảm bảo reset styles của Ant Design
-import '../.css/ImgTransition.css';
+import '../css/ImgTransition.css';
 
 interface ImgTransitionProps {
   imageUrl: string; // URL hình ảnh

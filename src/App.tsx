@@ -16,6 +16,8 @@ import TravelPageDongBac from './features/AllTours/Tours/TravelPageDongBac';
 import TravelPageHaNoi from './features/AllTours/Tours/TravelPageHaNoi';
 import TravelPageHaLong from './features/AllTours/Tours/TravelPageHaLong';
 import TravelPageSapa from './features/AllTours/Tours/TravelPageSapa';
+import CreateAccount from './features/CreateAccount/Content/CreateAccount';
+import ForgotPassword from './features/ForgotPassword/Content/ForgotPassword';
 
 const App: React.FC = () => {
   return (
@@ -123,6 +125,8 @@ const AppContent: React.FC = () => {
           <Route path="/travel/mien-bac/sapa" element={<TravelPageSapa />} />
           <Route path="/" element={<MainContent />} />
           <Route path="/login" element={<Login onLogin={onLogin} />} />
+          <Route path="/create-account" element={<CreateAccount />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/admin/*" element={<AdminRoutes />} />
           <Route path="/admin/manage-users" element={<AdminUser />} />
           <Route path="/admin/img-slider" element={<AdminTourManagement />} />

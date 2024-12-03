@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import './.css/ImageSlider.css';
+import './css/ImageSlider.css';  // Đảm bảo rằng file CSS đúng
 import Button from '../../components/Button/Button';
 
 interface Slide {
@@ -18,21 +18,25 @@ const ImageSlider: React.FC<ImageSliderProps> = React.memo(({ slides, className 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showTextOverlay, setShowTextOverlay] = useState(false);
 
+  // Hàm chuyển sang slide tiếp theo
   const goToNextSlide = useCallback(() => {
     setShowTextOverlay(false);
     setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
   }, [slides.length]);
 
+  // Hàm quay lại slide trước
   const goToPreviousSlide = useCallback(() => {
     setShowTextOverlay(false);
     setCurrentSlide((prevSlide) => (prevSlide - 1 + slides.length) % slides.length);
   }, [slides.length]);
 
+  // Hàm nhảy tới một slide cụ thể
   const goToSlide = (index: number) => {
     setShowTextOverlay(false);
     setCurrentSlide(index);
   };
 
+  // Xử lý hiệu ứng hiển thị overlay và chuyển slide tự động
   useEffect(() => {
     const textOverlayTimeout = setTimeout(() => setShowTextOverlay(true), 500);
     const interval = setInterval(goToNextSlide, 5000);
@@ -41,14 +45,20 @@ const ImageSlider: React.FC<ImageSliderProps> = React.memo(({ slides, className 
       clearInterval(interval);
       clearTimeout(textOverlayTimeout);
     };
-  }, [currentSlide, goToNextSlide]);
+  }, [goToNextSlide]);
+
+  // Kiểm tra nếu slides không rỗng và phần tử tại currentSlide tồn tại
+  const currentSlideData = slides[currentSlide];
 
   return (
-    <section className={`slider-container ${className}`} style={{ backgroundImage: `url(${slides[currentSlide].image})` }}>
+    <section 
+      className={`slider-container ${className}`} 
+      style={{ backgroundImage: `url(${currentSlideData.image})` }} // Không fallback về ảnh mặc định
+    >
       <div className={`slider-overlay ${showTextOverlay ? 'show' : ''}`}>
-        <h2 className="slider-title">{slides[currentSlide].title}</h2>
-        <h1 className="slider-subtitle">{slides[currentSlide].subtitle}</h1>
-        <p className="slider-price">{slides[currentSlide].price}</p>
+        <h2 className="slider-title">{currentSlideData.title}</h2>
+        <h1 className="slider-subtitle">{currentSlideData.subtitle}</h1>
+        <p className="slider-price">{currentSlideData.price}</p>
         <button className="slider-button">XEM THÊM</button>
       </div>
 
@@ -63,7 +73,7 @@ const ImageSlider: React.FC<ImageSliderProps> = React.memo(({ slides, className 
         ))}
       </div>
 
-      {/* Navigation Buttons (if needed) */}
+      {/* Navigation Buttons */}
       <Button className="slider-nav-button left" onClick={goToPreviousSlide} style={{ left: '10px' }}>
         <span className="material-icons">chevron_left</span>
       </Button>

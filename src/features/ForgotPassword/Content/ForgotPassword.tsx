@@ -35,7 +35,7 @@ const ForgotPassword: React.FC = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axiosInstance.post('/auth/reset-password', {
+      const response = await axiosInstance.post('/api/reset-password', {
         token: activationCode, 
         newPassword,
       });

@@ -13,17 +13,24 @@ const CreateAccount: React.FC = () => {
 
   const handleRegister = async (): Promise<void> => {
     try {
-      const response = await axiosInstance.post('/auth/register', {
+      console.log('Username:', userName);
+      console.log('Password:', password);
+      console.log('Email:', email);
+
+      const response = await axiosInstance.post('api/register', {
         username: userName,
         password: password,
         email: email,
       });
 
       if (response.status === 201) {
-        setError('Tài khoản đã được tạo thành công. Vui lòng kiểm tra email của bạn để nhận mã kích hoạt.');
+        const successMessage = 'Tài khoản đã được tạo thành công.';
+        console.log(successMessage);  // Log the success message
+
+        setError(successMessage);
         setTimeout(() => {
-          navigate('/activate'); // Chuyển qua trang kích hoạt tài khoản sau khi đăng ký thành công
-        }, 2000); 
+          navigate('/login'); // Chuyển qua trang đăng nhập sau khi đăng ký thành công
+        }, 2000);
       } else {
         setError(response.data.message || 'Failed to create account.');
       }
@@ -45,58 +52,51 @@ const CreateAccount: React.FC = () => {
     setIsRegistering(true);
   };
 
-  const handleActivateAccountClick = (): void => {
-    navigate('/activate');
-  };
-
   const handleBackToLoginClick = (): void => {
-    navigate('/Login'); 
+    navigate('/Login');
   };
 
- return (
-  <div className="create-account-group">
-    <h2>Create Account</h2>
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>User Name:</label>
-        <input
-          type="text"
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label>Password:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-      {error && <p className="error">{error}</p>}
-      <button onClick={handleCreateAccount} className="create-account-btn">
-        Create Account
-      </button>
-    </form>
-        <div className="button-group">
-          <button onClick={handleActivateAccountClick} className="activate-account-btn">
-            Activate Account
-          </button>
-          <button onClick={handleBackToLoginClick} className="back-to-login-btn">
-            Back to Login
-          </button>
+  return (
+    <div className="create-account-group">
+      <h2>Create Account</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>User Name:</label>
+          <input
+            type="text"
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+            required
+          />
         </div>
+        <div>
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        {error && <p className="error">{error}</p>}
+        <button onClick={handleCreateAccount} className="create-account-btn">
+          Create Account
+        </button>
+      </form>
+      <div className="button-group">
+        <button onClick={handleBackToLoginClick} className="back-to-login-btn">
+          Back to Login
+        </button>
+      </div>
     </div>
   );
 };
