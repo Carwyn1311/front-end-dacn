@@ -1,7 +1,7 @@
 import React from 'react';
 import TourManager from '../../TourSlider/Content/TourManager';
 import TourSlider from '../../TourSlider/Content/TourSlider';
-import MenuSlider from '../../ImageSlider/MenuSlider';
+import MenuSlider from '../../ImageSlider/Content/MenuSlider';
 
 interface Slide {
   image: string;

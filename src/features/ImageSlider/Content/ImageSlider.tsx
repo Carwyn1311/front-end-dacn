@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './css/ImageSlider.css';  // Đảm bảo rằng file CSS đúng
-import Button from '../../components/Button/Button';
+import Button from '../../../components/Button/Button';
 
 interface Slide {
   image: string;

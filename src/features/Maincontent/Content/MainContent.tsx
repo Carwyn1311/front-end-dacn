@@ -10,7 +10,7 @@ import AutoSearch from '../../../components/AutoSearchField/AutoSearch';
 import { itemsWithUrls } from './Inputdata';
 import Footer from '../../Footer/Content/Footer';
 import CommitmentSection from '../../CommitmentSection/Content/CommitmentSection';
-import ImageSlider from '../../ImageSlider/ImageSlider';
+import ImageSlider from '../../ImageSlider/Content/ImageSlider';
 
 interface Slide {
   image: string;
