@@ -1,14 +1,17 @@
-import React, { createContext, ReactNode, useState } from 'react';
+import React, { createContext, ReactNode, useMemo } from 'react';
 import { tours as initialTours, Tour } from './tours';
 
 interface TourContextProps {
   tours: Tour[];
 }
 
-export const TourContext = createContext<TourContextProps | null>(null);
+export const TourContext = createContext<TourContextProps>({
+  tours: [], // Cung cấp giá trị mặc định là mảng rỗng
+});
 
 export const TourContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [tours] = useState<Tour[]>(initialTours);
+  // Nếu không thay đổi tours, có thể dùng useMemo để tạo giá trị tours ổn định hơn
+  const tours = useMemo(() => initialTours, []);
 
   return (
     <TourContext.Provider value={{ tours }}>

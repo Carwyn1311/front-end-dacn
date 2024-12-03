@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import './css/ImageSlider.css';  // Đảm bảo rằng file CSS đúng
+import '../css/ImageSlider.css';  // Đảm bảo rằng file CSS đúng
 import Button from '../../../components/Button/Button';
 
 interface Slide {
@@ -53,7 +53,9 @@ const ImageSlider: React.FC<ImageSliderProps> = React.memo(({ slides, className 
   return (
     <section 
       className={`slider-container ${className}`} 
-      style={{ backgroundImage: `url(${currentSlideData.image})` }} // Không fallback về ảnh mặc định
+      style={{ 
+        backgroundImage: currentSlideData.image ? `url(${currentSlideData.image})` : 'none' 
+      }} // Kiểm tra URL hợp lệ
     >
       <div className={`slider-overlay ${showTextOverlay ? 'show' : ''}`}>
         <h2 className="slider-title">{currentSlideData.title}</h2>
