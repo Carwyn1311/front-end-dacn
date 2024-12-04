@@ -3,7 +3,7 @@ export class User {
   username: string;
   email: string;
   password: string;
-  role: string;  // "USER" or "ADMIN"
+  role: number;  // 1 = "ADMIN", 2 = "USER"
   active: boolean;
   activationCode: string;
   resetToken: string;
@@ -14,13 +14,13 @@ export class User {
     this.email = userData.email || '';
     this.password = userData.password || '';
 
-    // Kiểm tra role: nếu là 'ADMIN' hoặc roleAsNumber = 1 thì gán 'ADMIN', ngược lại gán 'USER'
-    if (userData.role === 'ADMIN' || userData.role === 'USER') {
-      this.role = userData.role;
-    } else if ((userData.role as unknown as number) === 1) {
-      this.role = 'ADMIN';
+    // Kiểm tra role: nếu là 1 thì gán 'ADMIN', nếu là 2 thì gán 'USER'
+    if (userData.role === 1) {
+      this.role = 1;  // ADMIN
+    } else if (userData.role === 2) {
+      this.role = 2;  // USER
     } else {
-      this.role = 'USER';
+      this.role = 2;  // Default role is USER
     }
 
     this.active = userData.active !== undefined ? userData.active : true;
@@ -30,7 +30,7 @@ export class User {
 
   // Kiểm tra nếu người dùng là Admin
   isAdmin(): boolean {
-    return this.role === 'ADMIN';
+    return this.role === 1;  // ADMIN
   }
 
   // Kiểm tra nếu tài khoản người dùng đang hoạt động
@@ -38,14 +38,14 @@ export class User {
     return this.active;
   }
 
-  // Lấy role dưới dạng số: trả về 1 nếu "ADMIN", 0 nếu "USER"
+  // Lấy role dưới dạng số: trả về 1 nếu "ADMIN", 2 nếu "USER"
   getRoleAsNumber(): number {
-    return this.role === 'ADMIN' ? 1 : 0;
+    return this.role;
   }
 
-  // Đặt role từ số: đặt thành "ADMIN" nếu 1, "USER" nếu 0
+  // Đặt role từ số: đặt thành 1 cho "ADMIN", 2 cho "USER"
   setRoleFromNumber(roleNumber: number): void {
-    this.role = roleNumber === 1 ? 'ADMIN' : 'USER';
+    this.role = roleNumber === 1 ? 1 : 2;
   }
 
   // Lưu dữ liệu người dùng và token vào sessionStorage hoặc localStorage dựa vào rememberMe

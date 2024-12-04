@@ -67,48 +67,54 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
         username: userName,
         password: password,
       });
-
+  
       console.log('API response:', response.data);
-
+  
       const token = response.data?.jwt || response.data?.data?.jwt;
-      const role = response.data?.role;
+      const roles = response.data?.role; // 'role' là một mảng, vì vậy cần lấy đối tượng đầu tiên
       const email = response.data?.email;
       const userId = response.data?.userId;
-
-      if (!token || !role) {
+  
+      if (!token || !roles || roles.length === 0) {
         throw new Error('No token or role returned from API.');
       }
+  
+      // Lấy id và name của role
+      const roleId = roles[0]?.id; // Lấy id từ phần tử đầu tiên của mảng role
+      const roleName = roles[0]?.name; // Lấy name từ phần tử đầu tiên của mảng role
+  
+      // Log thông tin role
+      console.log(`ID Role của user vừa đăng nhập là: ${roleId}`);
+      console.log(`Tên Role của user vừa đăng nhập là: ${roleName}`);
+  
       localStorage.setItem('jwt', token);
-
+  
       const user = new User({
         id: userId,
         username: userName,
         email: email || '',
         password: password,
-        role: role,
+        role: roleName,  // Sử dụng role name
         active: true
       });
-
+  
       if (rememberMe) {
         localStorage.setItem('userName', userName);
         localStorage.setItem('password', password);
-        localStorage.setItem('role', role);
+        localStorage.setItem('role', roleName);  // Lưu tên role
         localStorage.setItem('rememberMe', 'true');
         localStorage.setItem('token', token);  
       } else {
         sessionStorage.setItem('token', token);
         localStorage.removeItem('userName');
         localStorage.removeItem('password');
-        localStorage.setItem('role', role);
+        localStorage.setItem('role', roleName);  // Lưu tên role
         localStorage.removeItem('rememberMe');
       }
-
+  
       User.storeUserData(user, token, rememberMe);
       TokenAuthService.setToken(token);
-
-      // Log the role of the user
-      console.log(`Quyền của user vừa đăng nhập là: ${role}`);
-
+  
       console.log('Logged in successfully');
       
       onLogin();
@@ -118,6 +124,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
       setError(error.response?.data?.message || 'Login failed. Please try again.');
     }
   };
+  
 
   const handleCreateAccount = (): void => {
     navigate('/create-account');

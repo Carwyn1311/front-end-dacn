@@ -25,8 +25,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isLoggedIn, onLogout }) => {
 
   useEffect(() => {
     const currentUser = User.getUserData();
-    if (currentUser?.role === 'ADMIN') {
-      setIsAdmin(true);
+    if (currentUser) {
+      setIsAdmin(currentUser.isAdmin()); // Use the isAdmin method from User class
     }
   }, []);
 
