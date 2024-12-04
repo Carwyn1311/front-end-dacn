@@ -1,136 +1,142 @@
-/* .css/ImageSlider.css */
-
-/* Container của slider */
+/* Container for the slider */
 .slider-container {
-    position: relative;
-    width: 100%;
-    height: 400px; /* Full height */
-    background-size: cover;
-    background-position: center;
-    overflow: hidden;
-    background-repeat: no-repeat;
+  position: relative;
+  width: 100%;
+  height: 400px;  /* Điều chỉnh chiều cao của slider */
+  background-size: cover;
+  background-position: center;
+  transition: background-image 0.5s ease-in-out;
+}
+
+/* Overlay text when the slide is visible */
+.slider-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.slider-overlay.show {
+  opacity: 1;
+}
+
+.slider-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.slider-subtitle {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.slider-price {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.slider-button {
+  background-color: #ff6347;  /* Màu nút */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.slider-button:hover {
+  background-color: #e55342;  /* Màu khi hover */
+}
+
+/* Slider dots (small circles indicating current slide) */
+.slider-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  background-color: white;
+  border-radius: 50%;
+  opacity: 0.6;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.dot.active {
+  opacity: 1;
+}
+
+/* Navigation buttons (left and right arrows) */
+.slider-nav-button-left,
+.slider-nav-button-right {
+  position: absolute;
+  top: 50%;
+  width: auto;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;    width: auto;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 24px;
+  transition: background-color 0.3s ease;
+}
+
+.slider-nav-button-left:hover,
+.slider-nav-button-right:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Positioning the left and right buttons */
+.slider-nav-button-left {
+  left: 10px;
+}
+
+.slider-nav-button-right {
+  right: 10px;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .slider-container {
+    height: 300px;  /* Giảm chiều cao cho các thiết bị di động */
   }
-  
-  /* Overlay cho text */
-  .slider-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    width: 500px;
-    height: 200px; 
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: rgb(255, 255, 255);
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-  }
-  
-  .slider-overlay.show {
-    opacity: 1;
-  }
-  
+
   .slider-title {
-    font-size: 48px;
-    color: white;
-    font-weight: bold;
-    margin-bottom: 10px;
+    font-size: 20px;
   }
-  
+
   .slider-subtitle {
-    font-size: 24px;
-    margin-bottom: 15px;
-  }
-  
-  .slider-price {
     font-size: 18px;
-    color: white;
-    margin-bottom: 30px;
   }
-  
-  .slider-button {
-    padding: 10px 20px;
+
+  .slider-price {
     font-size: 16px;
-    background-color: #ff5a5f; /* Màu chính */
-    color: white;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
   }
-  
-  .slider-button:hover {
-    background-color: #ff434b; /* Màu khi hover */
+
+  .slider-button {
+    font-size: 14px;
   }
-  
-  /* Điều hướng với dấu chấm */
-  .slider-dots {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 10px;
+
+  .slider-nav-button-left,
+  .slider-nav-button-right {
+    padding: 8px;
+    font-size: 20px;
   }
-  
-  .dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.7);
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .dot.active {
-    background-color: white;
-  }
-  
-  /* Các nút điều hướng trái phải */
-  .slider-nav-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border-radius: 50%;
-    padding: 10px;
-    cursor: pointer;
-    z-index: 10;
-  }
-  
-  .slider-nav-button.left {
-    left: 10px;
-  }
-  
-  .slider-nav-button.right {
-    right: 10px;
-  }
-  
-  .slider-nav-button:hover {
-    background-color: rgba(0, 0, 0, 0.7);
-  }
-  
-  /* Responsive */
-  @media (max-width: 768px) {
-    .slider-title {
-      font-size: 36px;
-    }
-  
-    .slider-subtitle {
-      font-size: 18px;
-    }
-  
-    .slider-price {
-      font-size: 16px;
-    }
-  
-    .slider-button {
-      padding: 8px 16px;
-    }
-  }
-  
+}

@@ -1,61 +1,59 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import '../css/ImageSlider.css';  // Đảm bảo rằng file CSS đúng
-import Button from '../../../components/Button/Button';
+import { AiFillCaretRight } from "react-icons/ai"; 
+import { AiFillCaretLeft } from "react-icons/ai"; 
+import React, { useContext, useState, useEffect, useCallback } from 'react';
+import { ImgSliderContext } from './ImgSliderContext';  // Import context
+import Button from '../../../components/Button/Button';  // Giả sử bạn đã có một Button component
+import '../css/ImageSlider.css';  // Giả sử bạn có file CSS để tạo kiểu cho slider
 
-interface Slide {
-  image: string;
-  title: string;
-  subtitle: string;
-  price: string;
-}
-
-interface ImageSliderProps {
-  slides: Slide[];
-  className?: string;
-}
-
-const ImageSlider: React.FC<ImageSliderProps> = React.memo(({ slides, className = '' }) => {
+const ImageSlider: React.FC = React.memo(() => {
+  const { slides } = useContext(ImgSliderContext);  // Lấy dữ liệu slides từ context
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showTextOverlay, setShowTextOverlay] = useState(false);
 
   // Hàm chuyển sang slide tiếp theo
   const goToNextSlide = useCallback(() => {
-    setShowTextOverlay(false);
-    setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
-  }, [slides.length]);
+    if (slides.length === 0) return;
+    setShowTextOverlay(false);  // Ẩn overlay khi chuyển slide
+    setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);  // Chuyển đến slide tiếp theo
+  }, [slides]);
 
   // Hàm quay lại slide trước
   const goToPreviousSlide = useCallback(() => {
-    setShowTextOverlay(false);
-    setCurrentSlide((prevSlide) => (prevSlide - 1 + slides.length) % slides.length);
-  }, [slides.length]);
+    if (slides.length === 0) return;
+    setShowTextOverlay(false);  // Ẩn overlay khi quay lại slide trước
+    setCurrentSlide((prevSlide) => (prevSlide - 1 + slides.length) % slides.length);  // Quay lại slide trước
+  }, [slides]);
 
-  // Hàm nhảy tới một slide cụ thể
+  // Hàm chuyển đến slide cụ thể
   const goToSlide = (index: number) => {
+    if (slides.length === 0) return;
     setShowTextOverlay(false);
-    setCurrentSlide(index);
+    setCurrentSlide(index);  // Chuyển đến slide theo index
   };
 
-  // Xử lý hiệu ứng hiển thị overlay và chuyển slide tự động
+  // Hook useEffect để tự động chuyển slide sau mỗi 5 giây
   useEffect(() => {
+    if (slides.length === 0) return;
+    
     const textOverlayTimeout = setTimeout(() => setShowTextOverlay(true), 500);
-    const interval = setInterval(goToNextSlide, 5000);
+    const interval = setInterval(goToNextSlide, 5000);  // Chuyển slide sau mỗi 5 giây
 
     return () => {
-      clearInterval(interval);
-      clearTimeout(textOverlayTimeout);
+      clearInterval(interval);  // Dọn dẹp interval khi component unmount
+      clearTimeout(textOverlayTimeout);  // Dọn dẹp timeout
     };
-  }, [goToNextSlide]);
+  }, [goToNextSlide, slides]);
 
-  // Kiểm tra nếu slides không rỗng và phần tử tại currentSlide tồn tại
   const currentSlideData = slides[currentSlide];
+  
+  if (!currentSlideData) {
+    return <div>Loading...</div>;  // Hiển thị loading nếu chưa có slide
+  }
 
   return (
     <section 
-      className={`slider-container ${className}`} 
-      style={{ 
-        backgroundImage: currentSlideData.image ? `url(${currentSlideData.image})` : 'none' 
-      }} // Kiểm tra URL hợp lệ
+      className="slider-container" 
+      style={{ backgroundImage: `url(${currentSlideData.image})` }}
     >
       <div className={`slider-overlay ${showTextOverlay ? 'show' : ''}`}>
         <h2 className="slider-title">{currentSlideData.title}</h2>
@@ -64,23 +62,21 @@ const ImageSlider: React.FC<ImageSliderProps> = React.memo(({ slides, className 
         <button className="slider-button">XEM THÊM</button>
       </div>
 
-      {/* Dấu chấm điều hướng */}
       <div className="slider-dots">
         {slides.map((_, index) => (
           <span
             key={index}
             className={`dot ${index === currentSlide ? 'active' : ''}`}
-            onClick={() => goToSlide(index)}
+            onClick={() => goToSlide(index)}  // Chuyển đến slide khi click vào dot
           />
         ))}
       </div>
 
-      {/* Navigation Buttons */}
-      <Button className="slider-nav-button left" onClick={goToPreviousSlide} style={{ left: '10px' }}>
-        <span className="material-icons">chevron_left</span>
+      <Button className="slider-nav-button-left" onClick={goToPreviousSlide}>
+        <span className="material-icons"> <AiFillCaretLeft /> </span>
       </Button>
-      <Button className="slider-nav-button right" onClick={goToNextSlide} style={{ right: '10px' }}>
-        <span className="material-icons">chevron_right</span>
+      <Button className="slider-nav-button-right" onClick={goToNextSlide}>
+        <span className="material-icons"> <AiFillCaretRight /> </span>
       </Button>
     </section>
   );

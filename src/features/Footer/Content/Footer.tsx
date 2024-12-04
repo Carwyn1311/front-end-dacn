@@ -1,5 +1,5 @@
 import React from "react";
-import "../.css/Footer.css"; // Import CSS file
+import "../css/Footer.css"; // Import CSS file
 import FooterCard from "./FooterCard";
 
 const Footer: React.FC = () => {

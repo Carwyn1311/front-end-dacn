@@ -18,12 +18,16 @@ import TravelPageHaLong from './features/AllTours/Tours/TravelPageHaLong';
 import TravelPageSapa from './features/AllTours/Tours/TravelPageSapa';
 import CreateAccount from './features/CreateAccount/Content/CreateAccount';
 import ForgotPassword from './features/ForgotPassword/Content/ForgotPassword';
+import ErrorBoundary from './features/Error Boundary/Error Boundary';
 
 const App: React.FC = () => {
   return (
-    <BrowserRouter>
-      <AppContent />
-    </BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
+    </ErrorBoundary>
+
   );
 };
 
@@ -87,7 +91,7 @@ const AppContent: React.FC = () => {
           <header className="app-header">
             <div className="top-bar">
               <div className="contact-info">
-              <Button onClick={toggleSidebar} className="sidebar-toggle-button">
+                <Button onClick={toggleSidebar} className="sidebar-toggle-button">
                   {isSidebarOpen ? <HiChevronDoubleLeft /> : <HiOutlineMenu />}
                 </Button>
               </div>
