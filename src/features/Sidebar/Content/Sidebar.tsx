@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import '../.css/Sidebar.css';
+import '../css/Sidebar.css';
 import { User } from '../../User/Content/User';
 import { Menu, Button } from 'antd';
 import {
