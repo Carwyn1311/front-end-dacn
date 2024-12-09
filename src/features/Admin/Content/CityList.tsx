@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { message, Input, List, Card, Spin, Form, Select } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
-import axios from 'axios';
+import { TextField, CircularProgress, Button, Typography } from '@mui/material';
 import { TokenAuthService } from '../../TokenAuthService/TokenAuthService';
-
-const { Option } = Select;
+import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
+import message from 'antd/es/message';
+import '../css/CityList.css';
 
 interface CityDTO {
   id: number;
@@ -16,115 +15,116 @@ const CityList: React.FC = () => {
   const [cities, setCities] = useState<CityDTO[]>([]);
   const [searchValue, setSearchValue] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [provinceFilter, setProvinceFilter] = useState<number | undefined>(undefined);
-
-  useEffect(() => {
-    fetchCities();
-  }, []);
+  const [error, setError] = useState<string | null>(null);
+  const [newCity, setNewCity] = useState<CityDTO>({ id: 0, name: '', province: 0 });
 
   // Lấy danh sách thành phố từ API
   const fetchCities = async () => {
     setLoading(true);
     try {
-      // Lấy JWT từ TokenAuthService
-      const token = TokenAuthService.getToken();
-      const user = JSON.parse(localStorage.getItem('userData') || '{}'); // Lấy thông tin user từ localStorage
-
-      // Kiểm tra nếu không có token hoặc user
-      if (!token || !user) {
-        message.error('Bạn cần đăng nhập để xem danh sách thành phố');
-        return;
-      }
-
-      // Lấy dữ liệu thành phố từ API với header Authorization
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/city/list`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
-      // Kiểm tra dữ liệu nhận được và in ra console
-      console.log('Dữ liệu thành phố nhận được:', response.data);
-
-      // Kiểm tra xem có phải là mảng không và in ra console dữ liệu theo yêu cầu
-      if (Array.isArray(response.data)) {
-        setCities(response.data);
-        // In dữ liệu ra console theo format yêu cầu
-        console.log(JSON.stringify(response.data, null, 2));  // In đẹp hơn
-      } else {
-        message.error('Dữ liệu thành phố không hợp lệ');
-      }
-    } catch (error) {
-      console.error('Error fetching cities:', error);
-      message.error('Lỗi khi tải danh sách thành phố');
+      const response = await axiosInstance.get('/api/city/list'); // Lấy danh sách thành phố
+      setCities(response.data);
+    } catch (err) {
+      setError('Không thể tải dữ liệu thành phố');
+      message.error('Không thể tải dữ liệu thành phố');
     } finally {
       setLoading(false);
     }
   };
 
-  // Cập nhật giá trị tìm kiếm
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
+  useEffect(() => {
+    fetchCities();
+  }, []);
+
+  // Thêm mới thành phố
+  const handleAddCity = async () => {
+    try {
+      const response = await axiosInstance.post('/api/city/create', newCity);
+      setCities([...cities, response.data]);
+      setNewCity({ id: 0, name: '', province: 0 }); // Reset form sau khi thêm
+      message.success('Thêm thành công');
+    } catch (err) {
+      message.error('Không thể thêm thành phố');
+    }
   };
 
-  // Cập nhật bộ lọc tỉnh
-  const handleProvinceChange = (value: number) => {
-    setProvinceFilter(value);
+  // Cập nhật thành phố
+  const handleUpdateCity = async (id: number) => {
+    try {
+      const updatedCity = { ...newCity, id };
+      const response = await axiosInstance.put(`/api/city/${id}`, updatedCity);
+      setCities(cities.map(city => (city.id === id ? response.data : city)));
+      setNewCity({ id: 0, name: '', province: 0 }); // Reset form
+      message.success('Cập nhật thành công');
+    } catch (err) {
+      message.error('Không thể cập nhật thành phố');
+    }
   };
 
-  // Lọc danh sách thành phố theo giá trị tìm kiếm và bộ lọc tỉnh
-  const filterCities = () => {
-    return cities.filter(city => {
-      const matchesSearch = city.name.toLowerCase().includes(searchValue.toLowerCase());
-      const matchesProvince = provinceFilter ? city.province === provinceFilter : true;
-      return matchesSearch && matchesProvince;
-    });
+  // Xóa thành phố
+  const handleDeleteCity = async (id: number) => {
+    try {
+      await axiosInstance.delete(`/api/city/${id}`);
+      setCities(cities.filter(city => city.id !== id));
+      message.success('Xóa thành công');
+    } catch (err) {
+      message.error('Không thể xóa thành phố');
+    }
   };
+
+  // Render danh sách thành phố
+  if (loading) {
+    return <CircularProgress />;
+  }
+
+  if (error) {
+    return <div className="error">{error}</div>;
+  }
 
   return (
-    <div className="city-list">
-      <Card title="Danh Sách Thành Phố" style={{ width: '100%' }}>
-        <Form layout="inline" style={{ marginBottom: '20px' }}>
-          <Form.Item>
-            <Input
-              placeholder="Tìm kiếm thành phố..."
-              value={searchValue}
-              onChange={handleSearchChange}
-              prefix={<SearchOutlined />}
-              allowClear
-            />
-          </Form.Item>
-          <Form.Item label="Chọn tỉnh" name="province">
-            <Select
-              placeholder="Chọn tỉnh"
-              onChange={handleProvinceChange}
-              style={{ width: 200 }}
-            >
-              <Option value={1}>Tỉnh 1</Option>
-              <Option value={2}>Tỉnh 2</Option>
-              <Option value={3}>Tỉnh 3</Option>
-            </Select>
-          </Form.Item>
-        </Form>
-        
-        {loading ? (
-          <Spin size="large" />
-        ) : (
-          <List
-            itemLayout="horizontal"
-            dataSource={filterCities()}
-            renderItem={(city) => (
-              <List.Item>
-                <List.Item.Meta
-                  title={city.name}
-                  description={`Province ID: ${city.province}`}
-                />
-              </List.Item>
-            )}
-          />
-        )}
-      </Card>
+    <div className="citylist-container">
+      <Typography variant="h4">Danh sách Thành Phố</Typography>
+
+      {/* Form thêm thành phố */}
+      <div className="citylist-form">
+        <TextField
+          label="Tên Thành Phố"
+          variant="outlined"
+          value={newCity.name}
+          onChange={e => setNewCity({ ...newCity, name: e.target.value })}
+          fullWidth
+        />
+        <TextField
+          label="Mã Tỉnh"
+          variant="outlined"
+          value={newCity.province}
+          onChange={e => setNewCity({ ...newCity, province: parseInt(e.target.value) })}
+          fullWidth
+        />
+        <Button variant="contained" color="primary" onClick={handleAddCity}>
+          Thêm Thành Phố
+        </Button>
+      </div>
+
+      {/* Danh sách thành phố */}
+      <div className="citylist">
+        {cities.filter(city => city.name.toLowerCase().includes(searchValue.toLowerCase())).map((city) => (
+          <div key={city.id} className="citylist-item">
+            <div className="citylist-item-details">
+              <Typography variant="h6">{city.name}</Typography>
+              <Typography variant="body2">Mã Tỉnh: {city.province}</Typography>
+            </div>
+            <div className="citylist-item-actions">
+              <Button variant="contained" color="primary" onClick={() => handleUpdateCity(city.id)}>
+                Cập Nhật
+              </Button>
+              <Button variant="contained" color="secondary" onClick={() => handleDeleteCity(city.id)}>
+                Xóa
+              </Button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
