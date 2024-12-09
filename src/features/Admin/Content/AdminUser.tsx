@@ -7,7 +7,7 @@ import SearchInput from '../../../components/SearchInput/SearchInput';
 import { FaSearch } from 'react-icons/fa';
 import Dropdown from '../../../components/Dropdown/Dropdown';
 import CreateUserForm from '../../CreateUserForm/CreateUserForm';
-import '../.css/AdminUser.css';
+import '../css/AdminUser.css';
 import Analytics from '../../LoadAnalytics/Analytics';
 
 const AdminUser: React.FC = () => {

@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, useMemo } from 'react';
-import { tours as initialTours, Tour } from './tours';
+import { tours as initialTours, Tour } from './TourSalePage';
 
 interface TourContextProps {
   tours: Tour[];

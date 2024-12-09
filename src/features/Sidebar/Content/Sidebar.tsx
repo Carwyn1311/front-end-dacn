@@ -41,6 +41,26 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isLoggedIn, onLogout }) => {
       label: 'Trang chủ',
       onClick: () => handleMenuClick('/'),
     },
+    //...(isAdmin
+      //? [
+        {
+          key: 'admin',
+          icon: <UserOutlined />,
+          label: 'Trang Admin',
+          children: [
+            { key: 'manage-users', label: 'Quản lý User', onClick: () => handleMenuClick('/admin/manage-users') },
+            { key: 'manage-domestic-tours', label: 'Quản lý Tour Trong Nước', onClick: () => handleMenuClick('/admin/domestic-tours') },
+            { key: 'manage-international-tours', label: 'Quản lý Tour Nước Ngoài', onClick: () => handleMenuClick('/admin/international-tours') },
+            { key: 'tour-stats', label: 'Thống Kê Tour', onClick: () => handleMenuClick('/admin/tour-stats') },
+            { key: 'payment-management', label: 'Quản lý Thanh Toán', onClick: () => handleMenuClick('/admin/payment-management') },
+            { key: 'home-board-management', label: 'Quản lý Bảng Tin Trang Chủ', onClick: () => handleMenuClick('/admin/home-board-management') },
+            { key: 'manager-tour', label: 'Quản lý Tour Slider', onClick: () => handleMenuClick('/admin/img-slider') },
+            { key: 'tour-list', label: 'Quản lý DS Tour', onClick: () => handleMenuClick('/admin/tour-list') },
+            { key: 'tour-detail', label: 'Quản lý Tour Slider', onClick: () => handleMenuClick('/admin/tuor-detail/tour/:id') },
+            { key: 'city-list', label: 'Quản lý City', onClick: () => handleMenuClick('/admin/city-list') },
+            { key: 'province-list', label: 'Quản lý Provice List', onClick: () => handleMenuClick('/admin/province-list') },
+          ],
+        },
     {
       key: 'domestic-travel',
       icon: <AppstoreOutlined />,
@@ -163,22 +183,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isLoggedIn, onLogout }) => {
         { key: 'service-6', label: 'Dịch vụ Free Easy', onClick: () => handleMenuClick('/dich-vu/free-easy') },
       ],
     },
-    //...(isAdmin
-      //? [
-        {
-          key: 'admin',
-          icon: <UserOutlined />,
-          label: 'Trang Admin',
-          children: [
-            { key: 'manage-users', label: 'Quản lý User', onClick: () => handleMenuClick('/admin/manage-users') },
-            { key: 'manage-domestic-tours', label: 'Quản lý Tour Trong Nước', onClick: () => handleMenuClick('/admin/domestic-tours') },
-            { key: 'manage-international-tours', label: 'Quản lý Tour Nước Ngoài', onClick: () => handleMenuClick('/admin/international-tours') },
-            { key: 'tour-stats', label: 'Thống Kê Tour', onClick: () => handleMenuClick('/admin/tour-stats') },
-            { key: 'payment-management', label: 'Quản lý Thanh Toán', onClick: () => handleMenuClick('/admin/payment-management') },
-            { key: 'home-board-management', label: 'Quản lý Bảng Tin Trang Chủ', onClick: () => handleMenuClick('/admin/home-board-management') },
-            { key: 'manager-tour', label: 'Quản lý Tour Slider', onClick: () => handleMenuClick('/admin/img-slider') },
-          ],
-        },
+    
     {
       key: 'contact',
       icon: <PhoneOutlined />,

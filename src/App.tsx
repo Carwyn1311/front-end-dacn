@@ -19,6 +19,10 @@ import TravelPageSapa from './features/AllTours/Tours/TravelPageSapa';
 import CreateAccount from './features/CreateAccount/Content/CreateAccount';
 import ForgotPassword from './features/ForgotPassword/Content/ForgotPassword';
 import ErrorBoundary from './features/Error Boundary/Error Boundary';
+import TourList from './features/Admin/Content/TourList';
+import TourDetail from './features/Admin/Content/TourDetail';
+import CityList from './features/Admin/Content/CityList';
+import ProvinceList from './features/Admin/Content/ProvinceList';
 
 const App: React.FC = () => {
   return (
@@ -134,6 +138,10 @@ const AppContent: React.FC = () => {
           <Route path="/admin/*" element={<AdminRoutes />} />
           <Route path="/admin/manage-users" element={<AdminUser />} />
           <Route path="/admin/img-slider" element={<AdminTourManagement />} />
+          <Route path="/admin/tour-list" element={<TourList />} /> 
+          <Route path="/admin/tuor-list/tour/:id" element={<TourDetail />} />
+          <Route path="/admin/city-list" element={<CityList />} />
+          <Route path="/admin/province-list" element={<ProvinceList />} />
         </Routes>
       </div>
 

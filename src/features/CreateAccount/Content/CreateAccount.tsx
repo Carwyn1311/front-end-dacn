@@ -17,7 +17,7 @@ const CreateAccount: React.FC = () => {
       console.log('Password:', password);
       console.log('Email:', email);
 
-      const response = await axiosInstance.post('api/register', {
+      const response = await axiosInstance.post(`${process.env.REACT_APP_BASE_URL}/api/register`, {
         username: userName,
         password: password,
         email: email,
@@ -35,7 +35,17 @@ const CreateAccount: React.FC = () => {
         setError(response.data.message || 'Failed to create account.');
       }
     } catch (error: any) {
-      setError(error.response?.data?.message || 'Failed to create account.');
+      // Kiểm tra lỗi và log chi tiết để xác định vấn đề
+      if (error.response) {
+        console.error("Error response:", error.response); // Log toàn bộ lỗi phản hồi từ server
+        setError(error.response.data.message || 'Failed to create account.');
+      } else if (error.request) {
+        console.error("Error request:", error.request); // Log lỗi khi yêu cầu không nhận được phản hồi
+        setError('No response from the server.');
+      } else {
+        console.error("Error message:", error.message); // Log lỗi trong cấu hình yêu cầu
+        setError('An error occurred while creating the account.');
+      }
     }
   };
 
