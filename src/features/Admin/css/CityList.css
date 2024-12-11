@@ -1,69 +1,93 @@
-/* citylist-container: Container chính */
+/* Container chính */
 .citylist-container {
-    padding: 20px;
-    margin-top: 70px;
-    height: 100vh;
-    background-color: #f4f6f8;
-  }
-  
-  /* citylist-search: Đặt kiểu cho ô tìm kiếm */
-  .citylist-search {
-    margin-bottom: 20px;
-    transform: translateX(50%);
-    max-width: 500px;
-    margin-bottom: 50px;
-  }
-  
-  /* citylist-search-input: Căn chỉnh cho ô nhập tìm kiếm */
-  .citylist-search-input {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* citylist-items: Căn chỉnh các mục thành phố */
-  .citylist-items {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 15px;
-  }
-  
-  /* citylist-card: Căn chỉnh mỗi thẻ thành phố */
-  .citylist-card {
-    padding: 15px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-  }
-  
-  .citylist-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .citylist-card-title {
-    font-size: 18px;
-    font-weight: 500;
-    color: #333;
-  }
-  
-  /* citylist-loading: Căn chỉnh vòng xoay khi tải */
-  .citylist-loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 150px;
-  }
-  
-  /* citylist-card: Định dạng các thành phần văn bản bên trong thẻ */
-  .citylist-card p {
-    font-size: 14px;
-    color: #888;
-    margin-top: 10px;
-  }
-  
-  /* Tùy chọn màu sắc cho các thành phần trong giao diện */
-  .citylist-card-title {
-    color: #3f51b5;
-  }
-  
+  padding: 20px;
+  background-color: #fafafa;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Tiêu đề */
+.citylist-header {
+  margin-bottom: 20px;
+  color: #3f51b5; /* Màu chính của Material UI */
+  font-weight: bold;
+}
+
+/* Thanh tìm kiếm */
+.citylist-search {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+.citylist-search-input {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Phần chuyển đổi cột */
+.citylist-column-toggle {
+  margin-bottom: 20px;
+}
+
+/* Lưới thành phố */
+.citylist-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 20px;
+  width: 100%;
+  max-width: 900px;
+}
+
+.citylist-grid.two-columns {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.citylist-grid.one-column {
+  grid-template-columns: 1fr;
+}
+
+/* Style cho mỗi thẻ thành phố */
+.citylist-card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.citylist-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.citylist-card-content {
+  text-align: center;
+}
+
+.citylist-card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #3f51b5;
+}
+
+.citylist-card-body {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+/* Nút thêm thành phố */
+.citylist-add-btn {
+  margin-top: 30px;
+  background-color: #3f51b5;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.citylist-add-btn:hover {
+  background-color: #303f9f;
+}

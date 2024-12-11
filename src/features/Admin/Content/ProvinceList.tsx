@@ -34,7 +34,7 @@ const ProvinceList: React.FC = () => {
       }
 
       // Lấy dữ liệu tỉnh từ API với header Authorization
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/province`, {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/province/list`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
