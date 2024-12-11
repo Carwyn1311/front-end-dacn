@@ -2,7 +2,8 @@
 .citylist-container {
   padding: 20px;
   background-color: #fafafa;
-  min-height: 100vh;
+  height: calc(100vh - 70px);
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -90,4 +91,14 @@
 
 .citylist-add-btn:hover {
   background-color: #303f9f;
+}
+
+.citylist.two-columns {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.citylist-item button {
+  margin: 5px;
 }
