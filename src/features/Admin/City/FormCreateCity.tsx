@@ -53,7 +53,7 @@ const FormCreateCity: React.FC<FormCreateCityProps> = ({
             message: 'Vui lòng nhập tên thành phố' 
           }]}
         >
-          <Input placeholder="Nhập tên thành phố" />
+          <Input placeholder="Nhập tên thành phố" className="citylist-create-form-label"/>
         </Form.Item>
 
         <Form.Item
