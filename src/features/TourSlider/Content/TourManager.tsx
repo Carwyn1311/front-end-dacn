@@ -1,8 +1,8 @@
 // TourManager.tsx
 import React, { useContext, useState } from 'react';
 import { TourContext } from './TourContext';
-import TextField from '../../../components/TextField/TextField';
 import '../.css/TourManager.css';
+import { TextField } from '@mui/material';
 
 const TourManager: React.FC = () => {
   const { tours } = useContext(TourContext) ?? { tours: [], addTour: () => {}, deleteTour: () => {} };

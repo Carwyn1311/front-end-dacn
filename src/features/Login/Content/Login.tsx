@@ -3,7 +3,7 @@ import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
 import { IoMdLock } from 'react-icons/io';
 import { BiUser } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
-import { TextField, Checkbox, FormControlLabel, Button, Typography, Box, Container } from '@mui/material';
+import { Checkbox, FormControlLabel, Button, Typography, Box, Container, TextField } from '@mui/material';
 import { TokenAuthService } from '../../TokenAuthService/TokenAuthService';
 import { User } from '../../User/Content/User';
 
@@ -163,15 +163,13 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
         </Typography>
         <form onSubmit={handleSubmit}>
           <TextField
+            type='input'
             label="Username"
             fullWidth
             variant="outlined"
             margin="normal"
             value={userName}
             onChange={handleUserNameChange}
-            InputProps={{
-              startAdornment: <BiUser />,
-            }}
           />
           <TextField
             label="Password"
@@ -181,9 +179,6 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
             margin="normal"
             value={password}
             onChange={handlePasswordChange}
-            InputProps={{
-              startAdornment: <IoMdLock />,
-            }}
           />
           <FormControlLabel
             control={

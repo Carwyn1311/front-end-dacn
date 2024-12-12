@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
 import '../.css/CreateAccount.css';
+import { TextField } from '@mui/material';
 
 const CreateAccount: React.FC = () => {
   const [userName, setUserName] = useState('');
@@ -72,8 +73,10 @@ const CreateAccount: React.FC = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <label>User Name:</label>
-          <input
+          <TextField
+            label="Username"
             type="text"
+            fullWidth
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
             required
@@ -81,8 +84,10 @@ const CreateAccount: React.FC = () => {
         </div>
         <div>
           <label>Password:</label>
-          <input
+          <TextField
+            label="Password"
             type="password"
+            fullWidth
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -90,7 +95,7 @@ const CreateAccount: React.FC = () => {
         </div>
         <div>
           <label>Email:</label>
-          <input
+          <TextField
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}

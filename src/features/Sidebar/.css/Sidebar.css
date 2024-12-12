@@ -1,0 +1,196 @@
+.sidebar {
+  width: 340px;
+  background-color: #f8fafc;
+  color: #9abef0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: 1000;
+  transition: transform 0.3s ease;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ensures content is spaced between top and bottom */
+}
+
+.conversationlist{
+  padding-top: 150px;
+  padding: 10px;
+  margin-right: 0px;
+}
+.sidebar.closed {
+  transform: translateX(-100%); /* Sidebar hidden */
+}
+
+.sidebar.open {
+  transform: translateX(0); /* Sidebar visible */
+}
+
+.sidebar-toggle-button {
+  background-color: #f4f4f4;
+  font-size: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  margin-left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar-toggle-button:hover {
+  background-color: #164a7d; /* Hover effect */
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.profile img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.avatar-menu {
+  position: absolute;
+  top: 100px; /* Điều chỉnh vị trí để menu nằm gần hơn */
+  left: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  z-index: 1;
+  color: black;
+  width: 130px; /* Giảm chiều rộng */
+}
+
+.avatar-menu ul.form-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.avatar-menu ul.form-list li {
+  padding: 5px 0;
+  cursor: pointer;
+  text-align: center; /* Căn giữa văn bản */
+}
+
+.avatar-menu ul.form-list li:not(:last-child) {
+  margin-bottom: 5px; /* Tạo khoảng cách giữa các mục */
+}
+
+.avatar-menu ul.form-list li.logout {
+  color: red;
+}
+
+
+.info-user {
+  display: flex;
+  flex-direction: column; /* Stack username and email vertically */
+  align-items: center; /* Center the content horizontally */
+  padding: 10px; /* Add some padding around the container */
+}
+
+/* Styling for the username (h2) */
+.sidebar-username {
+  font-size: 16px; /* Set the font size to 16px */
+  font-family: 'Times New Roman', Times, serif; /* Apply Times New Roman font */
+  font-weight: bold; /* Make the text bold */
+  margin: 10px 0; /* Add some margin above and below */
+  color: #ffffff; /* White color for better contrast */
+  text-align: center; /* Center the username in the sidebar */
+}
+
+/* Styling for the email (p) */
+.sidebar-email {
+  font-size: 16px; /* Set the font size to 16px */
+  font-family: 'Times New Roman', Times, serif; /* Apply Times New Roman font */
+  color: #cccccc; /* Lighter color to differentiate from username */
+  font-weight: bold; /* Make the text bold */
+  margin: 0; /* Remove default margins */
+  text-align: center; /* Center the email as well */
+  word-break: break-word; /* Ensure email wraps if it's long */
+}
+
+
+.menu-item {
+  padding: 15px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #374151;
+}
+
+.menu-item:hover {
+  background-color: #e2e8f0;
+  border-radius: 5px;
+}
+
+.admin-menu {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.admin-menu li {
+  padding: 3px 16px;
+}
+
+.admin-menu li a {
+  text-decoration: none;
+}
+
+.sidebar-function {
+  padding: 30px;
+  position: relative;
+  top: -20px;
+  font-weight: bold;
+}
+
+
+.sidebar-menu {
+  font-size: 15px;
+  margin-left: 0px;
+  max-height: calc(100vh - 80px);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  width: 330px;
+  margin-top: 10px;
+  height: 520px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.footer {
+  font-size: 14px;
+  display: flex;
+  color: rgb(4, 14, 14);
+  margin-left: 80px;
+  margin-top: -42px;
+  font-weight: none;
+  background-color: #ffffff;
+}

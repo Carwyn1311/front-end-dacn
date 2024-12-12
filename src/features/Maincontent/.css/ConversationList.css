@@ -1,0 +1,87 @@
+/* Container for the conversation list */
+.conversation-list-container {
+  overflow-y: auto;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  width: 250px;
+  height: 500px;
+}
+
+/* Conversation list item */
+.conversation-list-item {
+  padding: 10px;
+  background-color: #fff;
+  border-bottom: 1px solid #eaeaea;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s ease;
+  flex-direction: row; /* Sử dụng bố cục hàng ngang */
+}
+
+/* Hover effect for conversation list item */
+.conversation-list-item:hover {
+  background-color: #e6f7ff;
+}
+
+/* Container for the conversation title and edit button */
+.conversation-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-right: 10px; /* Khoảng cách giữa tiêu đề và nút chỉnh sửa */
+}
+
+/* Styling for the conversation title */
+.conversation-title {
+  font-weight: 600;
+  color: #333;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  white-space: nowrap; /* Đảm bảo tiêu đề không tràn xuống dòng */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Nếu tiêu đề quá dài, thêm dấu "..." */
+}
+
+/* Edit icon button styling */
+.edit-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #1890ff;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end; /* Đảm bảo biểu tượng được căn bên phải */
+}
+
+/* Hover effect for edit button */
+.edit-button:hover {
+  color: #40a9ff;
+}
+
+/* Container for the actions (rename, delete) */
+.conversation-actions {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* Delete button styling */
+.conversation-actions .delete-button {
+  color: red;
+  margin-top: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Hover effect for delete button */
+.conversation-actions .delete-button:hover {
+  color: darkred;
+}
