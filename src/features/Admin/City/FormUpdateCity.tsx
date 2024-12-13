@@ -1,11 +1,5 @@
-import React, { useEffect } from 'react';
-import { 
-  Drawer, 
-  Form, 
-  Input, 
-  Button, 
-  message 
-} from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Drawer, Form, Input, Button, message, Select } from 'antd';
 import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
 import '../css/FormUpdateCity.css';
 
@@ -21,20 +15,39 @@ interface FormUpdateCityProps {
   onSuccess: () => void;
 }
 
-const FormUpdateCity: React.FC<FormUpdateCityProps> = ({ 
-  city, 
-  onClose, 
-  onSuccess 
-}) => {
+const FormUpdateCity: React.FC<FormUpdateCityProps> = ({ city, onClose, onSuccess }) => {
   const [form] = Form.useForm();
+  const [provinces, setProvinces] = useState([]);
 
   useEffect(() => {
-    form.setFieldsValue(city);
+    form.setFieldsValue({
+      ...city,
+      province: city.province.toString() // Chuyển đổi province ID sang chuỗi để hợp với Select
+    });
+    
+    // Fetch the list of provinces from the API
+    const fetchProvinces = async () => {
+      try {
+        const response = await axiosInstance.get('/api/province/list');
+        setProvinces(response.data);
+      } catch (error) {
+        message.error('Lỗi khi tải danh sách tỉnh');
+      }
+    };
+
+    fetchProvinces();
   }, [city, form]);
 
   const handleSubmit = async (values: any) => {
     try {
-      await axiosInstance.put(`/api/city/${city.id}`, values);
+      const data = {
+        ...values,
+        province: {
+          id: values.province
+        }
+      };
+      
+      await axiosInstance.put(`/api/city/${city.id}`, data);
       message.success('Cập nhật thành phố thành công');
       onSuccess();
       onClose();
@@ -55,7 +68,7 @@ const FormUpdateCity: React.FC<FormUpdateCityProps> = ({
         form={form} 
         layout="vertical" 
         onFinish={handleSubmit}
-         className="citylist-update-form"
+        className="citylist-update-form"
       >
         <Form.Item
           name="name"
@@ -70,13 +83,19 @@ const FormUpdateCity: React.FC<FormUpdateCityProps> = ({
 
         <Form.Item
           name="province"
-          label="Mã Tỉnh"
+          label="Tỉnh"
           rules={[{ 
             required: true, 
-            message: 'Vui lòng nhập mã tỉnh' 
+            message: 'Vui lòng chọn tỉnh' 
           }]}
         >
-          <Input type="number" placeholder="Nhập mã tỉnh" />
+          <Select placeholder="Chọn tỉnh">
+            {provinces.map((province: any) => (
+              <Select.Option key={province.id} value={province.id.toString()}>
+                {province.name}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
 
         <Form.Item>

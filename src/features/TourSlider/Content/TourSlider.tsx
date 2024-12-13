@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { TourContext } from './TourContext';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../../components/Button/Button';
-import '../.css/TourSlider.css';
+import '../.css/TourSlider.css'; // Đảm bảo rằng đường dẫn đúng với cấu trúc của dự án của bạn
 
 interface TourSliderProps {
   interval: number;
@@ -12,11 +12,12 @@ const TourSlider: React.FC<TourSliderProps> = ({ interval }) => {
   const itemsPerView = 5;
   const { tours } = useContext(TourContext) ?? { tours: [] };
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   // Clone tours for infinite sliding
-  const clonedTours = tours.length > 0 ? [...tours, ...tours] : [];
+  const clonedTours = tours.length > 0 ? [...tours, ...tours, ...tours] : [];
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -28,20 +29,31 @@ const TourSlider: React.FC<TourSliderProps> = ({ interval }) => {
 
   // Move to the next item, wrapping around at the end
   const moveNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % tours.length);
+    setIsTransitioning(true);
+    setCurrentIndex((prevIndex) => (prevIndex + 1));
   };
 
   // Move to the previous item, wrapping around at the start
   const movePrev = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + tours.length) % tours.length);
+    setIsTransitioning(true);
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + clonedTours.length) % clonedTours.length);
   };
 
   useEffect(() => {
     if (!sliderRef.current) return;
-    sliderRef.current.style.transition = 'transform 0.5s ease-in-out';
-    // Adjust the transform for sliding, based on the current index
+    if (currentIndex >= tours.length || currentIndex < 0) {
+      // Disable transition for instant reset
+      sliderRef.current.style.transition = 'none';
+      setTimeout(() => {
+        // Reset to the beginning or end of the original tours list
+        setIsTransitioning(false);
+        setCurrentIndex(currentIndex < 0 ? tours.length - 1 : 0);
+      }, 0);
+    } else {
+      sliderRef.current.style.transition = isTransitioning ? 'transform 0.5s ease-in-out' : 'none';
+    }
     sliderRef.current.style.transform = `translateX(-${(currentIndex * 100) / itemsPerView}%)`;
-  }, [currentIndex]);
+  }, [currentIndex, isTransitioning, tours.length]);
 
   const handleTourClick = (url: string) => {
     if (url) {

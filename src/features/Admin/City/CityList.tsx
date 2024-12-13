@@ -24,8 +24,14 @@ interface City {
   province: number;
 }
 
+interface Province {
+  id: number;
+  name: string;
+}
+
 const CityList: React.FC = () => {
   const [cities, setCities] = useState<City[]>([]);
+  const [provinces, setProvinces] = useState<Province[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
   const [formMode, setFormMode] = useState<'create' | 'update' | 'view' | null>(null);
@@ -40,6 +46,16 @@ const CityList: React.FC = () => {
       message.error('Không thể tải danh sách thành phố');
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Lấy danh sách tỉnh
+  const fetchProvinces = async () => {
+    try {
+      const response = await axiosInstance.get('/api/province/list');
+      setProvinces(response.data);
+    } catch (error) {
+      message.error('Không thể tải danh sách tỉnh');
     }
   };
 
@@ -74,6 +90,7 @@ const CityList: React.FC = () => {
 
   useEffect(() => {
     fetchCities();
+    fetchProvinces();
   }, []);
 
   const columns = [
@@ -88,9 +105,13 @@ const CityList: React.FC = () => {
       key: 'name',
     },
     {
-      title: 'Mã Tỉnh',
+      title: 'Tên Tỉnh',
       dataIndex: 'province',
       key: 'province',
+      render: (provinceId: number) => {
+        const province = provinces.find(province => province.id === provinceId);
+        return province ? province.name : '';
+      }
     },
     {
       title: 'Thao Tác',

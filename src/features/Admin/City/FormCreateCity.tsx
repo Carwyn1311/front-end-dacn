@@ -1,11 +1,5 @@
-import React from 'react';
-import { 
-  Drawer, 
-  Form, 
-  Input, 
-  Button, 
-  message 
-} from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Drawer, Form, Input, Button, message, Select } from 'antd';
 import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
 import '../css/FormCreateCity.css';
 
@@ -14,15 +8,35 @@ interface FormCreateCityProps {
   onSuccess: () => void;
 }
 
-const FormCreateCity: React.FC<FormCreateCityProps> = ({ 
-  onClose, 
-  onSuccess 
-}) => {
+const FormCreateCity: React.FC<FormCreateCityProps> = ({ onClose, onSuccess }) => {
   const [form] = Form.useForm();
+  const [provinces, setProvinces] = useState([]);
+
+  useEffect(() => {
+    // Fetch the list of provinces from the API
+    const fetchProvinces = async () => {
+      try {
+        const response = await axiosInstance.get('/api/province/list');
+        setProvinces(response.data);
+      } catch (error) {
+        message.error('Lỗi khi tải danh sách tỉnh');
+      }
+    };
+
+    fetchProvinces();
+  }, []);
 
   const handleSubmit = async (values: any) => {
     try {
-      await axiosInstance.post('/api/city/create', values);
+      // Tạo đối tượng dữ liệu như yêu cầu
+      const data = {
+        name: values.name,
+        province: {
+          id: values.provinceId
+        }
+      };
+      
+      await axiosInstance.post('/api/city/create', data);
       message.success('Tạo thành phố thành công');
       onSuccess();
       onClose();
@@ -57,18 +71,24 @@ const FormCreateCity: React.FC<FormCreateCityProps> = ({
         </Form.Item>
 
         <Form.Item
-          name="province"
-          label="Mã Tỉnh"
+          name="provinceId"
+          label="Tỉnh"
           rules={[{ 
             required: true, 
-            message: 'Vui lòng nhập mã tỉnh' 
+            message: 'Vui lòng chọn tỉnh' 
           }]}
         >
-          <Input type="number" placeholder="Nhập mã tỉnh" />
+          <Select placeholder="Chọn tỉnh">
+            {provinces.map((province: any) => (
+              <Select.Option key={province.id} value={province.id}>
+                {province.name}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
 
         <Form.Item>
-        <Button 
+          <Button 
             type="primary" 
             htmlType="submit"
             className="citylist-create-submit-btn"

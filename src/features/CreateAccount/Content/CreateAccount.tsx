@@ -71,37 +71,35 @@ const CreateAccount: React.FC = () => {
     <div className="create-account-group">
       <h2>Create Account</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>User Name:</label>
-          <TextField
-            label="Username"
-            type="text"
-            fullWidth
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <TextField
-            label="Password"
-            type="password"
-            fullWidth
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Email:</label>
-          <TextField
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
+        <TextField
+          type='input'
+          label="Username"
+          fullWidth
+          variant="outlined"
+          margin="normal"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+          required
+        />
+        <TextField
+          label="Email"
+          type="input"
+          fullWidth
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <TextField
+          label="Password"
+          type="password"
+          fullWidth
+          variant="outlined"
+          margin="normal"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+
         {error && <p className="error">{error}</p>}
         <button onClick={handleCreateAccount} className="create-account-btn">
           Create Account

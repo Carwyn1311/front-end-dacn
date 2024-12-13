@@ -156,10 +156,10 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
         }}
       >
         <Typography variant="h4" align="center" gutterBottom>
-          CHERRY CHAT
+          Travel Login
         </Typography>
         <Typography variant="h6" align="center" gutterBottom>
-          Login
+          Wellcome
         </Typography>
         <form onSubmit={handleSubmit}>
           <TextField
@@ -180,6 +180,8 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
             value={password}
             onChange={handlePasswordChange}
           />
+
+          
           <FormControlLabel
             control={
               <Checkbox
