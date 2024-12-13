@@ -1,18 +1,9 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import {
-  TextField,
-  List,
-  ListItem,
-  ListItemText,
-  Box,
-  Button,
-  Popper,
-  Paper,
-  ClickAwayListener,
-} from '@mui/material';
+import { Dropdown, MenuProps } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 interface AutoSearchProps {
-  items: { name: string; url: string; description?: string }[];
+  items: { name: string; url: string; description?: string }[]; 
   onSelectItem: (item: string, url: string) => void;
   label?: string;
   placeholder?: string;
@@ -37,22 +28,19 @@ const AutoSearch: React.FC<AutoSearchProps> = ({
   onChange,
   width = '100%',
   height = 'auto',
-  buttonText,
-  buttonUrl,
+  buttonText, 
+  buttonUrl,  
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>(value);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
+  const [visible, setVisible] = useState<boolean>(false);
 
   const handleSearchChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       setSearchTerm(value);
       onChange?.(e);
-      if (value !== '') {
-        setAnchorEl(e.currentTarget);
-      } else {
-        setAnchorEl(null);
-      }
+      setVisible(true);
     },
     [onChange]
   );
@@ -69,19 +57,30 @@ const AutoSearch: React.FC<AutoSearchProps> = ({
     (item: { name: string; url: string }) => {
       setSearchTerm(item.name);
       onSelectItem(item.name, item.url);
-      setAnchorEl(null); // Đóng danh sách
+      setVisible(false);
     },
     [onSelectItem]
   );
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const menuItems: MenuProps['items'] = useMemo(
+    () =>
+      filteredItems.map((item, index) => ({
+        key: index.toString(),
+        label: (
+          <div>
+            <span>{item.name}</span>
+            {item.description && <small style={{ display: 'block', color: '#aaa' }}>{item.description}</small>}
+          </div>
+        ),
+        onClick: () => handleItemSelect(item),
+      })),
+    [filteredItems, handleItemSelect]
+  );
 
   return (
-    <Box
+    <div
       className={`floating-label-container ${className}`}
-      sx={{
+      style={{
         width,
         height: height !== '' ? height : 'auto',
         position: 'relative',
@@ -91,76 +90,87 @@ const AutoSearch: React.FC<AutoSearchProps> = ({
         display: 'flex',
         alignItems: 'center',
         backgroundColor: '#ffffff',
-        zIndex: 1000,
+        color: '#333',
+        zIndex: 1000, 
       }}
     >
-      {prefix && (
-        <Box sx={{ marginRight: '8px', fontSize: '18px' }}>{prefix}</Box>
+      {prefix != null && (
+        <span style={{ marginRight: '8px', fontSize: '18px', zIndex: 1000 }}>{prefix}</span>
       )}
-      <TextField
-        fullWidth
-        variant="standard"
-        label={label}
-        placeholder={placeholder}
-        value={searchTerm}
-        onChange={handleSearchChange}
-        InputProps={{ disableUnderline: true }}
-        sx={{
-          '& .MuiInputLabel-root': {
+      <div style={{ flexGrow: 1, position: 'relative', zIndex: 1000 }}>
+        <label
+          className={`floating-label ${isFocused || searchTerm !== '' ? 'focused' : ''}`}
+          style={{
+            position: 'absolute',
+            top: isFocused || searchTerm !== '' ? '-3px' : '50%',
+            left: '8px',
+            transform: 'translateY(-50%)',
+            fontSize: isFocused || searchTerm !== '' ? '12px' : '16px',
+            transition: 'all 0.2s ease',
+            color: isFocused ? '#000' : '#aaa',
+            zIndex: 1000,
+          }}
+        >
+          {label}
+        </label>
+        <input
+          className="auto-search-input"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          placeholder={placeholder}
+          onClick={() => setVisible(true)}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          style={{
+            width: '100%',
+            height: '100%',
+            border: 'none',
+            outline: 'none',
+            padding: '8px 12px',
             fontSize: '14px',
-            color: '#aaa',
-          },
-        }}
-      />
-      <Popper
-        open={Boolean(anchorEl && filteredItems.length > 0)}
-        anchorEl={anchorEl}
-        placement="bottom-start"
-        style={{ zIndex: 1300, width: width }}
-      >
-        <ClickAwayListener onClickAway={handleClose}>
-          <Paper
-            sx={{
+            backgroundColor: 'transparent',
+            zIndex: 1,
+          }}
+        />
+      </div>
+      {visible && filteredItems.length > 0 && (
+        <Dropdown
+          menu={{ items: menuItems }}
+          overlayStyle={{ width: '100%', top: '55px' }}
+          open={visible}
+          onOpenChange={setVisible}
+          getPopupContainer={(triggerNode) => triggerNode.parentNode as HTMLElement}
+        >
+          <div
+            className="auto-search-trigger"
+            style={{
               maxHeight: '200px',
               overflowY: 'auto',
-              marginTop: '4px',
-              borderRadius: '4px',
-              boxShadow: 3,
+              marginTop: '10px', 
+              position: 'absolute',
+              width: '100%',
+              zIndex: 9999, 
             }}
-          >
-            <List>
-              {filteredItems.map((item, index) => (
-                <ListItem
-                  key={index}
-                  component="button" // Sửa lỗi bằng cách thêm component="button"
-                  onClick={() => handleItemSelect(item)}
-                  sx={{ padding: '8px 12px' }}
-                >
-                  <ListItemText
-                    primary={item.name}
-                    secondary={item.description}
-                  />
-                </ListItem>
-              ))}
-            </List>
-          </Paper>
-        </ClickAwayListener>
-      </Popper>
+          />
+        </Dropdown>
+      )}
       {buttonText && buttonUrl && (
-        <Button
-          variant="contained"
-          onClick={() => (window.location.href = buttonUrl)}
-          sx={{
-            marginLeft: '8px',
+        <button
+          onClick={() => window.location.href = buttonUrl}
+          style={{
+            marginTop: '10px',
+            padding: '8px 12px',
             backgroundColor: '#ff6700',
             color: 'white',
-            '&:hover': { backgroundColor: '#cc5500' },
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
           }}
         >
           {buttonText}
-        </Button>
+        </button>
       )}
-    </Box>
+    </div>
   );
 };
 
