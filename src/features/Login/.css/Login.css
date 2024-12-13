@@ -1,3 +1,4 @@
+
 /* Tổng thể body */
 body {
   margin: 0;
@@ -10,38 +11,14 @@ body {
   align-items: center;
 }
 
-.input-username{
-  height: 40px;
-}
-
-/* Hiệu ứng nảy nhẹ */
-@keyframes bounce {
-  0% { transform: scale(1); }
-  25% { transform: scale(1.1); }
-  50% { transform: scale(1); }
-  75% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-/* Các trường input và button có hiệu ứng hover nảy nhẹ */
-.input-field:hover, 
-button:hover, 
-.create-account-btn:hover, 
-.forgot-password-btn:hover {
-  animation: bounce 0.5s ease-in-out;
-}
-
-/* Tổng thể login-group */
 .login-group {
   display: flex;
-  background-image:('/images/Tokyo_japan.jpg');
   justify-content: center;
   align-items: center;
   height: 100%;
   width: 100%;
 }
 
-/* Container đăng nhập */
 .login-container {
   background-color: #fff; /* Nền trắng cho container */
   border-radius: 8px; /* Bo góc */
@@ -93,14 +70,14 @@ button:hover,
 /* Trường input */
 .input-field {
   flex: 1;
-  padding: 10px;
-  font-size: 14px;
+  padding: 10px; /* Điều chỉnh padding */
+  font-size: 14px; /* Giữ kích thước font chữ */
   border-radius: 6px;
   border: 1px solid #ddd;
   outline: none;
   transition: border-color 0.3s ease;
   width: 100%;
-  max-width: 260px;
+  max-width: 260px; /* Giới hạn chiều rộng cho phù hợp với khung */
 }
 
 .input-field:focus {
@@ -132,7 +109,7 @@ button {
   padding: 12px;
   font-size: 16px;
   font-weight: bold;
-  background-color: #2f54eb;
+  background-color: #2f54eb; /* Màu xanh chủ đạo */
   color: white;
   border: none;
   border-radius: 6px;
@@ -162,6 +139,8 @@ button:hover {
 
 /* Footer */
 footer {
+  position: absolute;
+  bottom: 10px;
   text-align: center;
   width: 100%;
   color: #999;
@@ -177,6 +156,7 @@ footer a:hover {
 }
 
 /* Nhóm các nút nằm ngang */
+/* Container cho hai nút */
 .horizontal-buttons {
   display: flex;
   justify-content: center; /* Căn giữa theo chiều ngang */

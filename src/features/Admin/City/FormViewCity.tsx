@@ -1,8 +1,6 @@
-import React from 'react';
-import { 
-  Drawer, 
-  Descriptions 
-} from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Drawer, Descriptions, message } from 'antd';
+import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
 import '../css/FormViewCity.css';
 
 interface City {
@@ -11,15 +9,40 @@ interface City {
   province: number;
 }
 
+interface Province {
+  id: number;
+  name: string;
+  country: string;
+}
+
 interface FormViewCityProps {
   city: City;
   onClose: () => void;
 }
 
-const FormViewCity: React.FC<FormViewCityProps> = ({ 
-  city, 
-  onClose 
-}) => {
+const FormViewCity: React.FC<FormViewCityProps> = ({ city, onClose }) => {
+  const [provinceName, setProvinceName] = useState<string>('');
+  const [countryName, setCountryName] = useState<string>('');
+
+  useEffect(() => {
+    // Fetch the list of provinces to get the province name and country
+    const fetchProvinces = async () => {
+      try {
+        const response = await axiosInstance.get('/api/province/list');
+        const provinces: Province[] = response.data;
+        const province = provinces.find(province => province.id === city.province);
+        if (province) {
+          setProvinceName(province.name);
+          setCountryName(province.country);
+        }
+      } catch (error) {
+        message.error('Lỗi khi tải thông tin tỉnh');
+      }
+    };
+
+    fetchProvinces();
+  }, [city.province]);
+
   return (
     <Drawer
       title="Chi Tiết Thành Phố"
@@ -35,8 +58,11 @@ const FormViewCity: React.FC<FormViewCityProps> = ({
         <Descriptions.Item label="Tên Thành Phố">
           {city.name}
         </Descriptions.Item>
-        <Descriptions.Item label="Mã Tỉnh">
-          {city.province}
+        <Descriptions.Item label="Tên Tỉnh">
+          {provinceName}
+        </Descriptions.Item>
+        <Descriptions.Item label="Quốc Gia">
+          {countryName}
         </Descriptions.Item>
       </Descriptions>
     </Drawer>
