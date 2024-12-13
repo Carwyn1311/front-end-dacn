@@ -1,9 +1,9 @@
+import { FaUserCircle } from "react-icons/fa"; 
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import { UserOutlined } from '@ant-design/icons';
 import { HiChevronDoubleLeft, HiOutlineMenu } from 'react-icons/hi';
-import { RiArrowGoBackLine } from 'react-icons/ri'; // Import biểu tượng "Quay lại"
+import { RiArrowGoBackLine } from 'react-icons/ri';
 import Sidebar from './features/Sidebar/Content/Sidebar';
 import Button from './components/Button/Button';
 import MainContent from './features/Maincontent/Content/MainContent';
@@ -113,7 +113,7 @@ const AppContent: React.FC = () => {
                   <Button className="username">{username}</Button>
                 ) : (
                   <Button className="button-login" onClick={() => navigate('/login')}>
-                    <UserOutlined /> {language === 'en' ? 'Login' : 'Đăng nhập'}
+                    <FaUserCircle /> {language === 'en' ? 'Login' : 'Đăng nhập'}
                   </Button>
                 )}
                 <Button className="language" onClick={toggleLanguage}>

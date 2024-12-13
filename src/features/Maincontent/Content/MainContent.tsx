@@ -49,8 +49,8 @@ const MainContent: React.FC = () => {
               onSelectItem={handleSelectItem}
               label="Search for Tour...."
               placeholder=""
-              width='50%'
-              height='60px'
+              width='500px'
+              height='70px'
             />
             <h2 className="info-tour-2025">TOUR TẾT 2025</h2>
             <div className="TourSlider">
