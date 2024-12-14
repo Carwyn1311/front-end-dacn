@@ -1,125 +1,248 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, List, Modal, message } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import Button from '../../../components/Button/Button';
-import SearchInput from '../../../components/SearchInput/SearchInput';
-import { FaSearch } from 'react-icons/fa';
-import Dropdown from '../../../components/Dropdown/Dropdown';
-import CreateUserForm from '../../CreateUserForm/CreateUserForm';
+import { Table, Card, Modal, message, Button, Input, Form, Select } from 'antd';
+import { PlusOutlined, EyeOutlined } from '@ant-design/icons';
+import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
 import '../css/AdminUser.css';
-import Analytics from '../../LoadAnalytics/Analytics';
+
+const { Option } = Select;
+
+interface User {
+  id: number;
+  fullname: string | null;
+  username: string;
+  email: string;
+  address: string | null;
+  phone: string | null;
+  roles: { id: number; name: string }[];
+}
+
+interface Role {
+  id: number;
+  name: string;
+}
 
 const AdminUser: React.FC = () => {
   const navigate = useNavigate();
+  const [users, setUsers] = useState<User[]>([]);
+  const [roles, setRoles] = useState<Role[]>([]);
+  const [loading, setLoading] = useState(false);
   const [searchValue, setSearchValue] = useState<string>('');
-  const [users, setUsers] = useState<any[]>([]);
-  const [statusFilter, setStatusFilter] = useState<string>('Tất cả');
-  const [roleFilter, setRoleFilter] = useState<string>('Tất cả');
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [isViewUserModalOpen, setIsViewUserModalOpen] = useState(false);
   const [isCreateUserModalOpen, setIsCreateUserModalOpen] = useState(false);
-  const token = localStorage.getItem('jwtToken'); // Giả định token đã được lưu sau khi đăng nhập
+  const [form] = Form.useForm();
+  const token = localStorage.getItem('jwtToken');
   const successMessageShownRef = useRef(false);
 
-  useEffect(() => {
-    loadUsers();
-  }, []);
-
-  // Hàm tải danh sách người dùng từ API
-  const loadUsers = async () => {
+  const fetchUsers = async () => {
+    setLoading(true);
     try {
-      const response = await fetch('https://chat-api-backend-56ja.onrender.com/admin/users', {
-        method: 'GET',
+      const response = await axiosInstance.get('/api/list-user', {
         headers: {
-          'Authorization': `Bearer ${token}`, // Thêm JWT token vào tiêu đề Authorization
-          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
       });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Không thể tải danh sách người dùng');
+      setUsers(response.data);
+      if (!successMessageShownRef.current) {
+        message.success('Tải danh sách người dùng thành công');
+        successMessageShownRef.current = true;
       }
-
-      const usersData = await response.json();
-      setUsers(usersData);
-      message.success('Tải danh sách người dùng thành công');
     } catch (error) {
-      console.error('Error loading users:', error);
-      message.error('Lỗi khi tải danh sách người dùng: ' + (error as Error).message);
+      message.error('Không thể tải danh sách người dùng');
+    } finally {
+      setLoading(false);
     }
   };
+
+  const fetchRoles = async () => {
+    try {
+      const response = await axiosInstance.get('/api/roles', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setRoles(response.data);
+    } catch (error) {
+      message.error('Không thể tải danh sách vai trò');
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+    fetchRoles();
+  }, []);
 
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
-    filterUsers(value, statusFilter, roleFilter);
+  };
+
+  const handleRoleChange = async (userId: number, roleId: number) => {
+    try {
+      const roleToUpdate = roles.find(role => role.id === roleId);
+      if (!roleToUpdate) return;
+
+      const rolesToUpdate = [roleToUpdate];
+      await axiosInstance.put(`/api/${userId}/roles`, rolesToUpdate, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      message.success('Cập nhật vai trò thành công');
+      setUsers(users.map(user => user.id === userId ? { ...user, roles: rolesToUpdate } : user));
+    } catch (error: any) {
+      if (error instanceof Error) {
+        message.error('Lỗi khi cập nhật vai trò người dùng: ' + error.message);
+      } else {
+        message.error('Lỗi không xác định khi cập nhật vai trò người dùng');
+      }
+    }
+  };
+
+  const handleViewUser = (user: User) => {
+    setSelectedUser(user);
+    setIsViewUserModalOpen(true);
+    form.setFieldsValue(user);
   };
 
   const handleAddUser = () => {
-    setIsCreateUserModalOpen(true); 
+    setIsCreateUserModalOpen(true);
   };
 
-  const handleUserCreated = async (newUser: any) => {
+  const handleUpdateUser = async (values: any) => {
+    if (!selectedUser) return;
+
     try {
-      const response = await fetch('https://chat-api-backend-56ja.onrender.com/admin/users/create', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newUser),
-      });
-      if (!response.ok) throw new Error('Không thể tạo người dùng mới');
+        const response = await axiosInstance.put(`/api/update-user/${selectedUser.username}`, values, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
 
-      const createdUser = await response.json();
-      message.success('Tạo người dùng thành công');
-      setUsers([...users, createdUser]); 
-      setIsCreateUserModalOpen(false); 
-    } catch (error) {
-      console.error('Error creating user:', error);
-      message.error('Lỗi khi tạo người dùng: ' + (error as Error).message);
+        message.success('Cập nhật người dùng thành công');
+        setUsers(users.map(user => (user.id === selectedUser.id ? { ...selectedUser, ...values } : user)));
+        setIsViewUserModalOpen(false);
+    } catch (error: any) {
+        message.error('Lỗi khi cập nhật người dùng: ' + (error as Error).message);
     }
-  };
+};
 
-  const handleDeleteUser = async (userId: string) => {
-    try {
-      await fetch(`https://chat-api-backend-56ja.onrender.com/admin/users/${userId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-      message.success('Xóa người dùng thành công');
-      setUsers(users.filter((user) => user.id !== userId));
-    } catch (error) {
-      console.error('Error deleting user:', error);
-      message.error('Lỗi khi xóa người dùng: ' + (error as Error).message);
-    }
-  };
 
-  const filterUsers = (searchValue: string, status: string, role: string) => {
-    // Chức năng lọc người dùng theo searchValue, status, và role
-  };
-
-  const handleStatusChange = (status: string) => {
-    setStatusFilter(status);
-    filterUsers(searchValue, status, roleFilter);
-  };
-
-  const handleRoleChange = (role: string) => {
-    setRoleFilter(role);
-    filterUsers(searchValue, statusFilter, role);
-  };
+  const columns = [
+    {
+      title: 'Tên Đăng Nhập',
+      dataIndex: 'username',
+      key: 'username',
+    },
+    {
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
+    },
+    { title: 'Vai Trò', 
+      dataIndex: 'roles', 
+      key: 'roles', 
+      render: (roles: { id: number; name: string }[], record: User) => ( 
+        roles.map(role => role.name).join(', ') ), 
+      },
+    {
+      title: 'Hành Động',
+      key: 'action',
+      render: (text: any, record: User) => (
+        <span>
+          <Button icon={<EyeOutlined />} onClick={() => handleViewUser(record)}>Xem</Button>
+        </span>
+      ),
+    },
+  ];
 
   return (
     <div className="admin-user-content">
       <div className="user-container">
         <Card title="Quản lý người dùng" className="admin-user-card">
-          <h3>USer</h3> 
+          <div className="admin-user-actions">
+            <Button type="primary" icon={<PlusOutlined />} onClick={handleAddUser}>Thêm Người Dùng</Button>
+            <Input
+              placeholder="Tìm kiếm người dùng"
+              value={searchValue}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              className="admin-user-search"
+            />
+          </div>
+          <Table
+            columns={columns}
+            dataSource={users}
+            loading={loading}
+            rowKey="id"
+            className='userlist-table'
+          />
         </Card>
       </div>
+
+      <Modal
+        title="Thông Tin Người Dùng"
+        visible={isViewUserModalOpen && selectedUser !== null}
+        onCancel={() => setIsViewUserModalOpen(false)}
+        footer={null}
+      >
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleUpdateUser}
+        >
+          <Form.Item name="fullname" label="Họ Tên">
+            <Input />
+          </Form.Item>
+          <Form.Item name="username" label="Tên Đăng Nhập">
+            <Input />
+          </Form.Item>
+          <Form.Item name="email" label="Email">
+            <Input />
+          </Form.Item>
+          <Form.Item name="address" label="Địa Chỉ">
+            <Input />
+          </Form.Item>
+          <Form.Item name="phone" label="Số Điện Thoại">
+            <Input />
+          </Form.Item>
+          {/* Add any other fields you need here */}
+          <Form.Item>
+            <Button type="primary" htmlType="submit">Cập Nhật Thông Tin</Button>
+          </Form.Item>
+        </Form>
+        <Form
+          layout="vertical"
+          style={{ marginTop: '20px' }}
+        >
+          <Form.Item name="roles" label="Vai Trò">
+            <Select
+              placeholder="Chọn vai trò"
+              style={{ width: '100%' }}
+              value={selectedUser ? selectedUser.roles[0]?.id : undefined}
+              onChange={(value) => handleRoleChange(selectedUser!.id, value)}
+            >
+              {roles.map(role => (
+                <Option key={role.id} value={role.id}>
+                  {role.name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      <Modal
+        title="Tạo Người Dùng Mới"
+        visible={isCreateUserModalOpen}
+        onCancel={() => setIsCreateUserModalOpen(false)}
+        footer={null}
+      >
+        {/* Render CreateUserForm here */}
+      </Modal>
     </div>
   );
 };
 
 export default AdminUser;
+
