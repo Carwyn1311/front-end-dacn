@@ -4,8 +4,13 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^5.5.1",
+<<<<<<< HEAD
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+=======
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+>>>>>>> 68d699e2ecf72103b363a40a3554efcfdbc43f0e
     "@mui/material": "^6.2.0",
     "@stomp/stompjs": "^7.0.0",
     "@testing-library/jest-dom": "^5.17.0",

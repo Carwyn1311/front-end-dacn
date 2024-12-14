@@ -126,7 +126,7 @@ const AutoSearch: React.FC<AutoSearchProps> = ({
             height: '100%',
             border: 'none',
             outline: 'none',
-            padding: '8px 12px',
+            padding: '12px 12px',
             fontSize: '14px',
             backgroundColor: 'transparent',
             zIndex: 1,
@@ -136,7 +136,7 @@ const AutoSearch: React.FC<AutoSearchProps> = ({
       {visible && filteredItems.length > 0 && (
         <Dropdown
           menu={{ items: menuItems }}
-          overlayStyle={{ width: '100%', top: '55px' }} // Di chuyển xuống thêm 30px
+          overlayStyle={{ width: '100%', top: '55px' }}
           open={visible}
           onOpenChange={setVisible}
           getPopupContainer={(triggerNode) => triggerNode.parentNode as HTMLElement}

@@ -1,5 +1,4 @@
 import React from 'react';
-import './Text.css';
 
 interface TextProps {
   content: string
