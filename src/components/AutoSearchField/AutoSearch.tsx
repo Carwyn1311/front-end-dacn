@@ -126,7 +126,7 @@ const AutoSearch: React.FC<AutoSearchProps> = ({
             height: '100%',
             border: 'none',
             outline: 'none',
-            padding: '8px 12px',
+            padding: '12px 12px',
             fontSize: '14px',
             backgroundColor: 'transparent',
             zIndex: 1,
