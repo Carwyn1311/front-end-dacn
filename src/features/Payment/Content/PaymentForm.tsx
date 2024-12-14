@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { Input, Button, DatePicker, Form, Radio } from 'antd';
-import { DatePickerProps } from 'antd/es/date-picker';
-import { RadioChangeEvent } from 'antd';
-import dayjs from 'dayjs';
+import { TextField, Button, Radio, RadioGroup, FormControl, FormControlLabel, FormLabel, FilledTextFieldProps, OutlinedTextFieldProps, StandardTextFieldProps, TextFieldVariants } from '@mui/material';
+import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor'; // Axios instance
+import dayjs, { Dayjs } from 'dayjs';
+import { JSX } from 'react/jsx-runtime';
+import DatePicker from 'react-datepicker';
 
 interface PaymentFormProps {
   onSubmit: (formData: PaymentFormData) => void;
@@ -15,6 +15,8 @@ interface PaymentFormData {
   cardHolder: string;
   expirationDate: Date | null;
   cvv: string;
+  amount: string;
+  paymentMethod: 'card' | 'momo';
 }
 
 const PaymentForm: React.FC<PaymentFormProps> = ({ onSubmit, className }) => {
@@ -23,147 +25,102 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onSubmit, className }) => {
     cardHolder: '',
     expirationDate: null,
     cvv: '',
+    amount: '',
+    paymentMethod: 'card',
   });
-  const [paymentMethod, setPaymentMethod] = useState<'card' | 'momo'>('card');
-  const [amount, setAmount] = useState<string>('');
 
+  const [loading, setLoading] = useState(false);
+
+  // Hàm thay đổi thông tin từ các input
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleDateChange = (date: DatePickerProps['value'] | null) => {
+  // Hàm xử lý sự kiện thay đổi ngày
+  const handleDateChange = (date: Dayjs | null) => {
     setFormData({ ...formData, expirationDate: date ? date.toDate() : null });
   };
 
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(e.target.value);
+  // Hàm thay đổi phương thức thanh toán
+  const handlePaymentMethodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, paymentMethod: e.target.value as 'card' | 'momo' });
   };
 
-  const handlePaymentMethodChange = (e: RadioChangeEvent) => {
-    setPaymentMethod(e.target.value as 'card' | 'momo');
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  // Hàm xử lý submit form
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (paymentMethod === 'momo') {
-      handleMoMoPayment();
-    } else {
-      onSubmit(formData);
-    }
-  };
+    setLoading(true);
 
-  const handleMoMoPayment = async () => {
     try {
-      const response = await axios.post('https://test-payment.momo.vn/v2/gateway/api/create', {
-        partnerCode: 'YOUR_PARTNER_CODE',
-        accessKey: 'YOUR_ACCESS_KEY',
-        secretKey: 'YOUR_SECRET_KEY',
-        requestId: `${Date.now()}`,
-        amount: amount,
-        orderId: `${Date.now()}`,
-        orderInfo: 'Thanh toán đơn hàng MoMo',
-        redirectUrl: 'YOUR_REDIRECT_URL',
-        ipnUrl: 'YOUR_IPN_URL',
-        requestType: 'captureWallet',
-      });
-
-      if (response.data && response.data.payUrl) {
-        window.location.href = response.data.payUrl;
-      }
+      // Gửi dữ liệu thanh toán lên server
+      await axiosInstance.post('/payment/submit', formData);
+      onSubmit(formData); // Call onSubmit callback
+      setLoading(false);
     } catch (error) {
-      console.error('Payment Error:', error);
+      console.error("Error submitting payment:", error);
+      setLoading(false);
     }
   };
 
   return (
-    <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-      {/* Hiển thị ảnh MoMo chỉ khi người dùng chọn phương thức thanh toán là MoMo */}
-      {paymentMethod === 'momo' && (
-        <div style={{ marginRight: '20px' }}>
-          <img src="/momo.jpg" alt="MoMo payment logo" style={{ maxWidth: '300px', height: 'auto' }} />
-        </div>
-      )}
+    <form onSubmit={handleSubmit} className={className}>
+      <TextField
+        label="Card Number"
+        name="cardNumber"
+        value={formData.cardNumber}
+        onChange={handleChange}
+        fullWidth
+        margin="normal"
+      />
 
-      {/* Form bên phải */}
-      <Form onFinish={handleSubmit} layout="vertical" className={`payment-form ${className}`} style={{ flex: 1 }}>
-        <Form.Item label="Amount">
-          <Input value={amount} onChange={handleAmountChange} placeholder="Enter amount" />
-        </Form.Item>
+      <TextField
+        label="Card Holder"
+        name="cardHolder"
+        value={formData.cardHolder}
+        onChange={handleChange}
+        fullWidth
+        margin="normal"
+      />
 
-        <Form.Item label="Payment Method">
-          <Radio.Group onChange={handlePaymentMethodChange} value={paymentMethod}>
-            <Radio value="card">Credit/Debit Card</Radio>
-            <Radio value="momo">MoMo Wallet</Radio>
-          </Radio.Group>
-        </Form.Item>
+      <TextField
+        label="CVV"
+        name="cvv"
+        value={formData.cvv}
+        onChange={handleChange}
+        fullWidth
+        margin="normal"
+        type="password"
+      />
 
-        {paymentMethod === 'card' && (
-          <>
-            <Form.Item
-              label="Card Number"
-              name="cardNumber"
-              rules={[{ required: true, message: 'Please enter your card number!' }]}
-            >
-              <Input
-                name="cardNumber"
-                value={formData.cardNumber}
-                onChange={handleChange}
-                placeholder="Card Number"
-              />
-            </Form.Item>
+      <TextField
+        label="Amount"
+        name="amount"
+        value={formData.amount}
+        onChange={handleChange}
+        fullWidth
+        margin="normal"
+        type="number"
+      />
 
-            <Form.Item
-              label="Card Holder"
-              name="cardHolder"
-              rules={[{ required: true, message: 'Please enter the card holder name!' }]}
-            >
-              <Input
-                name="cardHolder"
-                value={formData.cardHolder}
-                onChange={handleChange}
-                placeholder="Card Holder"
-              />
-            </Form.Item>
+      {/* Phương thức thanh toán */}
+      <FormControl component="fieldset">
+        <FormLabel component="legend">Payment Method</FormLabel>
+        <RadioGroup
+          value={formData.paymentMethod}
+          onChange={handlePaymentMethodChange}
+          row
+        >
+          <FormControlLabel value="card" control={<Radio />} label="Card" />
+          <FormControlLabel value="momo" control={<Radio />} label="Momo" />
+        </RadioGroup>
+      </FormControl>
 
-            <Form.Item
-              label="Expiration Date"
-              name="expirationDate"
-              rules={[{ required: true, message: 'Please select the expiration date!' }]}
-            >
-              <DatePicker
-                name="expirationDate"
-                value={formData.expirationDate ? dayjs(formData.expirationDate) : null}
-                onChange={handleDateChange}
-                format="MM/YYYY"
-                placeholder="MM/YYYY"
-                picker="month"
-              />
-            </Form.Item>
-
-            <Form.Item
-              label="CVV"
-              name="cvv"
-              rules={[{ required: true, message: 'Please enter your CVV!' }]}
-            >
-              <Input
-                type="number"
-                name="cvv"
-                value={formData.cvv}
-                onChange={handleChange}
-                placeholder="CVV"
-              />
-            </Form.Item>
-          </>
-        )}
-
-        <Form.Item>
-          <Button type="primary" htmlType="submit" block>
-            {paymentMethod === 'momo' ? 'Pay with MoMo' : 'Submit Payment'}
-          </Button>
-        </Form.Item>
-      </Form>
-    </div>
+      {/* Submit Button */}
+      <Button type="submit" variant="contained" color="primary" fullWidth disabled={loading}>
+        {loading ? 'Processing...' : 'Submit Payment'}
+      </Button>
+    </form>
   );
 };
 

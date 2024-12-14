@@ -1,8 +1,7 @@
+// BookingForm.js
 import React, { useState } from 'react';
-import { Form, Input, InputNumber, Select, Button, message } from 'antd';
-import axios from 'axios';
-
-const { Option } = Select;
+import { Form, Input, InputNumber, Button, message, Select } from 'antd';
+import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
 
 const BookingForm: React.FC = () => {
   const [form] = Form.useForm();
@@ -13,10 +12,17 @@ const BookingForm: React.FC = () => {
     setLoading(true);
 
     try {
-      // Gửi dữ liệu đến server bằng axios
-      const response = await axios.post('https://your-server-api-endpoint.com/submit', values);
-      console.log('Response from server:', response.data);
-      message.success('Form submitted successfully!');
+      // Gửi dữ liệu đến server bằng axiosInstance
+      const response = await axiosInstance.post('/submit', values);
+      
+      // Kiểm tra dữ liệu phản hồi và xử lý
+      if (response.data && response.data !== undefined) {
+        console.log('Response from server:', response.data);
+        message.success('Form submitted successfully!');
+      } else {
+        throw new Error('Invalid response data');
+      }
+      
     } catch (error) {
       console.error('Error submitting form:', error);
       message.error('There was an error submitting the form.');
@@ -52,17 +58,13 @@ const BookingForm: React.FC = () => {
         <Form.Item
           label="Payment Method"
           name="paymentMethod"
-          rules={[{ required: true, message: 'Please select a payment method!' }]}
+          rules={[{ required: true, message: 'Please select payment method!' }]}
         >
-          <Select placeholder="Select a payment method">
-            <Option value="full">Pay 100%</Option>
-            <Option value="half">Pay 50%</Option>
-          </Select>
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading} block>
-            Confirm Booking
+          <Button type="primary" htmlType="submit" loading={loading} style={{ width: '100%' }}>
+            Submit
           </Button>
         </Form.Item>
       </Form>
