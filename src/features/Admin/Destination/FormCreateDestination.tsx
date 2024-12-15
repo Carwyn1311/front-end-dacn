@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Form, Input, Button, Select, Upload, message, Steps } from 'antd';
-import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
+import { Modal, Steps, message } from 'antd';
 import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
+import DestinationInfoForm from './form/DestinationInfoForm';
+import ImageUploadForm from './form/ImageUploadForm';
+import DescriptionFileUploadForm from './form/DescriptionFileUploadForm';
+import TicketPricesForm from './form/TicketPricesForm';
+import FormCreateItinerary from './form/FormCreateItinerary';
 
-const { Option } = Select;
 const { Step } = Steps;
 
 interface City {
@@ -19,15 +22,14 @@ interface FormCreateDestinationProps {
 
 const FormCreateDestination: React.FC<FormCreateDestinationProps> = ({ onClose, onSuccess }) => {
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const [form] = Form.useForm();
-  const [fileList, setFileList] = useState<any[]>([]);
-  const [descriptionFile, setDescriptionFile] = useState<any>(null);
   const [destinationId, setDestinationId] = useState<number | null>(null);
   const [cities, setCities] = useState<City[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [fileList, setFileList] = useState<any[]>([]);
+  const [descriptionFile, setDescriptionFile] = useState<File | null>(null);
+  const [itinerary, setItinerary] = useState<any | null>(null);
   const token = localStorage.getItem('token');
 
-  // Fetch cities
   useEffect(() => {
     const fetchCities = async () => {
       setLoading(true);
@@ -58,7 +60,10 @@ const FormCreateDestination: React.FC<FormCreateDestinationProps> = ({ onClose, 
       } catch (error) {
         message.error('Lỗi khi tạo điểm đến');
       }
-    } else {
+    } else if (currentStep === 1 || currentStep === 2 || currentStep === 3) {
+      setCurrentStep(currentStep + 1);
+    } else if (currentStep === 4) {
+      setItinerary(values);
       setCurrentStep(currentStep + 1);
     }
   };
@@ -74,7 +79,6 @@ const FormCreateDestination: React.FC<FormCreateDestinationProps> = ({ onClose, 
     }
 
     try {
-      // Convert images to base64 and upload
       if (fileList.length > 0) {
         const imagesToSave = await Promise.all(fileList.map(async (file: any) => {
           const base64 = await getBase64(file.originFileObj);
@@ -92,24 +96,59 @@ const FormCreateDestination: React.FC<FormCreateDestinationProps> = ({ onClose, 
         });
       }
 
-      // Upload file mô tả
       if (descriptionFile) {
         const formData = new FormData();
         formData.append('descriptionFile', descriptionFile);
 
         await axiosInstance.post(`/api/dest/upload-file/${destinationId}`, formData, {
-          headers: { 
+          headers: {
             'Authorization': `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data' 
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+      }
+
+      if (itinerary) {
+        await axiosInstance.post('/api/itineraries/create', itinerary, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
           }
         });
       }
 
       message.success('Tạo điểm đến thành công');
+    } catch (error) {
+      message.error('Lỗi khi tải ảnh hoặc file mô tả');
+    }
+  };
+
+  const handleFinish = async (values: any) => {
+    setLoading(true);
+    try {
+      await handleSubmit();
+
+      const ticketPrices = {
+        destination_id: destinationId, 
+        adult_price: Number(values.adult_price),
+        child_price: Number(values.child_price),
+      };
+
+      console.log('Dữ liệu gửi đi:', ticketPrices);
+
+      await axiosInstance.post('/api/ticketprices/create', ticketPrices, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      message.success('Lưu giá vé thành công');
       onSuccess();
       onClose();
     } catch (error) {
-      message.error('Lỗi khi tải ảnh hoặc file mô tả');
+      message.error('Lỗi khi lưu giá vé');
+      setLoading(false);
     }
   };
 
@@ -135,131 +174,56 @@ const FormCreateDestination: React.FC<FormCreateDestinationProps> = ({ onClose, 
         <Step title="Thông Tin Điểm Đến" />
         <Step title="Chọn Ảnh" />
         <Step title="Tải File Mô Tả" />
+        <Step title="Hành Trình" />
+        <Step title="Giá Vé" />
       </Steps>
 
       <div className="steps-content">
         {currentStep === 0 && (
-          <Form 
-            form={form} 
-            layout="vertical" 
-            onFinish={handleNext}
-            className="destlist-create-form"
-          >
-            <Form.Item
-              name="name"
-              label="Tên Điểm Đến"
-              rules={[{ required: true, message: 'Vui lòng nhập tên điểm đến' }]}
-            >
-              <Input placeholder="Nhập tên điểm đến" />
-            </Form.Item>
-
-            <Form.Item
-              name="description"
-              label="Mô Tả"
-            >
-              <Input.TextArea placeholder="Nhập mô tả" />
-            </Form.Item>
-
-            <Form.Item
-              name="location"
-              label="Địa Điểm"
-              rules={[{ required: true, message: 'Vui lòng nhập địa điểm' }]}
-            >
-              <Input placeholder="Nhập địa điểm" />
-            </Form.Item>
-
-            <Form.Item
-              name="city"
-              label="Thành Phố"
-              rules={[{ required: true, message: 'Vui lòng chọn thành phố' }]}
-            >
-              <Select placeholder="Chọn thành phố" loading={loading}>
-                {cities.map(city => (
-                  <Option key={city.id} value={city.id}>
-                    {city.name}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-
-            <Form.Item>
-              <Button type="primary" htmlType="submit" className="destlist-create-submit-btn">
-                Tiếp Theo
-              </Button>
-            </Form.Item>
-          </Form>
+          <DestinationInfoForm
+            onNext={handleNext}
+            cities={cities}
+            loading={loading}
+          />
         )}
 
         {currentStep === 1 && (
-          <div>
-            <Form 
-              form={form} 
-              layout="vertical" 
-              onFinish={handleNext}
-              className="destlist-create-form"
-            >
-              <Form.Item
-                name="images"
-                label="Hình Ảnh"
-              >
-                <Upload
-                  listType="picture-card"
-                  fileList={fileList}
-                  onChange={({ fileList }) => setFileList(fileList)}
-                  multiple
-                >
-                  <div>
-                    <PlusOutlined />
-                    <div style={{ marginTop: 8 }}>Upload</div>
-                  </div>
-                </Upload>
-              </Form.Item>
-
-              <Form.Item>
-                <Button type="primary" htmlType="submit" className="destlist-create-submit-btn">
-                  Tiếp Theo
-                </Button>
-                <Button onClick={handlePrev} style={{ marginLeft: 8 }}>
-                  Quay Lại
-                </Button>
-              </Form.Item>
-            </Form>
-          </div>
+          <ImageUploadForm
+            onNext={handleNext}
+            onPrev={handlePrev}
+            fileList={fileList}
+            setFileList={setFileList}
+          />
         )}
 
         {currentStep === 2 && (
-          <div>
-            <Form 
-              form={form} 
-              layout="vertical" 
-              onFinish={handleSubmit}
-              className="destlist-create-form"
-            >
-              <Form.Item
-                name="descriptionFile"
-                label="File Mô Tả"
-              >
-                <Upload
-                  beforeUpload={(file) => {
-                    setDescriptionFile(file);
-                    return false; // Prevent automatic upload
-                  }}
-                  fileList={descriptionFile ? [descriptionFile] : []}
-                >
-                  <Button icon={<UploadOutlined />}>Chọn File</Button>
-                </Upload>
-              </Form.Item>
+          <DescriptionFileUploadForm
+            onNext={handleNext}
+            onPrev={handlePrev}
+            descriptionFile={descriptionFile}
+            setDescriptionFile={setDescriptionFile}
+          />
+        )}
 
-              <Form.Item>
-                <Button type="primary" htmlType="submit" className="destlist-create-submit-btn">
-                  Hoàn Tất
-                </Button>
-                <Button onClick={handlePrev} style={{ marginLeft: 8 }}>
-                  Quay Lại
-                </Button>
-              </Form.Item>
-            </Form>
-          </div>
+        {currentStep === 3 && (
+          destinationId && (
+            <FormCreateItinerary
+              onNext={(values: any) => {
+                setItinerary(values);
+                setCurrentStep(currentStep + 1);
+              }}
+              onPrev={handlePrev}
+              destinationId={destinationId}
+            />
+          )
+        )}
+
+        {currentStep === 4 && (
+          <TicketPricesForm
+            onFinish={handleFinish}
+            onPrev={handlePrev}
+            loading={loading}
+          />
         )}
       </div>
     </Modal>
