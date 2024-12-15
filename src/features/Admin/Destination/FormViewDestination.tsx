@@ -28,6 +28,8 @@ interface FormViewDestinationProps {
   onClose: () => void;
 }
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const FormViewDestination: React.FC<FormViewDestinationProps> = ({ 
   destination, 
   onClose 
@@ -72,7 +74,7 @@ const FormViewDestination: React.FC<FormViewDestinationProps> = ({
               <Image
                 key={img.id}
                 width={100}
-                src={img.image_url}
+                src={baseUrl + img.image_url}
                 className="destlist-gallery-image"
               />
             ))}

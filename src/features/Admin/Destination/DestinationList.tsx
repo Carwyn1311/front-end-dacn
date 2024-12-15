@@ -89,6 +89,8 @@ const DestinationList: React.FC = () => {
     fetchDestinations();
   }, []);
 
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+
   const columns = [
     {
       title: 'ID',
@@ -105,7 +107,7 @@ const DestinationList: React.FC = () => {
         <div className="destlist-destination-info">
           {record.destinationImages.length > 0 && (
             <Image 
-              src={record.destinationImages[0].image_url} 
+              src={`${baseUrl}${record.destinationImages[0].image_url}`} 
               alt={text}
               className="destlist-destination-thumbnail"
               width={50}
