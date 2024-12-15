@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
-import { IoMdLock } from 'react-icons/io';
-import { BiUser } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import { Checkbox, FormControlLabel, Button, Typography, Box, Container, TextField } from '@mui/material';
 import { TokenAuthService } from '../../TokenAuthService/TokenAuthService';
