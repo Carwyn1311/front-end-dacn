@@ -17,6 +17,7 @@
     "antd": "^5.21.6",
     "axios": "^1.7.9",
     "firebase": "^10.14.1",
+    "mammoth": "^1.8.0",
     "moment": "^2.30.1",
     "qrcode.react": "^4.1.0",
     "rc-upload": "^4.8.1",
