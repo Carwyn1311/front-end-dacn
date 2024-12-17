@@ -1,65 +1,103 @@
+// DoctoHTML.tsx
 import React, { useState, useEffect } from 'react';
 import mammoth from 'mammoth';
 import { CircularProgress, Typography } from '@mui/material';
 
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 interface DoctoHTMLProps {
-  url: string; // Đường dẫn đến file văn bản
+  url?: string;  // Make url optional
+  filePath?: string;  // Make filePath optional
 }
 
-const DoctoHTML: React.FC<DoctoHTMLProps> = ({ url }) => {
+const DoctoHTML: React.FC<DoctoHTMLProps> = ({ url, filePath }) => {
   const [htmlContent, setHtmlContent] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Hàm chuyển đổi DOCX sang HTML
   const convertDocxToHtml = async (buffer: ArrayBuffer) => {
     try {
       const result = await mammoth.convertToHtml({ arrayBuffer: buffer });
-      setHtmlContent(result.value);
+      
+      // Optional: Clean up the HTML if needed
+      const cleanedHtml = result.value
+        .replace(/<p>\s*<\/p>/g, '') // Remove empty paragraphs
+        .replace(/<strong><\/strong>/g, ''); // Remove empty strong tags
+
+      setHtmlContent(cleanedHtml);
     } catch (err) {
-      throw new Error('Lỗi chuyển đổi file DOCX: ' + (err instanceof Error ? err.message : 'Lỗi không xác định'));
+      console.error('Conversion error:', err);
+      throw new Error('Failed to convert document: ' + (err instanceof Error ? err.message : 'Unknown error'));
     }
   };
 
-  // Hàm tải và kiểm tra file
   const fetchAndConvertFile = async () => {
     setLoading(true);
     setError(null);
 
     try {
-      // Fetch file từ URL
-      console.log('Fetching file from URL:', url);
-      const response = await fetch(url);
+      // Determine the full URL based on url or filePath
+      const fullUrl = url 
+        ? url.startsWith('http') 
+          ? url 
+          : `${BASE_URL}${url}`
+        : filePath 
+          ? `${BASE_URL}${filePath}`
+          : null;
 
-      // Kiểm tra kiểu MIME của file
-      const contentType = response.headers.get('Content-Type');
-      console.log('File Type:', contentType);
-
-      // Kiểm tra nếu file không phải là DOCX hoặc là một loại hỗ trợ
-      if (contentType && contentType.includes('application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
-        const buffer = await response.arrayBuffer();
-        convertDocxToHtml(buffer);
-      } else {
-        throw new Error('Loại file không được hỗ trợ.');
+      if (!fullUrl) {
+        throw new Error('No URL or file path provided');
       }
+
+      console.log('Fetching file from:', fullUrl);
+
+      const response = await fetch(fullUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const buffer = await response.arrayBuffer();
+      
+      if (buffer.byteLength === 0) {
+        throw new Error('Empty file buffer');
+      }
+
+      await convertDocxToHtml(buffer);
     } catch (err) {
-      console.error('Lỗi tải hoặc chuyển đổi file:', err);
-      setError('Lỗi tải hoặc chuyển đổi file: ' + (err instanceof Error ? err.message : 'Lỗi không xác định'));
+      console.error('File fetch/convert error:', err);
+      setError(err instanceof Error ? err.message : 'An unknown error occurred');
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchAndConvertFile();
-  }, [url]);
+    if (url || filePath) {
+      fetchAndConvertFile();
+    }
+  }, [url, filePath]);
+
+  if (loading) return <CircularProgress />;
+  if (error) return <Typography color="error">{error}</Typography>;
 
   return (
-    <div>
-      {loading && <CircularProgress />}
-      {error && <Typography color="error">{error}</Typography>}
-      <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
-    </div>
+    <div 
+      dangerouslySetInnerHTML={{ __html: htmlContent }} 
+      className="docx-content"
+      style={{ 
+        maxWidth: '100%', 
+        overflowWrap: 'break-word',
+        padding: '16px',
+        backgroundColor: '#f9f9f9',
+        borderRadius: '8px'
+      }}
+    />
   );
 };
 

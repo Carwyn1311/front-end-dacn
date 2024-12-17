@@ -67,9 +67,9 @@ const ItemDes: React.FC<ItemDesProps> = ({ destination }) => {
             </Row>
           </Descriptions.Item>
         )}
-        {docUrl && (
+        {destination.descriptionFile?.filePath && (
           <Descriptions.Item label="Mô Tả Chi Tiết (DOCX)">
-            <DoctoHtml url={docUrl} /> {/* Sử dụng DoctoHtml để chuyển file DOCX thành HTML */}
+            <DoctoHtml filePath={destination.descriptionFile.filePath} />
           </Descriptions.Item>
         )}
       </Descriptions>
