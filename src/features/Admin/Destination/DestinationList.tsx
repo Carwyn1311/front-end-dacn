@@ -26,6 +26,13 @@ interface DestinationImage {
   destination_id: number;
 }
 
+interface DescriptionFile {
+  id: number;
+  fileName: string;
+  filePath: string;
+  destination: null;
+}
+
 interface Destination {
   id: number;
   name: string;
@@ -34,6 +41,8 @@ interface Destination {
   type: 'DOMESTIC' | 'INTERNATIONAL';
   city: number;
   created_at: string | null;
+  docUrl: string;
+  descriptionFile: DescriptionFile; // Mới thêm trường descriptionFile
   destinationImages: DestinationImage[];
 }
 
