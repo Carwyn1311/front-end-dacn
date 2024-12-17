@@ -1,11 +1,6 @@
-import React from 'react';
-import { 
-  Drawer, 
-  Descriptions, 
-  Tag, 
-  Image 
-} from 'antd';
-
+import React, { useState } from 'react';
+import { Drawer, Descriptions, Button } from 'antd';
+import ItemDes from './ItemDes';
 
 interface DestinationImage {
   id: number;
@@ -21,6 +16,13 @@ interface Destination {
   type: 'DOMESTIC' | 'INTERNATIONAL';
   city: number;
   destinationImages: DestinationImage[];
+  docUrl: string; // URL của file DOCX nếu có
+  descriptionFile: {
+    id: number;
+    fileName: string;
+    filePath: string;
+    destination: null;
+  };
 }
 
 interface FormViewDestinationProps {
@@ -28,60 +30,79 @@ interface FormViewDestinationProps {
   onClose: () => void;
 }
 
-const baseUrl = process.env.REACT_APP_BASE_URL;
-
 const FormViewDestination: React.FC<FormViewDestinationProps> = ({ 
   destination, 
   onClose 
 }) => {
+  const [showItemDes, setShowItemDes] = useState<boolean>(false);
+
+  // Hàm mở modal ItemDes
+  const handleOpenItemDes = () => {
+    setShowItemDes(true);
+  };
+
+  // Hàm đóng modal ItemDes
+  const handleCloseItemDes = () => {
+    setShowItemDes(false);
+  };
+
   return (
-    <Drawer
-      title="Chi Tiết Điểm Đến"
-      placement="right"
-      onClose={onClose}
-      open={true}
-      className="destlist-view-drawer"
-      width={600}
-    >
-      <Descriptions 
-        bordered 
-        column={1} 
-        className="destlist-view-details"
+    <>
+      <Drawer
+        title="Chi Tiết Điểm Đến"
+        placement="right"
+        onClose={onClose}
+        open={true}
+        className="destlist-view-drawer"
+        width={600}
       >
-        <Descriptions.Item label="ID">
-          {destination.id}
-        </Descriptions.Item>
-        <Descriptions.Item label="Tên Điểm Đến">
-          {destination.name}
-        </Descriptions.Item>
-        <Descriptions.Item label="Mô Tả">
-          {destination.description || 'Không có mô tả'}
-        </Descriptions.Item>
-        <Descriptions.Item label="Địa Điểm">
-          {destination.location}
-        </Descriptions.Item>
-        <Descriptions.Item label="Loại">
-          <Tag color={destination.type === 'DOMESTIC' ? 'blue' : 'green'}>
-            {destination.type === 'DOMESTIC' ? 'Trong Nước' : 'Quốc Tế'}
-          </Tag>
-        </Descriptions.Item>
-        <Descriptions.Item label="Thành Phố">
-          {destination.city}
-        </Descriptions.Item>
-        <Descriptions.Item label="Hình Ảnh">
-          <div className="destlist-image-gallery">
-            {destination.destinationImages.map((img) => (
-              <Image
-                key={img.id}
-                width={100}
-                src={baseUrl + img.image_url}
-                className="destlist-gallery-image"
-              />
-            ))}
-          </div>
-        </Descriptions.Item>
-      </Descriptions>
-    </Drawer>
+        <Descriptions bordered column={1} className="destlist-view-details">
+          <Descriptions.Item label="ID">
+            {destination.id}
+          </Descriptions.Item>
+          <Descriptions.Item label="Tên Điểm Đến">
+            {destination.name}
+          </Descriptions.Item>
+          <Descriptions.Item label="Mô Tả">
+            {destination.description || 'Không có mô tả'}
+          </Descriptions.Item>
+          <Descriptions.Item label="Địa Điểm">
+            {destination.location}
+          </Descriptions.Item>
+          <Descriptions.Item label="Loại">
+            <span>{destination.type}</span>
+          </Descriptions.Item>
+          <Descriptions.Item label="Thành phố">
+            {destination.city}
+          </Descriptions.Item>
+        </Descriptions>
+
+        {/* Button mở ItemDes */}
+        <Button 
+          type="primary" 
+          onClick={handleOpenItemDes}
+          style={{ marginTop: 20 }}
+        >
+          Xem Chi Tiết
+        </Button>
+      </Drawer>
+
+      {/* Modal hoặc Drawer hiển thị ItemDes */}
+      {showItemDes && (
+        <Drawer
+          title="Chi Tiết Điểm Đến - ItemDes"
+          placement="right"
+          onClose={handleCloseItemDes}
+          open={showItemDes}
+          className="itemdes-view-drawer"
+          width={600}
+        >
+         <ItemDes
+          destination={destination} // Truyền destination vào ItemDes
+        />
+        </Drawer>
+      )}
+    </>
   );
 };
 
