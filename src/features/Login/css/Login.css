@@ -10,6 +10,23 @@ body {
   align-items: center;
 }
 
+.login-header-bottom {
+  font-size: 14px; /* Cỡ chữ */
+  color: #555; /* Màu chữ xám nhạt */
+  font-family: 'Arial', sans-serif; /* Kiểu chữ */
+  margin-top: 20px; /* Khoảng cách phía trên */
+  text-align: center; /* Canh giữa nội dung */
+  background-color: #f9f9f9; /* Nền nhạt */
+  padding: 10px; /* Khoảng cách bên trong */
+  border-radius: 8px; /* Bo góc */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+}
+
+.login-header-bottom strong {
+  color: #000; /* Màu chữ đậm cho phần thông tin phiên bản */
+}
+
+
 .input-username{
   height: 40px;
 }
@@ -158,22 +175,6 @@ button:hover {
 
 .google-login-btn:hover {
   background-color: #c23321;
-}
-
-/* Footer */
-footer {
-  text-align: center;
-  width: 100%;
-  color: #999;
-}
-
-footer a {
-  color: #999;
-  text-decoration: none;
-}
-
-footer a:hover {
-  text-decoration: underline;
 }
 
 /* Nhóm các nút nằm ngang */

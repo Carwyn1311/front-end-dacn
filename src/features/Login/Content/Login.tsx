@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Checkbox, FormControlLabel, Button, Typography, Box, Container, TextField } from '@mui/material';
 import { TokenAuthService } from '../../TokenAuthService/TokenAuthService';
 import { User } from '../../User/Content/User';
+import { RiArrowGoBackLine } from 'react-icons/ri';
 
 interface LoginProps {
   onLogin: () => void;
@@ -59,14 +60,10 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
 
   const handleLogin = async (): Promise<void> => {
     try {
-      console.log('Attempting login with:', { userName, password });
-    
       const response = await axiosInstance.post('/api/login', {
         username: userName,
         password: password,
       });
-  
-      console.log('API response:', response.data);
   
       const token = response.data?.jwt || response.data?.data?.jwt;
       const roles = response.data?.role; // 'role' là một mảng, vì vậy cần lấy đối tượng đầu tiên
@@ -80,10 +77,6 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
       // Lấy id và name của role
       const roleId = roles[0]?.id; // Lấy id từ phần tử đầu tiên của mảng role
       const roleName = roles[0]?.name; // Lấy name từ phần tử đầu tiên của mảng role
-  
-      // Log thông tin role
-      console.log(`ID Role của user vừa đăng nhập là: ${roleId}`);
-      console.log(`Tên Role của user vừa đăng nhập là: ${roleName}`);
   
       localStorage.setItem('jwt', token);
   
@@ -144,6 +137,27 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
         backgroundPosition: 'center',
       }}
     >
+      {/* Nút quay lại */}
+      <Button
+        className="back-button" 
+        onClick={() => navigate('/')} 
+        sx={{
+          width: '50px',
+          height: '40px',
+          position: 'absolute',
+          top: 20,
+          left: 20,
+          color: 'white',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          padding: '8px 12px',
+          borderRadius: '50%',
+          '&:hover': {
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          },
+        }}
+      >
+        <RiArrowGoBackLine size={24} />
+      </Button>
       <Container
         maxWidth="xs"
         sx={{
@@ -154,7 +168,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
         }}
       >
         <Typography variant="h4" align="center" gutterBottom>
-          Travel Login
+          DPT Travel Login Page
         </Typography>
         <Typography variant="h6" align="center" gutterBottom>
           Wellcome
@@ -203,11 +217,11 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
             </Button>
           </Box>
         </form>
-        <footer style={{ textAlign: 'center', marginTop: '20px' }}>
-          <Typography variant="body2" color="textSecondary">
-            © 2024 AI CHAT. <strong>Version 4.3.0.0 [20231608]</strong>
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <Typography className='login-header-bottom'>
+            © 2024 DPT TRAVEL. <strong>Version 4.3.0.0 [20231608]</strong>
           </Typography>
-        </footer>
+        </div>
       </Container>
     </Box>
   );

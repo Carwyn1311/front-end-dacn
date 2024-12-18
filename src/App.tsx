@@ -144,13 +144,6 @@ const AppContent: React.FC = () => {
           <Route path="/admin/province-list" element={<ProvinceList />} />
         </Routes>
       </div>
-
-      {/* Nút Quay lại chỉ hiển thị khi đang ở trang login */}
-      {isLoginPage && (
-        <Button className="back-button" onClick={() => navigate('/')}>
-          <RiArrowGoBackLine size={24} />
-        </Button>
-      )}
     </div>
   );
 };

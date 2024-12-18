@@ -17,6 +17,8 @@ import FormCreateCity from './FormCreateCity';
 import FormUpdateCity from './FormUpdateCity';
 import FormViewCity from './FormViewCity';
 import '../css/CityList.css';
+import { listcity } from './listcity';
+import { listpovince } from './listpovince';
 
 interface City {
   id: number;
@@ -54,6 +56,12 @@ const CityList: React.FC = () => {
     try {
       const response = await axiosInstance.get('/api/province/list');
       setProvinces(response.data);
+      listcity.splice(0, listcity.length, ...response.data);
+      console.log("listcity=",listcity); // Kiểm tra dữ liệu đã được lưu
+
+      listpovince.splice(0, listpovince.length, ...response.data);
+      console.log("listpovince=",listpovince); // Kiểm tra dữ liệu đã được lưu
+
     } catch (error) {
       message.error('Không thể tải danh sách tỉnh');
     }

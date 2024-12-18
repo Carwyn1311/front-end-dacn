@@ -29,7 +29,7 @@ const Button: React.FC<ButtonProps> = ({
     text: 'text',
   };
 
-  const variant = variantMapping[type] || 'text'; // Lấy giá trị variant tương ứng
+  const variant = variantMapping[type] || 'text';
 
   return (
     <MUIButton
