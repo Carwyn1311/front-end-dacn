@@ -19,6 +19,7 @@ import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
 import '../css/DestinationList.css';
 import FormCreateDestination from './FormCreateDestination';
 import FormViewDestination from './FormViewDestination';
+import { destinationList } from './listdes';
 
 interface DestinationImage {
   id: number;
@@ -58,6 +59,9 @@ const DestinationList: React.FC = () => {
     try {
       const response = await axiosInstance.get('/api/dest/list');
       setDestinations(response.data);
+      destinationList.length = 0; // Xóa dữ liệu cũ
+      destinationList.push(...response.data); // Thêm dữ liệu mới
+
     } catch (error) {
       message.error('Không thể tải danh sách điểm đến');
     } finally {
@@ -65,6 +69,7 @@ const DestinationList: React.FC = () => {
     }
   };
 
+  
   // Delete destination
   const handleDeleteDestination = async (destinationId: number) => {
     try {

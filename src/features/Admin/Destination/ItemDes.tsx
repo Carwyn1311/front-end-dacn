@@ -1,7 +1,7 @@
-// src/components/ItemDes.tsx
 import React, { useState, useEffect } from 'react';
 import { Descriptions, Tag, Image, Row, Col, Button } from 'antd';
-import DoctoHtml from './DoctoHTML'; // Chắc chắn rằng import đúng file DoctoHtml.tsx
+import DoctoHtml from './DoctoHTML';
+import '../css/ItemDes.css';
 
 interface ItemDesProps {
   destination: {
@@ -12,7 +12,7 @@ interface ItemDesProps {
     type: 'DOMESTIC' | 'INTERNATIONAL';
     city: number;
     destinationImages: Array<{ id: number; image_url: string }>;
-    docUrl: string;  // URL của file DOCX nếu có
+    docUrl: string; // URL của file DOCX nếu có
     descriptionFile: {
       id: number;
       fileName: string;
@@ -34,6 +34,20 @@ const ItemDes: React.FC<ItemDesProps> = ({ destination }) => {
 
   return (
     <div className="destination-detail">
+      {/* Phần tiêu đề với hình nền */}
+      <section>
+        <div
+          className="pageTitle"
+          style={{
+            backgroundImage: `url(${destination.destinationImages[0]?.image_url || ''})`,
+            height: '300px',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        ></div>
+      </section>
+
+      {/* Phần chi tiết */}
       <Descriptions bordered column={1} title="Chi Tiết Điểm Đến">
         <Descriptions.Item label="Tên Điểm Đến">
           {destination.name}
