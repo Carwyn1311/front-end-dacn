@@ -80,10 +80,6 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
       const roleId = roles[0]?.id; // Lấy id từ phần tử đầu tiên của mảng role
       const roleName = roles[0]?.name; // Lấy name từ phần tử đầu tiên của mảng role
   
-      // Log thông tin role
-      console.log(`ID Role của user vừa đăng nhập là: ${roleId}`);
-      console.log(`Tên Role của user vừa đăng nhập là: ${roleName}`);
-  
       localStorage.setItem('jwt', token);
       localStorage.setItem('fullname', fullname); // Store fullname in localStorage
   
@@ -133,107 +129,90 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
 
   return (
     <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '100vh',
-        backgroundImage: 'url(/images/Tokyo_japan.jpg)', // Background image
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        position: 'relative',
-        overflowX: 'hidden',
-        height: '100vh',
-        width: '100vw',
-      }}
-    >
-      {/* Nút quay lại */}
-      <Button
-        className="back-button" 
-        onClick={() => navigate('/')} 
-        sx={{
-          width: '50px',
-          height: '40px',
-          position: 'absolute',
-          top: 20,
-          left: 20,
-          color: 'white',
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          padding: '8px 12px',
-          borderRadius: '50%',
-          '&:hover': {
-            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-          },
-        }}
-      >
-        <RiArrowGoBackLine size={24} />
+  sx={{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '100vh',
+    backgroundImage: 'url(/images/Tokyo_japan.jpg)', // Background image
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    position: 'relative',
+    overflowX: 'hidden',
+    height: '100vh',
+    width: '100vw',
+    padding: '16px', // Thêm padding để tránh cắt mép trên màn hình nhỏ
+    '@media (max-width: 600px)': { // Media query cho màn hình nhỏ
+      padding: '8px',
+      backgroundSize: 'contain', // Đảm bảo hình nền hiển thị tốt trên màn hình nhỏ
+    },
+  }}
+>
+  <Container
+    maxWidth="xs"
+    sx={{
+      backgroundColor: 'rgba(255, 255, 255, 0.8)', // Make the background slightly opaque
+      padding: 4,
+      borderRadius: 2,
+      boxShadow: 3,
+    }}
+  >
+    <Typography variant="h4" align="center" gutterBottom>
+      DPT Travel Login Page
+    </Typography>
+    <Typography variant="h6" align="center" gutterBottom>
+      Wellcome
+    </Typography>
+    <form onSubmit={handleSubmit}>
+      <TextField
+        type='input'
+        label="Username"
+        fullWidth
+        variant="outlined"
+        margin="normal"
+        value={userName}
+        onChange={handleUserNameChange}
+      />
+      <TextField
+        label="Password"
+        type="password"
+        fullWidth
+        variant="outlined"
+        margin="normal"
+        value={password}
+        onChange={handlePasswordChange}
+      />
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={rememberMe}
+            onChange={handleRememberMeChange}
+            color="primary"
+          />
+        }
+        label="Remember me"
+      />
+      {error && <Typography color="error">{error}</Typography>}
+      <Button type="submit" variant="contained" fullWidth sx={{ marginTop: 2 }}>
+        Log in
       </Button>
-      <Container
-        maxWidth="xs"
-        sx={{
-          backgroundColor: 'rgba(255, 255, 255, 0.8)', // Make the background slightly opaque
-          padding: 4,
-          borderRadius: 2,
-          boxShadow: 3,
-        }}
-      >
-        <Typography variant="h4" align="center" gutterBottom>
-          DPT Travel Login Page
-        </Typography>
-        <Typography variant="h6" align="center" gutterBottom>
-          Wellcome
-        </Typography>
-        <form onSubmit={handleSubmit}>
-          <TextField
-            type='input'
-            label="Username"
-            fullWidth
-            variant="outlined"
-            margin="normal"
-            value={userName}
-            onChange={handleUserNameChange}
-          />
-          <TextField
-            label="Password"
-            type="password"
-            fullWidth
-            variant="outlined"
-            margin="normal"
-            value={password}
-            onChange={handlePasswordChange}
-          />
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}>
+        <Button variant="text" onClick={handleCreateAccount}>
+          Create Account
+        </Button>
+        <Button variant="text" onClick={handleForgotPassword}>
+          Forgot Password
+        </Button>
+      </Box>
+    </form>
+    <div style={{ textAlign: 'center', marginTop: '20px' }}>
+      <Typography className='login-header-bottom'>
+        © 2024 DPT TRAVEL. <strong>Version 4.3.0.0 [20231608]</strong>
+      </Typography>
+    </div>
+  </Container>
+</Box>
 
-          
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={rememberMe}
-                onChange={handleRememberMeChange}
-                color="primary"
-              />
-            }
-            label="Remember me"
-          />
-          {error && <Typography color="error">{error}</Typography>}
-          <Button type="submit" variant="contained" fullWidth sx={{ marginTop: 2 }}>
-            Log in
-          </Button>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}>
-            <Button variant="text" onClick={handleCreateAccount}>
-              Create Account
-            </Button>
-            <Button variant="text" onClick={handleForgotPassword}>
-              Forgot Password
-            </Button>
-          </Box>
-        </form>
-        <div style={{ textAlign: 'center', marginTop: '20px' }}>
-          <Typography className='login-header-bottom'>
-            © 2024 DPT TRAVEL. <strong>Version 4.3.0.0 [20231608]</strong>
-          </Typography>
-        </div>
-      </Container>
-    </Box>
   );
 };
 
