@@ -10,7 +10,7 @@ interface PaymentFormProps {
   className?: string;
 }
 
-interface PaymentFormData {
+export interface PaymentFormData {
   cardNumber: string;
   cardHolder: string;
   expirationDate: Date | null;
