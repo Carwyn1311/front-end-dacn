@@ -12,6 +12,7 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
   const [userName, setUserName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [fullname, setFullName] = useState<string>(''); // Add state for fullname
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [error, setError] = useState<string>(''); 
   const navigate = useNavigate();
@@ -72,6 +73,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
       const roles = response.data?.role; // 'role' là một mảng, vì vậy cần lấy đối tượng đầu tiên
       const email = response.data?.email;
       const userId = response.data?.userId;
+      const fullname = response.data?.fullname; // Get fullname from response
   
       if (!token || !roles || roles.length === 0) {
         throw new Error('No token or role returned from API.');
@@ -82,10 +84,11 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
       const roleName = roles[0]?.name; // Lấy name từ phần tử đầu tiên của mảng role
   
       // Log thông tin role
-      console.log(`ID Role của user vừa đăng nhập là: ${roleId}`);
-      console.log(`Tên Role của user vừa đăng nhập là: ${roleName}`);
+      // console.log(`ID Role của user vừa đăng nhập là: ${roleId}`);
+      // console.log(`Tên Role của user vừa đăng nhập là: ${roleName}`);
   
       localStorage.setItem('jwt', token);
+      localStorage.setItem('fullname', fullname); // Store fullname in localStorage
   
       const user = new User({
         id: userId,
@@ -122,7 +125,6 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
       setError(error.response?.data?.message || 'Login failed. Please try again.');
     }
   };
-  
 
   const handleCreateAccount = (): void => {
     navigate('/create-account');
@@ -142,6 +144,10 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
         backgroundImage: 'url(/images/Tokyo_japan.jpg)', // Background image
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        position: 'relative',
+        overflowX: 'hidden',
+        height: '100vh',
+        width: '100vw',
       }}
     >
       <Container

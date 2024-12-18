@@ -46,15 +46,29 @@ const FormUpdateCity: React.FC<FormUpdateCityProps> = ({ city, onClose, onSucces
           id: values.province
         }
       };
-      
-      await axiosInstance.put(`/api/city/${city.id}`, data);
-      message.success('Cập nhật thành phố thành công');
-      onSuccess();
-      onClose();
-    } catch (error) {
+  
+      const response = await axiosInstance.put(`/api/city/${city.id}`, data);
+  
+      // Log phản hồi từ máy chủ để kiểm tra tính hợp lệ
+      console.log('Server response:', response.data);
+  
+      // Kiểm tra tính hợp lệ của JSON
+      try {
+        const responseData = JSON.parse(JSON.stringify(response.data));
+        console.log('Parsed response:', responseData);
+  
+        message.success('Cập nhật thành phố thành công');
+        onSuccess();
+        onClose();
+      } catch (error) {
+        console.error('Error parsing JSON response:', error);
+        message.error('Invalid JSON response from server.');
+      }
+    } catch (error: any) {
       message.error('Lỗi khi cập nhật thành phố');
     }
   };
+  
 
   return (
     <Drawer

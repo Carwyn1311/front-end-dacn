@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { User } from '../../User/Content/User';
 
 const axiosInstance = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL}`,
@@ -45,6 +47,15 @@ axiosInstance.interceptors.response.use(
       // Kiểm tra mã lỗi HTTP, ví dụ: 401 Unauthorized
       if (error.response.status === 401) {
         console.error("Unauthorized, redirecting to login...", error);
+
+        // Xóa token và chuyển hướng đến trang đăng nhập
+        User.clearUserData();
+        localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
+
+        // Sử dụng hook useNavigate để chuyển hướng
+        const navigate = useNavigate();
+        navigate('/login');
       } else {
         console.error("API error:", error.response.status, error.response.data);
       }

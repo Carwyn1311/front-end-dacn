@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { HiChevronDoubleLeft, HiOutlineMenu } from 'react-icons/hi';
-import { RiArrowGoBackLine } from 'react-icons/ri';
 import Sidebar from './features/Sidebar/Content/Sidebar';
 import Button from './components/Button/Button';
 import MainContent from './features/Maincontent/Content/MainContent';
@@ -23,7 +22,10 @@ import TourDetail from './features/Admin/Content/TourDetail';
 import CityList from './features/Admin/City/CityList';
 import ProvinceList from './features/Admin/Content/ProvinceList';
 import DestinationList from './features/Admin/Destination/DestinationList';
-//test
+import Header from "./features/Header/Content/Header";
+import HeaderUser from "./features/Header/Content/HeaderUser";
+import axiosInstance from "./features/AxiosInterceptor/Content/axiosInterceptor";
+
 const App: React.FC = () => {
   return (
     <ErrorBoundary>
@@ -31,7 +33,6 @@ const App: React.FC = () => {
         <AppContent />
       </BrowserRouter>
     </ErrorBoundary>
-
   );
 };
 
@@ -39,89 +40,130 @@ const AppContent: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [language, setLanguage] = useState('en');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState('');
+  const [fullname, setFullname] = useState('');
+  const [role, setRole] = useState('');
   const [selectedItem, setSelectedItem] = useState<string>('');
   const navigate = useNavigate();
-  const location = useLocation(); // Dùng hook useLocation để lấy đường dẫn hiện tại
+  const location = useLocation();
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
 
   useEffect(() => {
-    const user = User.getUserData();
-    if (user && user.username) {
-      setIsLoggedIn(true);
-      setUsername(user.username);
+    const token = localStorage.getItem('jwt') || sessionStorage.getItem('token');
+
+    if (token) {
+      axiosInstance.post('/api/verify-token', { token })
+        .then(response => {
+          if (response.data.valid) {
+            const user = User.getUserData();
+            if (user) {
+              setIsLoggedIn(true);
+              setFullname(user.fullname);
+              setRole(user.role.toString());
+            } else {
+              handleInvalidToken();
+            }
+          } else {
+            handleInvalidToken();
+          }
+        })
+        .catch(error => {
+          handleInvalidToken();
+        });
+    } else {
+      handleInvalidToken();
     }
   }, []);
+
+  const handleInvalidToken = () => { 
+    User.clearUserData(); 
+    setIsLoggedIn(false); 
+    navigate('/login'); 
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      // Kiểm tra trạng thái đăng nhập và vai trò người dùng khi ứng dụng khởi động
+      const token = localStorage.getItem('jwt') || sessionStorage.getItem('token');
+      const storedRole = localStorage.getItem('role');
+      const storedFullname = localStorage.getItem('fullname') || '';
+
+      if (token && storedRole) {
+        setRole(storedRole);
+        setFullname(storedFullname);
+      }
+    }
+  }, [isLoggedIn]);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const closeSidebar = () => {
-    setIsSidebarOpen(false);
-  };
-
   const toggleLanguage = () => {
-    setLanguage(language === 'en' ? 'vn' : 'en');
+    setLanguage(language === 'en' ? 'vi' : 'en');
   };
 
   const onLogin = () => {
     const user = User.getUserData();
     if (user) {
       setIsLoggedIn(true);
-      setUsername(user.username);
-      navigate('/'); // Điều hướng về trang chính
+      setFullname(user.fullname);
+      const storedRole = localStorage.getItem('role');
+      if (storedRole) {
+        setRole(storedRole);
+      } else {
+        setRole('USER');
+      }
+      navigate('/');
     }
   };
 
   const onLogout = () => {
     User.clearUserData();
     setIsLoggedIn(false);
-    setUsername('');
-    navigate('/'); // Điều hướng về trang chính khi đăng xuất
+    setRole('');
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('role');
+    localStorage.removeItem('fullname');
+    sessionStorage.removeItem('token');
+    navigate('/login');
   };
 
-  const isLoginPage = location.pathname === '/login'; // Kiểm tra nếu đang ở trang login
+  const isLoginPage = location.pathname === '/login';
 
   return (
     <div className={`app-container ${isSidebarOpen ? 'sidebar-open' : ''} ${isLoginPage ? 'login-page' : ''}`}>
-      {/* Chỉ hiển thị Sidebar và Header khi không ở trang Login */}
       {!isLoginPage && (
         <>
-          <Sidebar
-            isOpen={isSidebarOpen}
-            isLoggedIn={isLoggedIn}
-            onLogout={onLogout}
-          />
-          <header className="app-header">
-            <div className="top-bar">
-              <div className="contact-info">
-                <Button onClick={toggleSidebar} className="sidebar-toggle-button" style={{ color:"white", fontSize:"20px"}}>
-                  {isSidebarOpen ? <HiChevronDoubleLeft /> : <HiOutlineMenu />}
-                </Button>
-              </div>
-              <div className="user-options">
+          {role !== "ADMIN" && (
+            <HeaderUser 
+              isLoggedIn={isLoggedIn} 
+              toggleLanguage={toggleLanguage} 
+              language={language} 
+              username={fullname} 
+              className={isHeaderVisible ? '' : 'hidden'} 
+              onLogout={onLogout}
+            />
+          )}
 
-                <Button onClick={() => navigate('/admin')}>
-                  Admin
-                </Button>
-                {selectedItem && (
-                  <p style={{ marginTop: '20px' }}>
-                    Mục bạn đã chọn: <strong>{selectedItem}</strong>
-                  </p>
-                )}
-                {isLoggedIn ? (
-                  <Button className="username">{username}</Button>
-                ) : (
-                  <Button className="button-login" onClick={() => navigate('/login')}>
-                    <FaUserCircle /> {language === 'en' ? 'Login' : 'Đăng nhập'}
-                  </Button>
-                )}
-                <Button className="language" onClick={toggleLanguage}>
-                  {language === 'en' ? '🇬🇧 English' : '🇻🇳 Tiếng Việt'}
-                </Button>
-              </div>
-            </div>
-          </header>
+          {role === "ADMIN" && (
+            <>
+              <Sidebar
+                isOpen={isSidebarOpen}
+                isLoggedIn={isLoggedIn}
+                onLogout={onLogout}
+              />
+              <Header
+                isSidebarOpen={isSidebarOpen}
+                isLoggedIn={isLoggedIn}
+                onLogout={onLogout}
+                toggleSidebar={toggleSidebar}
+                toggleLanguage={toggleLanguage}
+                language={language}
+                username={fullname} 
+                selectedItem={selectedItem}
+              />
+            </>
+          )}
         </>
       )}
 
@@ -139,20 +181,19 @@ const AppContent: React.FC = () => {
           <Route path="/admin/manage-users" element={<AdminUser />} />
           <Route path="/admin/img-slider" element={<AdminTourManagement />} />
           <Route path="/admin/tour-list" element={<DestinationList />} /> 
-          <Route path="/admin/tuor-list/tour/:id" element={<TourDetail />} />
+          <Route path="/admin/tour-list/tour/:id" element={<TourDetail />} />
           <Route path="/admin/city-list" element={<CityList />} />
           <Route path="/admin/province-list" element={<ProvinceList />} />
         </Routes>
       </div>
-
-      {/* Nút Quay lại chỉ hiển thị khi đang ở trang login */}
-      {isLoginPage && (
-        <Button className="back-button" onClick={() => navigate('/')}>
-          <RiArrowGoBackLine size={24} />
-        </Button>
-      )}
     </div>
   );
 };
 
 export default App;
+
+
+
+
+
+
