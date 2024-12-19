@@ -23,30 +23,14 @@ import TourDetail from './features/Admin/Content/TourDetail';
 import CityList from './features/Admin/City/CityList';
 import ProvinceList from './features/Admin/Content/ProvinceList';
 import DestinationList from './features/Admin/Destination/DestinationList';
-import DestinationDetail from "./features/Maincontent/Content/DestinationDetails";
+
 
 import { Destination, destinationList } from "./features/Admin/Destination/listdest";
 import ItemDest from "./features/Admin/Destination/ItemDest";
 import ItemDes from "./features/Admin/Destination/ItemDest";
+import DestinationDetail from "./features/Maincontent/Content/DestinationDetails";
 
-const DestinationDetail: React.FC = () => {
-  const { id } = useParams<{ id: string }>(); // Lấy `id` từ URL
-  const [destination, setDestination] = useState<Destination | null>(null);
 
-  useEffect(() => {
-    // Tìm đối tượng `destination` trong `destinationList`
-    const foundDestination = destinationList.find((dest) => dest.id.toString() === id);
-    setDestination(foundDestination || null);
-  }, [id]);
-
-  if (!destination) {
-    return <p>Điểm đến không tồn tại</p>;
-  }
-
-  return <ItemDest destination={destination} />;
-};
-
->>>>>>> 2bc0bf08187136fc642713e86b0a83b4cdb759a6
 const App: React.FC = () => {
   return (
     <ErrorBoundary>
@@ -164,21 +148,18 @@ const AppContent: React.FC = () => {
           <Route path="/admin/img-slider"         element={<AdminTourManagement />} />
           <Route path="/admin/tour-list"          element={<DestinationList />} /> 
           <Route path="/admin/tuor-list/tour/:id" element={<TourDetail />} />
-<<<<<<< HEAD
           <Route path="/admin/city-list"          element={<CityList />} />
           <Route path="/admin/province-list"      element={<ProvinceList />} />
           <Route path="/destination/:id"          element={<DestinationDetail />} />
-=======
           <Route path="/admin/city-list" element={<CityList />} />
           <Route path="/admin/province-list" element={<ProvinceList />} />
-          {destinationList.map((dest) => (
+          {/* {destinationList.map((dest) => (
           <Route
             key={dest.id}
             path={dest.encodedPath}
             element={<ItemDest destination={dest} />}
           />
-        ))}
->>>>>>> 2bc0bf08187136fc642713e86b0a83b4cdb759a6
+          ))} */}
         </Routes>
       </div>
     </div>
