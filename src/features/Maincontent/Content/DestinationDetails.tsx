@@ -148,10 +148,12 @@ const DestinationDetail: React.FC = () => {
             itemLayout="horizontal"
             dataSource={comments}
             renderItem={(comment, index) => (
-              <li key={index}>
-                <Avatar src="https://via.placeholder.com/40" alt="User Avatar" />
-                {comment}
-              </li>
+              <List.Item key={index}>
+                <List.Item.Meta
+                  avatar={<Avatar src="https://via.placeholder.com/40" alt="User Avatar" />}
+                  description={comment}
+                />
+              </List.Item>
             )}
           />
           <div className="comment-input">
