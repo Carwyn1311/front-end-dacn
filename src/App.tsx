@@ -1,7 +1,7 @@
 import { FaUserCircle } from "react-icons/fa"; 
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams } from 'react-router-dom';
 import { HiChevronDoubleLeft, HiOutlineMenu } from 'react-icons/hi';
 import { RiArrowGoBackLine } from 'react-icons/ri';
 import Sidebar from './features/Sidebar/Content/Sidebar';
@@ -23,7 +23,27 @@ import TourDetail from './features/Admin/Content/TourDetail';
 import CityList from './features/Admin/City/CityList';
 import ProvinceList from './features/Admin/Content/ProvinceList';
 import DestinationList from './features/Admin/Destination/DestinationList';
-//test
+import { Destination, destinationList } from "./features/Admin/Destination/listdest";
+import ItemDest from "./features/Admin/Destination/ItemDest";
+import ItemDes from "./features/Admin/Destination/ItemDest";
+
+const DestinationDetail: React.FC = () => {
+  const { id } = useParams<{ id: string }>(); // Lấy `id` từ URL
+  const [destination, setDestination] = useState<Destination | null>(null);
+
+  useEffect(() => {
+    // Tìm đối tượng `destination` trong `destinationList`
+    const foundDestination = destinationList.find((dest) => dest.id.toString() === id);
+    setDestination(foundDestination || null);
+  }, [id]);
+
+  if (!destination) {
+    return <p>Điểm đến không tồn tại</p>;
+  }
+
+  return <ItemDest destination={destination} />;
+};
+
 const App: React.FC = () => {
   return (
     <ErrorBoundary>
@@ -36,6 +56,7 @@ const App: React.FC = () => {
 };
 
 const AppContent: React.FC = () => {
+  const [destination, setDestination] = useState<Destination | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [language, setLanguage] = useState('en');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -142,6 +163,13 @@ const AppContent: React.FC = () => {
           <Route path="/admin/tuor-list/tour/:id" element={<TourDetail />} />
           <Route path="/admin/city-list" element={<CityList />} />
           <Route path="/admin/province-list" element={<ProvinceList />} />
+          {destinationList.map((dest) => (
+          <Route
+            key={dest.id}
+            path={dest.encodedPath}
+            element={<ItemDest destination={dest} />}
+          />
+        ))}
         </Routes>
       </div>
     </div>

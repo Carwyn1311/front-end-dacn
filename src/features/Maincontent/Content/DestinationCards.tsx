@@ -12,7 +12,6 @@ interface DestinationCardsProps {
 const DestinationCards: React.FC<DestinationCardsProps> = ({ destinations, current, pageSize, onPageChange }) => {
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
-  // Tính toán số lượng thẻ sẽ hiển thị
   const startIndex = (current - 1) * pageSize;
   const currentDestinations = destinations.slice(startIndex, startIndex + pageSize);
 
