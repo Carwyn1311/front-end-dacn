@@ -16,6 +16,7 @@ export interface Destination {
   created_at: string | null;
   destinationImages: DestinationImage[];
   itineraries: Itinerary[];
+  ticketPrice: TicketPrice;
 }
 
 export interface Itinerary {
@@ -31,3 +32,10 @@ export interface Activity {
   start_time: string;
   end_time: string;
 }
+
+export interface TicketPrice {
+  id: number;
+  adult_price: number;
+  child_price: number;
+}
+

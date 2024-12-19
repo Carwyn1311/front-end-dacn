@@ -4,6 +4,7 @@ import { Table, Card, Modal, message, Button, Input, Form, Select } from 'antd';
 import { PlusOutlined, EyeOutlined } from '@ant-design/icons';
 import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
 import '../css/AdminUser.css';
+import axiosInstanceToken from '../../AxiosInterceptor/Content/axioslnterceptorToken';
 
 const { Option } = Select;
 
@@ -38,7 +39,7 @@ const AdminUser: React.FC = () => {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const response = await axiosInstance.get('/api/list-user', {
+      const response = await axiosInstanceToken.get('/api/list-user', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -57,7 +58,7 @@ const AdminUser: React.FC = () => {
 
   const fetchRoles = async () => {
     try {
-      const response = await axiosInstance.get('/api/roles', {
+      const response = await axiosInstanceToken.get('/api/roles', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -83,7 +84,7 @@ const AdminUser: React.FC = () => {
       if (!roleToUpdate) return;
 
       const rolesToUpdate = [roleToUpdate];
-      await axiosInstance.put(`/api/${userId}/roles`, rolesToUpdate, {
+      await axiosInstanceToken.put(`/api/${userId}/roles`, rolesToUpdate, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -114,7 +115,7 @@ const AdminUser: React.FC = () => {
     if (!selectedUser) return;
 
     try {
-        const response = await axiosInstance.put(`/api/update-user/${selectedUser.username}`, values, {
+        const response = await axiosInstanceToken.put(`/api/update-user/${selectedUser.username}`, values, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

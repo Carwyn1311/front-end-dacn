@@ -258,3 +258,18 @@
   justify-content: center;
   margin-top: 20px; 
 }
+
+
+
+
+
+
+.ticket-section {
+  margin-bottom: 20px;
+}
+
+.total-price {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
