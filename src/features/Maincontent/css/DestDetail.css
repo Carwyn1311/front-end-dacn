@@ -1,0 +1,112 @@
+/* DestDetail.css */
+
+.destination-detail {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.left-column {
+  width: 30%;
+  padding-right: 20px;
+}
+
+.right-column {
+  width: 70%;
+}
+
+.right-column h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.right-column p {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.right-column img {
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+.ticket-section {
+  margin-bottom: 20px;
+}
+
+.ticket-section h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.ticket-section .ant-form-item {
+  margin-right: 10px;
+}
+
+.like-section {
+  margin-bottom: 20px;
+}
+
+.comments-section {
+  margin-bottom: 20px;
+}
+
+.comments-section h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.comment-list {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.comment-input {
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-input .ant-input {
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.comment-input .ant-btn {
+  align-self: flex-start;
+}
+
+.ant-btn-default {
+  background-color: #ff4081;
+  color: white;
+  border: none;
+}
+
+.ant-btn-default:hover {
+  background-color: #ff6090;
+  color: white;
+}
+
+.ant-btn-primary {
+  background-color: #3f51b5;
+  border: none;
+  color: white;
+}
+
+.ant-btn-primary:hover {
+  background-color: #5c6bc0;
+  color: white;
+}

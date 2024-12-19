@@ -15,26 +15,28 @@ import TravelPageDongBac from '../features/AllTours/Tours/TravelPageDongBac';
 import TravelPageHaNoi from '../features/AllTours/Tours/TravelPageHaNoi';
 import TravelPageSapa from '../features/AllTours/Tours/TravelPageSapa';
 import TravelPageHaLong from '../features/AllTours/Tours/TravelPageHaLong';
+import DestinationDetail from '../features/Maincontent/Content/DestinationDetails';
 
 const RoutesComponent: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
 
   return (
     <Routes>
-      <Route path="/" element={<MainContent />} />
-      <Route path="/login" element={<Login onLogin={onLogin} />} />
-      <Route path="/create-account" element={<CreateAccount />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/admin/*" element={<AdminRoutes />} />
-      <Route path="/admin/manage-users" element={<AdminUser />} />
-      <Route path="/admin/img-slider" element={<AdminTourManagement />} />
-      <Route path="/admin/tour-list" element={<DestinationList />} />
+      <Route path="/"                         element={<MainContent />} />
+      <Route path="/login"                    element={<Login onLogin={onLogin} />} />
+      <Route path="/create-account"           element={<CreateAccount />} />
+      <Route path="/forgot-password"          element={<ForgotPassword />} />
+      <Route path="/admin/*"                  element={<AdminRoutes />} />
+      <Route path="/admin/manage-users"       element={<AdminUser />} />
+      <Route path="/admin/img-slider"         element={<AdminTourManagement />} />
+      <Route path="/admin/tour-list"          element={<DestinationList />} />
       <Route path="/admin/tour-list/tour/:id" element={<TourDetail />} />
-      <Route path="/admin/city-list" element={<CityList />} />
-      <Route path="/admin/province-list" element={<ProvinceList />} />
-      <Route path="/travel/dongbac-taybac" element={<TravelPageDongBac />} />
-      <Route path="/travel/mien-bac/ha-noi" element={<TravelPageHaNoi />} />
-      <Route path="/travel/mien-bac/ha-long" element={<TravelPageHaLong />} />
-      <Route path="/travel/mien-bac/sapa" element={<TravelPageSapa />} />
+      <Route path="/admin/city-list"          element={<CityList />} />
+      <Route path="/admin/province-list"      element={<ProvinceList />} />
+      <Route path="/travel/dongbac-taybac"    element={<TravelPageDongBac />} />
+      <Route path="/travel/mien-bac/ha-noi"   element={<TravelPageHaNoi />} />
+      <Route path="/travel/mien-bac/ha-long"  element={<TravelPageHaLong />} />
+      <Route path="/travel/mien-bac/sapa"     element={<TravelPageSapa />} />
+      <Route path="/destination/:id"          element={<DestinationDetail />} />
     </Routes>
   );
 };

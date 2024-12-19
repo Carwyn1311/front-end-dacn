@@ -95,7 +95,7 @@ const AppContent: React.FC = () => {
     <div className={`app-container ${isSidebarOpen ? 'sidebar-open' : ''} ${isLoginPage ? 'login-page' : ''}`}>
       {!isLoginPage && (
         <>
-          {role !== "ADMIN" && (
+          {role === "ADMIN" && (
             <HeaderUser
               isLoggedIn={isLoggedIn}
               toggleLanguage={toggleLanguage}
@@ -105,7 +105,7 @@ const AppContent: React.FC = () => {
               onLogout={onLogout}
             />
           )}
-          {role === "ADMIN" && (
+          {role !== "ADMIN" && (
             <>
               <Sidebar
                 isOpen={isSidebarOpen}

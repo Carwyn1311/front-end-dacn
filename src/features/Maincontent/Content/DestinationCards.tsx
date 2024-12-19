@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pagination } from 'antd';
 import { Destination } from './DestinationTypes';
+import { useNavigate } from 'react-router-dom';
 
 interface DestinationCardsProps {
   destinations: Destination[];
@@ -10,17 +11,21 @@ interface DestinationCardsProps {
 }
 
 const DestinationCards: React.FC<DestinationCardsProps> = ({ destinations, current, pageSize, onPageChange }) => {
+  const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
-  // Tính toán số lượng thẻ sẽ hiển thị
   const startIndex = (current - 1) * pageSize;
   const currentDestinations = destinations.slice(startIndex, startIndex + pageSize);
+
+  const handleCardClick = (id: number) => {
+    navigate(`/destination/${id}`);
+  };
 
   return (
     <div className="destination-cards-container">
       <div className="destination-cards">
         {currentDestinations.map((destination, index) => (
-          <div key={index} className="destination-card">
+          <div key={index} className="destination-card" onClick={() => handleCardClick(destination.id)}>
             <div className="image-container">
               {destination.destinationImages.length > 0 && (
                 <img
