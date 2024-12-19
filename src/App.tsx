@@ -23,6 +23,7 @@ import TourDetail from './features/Admin/Content/TourDetail';
 import CityList from './features/Admin/City/CityList';
 import ProvinceList from './features/Admin/Content/ProvinceList';
 import DestinationList from './features/Admin/Destination/DestinationList';
+import DestinationDetail from "./features/Maincontent/Content/DestinationDetails";
 //test
 const App: React.FC = () => {
   return (
@@ -127,21 +128,22 @@ const AppContent: React.FC = () => {
 
       <div className="content-wrapper">
         <Routes>
-          <Route path="/travel/dongbac-taybac" element={<TravelPageDongBac />} />
-          <Route path="/travel/mien-bac/ha-noi" element={<TravelPageHaNoi />} />
-          <Route path="/travel/mien-bac/ha-long" element={<TravelPageHaLong />} />
-          <Route path="/travel/mien-bac/sapa" element={<TravelPageSapa />} />
-          <Route path="/" element={<MainContent />} />
-          <Route path="/login" element={<Login onLogin={onLogin} />} />
-          <Route path="/create-account" element={<CreateAccount />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/admin/*" element={<AdminRoutes />} />
-          <Route path="/admin/manage-users" element={<AdminUser />} />
-          <Route path="/admin/img-slider" element={<AdminTourManagement />} />
-          <Route path="/admin/tour-list" element={<DestinationList />} /> 
+          <Route path="/travel/dongbac-taybac"    element={<TravelPageDongBac />} />
+          <Route path="/travel/mien-bac/ha-noi"   element={<TravelPageHaNoi />} />
+          <Route path="/travel/mien-bac/ha-long"  element={<TravelPageHaLong />} />
+          <Route path="/travel/mien-bac/sapa"     element={<TravelPageSapa />} />
+          <Route path="/"                         element={<MainContent />} />
+          <Route path="/login"                    element={<Login onLogin={onLogin} />} />
+          <Route path="/create-account"           element={<CreateAccount />} />
+          <Route path="/forgot-password"          element={<ForgotPassword />} />
+          <Route path="/admin/*"                  element={<AdminRoutes />} />
+          <Route path="/admin/manage-users"       element={<AdminUser />} />
+          <Route path="/admin/img-slider"         element={<AdminTourManagement />} />
+          <Route path="/admin/tour-list"          element={<DestinationList />} /> 
           <Route path="/admin/tuor-list/tour/:id" element={<TourDetail />} />
-          <Route path="/admin/city-list" element={<CityList />} />
-          <Route path="/admin/province-list" element={<ProvinceList />} />
+          <Route path="/admin/city-list"          element={<CityList />} />
+          <Route path="/admin/province-list"      element={<ProvinceList />} />
+          <Route path="/destination/:id"          element={<DestinationDetail />} />
         </Routes>
       </div>
     </div>
