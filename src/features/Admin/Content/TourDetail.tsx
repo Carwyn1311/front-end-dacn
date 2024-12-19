@@ -19,7 +19,7 @@ const TourDetail: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      axiosInstance.get(`/api/dest/list/${id}`)  // Gọi API với id để lấy thông tin chi tiết
+      axiosInstance.get(`/api/dest/list/${id}`)
         .then((response) => {
           setDestination(response.data);
         })

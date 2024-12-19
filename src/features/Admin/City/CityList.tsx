@@ -57,16 +57,12 @@ const CityList: React.FC = () => {
       const response = await axiosInstance.get('/api/province/list');
       setProvinces(response.data);
       listcity.splice(0, listcity.length, ...response.data);
-      console.log("listcity=",listcity); // Kiểm tra dữ liệu đã được lưu
-
       listpovince.splice(0, listpovince.length, ...response.data);
-      console.log("listpovince=",listpovince); // Kiểm tra dữ liệu đã được lưu
 
     } catch (error) {
       message.error('Không thể tải danh sách tỉnh');
     }
   };
-
   // Xóa thành phố
   const handleDeleteCity = async (cityId: number) => {
     try {

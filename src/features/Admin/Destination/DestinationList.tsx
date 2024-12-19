@@ -1,51 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Table, 
-  Button, 
-  Tag, 
-  Space, 
-  message, 
-  Popconfirm,
-  Image
-} from 'antd';
-import { 
-  PlusOutlined, 
-  EditOutlined, 
-  EyeOutlined, 
-  DeleteOutlined 
-} from '@ant-design/icons';
-import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
-
+import { Table, Button, Tag, Space, message, Popconfirm, Image } from 'antd';
+import { PlusOutlined, EditOutlined, EyeOutlined, DeleteOutlined } from '@ant-design/icons';
+import moment from 'moment';
 import '../css/DestinationList.css';
 import FormCreateDestination from './FormCreateDestination';
 import FormViewDestination from './FormViewDestination';
-import { destinationList } from './listdes';
-
-interface DestinationImage {
-  id: number;
-  image_url: string;
-  destination_id: number;
-}
-
-interface DescriptionFile {
-  id: number;
-  fileName: string;
-  filePath: string;
-  destination: null;
-}
-
-interface Destination {
-  id: number;
-  name: string;
-  description: string;
-  location: string;
-  type: 'DOMESTIC' | 'INTERNATIONAL';
-  city: number;
-  created_at: string | null;
-  docUrl: string;
-  descriptionFile: DescriptionFile; // Mới thêm trường descriptionFile
-  destinationImages: DestinationImage[];
-}
+import {
+  classifyDestinations,
+  deleteDestination,
+  destinationList,
+  fetchDestinations,
+  Destination,
+  Itinerary,
+} from './listdest';
 
 const DestinationList: React.FC = () => {
   const [destinations, setDestinations] = useState<Destination[]>([]);
@@ -53,64 +20,63 @@ const DestinationList: React.FC = () => {
   const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null);
   const [formMode, setFormMode] = useState<'create' | 'update' | 'view' | null>(null);
 
-  // Fetch destinations
-  const fetchDestinations = async () => {
-    setLoading(true);
-    try {
-      const response = await axiosInstance.get('/api/dest/list');
-      setDestinations(response.data);
-      destinationList.length = 0; // Xóa dữ liệu cũ
-      destinationList.push(...response.data); // Thêm dữ liệu mới
-
-    } catch (error) {
-      message.error('Không thể tải danh sách điểm đến');
-    } finally {
+  useEffect(() => {
+    const loadDestinations = async () => {
+      setLoading(true);
+      await fetchDestinations();
+      setDestinations([...destinationList]);
       setLoading(false);
-    }
-  };
+    };
+    loadDestinations();
+  }, []);
 
-  
-  // Delete destination
   const handleDeleteDestination = async (destinationId: number) => {
-    try {
-      await axiosInstance.delete(`/api/dest/${destinationId}`);
-      message.success('Xóa điểm đến thành công');
-      fetchDestinations();
-    } catch (error) {
-      message.error('Lỗi khi xóa điểm đến');
-    }
+    setLoading(true);
+    await deleteDestination(destinationId);
+    setDestinations([...destinationList]);
+    setLoading(false);
   };
 
-  // Reset form and state
   const handleCloseForm = () => {
     setFormMode(null);
     setSelectedDestination(null);
   };
 
-  // Prepare data for editing
   const handleEditDestination = (destination: Destination) => {
     setSelectedDestination(destination);
     setFormMode('update');
   };
 
-  // Prepare for view details
   const handleViewDestination = (destination: Destination) => {
     setSelectedDestination(destination);
     setFormMode('view');
   };
 
-  useEffect(() => {
-    fetchDestinations();
-  }, []);
-
-  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const renderItineraries = (itineraries: Itinerary[]) => {
+    return itineraries.map((itinerary) => (
+      <div key={itinerary.id} style={{ marginBottom: '8px' }}>
+        <strong>Lịch trình #{itinerary.id}</strong>
+        <p>
+          Bắt đầu: {moment(itinerary.start_date).format('DD-MM-YYYY HH:mm')} <br />
+          Kết thúc: {moment(itinerary.end_date).format('DD-MM-YYYY HH:mm')}
+        </p>
+        <ul>
+          {itinerary.activities.map((activity: { id: React.Key | null | undefined; activity_name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; start_time: moment.MomentInput; end_time: moment.MomentInput; }) => (
+            <li key={activity.id}>
+              {activity.activity_name} ({moment(activity.start_time).format('HH:mm')} - {moment(activity.end_time).format('HH:mm')})
+            </li>
+          ))}
+        </ul>
+      </div>
+    ));
+  };
 
   const columns = [
     {
       title: 'ID',
       dataIndex: 'id',
       key: 'id',
-      className: 'destlist-column-id'
+      className: 'destlist-column-id',
     },
     {
       title: 'Tên Điểm Đến',
@@ -120,8 +86,8 @@ const DestinationList: React.FC = () => {
       render: (text: string, record: Destination) => (
         <div className="destlist-destination-info">
           {record.destinationImages.length > 0 && (
-            <Image 
-              src={`${baseUrl}${record.destinationImages[0].image_url}`} 
+            <Image
+              src={`${process.env.REACT_APP_BASE_URL}${record.destinationImages[0].image_url}`}
               alt={text}
               className="destlist-destination-thumbnail"
               width={50}
@@ -131,7 +97,7 @@ const DestinationList: React.FC = () => {
           )}
           <span>{text}</span>
         </div>
-      )
+      ),
     },
     {
       title: 'Loại',
@@ -142,13 +108,19 @@ const DestinationList: React.FC = () => {
         <Tag color={type === 'DOMESTIC' ? 'blue' : 'green'}>
           {type === 'DOMESTIC' ? 'Trong Nước' : 'Quốc Tế'}
         </Tag>
-      )
+      ),
     },
     {
       title: 'Địa Điểm',
       dataIndex: 'location',
       key: 'location',
-      className: 'destlist-column-location'
+      className: 'destlist-column-location',
+    },
+    {
+      title: 'Lịch Trình',
+      dataIndex: 'itineraries',
+      key: 'itineraries',
+      render: (itineraries: Itinerary[]) => renderItineraries(itineraries),
     },
     {
       title: 'Thao Tác',
@@ -156,15 +128,15 @@ const DestinationList: React.FC = () => {
       className: 'destlist-column-actions',
       render: (text: string, record: Destination) => (
         <Space>
-          <Button 
-            icon={<EyeOutlined />} 
+          <Button
+            icon={<EyeOutlined />}
             onClick={() => handleViewDestination(record)}
             className="destlist-view-btn"
           >
             Xem
           </Button>
-          <Button 
-            icon={<EditOutlined />} 
+          <Button
+            icon={<EditOutlined />}
             onClick={() => handleEditDestination(record)}
             className="destlist-edit-btn"
           >
@@ -176,8 +148,8 @@ const DestinationList: React.FC = () => {
             okText="Xóa"
             cancelText="Hủy"
           >
-            <Button 
-              icon={<DeleteOutlined />} 
+            <Button
+              icon={<DeleteOutlined />}
               danger
               className="destlist-delete-btn"
             >
@@ -193,8 +165,8 @@ const DestinationList: React.FC = () => {
     <div className="destlist-container">
       <div className="destlist-header">
         <h2 className="destlist-title">Quản Lý Điểm Đến</h2>
-        <Button 
-          type="primary" 
+        <Button
+          type="primary"
           icon={<PlusOutlined />}
           onClick={() => setFormMode('create')}
           className="destlist-add-button"
@@ -203,29 +175,21 @@ const DestinationList: React.FC = () => {
         </Button>
       </div>
 
-      <Table 
-        columns={columns} 
-        dataSource={destinations} 
+      <Table
+        columns={columns}
+        dataSource={destinations}
         loading={loading}
         rowKey="id"
         className="destlist-table"
-        pagination={{
-          className: 'destlist-pagination'
-        }}
+        pagination={{ className: 'destlist-pagination' }}
       />
 
       {formMode === 'create' && (
-        <FormCreateDestination 
-          onClose={handleCloseForm}
-          onSuccess={fetchDestinations}
-        />
+        <FormCreateDestination onClose={handleCloseForm} onSuccess={() => setDestinations([...destinationList])} />
       )}
 
       {formMode === 'view' && selectedDestination && (
-        <FormViewDestination 
-          destination={selectedDestination}
-          onClose={handleCloseForm}
-        />
+        <FormViewDestination destination={selectedDestination} onClose={handleCloseForm} />
       )}
     </div>
   );

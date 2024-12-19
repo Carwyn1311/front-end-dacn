@@ -1,29 +1,7 @@
 import React, { useState } from 'react';
-import { Drawer, Descriptions, Button } from 'antd';
-import ItemDes from './ItemDes';
-
-interface DestinationImage {
-  id: number;
-  image_url: string;
-  destination_id: number;
-}
-
-interface Destination {
-  id: number;
-  name: string;
-  description: string;
-  location: string;
-  type: 'DOMESTIC' | 'INTERNATIONAL';
-  city: number;
-  destinationImages: DestinationImage[];
-  docUrl: string; // URL của file DOCX nếu có
-  descriptionFile: {
-    id: number;
-    fileName: string;
-    filePath: string;
-    destination: null;
-  };
-}
+import { Drawer, Descriptions, Button, List, Typography } from 'antd';
+import moment from 'moment';
+import { Destination, Itinerary } from './listdest';
 
 interface FormViewDestinationProps {
   destination: Destination;
@@ -36,15 +14,35 @@ const FormViewDestination: React.FC<FormViewDestinationProps> = ({
 }) => {
   const [showItemDes, setShowItemDes] = useState<boolean>(false);
 
-  // Hàm mở modal ItemDes
-  const handleOpenItemDes = () => {
-    setShowItemDes(true);
-  };
+  const handleOpenItemDes = () => setShowItemDes(true);
+  const handleCloseItemDes = () => setShowItemDes(false);
 
-  // Hàm đóng modal ItemDes
-  const handleCloseItemDes = () => {
-    setShowItemDes(false);
-  };
+  const renderItineraries = (itineraries: Itinerary[]) => (
+    <List
+      itemLayout="vertical"
+      dataSource={itineraries}
+      renderItem={(itinerary) => (
+        <List.Item key={itinerary.id}>
+          <Typography.Title level={5}>Lịch trình #{itinerary.id}</Typography.Title>
+          <p>
+            <strong>Bắt đầu:</strong> {moment(itinerary.start_date).format('DD-MM-YYYY HH:mm')} <br />
+            <strong>Kết thúc:</strong> {moment(itinerary.end_date).format('DD-MM-YYYY HH:mm')}
+          </p>
+          <List
+            size="small"
+            header={<strong>Hoạt động:</strong>}
+            bordered
+            dataSource={itinerary.activities}
+            renderItem={(activity) => (
+              <List.Item key={activity.id}>
+                {activity.activity_name} ({moment(activity.start_time).format('HH:mm')} - {moment(activity.end_time).format('HH:mm')})
+              </List.Item>
+            )}
+          />
+        </List.Item>
+      )}
+    />
+  );
 
   return (
     <>
@@ -57,37 +55,36 @@ const FormViewDestination: React.FC<FormViewDestinationProps> = ({
         width={600}
       >
         <Descriptions bordered column={1} className="destlist-view-details">
-          <Descriptions.Item label="ID">
-            {destination.id}
-          </Descriptions.Item>
-          <Descriptions.Item label="Tên Điểm Đến">
-            {destination.name}
-          </Descriptions.Item>
+          <Descriptions.Item label="ID">{destination.id}</Descriptions.Item>
+          <Descriptions.Item label="Tên Điểm Đến">{destination.name}</Descriptions.Item>
           <Descriptions.Item label="Mô Tả">
             {destination.description || 'Không có mô tả'}
           </Descriptions.Item>
-          <Descriptions.Item label="Địa Điểm">
-            {destination.location}
-          </Descriptions.Item>
+          <Descriptions.Item label="Địa Điểm">{destination.location}</Descriptions.Item>
           <Descriptions.Item label="Loại">
-            <span>{destination.type}</span>
+            {destination.type === 'DOMESTIC' ? 'Trong Nước' : 'Quốc Tế'}
           </Descriptions.Item>
-          <Descriptions.Item label="Thành phố">
-            {destination.city}
-          </Descriptions.Item>
+          <Descriptions.Item label="Thành phố">{destination.city}</Descriptions.Item>
         </Descriptions>
 
-        {/* Button mở ItemDes */}
+        <Typography.Title level={4} style={{ marginTop: 20 }}>
+          Lịch Trình
+        </Typography.Title>
+        {destination.itineraries.length > 0 ? (
+          renderItineraries(destination.itineraries)
+        ) : (
+          <p>Không có lịch trình</p>
+        )}
+
         <Button 
           type="primary" 
           onClick={handleOpenItemDes}
           style={{ marginTop: 20 }}
         >
-          Xem Chi Tiết
+          Xem Thêm Chi Tiết
         </Button>
       </Drawer>
 
-      {/* Modal hoặc Drawer hiển thị ItemDes */}
       {showItemDes && (
         <Drawer
           title="Chi Tiết Điểm Đến - ItemDes"
@@ -97,9 +94,6 @@ const FormViewDestination: React.FC<FormViewDestinationProps> = ({
           className="itemdes-view-drawer"
           width={600}
         >
-         <ItemDes
-          destination={destination} // Truyền destination vào ItemDes
-        />
         </Drawer>
       )}
     </>

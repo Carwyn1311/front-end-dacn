@@ -49,8 +49,6 @@ const DoctoHTML: React.FC<DoctoHTMLProps> = ({ url, filePath }) => {
         throw new Error('No URL or file path provided');
       }
 
-      console.log('Fetching file from:', fullUrl);
-
       const response = await fetch(fullUrl, {
         method: 'GET',
         headers: {
