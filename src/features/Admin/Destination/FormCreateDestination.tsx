@@ -4,11 +4,12 @@ import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
 import DestinationInfoForm from './form/DestinationInfoForm';
 import ImageUploadForm from './form/ImageUploadForm';
 import TicketPricesForm from './form/TicketPricesForm';
+import DescriptionFileUploadForm from './form/DescriptionFileUploadForm';
 import FormCreateItinerary from './form/FormCreateItinerary';
 import axiosInstanceToken from '../../AxiosInterceptor/Content/axioslnterceptorToken';
 import moment from 'moment';
 import axios from 'axios';
-import DescriptionFileUploadForm from './form/DescriptionFileUploadForm';
+
 
 const { Step } = Steps;
 
