@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Input, Button, DatePicker } from 'antd';
 import moment from 'moment';
+import '../css/TicketSection.css'; 
 
 interface TicketSectionProps {
   bookingDate: string;
@@ -34,7 +35,7 @@ const TicketSection: React.FC<TicketSectionProps> = ({
       <h2>Giá vé</h2>
       <p>Người lớn: {ticketPrice.adult_price} VND</p>
       <p>Trẻ em: {ticketPrice.child_price} VND</p>
-      <Form layout="inline">
+      <Form layout="inline" className="ticket-form">
         <Form.Item label="Ngày đặt">
           <DatePicker
             value={moment(bookingDate)}

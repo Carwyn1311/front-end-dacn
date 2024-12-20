@@ -1,0 +1,47 @@
+/* PaymentPage.css */
+
+.payment-page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+    background-color: #f9f9f9;
+  }
+  
+  .payment-section {
+    text-align: left;
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+  }
+  
+  .payment-section img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 5px;
+    margin-top: 10px;
+  }
+  
+  .payment-section h6 {
+    margin-bottom: 10px;
+  }
+  
+  .payment-button {
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .qr-code-section {
+    text-align: center;
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+  }
+  

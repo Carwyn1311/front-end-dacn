@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
 import { message, Modal, Button } from 'antd';
 import { Destination } from './DestinationTypes';
@@ -23,6 +23,7 @@ const DestinationDetail: React.FC = () => {
   const [newComment, setNewComment] = useState<string>('');
   const [liked, setLiked] = useState<boolean>(false);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchDestination = async () => {
@@ -42,6 +43,7 @@ const DestinationDetail: React.FC = () => {
   };
 
   const handleOk = async () => {
+    if (!destination) return; // Kiểm tra nếu không có destination
     const bookingData = {
       booking_date: moment(bookingDate).format("YYYY-MM-DDTHH:mm:ss.SSS"),
       adult_tickets: adultCount,
@@ -49,22 +51,25 @@ const DestinationDetail: React.FC = () => {
       status: 'PENDING',
       days: days,
       destination_id: destination?.id,
+      ticketPrice: destination?.ticketPrice,
     };
-
-    console.log('Dữ liệu gửi đi:', bookingData);
 
     try {
       const token = localStorage.getItem('token');
-      await axiosInstanceToken.post('/api/bookings/create', bookingData, {
+      const response = await axiosInstanceToken.post('/api/bookings/create', bookingData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      const createdBooking = response.data;
+      const bookingId = createdBooking.id;
+
       message.success('Đặt vé thành công!');
+      navigate('/payment', { state: { ...bookingData, bookingId, destination } }); // Chuyển bookingId và destination đến trang thanh toán
     } catch (error) {
       message.error('Đặt vé thất bại.');
     }
-    
+
     setIsModalVisible(false);
   };
 
@@ -87,6 +92,8 @@ const DestinationDetail: React.FC = () => {
     return <div>Loading...</div>;
   }
 
+  const typeDisplay = destination.type === 'DOMESTIC' ? 'Trong nước' : 'Ngoài nước';
+
   return (
     <div className="destination-detail">
       <div className="left-column">
@@ -98,6 +105,15 @@ const DestinationDetail: React.FC = () => {
         <h1>{destination.name}</h1>
         <p>{destination.description}</p>
         <ImageGallery images={destination.destinationImages} />
+
+        <div className="additional-info">
+          <h2>Thông tin chi tiết</h2>
+          <p><strong>Địa điểm:</strong> {destination.location}</p>
+          <p><strong>Loại:</strong> {typeDisplay}</p>
+          <p><strong>Tỉnh/Thành phố:</strong> {destination.city.name}</p>
+          <p><strong>Tỉnh:</strong> {destination.city.province.name}</p>
+          <p><strong>Quốc gia:</strong> {destination.city.province.country}</p>
+        </div>
 
         <TicketSection
           bookingDate={bookingDate}

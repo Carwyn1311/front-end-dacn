@@ -1,29 +1,7 @@
-// DestinationTypes.ts
-
 export interface DestinationImage {
   id: number;
   image_url: string;
   destination_id: number;
-}
-
-export interface Destination {
-  id: number;
-  name: string;
-  description: string;
-  location: string;
-  type: 'DOMESTIC' | 'INTERNATIONAL';
-  city: number;
-  created_at: string | null;
-  destinationImages: DestinationImage[];
-  itineraries: Itinerary[];
-  ticketPrice: TicketPrice;
-}
-
-export interface Itinerary {
-  id: number;
-  start_date: string;
-  end_date: string;
-  activities: Activity[];
 }
 
 export interface Activity {
@@ -33,9 +11,46 @@ export interface Activity {
   end_time: string;
 }
 
+export interface Itinerary {
+  id: number;
+  start_date: string;
+  end_date: string;
+  activities: Activity[];
+  destination_id: number;
+}
+
 export interface TicketPrice {
   id: number;
   adult_price: number;
   child_price: number;
 }
 
+export interface Province {
+  id: number;
+  name: string;
+  country: string;
+}
+
+export interface City {
+  id: number;
+  name: string;
+  province: Province;
+}
+
+export interface Destination {
+  id: number;
+  name: string;
+  description: string | null;
+  location: string;
+  type: 'DOMESTIC' | 'INTERNATIONAL';
+  city: City;
+  created_at: string | null;
+  destinationImages: DestinationImage[];
+  itineraries: Itinerary[];
+  ticketPrice: TicketPrice;
+  descriptionFile?: {
+    id: number;
+    fileName: string;
+    filePath: string;
+  };
+}

@@ -29,6 +29,7 @@ import { Destination, destinationList } from "./features/Admin/Destination/listd
 import ItemDest from "./features/Admin/Destination/ItemDest";
 import ItemDes from "./features/Admin/Destination/ItemDest";
 import DestinationDetail from "./features/Maincontent/Content/DestinationDetails";
+import PaymentPage from "./features/Maincontent/Payment/PaymentPage";
 
 
 const App: React.FC = () => {
@@ -151,8 +152,10 @@ const AppContent: React.FC = () => {
           <Route path="/admin/city-list"          element={<CityList />} />
           <Route path="/admin/province-list"      element={<ProvinceList />} />
           <Route path="/destination/:id"          element={<DestinationDetail />} />
-          <Route path="/admin/city-list" element={<CityList />} />
-          <Route path="/admin/province-list" element={<ProvinceList />} />
+          <Route path="/admin/city-list"          element={<CityList />} />
+          <Route path="/admin/province-list"      element={<ProvinceList />} />
+          <Route path="/payment"                  element={<PaymentPage />} />
+
           {/* {destinationList.map((dest) => (
           <Route
             key={dest.id}
