@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import { Modal, Steps, message } from 'antd';
 import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
 import DestinationInfoForm from './form/DestinationInfoForm';
 import ImageUploadForm from './form/ImageUploadForm';
-import DescriptionFileUploadForm from './form/DescriptionFileUploadForm';
 import TicketPricesForm from './form/TicketPricesForm';
 import FormCreateItinerary from './form/FormCreateItinerary';
+import axiosInstanceToken from '../../AxiosInterceptor/Content/axioslnterceptorToken';
+import moment from 'moment';
+import axios from 'axios';
+import DescriptionFileUploadForm from './form/DescriptionFileUploadForm';
 
 const { Step } = Steps;
 
@@ -29,6 +32,7 @@ const FormCreateDestination: React.FC<FormCreateDestinationProps> = ({ onClose, 
   const [descriptionFile, setDescriptionFile] = useState<File | null>(null);
   const [itinerary, setItinerary] = useState<any | null>(null);
   const token = localStorage.getItem('token');
+  const baseUrl = process.env.REACT_APP_BASE_URL;
 
   useEffect(() => {
     const fetchCities = async () => {
@@ -49,7 +53,7 @@ const FormCreateDestination: React.FC<FormCreateDestinationProps> = ({ onClose, 
   const handleNext = async (values?: any) => {
     if (currentStep === 0) {
       try {
-        const destResponse = await axiosInstance.post('/api/dest/create', {
+        const destResponse = await axiosInstanceToken.post('/api/dest/create', {
           name: values.name,
           description: values.description,
           location: values.location,
@@ -59,97 +63,18 @@ const FormCreateDestination: React.FC<FormCreateDestinationProps> = ({ onClose, 
         setCurrentStep(currentStep + 1);
       } catch (error) {
         message.error('Lỗi khi tạo điểm đến');
+        console.error('Error creating destination:', error);
       }
-    } else if (currentStep === 1 || currentStep === 2 || currentStep === 3) {
+    } else if (currentStep === 1 || currentStep === 2) {
       setCurrentStep(currentStep + 1);
-    } else if (currentStep === 4) {
+    } else if (currentStep === 3) {
       setItinerary(values);
-      setCurrentStep(currentStep + 1);
+      handleSubmit();  // Lưu hành trình sau khi nhập xong
     }
   };
 
   const handlePrev = () => {
     setCurrentStep(currentStep - 1);
-  };
-
-  const handleSubmit = async () => {
-    if (destinationId === null) {
-      message.error('Không tìm thấy ID điểm đến');
-      return;
-    }
-
-    try {
-      if (fileList.length > 0) {
-        const imagesToSave = await Promise.all(fileList.map(async (file: any) => {
-          const base64 = await getBase64(file.originFileObj);
-          return {
-            destination: { id: destinationId },
-            image_url: base64
-          };
-        }));
-
-        await axiosInstance.post('/api/dest/img', imagesToSave, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-      }
-
-      if (descriptionFile) {
-        const formData = new FormData();
-        formData.append('descriptionFile', descriptionFile);
-
-        await axiosInstance.post(`/api/dest/upload-file/${destinationId}`, formData, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-      }
-
-      if (itinerary) {
-        await axiosInstance.post('/api/itineraries/create', itinerary, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-      }
-
-      message.success('Tạo điểm đến thành công');
-    } catch (error) {
-      message.error('Lỗi khi tải ảnh hoặc file mô tả');
-    }
-  };
-
-  const handleFinish = async (values: any) => {
-    setLoading(true);
-    try {
-      await handleSubmit();
-
-      const ticketPrices = {
-        destination_id: destinationId, 
-        adult_price: Number(values.adult_price),
-        child_price: Number(values.child_price),
-      };
-
-      console.log('Dữ liệu gửi đi:', ticketPrices);
-
-      await axiosInstance.post('/api/ticketprices/create', ticketPrices, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
-      message.success('Lưu giá vé thành công');
-      onSuccess();
-      onClose();
-    } catch (error) {
-      message.error('Lỗi khi lưu giá vé');
-      setLoading(false);
-    }
   };
 
   const getBase64 = (file: File) => {
@@ -159,6 +84,103 @@ const FormCreateDestination: React.FC<FormCreateDestinationProps> = ({ onClose, 
       reader.onload = () => resolve(reader.result as string);
       reader.onerror = error => reject(error);
     });
+  };
+
+  const handleSubmit = async () => {
+    if (destinationId === null) {
+      message.error('Không tìm thấy ID điểm đến');
+      return;
+    }
+
+    try {
+      if (itinerary) {
+        const formattedItinerary = {
+          ...itinerary,
+          start_date: moment(itinerary.start_date).format('YYYY-MM-DDTHH:mm:ss'),
+          end_date: moment(itinerary.end_date).format('YYYY-MM-DDTHH:mm:ss'),
+          activities: itinerary.activities.map((activity: any) => ({
+            ...activity,
+            start_time: moment(activity.start_time).format('YYYY-MM-DDTHH:mm:ss'),
+            end_time: moment(activity.end_time).format('YYYY-MM-DDTHH:mm:ss'),
+          }))
+        };
+
+        await axiosInstanceToken.post('/api/itineraries/create', formattedItinerary, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        message.success('Tạo điểm đến thành công');
+        onSuccess();
+        onClose();
+      }
+      if (descriptionFile) {
+        const formData = new FormData();
+        formData.append('descriptionFile', descriptionFile);
+
+        await axios.post(`${baseUrl}/api/dest/upload-file/${destinationId}`, formData, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+
+        message.success('Tạo điểm đến thành công');
+      }
+      if (fileList.length > 0) {
+        try {
+          const imagesToSave = await Promise.all(fileList.map(async (file: any) => {
+            const base64 = await getBase64(file.originFileObj);
+            return {
+              destination: { id: destinationId },
+              image_url: base64
+            };
+          }));
+  
+          await axios.post(`${baseUrl}/api/dest/img`, imagesToSave, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          });
+  
+          message.success('Lưu ảnh thành công');
+        } catch (error) {
+          message.error('Lỗi khi lưu ảnh');
+          console.error('Error uploading images:', error);
+        }
+      }
+    } catch (error) {
+      message.error('Lỗi khi lưu hành trình');
+      console.error('Error saving itinerary:', error);
+    }
+  };
+
+  const handleFinish = async (values: any) => {
+    setLoading(true);
+    try {
+      const ticketPrices = {
+        destination_id: destinationId, 
+        adult_price: Number(values.adult_price),
+        child_price: Number(values.child_price),
+      };
+
+      await axiosInstance.post('/api/ticketprices/create', ticketPrices, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      handleSubmit();
+      message.success('Lưu giá vé thành công');
+      onSuccess();
+      onClose();
+    } catch (error) {
+      message.error('Lỗi khi lưu giá vé');
+      console.error('Error saving ticket prices:', error);
+      setLoading(false);
+    }
   };
 
   return (
@@ -173,7 +195,7 @@ const FormCreateDestination: React.FC<FormCreateDestinationProps> = ({ onClose, 
       <Steps current={currentStep}>
         <Step title="Thông Tin Điểm Đến" />
         <Step title="Chọn Ảnh" />
-        <Step title="Tải File Mô Tả" />
+        <Step title="Chọn File mô tả" />
         <Step title="Hành Trình" />
         <Step title="Giá Vé" />
       </Steps>
@@ -206,7 +228,7 @@ const FormCreateDestination: React.FC<FormCreateDestinationProps> = ({ onClose, 
         )}
 
         {currentStep === 3 && (
-          destinationId && (
+          destinationId !== null && (
             <FormCreateItinerary
               onNext={(values: any) => {
                 setItinerary(values);
@@ -220,7 +242,7 @@ const FormCreateDestination: React.FC<FormCreateDestinationProps> = ({ onClose, 
 
         {currentStep === 4 && (
           <TicketPricesForm
-            onFinish={handleFinish}
+            onFinish={handleFinish} 
             onPrev={handlePrev}
             loading={loading}
           />
