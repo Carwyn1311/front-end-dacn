@@ -64,7 +64,7 @@ const FormViewDestination: React.FC<FormViewDestinationProps> = ({
           <Descriptions.Item label="Loại">
             {destination.type === 'DOMESTIC' ? 'Trong Nước' : 'Quốc Tế'}
           </Descriptions.Item>
-          <Descriptions.Item label="Thành phố">{destination.city}</Descriptions.Item>
+          <Descriptions.Item label="Thành phố">{destination.city.province.name}</Descriptions.Item>
         </Descriptions>
 
         <Typography.Title level={4} style={{ marginTop: 20 }}>
@@ -75,27 +75,7 @@ const FormViewDestination: React.FC<FormViewDestinationProps> = ({
         ) : (
           <p>Không có lịch trình</p>
         )}
-
-        <Button 
-          type="primary" 
-          onClick={handleOpenItemDes}
-          style={{ marginTop: 20 }}
-        >
-          Xem Thêm Chi Tiết
-        </Button>
       </Drawer>
-
-      {showItemDes && (
-        <Drawer
-          title="Chi Tiết Điểm Đến - ItemDes"
-          placement="right"
-          onClose={handleCloseItemDes}
-          open={showItemDes}
-          className="itemdes-view-drawer"
-          width={600}
-        >
-        </Drawer>
-      )}
     </>
   );
 };

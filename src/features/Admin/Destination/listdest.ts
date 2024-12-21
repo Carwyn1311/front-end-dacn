@@ -34,17 +34,39 @@ export interface Itinerary {
   destination_id: number;
 }
 
+export interface Province {
+  id: number;
+  name: string;
+  country: string;
+  cities: null | any[]; // Flexible for future city details
+}
+
+export interface City {
+  id: number;
+  name: string;
+  province: Province;
+}
+
+export interface TicketPrice {
+  id: number;
+  adult_price: number;
+  child_price: number;
+  created_at: string; // ISO 8601 format string
+  destination_id: number;
+}
+
 export interface Destination {
   id: number;
   name: string;
   description: string | null;
   location: string;
   type: 'DOMESTIC' | 'INTERNATIONAL';
-  city: number;
+  city: City;
   created_at: string | null; // ISO 8601 format string
   descriptionFile: DescriptionFile;
   destinationImages: DestinationImage[];
   itineraries: Itinerary[];
+  ticketPrice: TicketPrice;
   encodedPath?: string; 
 }
 
@@ -53,10 +75,10 @@ const formatPath = (name: string): string => {
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "") // Loại bỏ dấu tiếng Việt
-    .replace(/[^a-z0-9]+/g, "-") // Thay các ký tự không phải chữ và số bằng dấu gạch ngang
+    .replace(/\s+/g, "-") // Thay dấu cách bằng dấu gạch ngang
+    .replace(/[^a-z0-9-]+/g, "") // Loại bỏ các ký tự không phải chữ, số hoặc gạch ngang
     .replace(/(^-|-$)/g, ""); // Loại bỏ dấu gạch ngang ở đầu và cuối
 };
-
 
 export const fetchDestinations = async () => {
   try {
@@ -75,11 +97,27 @@ export const fetchDestinations = async () => {
   }
 };
 
-
-// Hàm phân loại điểm đến thành "trong nước" và "nước ngoài"
+// Hàm phân loại điểm đến thành "trong nước" và "nước ngoài" với cấu trúc yêu cầu
 export const classifyDestinations = () => {
-  const domestic = destinationList.filter((dest) => dest.type === 'DOMESTIC');
-  const international = destinationList.filter((dest) => dest.type === 'INTERNATIONAL');
+  const domestic: { [key: string]: { id: number; name: string }[] } = {};
+  const international: { [key: string]: { id: number; name: string }[] } = {};
+
+  destinationList.forEach((dest) => {
+    const typeKey = dest.type === 'DOMESTIC' ? 'domestic' : 'international';
+    const provinceName = dest.city.province.name;
+
+    if (typeKey === 'domestic') {
+      if (!domestic[provinceName]) {
+        domestic[provinceName] = [];
+      }
+      domestic[provinceName].push({ id: dest.id, name: dest.name });
+    } else {
+      if (!international[provinceName]) {
+        international[provinceName] = [];
+      }
+      international[provinceName].push({ id: dest.id, name: dest.name });
+    }
+  });
 
   return { domestic, international };
 };

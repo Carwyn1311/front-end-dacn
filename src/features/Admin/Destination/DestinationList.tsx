@@ -152,6 +152,7 @@ const DestinationList: React.FC = () => {
               icon={<DeleteOutlined />}
               danger
               className="destlist-delete-btn"
+              style={{ color: '#0b0101', backgroundColor: '#f52d' }}
             >
               Xóa
             </Button>
