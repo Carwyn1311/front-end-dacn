@@ -38,8 +38,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isLoggedIn, onLogout }) => {
     const fetchAndClassifyDestinations = async () => {
       await fetchDestinations(); // Fetch the destinations from the API
       const { domestic, international } = classifyDestinations(); // Classify them into domestic and international
-      setDomestic(domestic);
-      setInternational(international);
+      setDomestic(Object.values(domestic).flat());
+      setInternational(Object.values(international).flat());
     };
 
     fetchAndClassifyDestinations(); // Call the function to fetch and classify destinations
@@ -132,22 +132,31 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isLoggedIn, onLogout }) => {
       key: "domestic-travel",
       icon: <AppstoreOutlined />,
       label: "Tour trong nước",
-      children: domestic.map((dest) => ({
-        key: `domestic-${dest.id}`,
-        label: dest.name,
-        onClick: () => navigate(dest.encodedPath),
+      children: Object.entries(classifyDestinations().domestic).map(([provinceName, destinations]) => ({
+        key: `province-${provinceName}`,
+        label: provinceName, // Tên của province
+        children: destinations.map((dest) => ({
+          key: `domestic-${dest.id}`,
+          label: dest.name, // Tên điểm đến
+          onClick: () => navigate(`/travel/domestic/${formatPath(dest.name)}`),
+        })),
       })),
     },
     {
       key: "international-travel",
       icon: <GlobalOutlined />,
-      label: "Tour nước ngoài",
-      children: international.map((dest) => ({
-        key: `international-${dest.id}`,
-        label: dest.name,
-        onClick: () => navigate(dest.encodedPath),
+      label: "Tour quốc tế",
+      children: Object.entries(classifyDestinations().international).map(([provinceName, destinations]) => ({
+        key: `province-${provinceName}`,
+        label: provinceName, // Tên của province
+        children: destinations.map((dest) => ({
+          key: `international-${dest.id}`,
+          label: dest.name, // Tên điểm đến
+          onClick: () => navigate(`/travel/international/${formatPath(dest.name)}`),
+        })),
       })),
     },
+    
     {
       key: "services",
       icon: <SettingOutlined />,

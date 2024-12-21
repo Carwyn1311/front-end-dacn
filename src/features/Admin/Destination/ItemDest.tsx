@@ -71,7 +71,7 @@ const ItemDest: React.FC<ItemDestProps> = ({ destination }) => {
             {destination.type === 'DOMESTIC' ? 'Trong Nước' : 'Quốc Tế'}
           </Tag>
         </Descriptions.Item>
-        <Descriptions.Item label="Thành Phố">{destination.city}</Descriptions.Item>
+        <Descriptions.Item label="Thành Phố">{String(destination.city)}</Descriptions.Item>
         {destination.destinationImages.length > 0 && (
           <Descriptions.Item label="Hình ảnh">
             <Row gutter={16}>
