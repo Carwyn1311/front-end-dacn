@@ -37,6 +37,20 @@ export interface City {
   province: Province;
 }
 
+export interface User {
+  id: number;
+  fullname: string;
+}
+
+export interface Review {
+  id: number;
+  rating: number;
+  comment: string;
+  created_at: string;
+  user: User;
+  destination_id: number;
+}
+
 export interface Destination {
   id: number;
   name: string;
@@ -53,4 +67,5 @@ export interface Destination {
     fileName: string;
     filePath: string;
   };
+  reviewsList: Review[];
 }

@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
-import { message, Modal, Button } from 'antd';
-import { Destination } from './DestinationTypes';
-import '../css/DestDetail.css';
+import { message } from 'antd';
+import moment from 'moment';
 import ItineraryCard from '../components/ItineraryCard';
 import ImageGallery from '../components/ImageGallery';
 import TicketSection from '../components/TicketSection';
 import LikeSection from '../components/LikeSection';
 import CommentsSection from '../components/CommentsSection';
 import axiosInstanceToken from '../../AxiosInterceptor/Content/axioslnterceptorToken';
-import moment from 'moment';
+import '../css/DestDetail.css';
+import { Destination } from './DestinationTypes';
+import BookingModal from '../components/BookingModalProps';
 
 const DestinationDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -19,8 +20,9 @@ const DestinationDetail: React.FC = () => {
   const [adultCount, setAdultCount] = useState<number>(1);
   const [childCount, setChildCount] = useState<number>(0);
   const [days, setDays] = useState<number>(1);
-  const [comments, setComments] = useState<string[]>([]);
+  const [comments, setComments] = useState<{ comment: string, rating: number | undefined, fullname: string }[]>([]);
   const [newComment, setNewComment] = useState<string>('');
+  const [newRating, setNewRating] = useState<number | undefined>(undefined);
   const [liked, setLiked] = useState<boolean>(false);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -38,12 +40,36 @@ const DestinationDetail: React.FC = () => {
     fetchDestination();
   }, [id]);
 
+  useEffect(() => {
+    if (destination && destination.reviewsList) {
+      const initialComments = destination.reviewsList.map(review => ({
+        comment: review.comment,
+        rating: review.rating,
+        fullname: review.user.fullname,
+      }));
+      setComments(initialComments);
+    }
+  }, [destination]);
+
+  useEffect(() => {
+    const checkIfLiked = async () => {
+      try {
+        const response = await axiosInstanceToken.get(`/api/wish/check/${id}`);
+        setLiked(response.data.liked);
+      } catch (error) {
+        message.error('Không thể kiểm tra trạng thái yêu thích');
+      }
+    };
+
+    checkIfLiked();
+  }, [id]);
+
   const showModal = () => {
     setIsModalVisible(true);
   };
 
   const handleOk = async () => {
-    if (!destination) return; // Kiểm tra nếu không có destination
+    if (!destination) return;
     const bookingData = {
       booking_date: moment(bookingDate).format("YYYY-MM-DDTHH:mm:ss.SSS"),
       adult_tickets: adultCount,
@@ -55,13 +81,12 @@ const DestinationDetail: React.FC = () => {
     };
 
     try {
-      const response = await axiosInstanceToken.post('/api/bookings/create', bookingData, {
-      });
+      const response = await axiosInstanceToken.post('/api/bookings/create', bookingData);
       const createdBooking = response.data;
       const bookingId = createdBooking.id;
 
       message.success('Đặt vé thành công!');
-      navigate('/payment', { state: { ...bookingData, bookingId, destination } }); // Chuyển bookingId và destination đến trang thanh toán
+      navigate('/payment', { state: { ...bookingData, bookingId, destination } });
     } catch (error) {
       message.error('Đặt vé thất bại.');
     }
@@ -73,14 +98,44 @@ const DestinationDetail: React.FC = () => {
     setIsModalVisible(false);
   };
 
-  const handleLike = () => {
-    setLiked(!liked);
+  const handleLike = async () => {
+    try {
+      const destinationId = Number(id);
+      const destinationData = { destinationId };
+      console.log('Sending Data:', destinationData);
+
+      if (liked) {
+        console.log('Making DELETE request to /api/wish/delete/' + id);
+        await axiosInstanceToken.delete(`/api/wish/delete/${destinationId}`);
+        message.success('Đã bỏ yêu thích');
+      } else {
+        console.log('Making POST request to /api/wish/create');
+        await axiosInstanceToken.post('/api/wish/create', destinationData);
+        message.success('Đã yêu thích');
+      }
+      setLiked(!liked);
+    } catch (error) {
+      message.error('Không thể cập nhật trạng thái yêu thích');
+    }
   };
 
-  const handleAddComment = () => {
-    if (newComment) {
-      setComments([...comments, newComment]);
-      setNewComment('');
+  const handleAddComment = async () => {
+    if (newComment || newRating !== undefined) {
+      const commentData = {
+        comment: newComment,
+        rating: newRating,
+        destinationId: Number(id),
+      };
+
+      try {
+        await axiosInstanceToken.post('/api/review/create', commentData);
+        setComments([...comments, { comment: newComment, rating: newRating, fullname: 'Current User' }]);
+        setNewComment('');
+        setNewRating(undefined);
+        message.success('Bình luận đã được thêm');
+      } catch (error) {
+        message.error('Không thể thêm bình luận');
+      }
     }
   };
 
@@ -130,17 +185,22 @@ const DestinationDetail: React.FC = () => {
           comments={comments}
           newComment={newComment}
           setNewComment={setNewComment}
+          newRating={newRating}
+          setNewRating={setNewRating}
           handleAddComment={handleAddComment}
         />
       </div>
 
-      <Modal title="Xác nhận đặt vé" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-        <p>Ngày đặt: {bookingDate}</p>
-        <p>Người lớn: {adultCount}</p>
-        <p>Trẻ em: {childCount}</p>
-        <p>Số ngày: {days}</p>
-        <p>Tổng giá vé: {(adultCount * destination.ticketPrice.adult_price + childCount * destination.ticketPrice.child_price) * days} VND</p>
-      </Modal>
+      <BookingModal
+        isVisible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        bookingDate={bookingDate}
+        adultCount={adultCount}
+        childCount={childCount}
+        days={days}
+        destination={destination}
+      />
     </div>
   );
 };

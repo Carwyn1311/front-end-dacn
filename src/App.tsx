@@ -153,7 +153,6 @@ const AppContent: React.FC = () => {
           <Route path="/admin/province-list"      element={<ProvinceList />} />
           <Route path="/destination/:id"          element={<DestinationDetail />} />
           <Route path="/admin/city-list"          element={<CityList />} />
-          <Route path="/admin/province-list"      element={<ProvinceList />} />
           <Route path="/payment"                  element={<PaymentPage />} />
 
           {/* {destinationList.map((dest) => (
