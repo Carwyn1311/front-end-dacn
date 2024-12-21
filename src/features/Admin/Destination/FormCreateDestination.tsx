@@ -120,9 +120,8 @@ const FormCreateDestination: React.FC<FormCreateDestinationProps> = ({ onClose, 
         const formData = new FormData();
         formData.append('descriptionFile', descriptionFile);
 
-        await axios.post(`${baseUrl}/api/dest/upload-file/${destinationId}`, formData, {
+        await axiosInstanceToken.post(`/api/dest/upload-file/${destinationId}`, formData, {
           headers: {
-            'Authorization': `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
           }
         });
@@ -139,9 +138,8 @@ const FormCreateDestination: React.FC<FormCreateDestinationProps> = ({ onClose, 
             };
           }));
   
-          await axios.post(`${baseUrl}/api/dest/img`, imagesToSave, {
+          await axiosInstanceToken.post(`${baseUrl}/api/dest/img`, imagesToSave, {
             headers: {
-              'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json'
             }
           });

@@ -6,18 +6,9 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.response.use(
   (response) => {
-    if (response.data === undefined) {
-      console.error("Received undefined response from API");
-      return Promise.reject(new Error("API returned undefined"));
-    }
-
-    if (typeof response.data === 'string') {
-      try {
-        response.data = JSON.parse(response.data);
-      } catch (error) {
-        console.error("Error parsing JSON response:", error);
-        return Promise.reject(new Error("Invalid JSON response"));
-      }
+    if (!response.data) {
+      console.error("Received empty response from API");
+      return Promise.reject(new Error("API returned empty response"));
     }
 
     return response;

@@ -48,17 +48,17 @@ const FormUpdateCity: React.FC<FormUpdateCityProps> = ({ city, onClose, onSucces
       };
       
       await axiosInstance.put(`/api/city/${city.id}`, data);
-      message.success('Cập nhật thành phố thành công');
+      message.success('Cập nhật Địa Điểm thành công');
       onSuccess();
       onClose();
     } catch (error) {
-      message.error('Lỗi khi cập nhật thành phố');
+      message.error('Lỗi khi cập nhật Địa Điểm');
     }
   };
 
   return (
     <Drawer
-      title="Chỉnh Sửa Thành Phố"
+      title="Chỉnh Sửa Địa Điểm"
       placement="right"
       onClose={onClose}
       open={true}
@@ -72,13 +72,13 @@ const FormUpdateCity: React.FC<FormUpdateCityProps> = ({ city, onClose, onSucces
       >
         <Form.Item
           name="name"
-          label="Tên Thành Phố"
+          label="Tên Địa Điểm"
           rules={[{ 
             required: true, 
-            message: 'Vui lòng nhập tên thành phố' 
+            message: 'Vui lòng nhập tên Địa Điểm' 
           }]}
         >
-          <Input placeholder="Nhập tên thành phố" />
+          <Input placeholder="Nhập tên Địa Điểm" />
         </Form.Item>
 
         <Form.Item
@@ -100,7 +100,7 @@ const FormUpdateCity: React.FC<FormUpdateCityProps> = ({ city, onClose, onSucces
 
         <Form.Item>
           <Button type="primary" htmlType="submit" className="citylist-update-submit-btn">
-            Cập Nhật Thành Phố
+            Cập Nhật Địa Điểm
           </Button>
         </Form.Item>
       </Form>

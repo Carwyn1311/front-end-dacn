@@ -55,11 +55,7 @@ const DestinationDetail: React.FC = () => {
     };
 
     try {
-      const token = localStorage.getItem('token');
       const response = await axiosInstanceToken.post('/api/bookings/create', bookingData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
       const createdBooking = response.data;
       const bookingId = createdBooking.id;

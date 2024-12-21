@@ -65,11 +65,7 @@ const PaymentPage: React.FC = () => {
     };
 
     try {
-      const token = localStorage.getItem('token');
       const paymentResponse = await axiosInstanceToken.post('/api/payments/create', paymentData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
 
       const paymentDetailsId = paymentResponse.data.id;
@@ -82,9 +78,6 @@ const PaymentPage: React.FC = () => {
         };
 
         const qrCodeResponse = await axiosInstanceToken.post('/api/qrcode/create', qrCodeRequest, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         });
 
         const fullQrCodeUrl = `${baseUrl}${qrCodeResponse.data.qrCodeUrl}`; // Combine base URL with QR code URL

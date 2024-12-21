@@ -4,9 +4,6 @@ import { User } from '../../User/Content/User';
 
 const axiosInstanceToken = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL}`,
-  // headers: {
-  //   'Content-Type': 'application/json',
-  // },
 });
 
 axiosInstanceToken.interceptors.request.use(
@@ -22,6 +19,18 @@ axiosInstanceToken.interceptors.request.use(
   }
 );
 
+const handleUnauthorized = () => {
+  console.error("Unauthorized, redirecting to login...");
+
+  // Xóa token và chuyển hướng đến trang đăng nhập
+  User.clearUserData();
+  localStorage.removeItem('token');
+  sessionStorage.removeItem('token');
+
+  // Sử dụng window.location.href để chuyển hướng
+  window.location.href = '/login';
+};
+
 axiosInstanceToken.interceptors.response.use(
   (response) => {
     // Kiểm tra dữ liệu trả về có phải là undefined không
@@ -30,32 +39,13 @@ axiosInstanceToken.interceptors.response.use(
       return Promise.reject(new Error("API returned undefined"));
     }
 
-    // Nếu response.data là chuỗi, thử parse nó
-    if (typeof response.data === 'string') {
-      try {
-        response.data = JSON.parse(response.data);
-      } catch (error) {
-        console.error("Error parsing JSON response:", error);
-        return Promise.reject(new Error("Invalid JSON response"));
-      }
-    }
-
     return response;
   },
   (error) => {
     if (error.response) {
       // Kiểm tra mã lỗi HTTP, ví dụ: 401 Unauthorized
       if (error.response.status === 401) {
-        console.error("Unauthorized, redirecting to login...", error);
-
-        // Xóa token và chuyển hướng đến trang đăng nhập
-        User.clearUserData();
-        localStorage.removeItem('token');
-        sessionStorage.removeItem('token');
-
-        // Sử dụng hook useNavigate để chuyển hướng
-        const navigate = useNavigate();
-        navigate('/login');
+        handleUnauthorized();
       } else {
         console.error("API error:", error.response.status, error.response.data);
       }

@@ -37,17 +37,17 @@ const FormCreateCity: React.FC<FormCreateCityProps> = ({ onClose, onSuccess }) =
       };
       
       await axiosInstance.post('/api/city/create', data);
-      message.success('Tạo thành phố thành công');
+      message.success('Tạo địa điểm thành công');
       onSuccess();
       onClose();
     } catch (error) {
-      message.error('Lỗi khi tạo thành phố');
+      message.error('Lỗi khi tạo địa điểm');
     }
   };
 
   return (
     <Drawer
-      title="Thêm Thành Phố Mới"
+      title="Thêm Địa Điểm Mới"
       placement="right"
       onClose={onClose}
       open={true}
@@ -61,13 +61,13 @@ const FormCreateCity: React.FC<FormCreateCityProps> = ({ onClose, onSuccess }) =
       >
         <Form.Item
           name="name"
-          label="Tên Thành Phố"
+          label="Tên Địa Điểm"
           rules={[{ 
             required: true, 
-            message: 'Vui lòng nhập tên thành phố' 
+            message: 'Vui lòng nhập tên Địa Điểm' 
           }]}
         >
-          <Input placeholder="Nhập tên thành phố" className="citylist-create-form-label"/>
+          <Input placeholder="Nhập tên Địa Điểm" className="citylist-create-form-label"/>
         </Form.Item>
 
         <Form.Item
@@ -93,7 +93,7 @@ const FormCreateCity: React.FC<FormCreateCityProps> = ({ onClose, onSuccess }) =
             htmlType="submit"
             className="citylist-create-submit-btn"
           >
-            Tạo Thành Phố
+            Tạo Địa Điểm
           </Button>
         </Form.Item>
       </Form>

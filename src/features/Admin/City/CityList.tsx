@@ -38,14 +38,14 @@ const CityList: React.FC = () => {
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
   const [formMode, setFormMode] = useState<'create' | 'update' | 'view' | null>(null);
 
-  // Lấy danh sách thành phố
+  // Lấy danh sách địa điểm
   const fetchCities = async () => {
     setLoading(true);
     try {
       const response = await axiosInstance.get('/api/city/list');
       setCities(response.data);
     } catch (error) {
-      message.error('Không thể tải danh sách thành phố');
+      message.error('Không thể tải danh sách địa điểm');
     } finally {
       setLoading(false);
     }
@@ -63,14 +63,14 @@ const CityList: React.FC = () => {
       message.error('Không thể tải danh sách tỉnh');
     }
   };
-  // Xóa thành phố
+  // Xóa địa điểm
   const handleDeleteCity = async (cityId: number) => {
     try {
       await axiosInstance.delete(`/api/city/${cityId}`);
-      message.success('Xóa thành phố thành công');
+      message.success('Xóa địa điểm thành công');
       fetchCities();
     } catch (error) {
-      message.error('Lỗi khi xóa thành phố');
+      message.error('Lỗi khi xóa địa điểm');
     }
   };
 
@@ -104,7 +104,7 @@ const CityList: React.FC = () => {
       key: 'id',
     },
     {
-      title: 'Tên Thành Phố',
+      title: 'Tên địa điểm',
       dataIndex: 'name',
       key: 'name',
     },
@@ -155,14 +155,14 @@ const CityList: React.FC = () => {
   return (
     <div className='citylist-container'>
       <div className='citylist-header'>
-      <h2 className="citylist-title">Quản Lý Thành Phố</h2>
+      <h2 className="citylist-title">Quản Lý địa điểm</h2>
         <Button
           type="primary"
           icon={<PlusOutlined />}
           onClick={() => setFormMode('create')}
           className='citylist-add-button'
         >
-          Thêm Thành Phố Mới
+          Thêm Địa Điểm Mới
         </Button>
       </div>
 

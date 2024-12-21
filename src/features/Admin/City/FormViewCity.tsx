@@ -45,7 +45,7 @@ const FormViewCity: React.FC<FormViewCityProps> = ({ city, onClose }) => {
 
   return (
     <Drawer
-      title="Chi Tiết Thành Phố"
+      title="Chi Tiết Địa Điểm"
       placement="right"
       onClose={onClose}
       open={true}
@@ -55,7 +55,7 @@ const FormViewCity: React.FC<FormViewCityProps> = ({ city, onClose }) => {
         <Descriptions.Item label="ID">
           {city.id}
         </Descriptions.Item>
-        <Descriptions.Item label="Tên Thành Phố">
+        <Descriptions.Item label="Tên Địa Điểm">
           {city.name}
         </Descriptions.Item>
         <Descriptions.Item label="Tên Tỉnh">
