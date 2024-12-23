@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, message, DatePicker, Select } from 'antd';
+import { Table, Button, message, DatePicker, Select, Card, Space, Input } from 'antd';
 import axiosInstanceToken from '../../AxiosInterceptor/Content/axioslnterceptorToken';
+import 'moment/locale/en-gb';
+import moment, { Moment } from 'moment-timezone';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
+const { Search } = Input;
 
 interface PaymentDetail {
   id: number;
@@ -40,6 +43,7 @@ const PaymentDetailsPage: React.FC = () => {
   const [filteredPaymentDetails, setFilteredPaymentDetails] = useState<PaymentDetail[]>([]);
   const [statusFilter, setStatusFilter] = useState<string | undefined>(undefined);
   const [dateRange, setDateRange] = useState<[Date, Date] | null>(null);
+  const [searchText, setSearchText] = useState<string>('');
 
   useEffect(() => {
     fetchPaymentDetails();
@@ -67,15 +71,20 @@ const PaymentDetailsPage: React.FC = () => {
 
   const handleDateRangeChange = (dates: [Date, Date] | null, dateStrings: [string, string]) => {
     setDateRange(dates);
-    applyFilters(dates, statusFilter);
+    applyFilters(dates, statusFilter, searchText);
   };
 
   const handleStatusChange = (value: string) => {
     setStatusFilter(value);
-    applyFilters(dateRange, value);
+    applyFilters(dateRange, value, searchText);
   };
 
-  const applyFilters = (dateRange: [Date, Date] | null, statusFilter: string | undefined) => {
+  const handleSearch = (value: string) => {
+    setSearchText(value);
+    applyFilters(dateRange, statusFilter, value);
+  };
+
+  const applyFilters = (dateRange: [Date, Date] | null, statusFilter: string | undefined, searchText: string) => {
     let filteredData = paymentDetails;
 
     if (dateRange) {
@@ -86,6 +95,10 @@ const PaymentDetailsPage: React.FC = () => {
 
     if (statusFilter) {
       filteredData = filteredData.filter(payment => payment.status === statusFilter);
+    }
+
+    if (searchText) {
+      filteredData = filteredData.filter(payment => payment.invoiceCode.toLowerCase().includes(searchText.toLowerCase()));
     }
 
     setFilteredPaymentDetails(filteredData);
@@ -122,39 +135,45 @@ const PaymentDetailsPage: React.FC = () => {
       title: 'Actions',
       key: 'actions',
       render: (text: any, record: PaymentDetail) => (
-        <span>
+        <Space>
           {record.status === 'PENDING' && (
             <>
               <Button type="primary" onClick={() => updatePaymentStatus(record.id, 'COMPLETED')}>Confirm</Button>
-              <Button type="default" danger onClick={() => updatePaymentStatus(record.id, 'CANCELLED')} style={{ marginLeft: 8 }}>Cancel</Button>
+              <Button type="default" danger onClick={() => updatePaymentStatus(record.id, 'CANCELLED')}>Cancel</Button>
             </>
           )}
-        </span>
+        </Space>
       ),
     },
   ];
 
   return (
-    <div>
-      <h1>Payment Details</h1>
-      <div style={{ marginBottom: 16 }}>
-        <RangePicker
-          onChange={(dates, dateStrings) =>
-            handleDateRangeChange(dates ? [new Date(dateStrings[0]), new Date(dateStrings[1])] : null, dateStrings)
-          }
-        />
-        <Select
-          placeholder="Select status"
-          onChange={handleStatusChange}
-          style={{ width: 120, marginLeft: 16 }}
-        >
-          <Option value="PENDING">PENDING</Option>
-          <Option value="COMPLETED">COMPLETED</Option>
-          <Option value="CANCELLED">CANCELLED</Option>
-        </Select>
-      </div>
-      <Table dataSource={filteredPaymentDetails} columns={columns} rowKey="id" />
-    </div>
+    <Card title="Payment Details" style={{ margin: '20px' }}>
+      <Space direction="vertical" size="large" style={{ width: '100%' }}>
+        <Space style={{ marginBottom: 16 }} wrap>
+          <RangePicker
+            onChange={(dates, dateStrings) =>
+              handleDateRangeChange(dates ? [new Date(dateStrings[0]), new Date(dateStrings[1])] : null, dateStrings)
+            }
+          />
+          <Select
+            placeholder="Select status"
+            onChange={handleStatusChange}
+            style={{ width: 200 }}
+          >
+            <Option value="PENDING">PENDING</Option>
+            <Option value="COMPLETED">COMPLETED</Option>
+            <Option value="CANCELLED">CANCELLED</Option>
+          </Select>
+          <Search
+            placeholder="Search by Invoice Code"
+            onSearch={handleSearch}
+            style={{ width: 300 }}
+          />
+        </Space>
+        <Table dataSource={filteredPaymentDetails} columns={columns} rowKey="id" />
+      </Space>
+    </Card>
   );
 };
 
