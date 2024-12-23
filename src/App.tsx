@@ -31,6 +31,7 @@ import ItemDes from "./features/Admin/Destination/ItemDest";
 import DestinationDetail from "./features/Maincontent/Content/DestinationDetails";
 import PaymentPage from "./features/Maincontent/Payment/PaymentPage";
 import PaymentDetailsPage from "./features/Admin/Payment/PaymentDetailsPage";
+import AppHeader from "./features/Header/Content/AppHeader";
 
 
 const App: React.FC = () => {
@@ -47,7 +48,7 @@ const App: React.FC = () => {
 const AppContent: React.FC = () => {
   const [destination, setDestination] = useState<Destination | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [language, setLanguage] = useState('en');
+  const [language, setLanguage] = useState<'en' | 'vn'>('en');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
   const [selectedItem, setSelectedItem] = useState<string>('');
@@ -102,36 +103,15 @@ const AppContent: React.FC = () => {
             isLoggedIn={isLoggedIn}
             onLogout={onLogout}
           />
-          <header className="app-header">
-            <div className="top-bar">
-              <div className="contact-info">
-                <Button onClick={toggleSidebar} className="sidebar-toggle-button" style={{ color:"white", fontSize:"20px"}}>
-                  {isSidebarOpen ? <HiChevronDoubleLeft /> : <HiOutlineMenu />}
-                </Button>
-              </div>
-              <div className="user-options">
-
-                <Button onClick={() => navigate('/admin')}>
-                  Admin
-                </Button>
-                {selectedItem && (
-                  <p style={{ marginTop: '20px' }}>
-                    Mục bạn đã chọn: <strong>{selectedItem}</strong>
-                  </p>
-                )}
-                {isLoggedIn ? (
-                  <Button className="username">{username}</Button>
-                ) : (
-                  <Button className="button-login" onClick={() => navigate('/login')}>
-                    <FaUserCircle /> {language === 'en' ? 'Login' : 'Đăng nhập'}
-                  </Button>
-                )}
-                <Button className="language" onClick={toggleLanguage}>
-                  {language === 'en' ? '🇬🇧 English' : '🇻🇳 Tiếng Việt'}
-                </Button>
-              </div>
-            </div>
-          </header>
+          <AppHeader
+            isSidebarOpen={isSidebarOpen}
+            toggleSidebar={toggleSidebar}
+            isLoggedIn={isLoggedIn}
+            username={username}
+            selectedItem={selectedItem}
+            toggleLanguage={toggleLanguage}
+            language={language}
+          />
         </>
       )}
 

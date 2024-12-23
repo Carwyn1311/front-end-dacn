@@ -148,7 +148,7 @@ const DestinationDetail: React.FC = () => {
   return (
     <div className="destination-detail">
       <div className="left-column">
-        <h2>Hành trình</h2>
+        <h2 style={{padding: '10px', marginLeft: '20px'}}>Lịch trình Tour</h2>
         <ItineraryCard itineraries={destination.itineraries} />
       </div>
 
@@ -157,14 +157,25 @@ const DestinationDetail: React.FC = () => {
         <p>{destination.description}</p>
         <ImageGallery images={destination.destinationImages} />
 
-        <div className="additional-info">
-          <h2>Thông tin chi tiết</h2>
-          <p><strong>Địa điểm:</strong> {destination.location}</p>
-          <p><strong>Loại:</strong> {typeDisplay}</p>
-          <p><strong>Tỉnh/Thành phố:</strong> {destination.city.name}</p>
-          <p><strong>Tỉnh:</strong> {destination.city.province.name}</p>
-          <p><strong>Quốc gia:</strong> {destination.city.province.country}</p>
-        </div>
+        <div className="dest-detail-additional-info">
+  <h2 className="dest-detail-title">Thông tin chi tiết</h2>
+  <p className="dest-detail-info">
+    <strong>Địa điểm:</strong> {destination.location}
+  </p>
+  <p className="dest-detail-info">
+    <strong>Loại:</strong> {typeDisplay}
+  </p>
+  <p className="dest-detail-info">
+    <strong>Tỉnh/Thành phố:</strong> {destination.city.name}
+  </p>
+  <p className="dest-detail-info">
+    <strong>Tỉnh:</strong> {destination.city.province.name}
+  </p>
+  <p className="dest-detail-info">
+    <strong>Quốc gia:</strong> {destination.city.province.country}
+  </p>
+</div>
+
 
         <TicketSection
           bookingDate={bookingDate}
