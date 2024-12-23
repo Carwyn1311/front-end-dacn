@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Form, Input, Button, Drawer, message } from 'antd';
 import axiosInstanceToken from '../../AxiosInterceptor/Content/axioslnterceptorToken';
 // Import the Province type from listdest
-import { Province } from 'C:/DACN/front-end-dacn/src/features/Admin/Destination/listdest';
+import { Province } from '../../Admin/Destination/listdest';
 
 interface UpdateProvinceFormProps {
   visible: boolean;

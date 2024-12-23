@@ -79,7 +79,8 @@ body {
 /* Content Wrapper */
 .content-wrapper {
   width: 100vw;
-  height: calc(100vh - 60px);
+  margin-top: 50px;
+  height: calc(100vh - 50px);
   transition: margin-left 0.3s ease, width 0.3s ease;
 }
 

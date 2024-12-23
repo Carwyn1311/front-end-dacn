@@ -1,7 +1,8 @@
 .destination-detail {
   display: flex;
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  height: auto;
+  margin-top: 30px;
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 10px;
@@ -52,19 +53,46 @@
   margin-right: 10px;
 }
 
-.additional-info {
+/* Tổng thể cho khung thông tin */
+.dest-detail-additional-info {
+  margin-top: 24px;
   margin-bottom: 20px;
-  background-color: #fff;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px 24px;
+  border: 1px solid #e0e0e0; /* Viền nhẹ */
+  border-radius: 8px; /* Bo góc */
+  background-color: #ffffff; /* Màu nền trắng */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Bóng đổ theo Material Design */
+  transition: box-shadow 0.3s ease; /* Hiệu ứng hover */
 }
 
-.additional-info h2 {
-  font-size: 1.8rem;
-  color: #333;
-  margin-bottom: 10px;
+.dest-detail-additional-info:hover {
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15); /* Tăng bóng khi hover */
 }
+
+/* Tiêu đề của phần thông tin */
+.dest-detail-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #424242; /* Màu chữ đậm */
+  text-transform: uppercase; /* Chữ in hoa */
+  letter-spacing: 0.5px; /* Khoảng cách chữ */
+}
+
+/* Dòng thông tin chi tiết */
+.dest-detail-info {
+  font-size: 1rem;
+  color: #616161; /* Màu chữ trung tính */
+  margin: 12px 0; /* Khoảng cách giữa các dòng */
+  line-height: 1.6; /* Giãn dòng dễ đọc */
+}
+
+/* Tạo điểm nhấn cho thông tin quan trọng */
+.dest-detail-info strong {
+  color: #212121; /* Màu chữ đậm hơn */
+  font-weight: 600;
+}
+
 
 .like-section {
   margin-bottom: 20px;

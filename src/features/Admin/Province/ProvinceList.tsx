@@ -4,7 +4,7 @@ import { SearchOutlined, EyeOutlined, EditOutlined, DeleteOutlined } from '@ant-
 import axiosInstanceToken from '../../AxiosInterceptor/Content/axioslnterceptorToken';
 import UpdateProvinceForm from './UpdateProvinceForm';
 // Import the Province type from listdest
-import { Province } from 'C:/DACN/front-end-dacn/src/features/Admin/Destination/listdest';
+import { Province } from '../../Admin/Destination/listdest';
 
 const ProvinceList: React.FC = () => {
   const [provinces, setProvinces] = useState<Province[]>([]);
