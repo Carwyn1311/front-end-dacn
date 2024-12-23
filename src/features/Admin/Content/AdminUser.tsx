@@ -40,9 +40,6 @@ const AdminUser: React.FC = () => {
     setLoading(true);
     try {
       const response = await axiosInstanceToken.get('/api/list-user', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
       setUsers(response.data);
       if (!successMessageShownRef.current) {
@@ -59,9 +56,6 @@ const AdminUser: React.FC = () => {
   const fetchRoles = async () => {
     try {
       const response = await axiosInstanceToken.get('/api/roles', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
       setRoles(response.data);
     } catch (error) {
@@ -85,9 +79,6 @@ const AdminUser: React.FC = () => {
 
       const rolesToUpdate = [roleToUpdate];
       await axiosInstanceToken.put(`/api/${userId}/roles`, rolesToUpdate, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
 
       message.success('Cập nhật vai trò thành công');
@@ -116,9 +107,6 @@ const AdminUser: React.FC = () => {
 
     try {
         const response = await axiosInstanceToken.put(`/api/update-user/${selectedUser.username}`, values, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
         });
 
         message.success('Cập nhật người dùng thành công');

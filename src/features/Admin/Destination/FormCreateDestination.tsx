@@ -138,7 +138,7 @@ const FormCreateDestination: React.FC<FormCreateDestinationProps> = ({ onClose, 
             };
           }));
   
-          await axiosInstanceToken.post(`${baseUrl}/api/dest/img`, imagesToSave, {
+          await axiosInstanceToken.post(`/api/dest/img`, imagesToSave, {
             headers: {
               'Content-Type': 'application/json'
             }
