@@ -77,6 +77,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isLoggedIn, onLogout }) => {
           onClick: () => handleMenuClick("/admin/manage-users"),
         },
         {
+          key: "paymentdetails",
+          label: "Xác nhận thanh toán",
+          onClick: () => handleMenuClick("/admin/paymentdetails"),
+        },
+        {
           key: "manage-domestic-tours",
           label: "Quản lý Tour Trong Nước",
           onClick: () => handleMenuClick("/admin/domestic-tours"),
