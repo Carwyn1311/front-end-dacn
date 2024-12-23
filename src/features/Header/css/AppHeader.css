@@ -1,0 +1,66 @@
+/* App Header */
+.app-header {
+  width: 100%;
+  background-color: #6200ea;
+  color: white;
+  padding: 16px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Top Bar */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 16px;
+}
+
+/* Contact Info Buttons */
+.contact-info button,
+.user-options button {
+  background-color: rgba(255, 255, 255, 0);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.contact-info button:hover,
+.user-options button:hover {
+  color: #ff5722; /* Đổi màu chữ khi hover */
+  text-decoration: underline; /* Gạch chân khi hover */
+}
+
+/* Sidebar Toggle Button */
+.sidebar-toggle-button {
+  font-size: 20px;
+  padding: 8px;
+  border-radius: 50%;
+  background-color: rgba(187, 134, 252, 0.75);
+}
+
+/* Login Button */
+.button-login {
+  border: 2px solid white;
+  background-color: transparent;
+}
+
+/* Language Button */
+.language {
+  background-color: rgba(255, 255, 255, 0);
+}
+
+/* Selected Item */
+.selected-item {
+  margin-top: 20px;
+  color: #ffcccb;
+}
