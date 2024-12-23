@@ -7,7 +7,7 @@ import { RiArrowGoBackLine } from 'react-icons/ri';
 import Sidebar from './features/Sidebar/Content/Sidebar';
 import Button from './components/Button/Button';
 import MainContent from './features/Maincontent/Content/MainContent';
-import Login from './features/Login/Content/Login';
+import Login from './features/Auth/Login';
 import { User } from './features/User/Content/User';
 import AdminRoutes from './features/Admin/Content/AdminRoutes';
 import AdminUser from './features/Admin/Content/AdminUser';
@@ -16,8 +16,8 @@ import TravelPageDongBac from './features/AllTours/Tours/TravelPageDongBac';
 import TravelPageHaNoi from './features/AllTours/Tours/TravelPageHaNoi';
 import TravelPageHaLong from './features/AllTours/Tours/TravelPageHaLong';
 import TravelPageSapa from './features/AllTours/Tours/TravelPageSapa';
-import CreateAccount from './features/CreateAccount/Content/CreateAccount';
-import ForgotPassword from './features/ForgotPassword/Content/ForgotPassword';
+import CreateAccount from './features/Auth/CreateAccount';
+import ForgotPassword from './features/Auth/ForgotPassword';
 import ErrorBoundary from './features/Error Boundary/Error Boundary';
 import TourDetail from './features/Admin/Content/TourDetail';
 import CityList from './features/Admin/City/CityList';
@@ -155,7 +155,7 @@ const AppContent: React.FC = () => {
           <Route path="/destination/:id"          element={<DestinationDetail />} />
           <Route path="/admin/city-list"          element={<CityList />} />
           <Route path="/payment"                  element={<PaymentPage />} />
-          <Route path="/admin/paymentdetails"           element={<PaymentDetailsPage />} />
+          <Route path="/admin/paymentdetails"     element={<PaymentDetailsPage />} />
 
           {/* {destinationList.map((dest) => (
           <Route

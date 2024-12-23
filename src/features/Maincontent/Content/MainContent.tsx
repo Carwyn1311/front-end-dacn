@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
 import { message } from 'antd';
 import { Form, Input, Button } from 'antd';
-import PaymentForm from '../../Payment/Content/PaymentForm';
 import '../css/MainContent.css';
 import { TourContextProvider } from '../../TourSlider/Content/TourContext';
 import TourSlider from '../../TourSlider/Content/TourSlider';

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
+import axiosInstance from '../AxiosInterceptor/Content/axiosInterceptor';
 import { useNavigate } from 'react-router-dom';
 import { Checkbox, FormControlLabel, Button, Typography, Box, Container, TextField } from '@mui/material';
-import { TokenAuthService } from '../../TokenAuthService/TokenAuthService';
-import { User } from '../../User/Content/User';
+import { TokenAuthService } from '../TokenAuthService/TokenAuthService';
+import { User } from '../User/Content/User';
 import { RiArrowGoBackLine } from 'react-icons/ri';
 
 interface LoginProps {
@@ -132,32 +132,13 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
         justifyContent: 'center',
         alignItems: 'center',
         minHeight: '100vh',
-        backgroundImage: 'url(/images/Tokyo_japan.jpg)', // Background image
+        backgroundImage: 'url(/images/Tokyo_japan.jpg)', 
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
     >
       {/* Nút quay lại */}
-      <Button
-        className="back-button" 
-        onClick={() => navigate('/')} 
-        sx={{
-          width: '50px',
-          height: '40px',
-          position: 'absolute',
-          top: 20,
-          left: 20,
-          color: 'white',
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          padding: '8px 12px',
-          borderRadius: '50%',
-          '&:hover': {
-            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-          },
-        }}
-      >
-        <RiArrowGoBackLine size={24} />
-      </Button>
+      
       <Container
         maxWidth="xs"
         sx={{
