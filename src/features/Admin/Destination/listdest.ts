@@ -11,34 +11,31 @@ export interface DestinationImage {
   destination_id: number;
 }
 
-export interface DescriptionFile {
-  id: number;
-  fileName: string;
-  filePath: string;
-  destination: null;
-}
-
 export interface Activity {
   id: number;
   activity_name: string;
-  start_time: string; // ISO 8601 format string
-  end_time: string; // ISO 8601 format string
-  itinerary_id: number;
+  start_time: string;
+  end_time: string;
 }
 
 export interface Itinerary {
   id: number;
-  start_date: string; // ISO 8601 format string
-  end_date: string; // ISO 8601 format string
+  start_date: string;
+  end_date: string;
   activities: Activity[];
   destination_id: number;
+}
+
+export interface TicketPrice {
+  id: number;
+  adult_price: number;
+  child_price: number;
 }
 
 export interface Province {
   id: number;
   name: string;
   country: string;
-  cities: null | any[]; // Flexible for future city details
 }
 
 export interface City {
@@ -47,11 +44,17 @@ export interface City {
   province: Province;
 }
 
-export interface TicketPrice {
+export interface User {
   id: number;
-  adult_price: number;
-  child_price: number;
-  created_at: string; // ISO 8601 format string
+  fullname: string;
+}
+
+export interface Review {
+  id: number;
+  rating: number;
+  comment: string;
+  created_at: string;
+  user: User;
   destination_id: number;
 }
 
@@ -62,13 +65,18 @@ export interface Destination {
   location: string;
   type: 'DOMESTIC' | 'INTERNATIONAL';
   city: City;
-  created_at: string | null; // ISO 8601 format string
-  descriptionFile: DescriptionFile;
+  created_at: string | null;
   destinationImages: DestinationImage[];
   itineraries: Itinerary[];
   ticketPrice: TicketPrice;
-  encodedPath?: string; 
+  descriptionFile?: {
+    id: number;
+    fileName: string;
+    filePath: string;
+  };
+  reviewsList: Review[];
 }
+
 
 const formatPath = (name: string): string => {
   return name

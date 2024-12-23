@@ -13,6 +13,7 @@ import {
   Destination,
   Itinerary,
 } from './listdest';
+import FormUpdateDestination from './form/FormUpdateDestination';
 
 const DestinationList: React.FC = () => {
   const [destinations, setDestinations] = useState<Destination[]>([]);
@@ -117,12 +118,6 @@ const DestinationList: React.FC = () => {
       className: 'destlist-column-location',
     },
     {
-      title: 'Lịch Trình',
-      dataIndex: 'itineraries',
-      key: 'itineraries',
-      render: (itineraries: Itinerary[]) => renderItineraries(itineraries),
-    },
-    {
       title: 'Thao Tác',
       key: 'actions',
       className: 'destlist-column-actions',
@@ -142,21 +137,6 @@ const DestinationList: React.FC = () => {
           >
             Sửa
           </Button>
-          <Popconfirm
-            title="Bạn có chắc chắn muốn xóa?"
-            onConfirm={() => handleDeleteDestination(record.id)}
-            okText="Xóa"
-            cancelText="Hủy"
-          >
-            <Button
-              icon={<DeleteOutlined />}
-              danger
-              className="destlist-delete-btn"
-              style={{ color: '#0b0101', backgroundColor: '#f52d' }}
-            >
-              Xóa
-            </Button>
-          </Popconfirm>
         </Space>
       ),
     },
@@ -191,6 +171,15 @@ const DestinationList: React.FC = () => {
 
       {formMode === 'view' && selectedDestination && (
         <FormViewDestination destination={selectedDestination} onClose={handleCloseForm} />
+      )}
+
+      {formMode === 'update' && selectedDestination && (
+        <FormUpdateDestination
+          visible={formMode === 'update'}
+          onClose={handleCloseForm}
+          destination={selectedDestination}
+          onSuccess={() => setDestinations([...destinationList])}
+        />
       )}
     </div>
   );
