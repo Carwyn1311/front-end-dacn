@@ -82,44 +82,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isLoggedIn, onLogout }) => {
           onClick: () => handleMenuClick("/admin/paymentdetails"),
         },
         {
-          key: "manage-domestic-tours",
-          label: "Quản lý Tour Trong Nước",
-          onClick: () => handleMenuClick("/admin/domestic-tours"),
-        },
-        {
-          key: "manage-international-tours",
-          label: "Quản lý Tour Nước Ngoài",
-          onClick: () => handleMenuClick("/admin/international-tours"),
-        },
-        {
-          key: "tour-stats",
-          label: "Thống Kê Tour",
-          onClick: () => handleMenuClick("/admin/tour-stats"),
-        },
-        {
-          key: "payment-management",
-          label: "Quản lý Thanh Toán",
-          onClick: () => handleMenuClick("/admin/payment-management"),
-        },
-        {
-          key: "home-board-management",
-          label: "Quản lý Bảng Tin Trang Chủ",
-          onClick: () => handleMenuClick("/admin/home-board-management"),
-        },
-        {
-          key: "manager-tour",
-          label: "Quản lý Tour Slider",
-          onClick: () => handleMenuClick("/admin/img-slider"),
-        },
-        {
           key: "tour-list",
           label: "Quản lý DS Tour",
           onClick: () => handleMenuClick("/admin/tour-list"),
-        },
-        {
-          key: "tour-detail",
-          label: "Quản lý Tour Slider",
-          onClick: () => handleMenuClick("/admin/tuor-detail/tour/:id"),
         },
         {
           key: "city-list",
@@ -169,33 +134,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isLoggedIn, onLogout }) => {
       children: [
         {
           key: "service-1",
-          label: "Thuê xe",
-          onClick: () => handleMenuClick("/dich-vu/thue-xe"),
-        },
-        {
-          key: "service-2",
-          label: "Vé máy bay",
-          onClick: () => handleMenuClick("/dich-vu/ve-may-bay"),
-        },
-        {
-          key: "service-3",
-          label: "Bảo hiểm du lịch",
-          onClick: () => handleMenuClick("/dich-vu/bao-hiem-du-lich"),
-        },
-        {
-          key: "service-4",
-          label: "Coupon Du lịch",
-          onClick: () => handleMenuClick("/dich-vu/coupon-du-lich"),
-        },
-        {
-          key: "service-5",
-          label: "Dịch vụ Ủy thác Visa Nhật",
-          onClick: () => handleMenuClick("/dich-vu/uy-thac-visa-nhat"),
-        },
-        {
-          key: "service-6",
-          label: "Dịch vụ Free Easy",
-          onClick: () => handleMenuClick("/dich-vu/free-easy"),
+          label: "Thông tin về PDT Travel",
+          onClick: () => handleMenuClick("/info-dpt-travel"),
         },
       ],
     },
