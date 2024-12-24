@@ -4,7 +4,7 @@ import { Typography, Box, Button, CircularProgress } from '@mui/material';
 import axiosInstanceToken from '../../AxiosInterceptor/Content/axioslnterceptorToken';
 import { message } from 'antd';
 import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
-import '../css/PaymentPage.css'
+import '../css/PaymentPage.css';
 
 import PaymentForm from './PaymentForm';
 import QRCodeDisplay from './QRCodeDisplay';
@@ -65,8 +65,7 @@ const PaymentPage: React.FC = () => {
     };
 
     try {
-      const paymentResponse = await axiosInstanceToken.post('/api/payments/create', paymentData, {
-      });
+      const paymentResponse = await axiosInstanceToken.post('/api/payments/create', paymentData, {});
 
       const paymentDetailsId = paymentResponse.data.id;
 
@@ -77,8 +76,7 @@ const PaymentPage: React.FC = () => {
           bankId: Number(selectedBank)
         };
 
-        const qrCodeResponse = await axiosInstanceToken.post('/api/qrcode/create', qrCodeRequest, {
-        });
+        const qrCodeResponse = await axiosInstanceToken.post('/api/qrcode/create', qrCodeRequest, {});
 
         const fullQrCodeUrl = `${baseUrl}${qrCodeResponse.data.qrCodeUrl}`; // Combine base URL with QR code URL
         setQrCodeUrl(fullQrCodeUrl); // Set the QR code URL to state
@@ -97,7 +95,7 @@ const PaymentPage: React.FC = () => {
   const typeDisplay = bookingData.destination.type === 'DOMESTIC' ? 'Trong nước' : 'Ngoài nước';
 
   return (
-    <Box sx={{ maxWidth: 600, margin: '0 auto', padding: 2, border: '1px solid #ccc', borderRadius: 4, textAlign: 'center' }}>
+    <Box sx={{ maxWidth: 700, margin: '0 auto', padding: 2, paddingTop: '80px', border: '1px solid #ccc', borderRadius: 4, textAlign: 'center', backgroundColor: '#f9f9f9', boxShadow: 3 }}>
       <Typography variant="h4" component="h1" marginBottom={2}>Thông tin thanh toán</Typography>
       {bookingData.destination && (
         <Box sx={{ textAlign: 'left', marginBottom: 2, padding: 2, border: '1px solid #ccc', borderRadius: 4 }}>
@@ -115,7 +113,7 @@ const PaymentPage: React.FC = () => {
                   key={image.id}
                   src={`${baseUrl}${image.image_url}`}
                   alt={`Destination ${bookingData.destination.name}`}
-                  style={{ width: '100px', height: '100px', objectFit: 'cover', marginRight: '5px' }}
+                  style={{ width: '100px', height: '100px', objectFit: 'cover', marginRight: '5px', borderRadius: 4 }}
                 />
               ))}
             </Box>
@@ -143,7 +141,7 @@ const PaymentPage: React.FC = () => {
         />
       </Box>
 
-      <Button variant="contained" color="primary" fullWidth onClick={handlePayment} disabled={loading}>
+      <Button variant="contained" color="primary" fullWidth onClick={handlePayment} disabled={loading} sx={{ backgroundColor: '#00796b', "&:hover": { backgroundColor: '#004d40' } }}>
         {loading ? <CircularProgress size={24} /> : 'Thanh toán'}
       </Button>
 
