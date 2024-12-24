@@ -130,17 +130,6 @@
   align-self: flex-start;
 }
 
-.ant-btn-default {
-  background-color: #ff4081;
-  color: white;
-  border: none;
-}
-
-.ant-btn-default:hover {
-  background-color: #ff6090;
-  color: white;
-}
-
 .ant-btn-primary {
   background-color: #3f51b5;
   border: none;

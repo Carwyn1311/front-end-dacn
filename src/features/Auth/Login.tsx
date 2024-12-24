@@ -135,6 +135,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
         backgroundImage: 'url(/images/Tokyo_japan.jpg)', 
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+
       }}
     >
       {/* Nút quay lại */}

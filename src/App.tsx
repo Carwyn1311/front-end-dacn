@@ -2,10 +2,7 @@ import { FaUserCircle } from "react-icons/fa";
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams } from 'react-router-dom';
-import { HiChevronDoubleLeft, HiOutlineMenu } from 'react-icons/hi';
-import { RiArrowGoBackLine } from 'react-icons/ri';
 import Sidebar from './features/Sidebar/Content/Sidebar';
-import Button from './components/Button/Button';
 import MainContent from './features/Maincontent/Content/MainContent';
 import Login from './features/Auth/Login';
 import { User } from './features/User/Content/User';
@@ -26,8 +23,6 @@ import DestinationList from './features/Admin/Destination/DestinationList';
 
 
 import { Destination, destinationList } from "./features/Admin/Destination/listdest";
-import ItemDest from "./features/Admin/Destination/ItemDest";
-import ItemDes from "./features/Admin/Destination/ItemDest";
 import DestinationDetail from "./features/Maincontent/Content/DestinationDetails";
 import PaymentPage from "./features/Maincontent/Payment/PaymentPage";
 import PaymentDetailsPage from "./features/Admin/Payment/PaymentDetailsPage";
@@ -88,10 +83,10 @@ const AppContent: React.FC = () => {
     User.clearUserData();
     setIsLoggedIn(false);
     setUsername('');
-    navigate('/'); // Điều hướng về trang chính khi đăng xuất
+    navigate('/'); 
   };
 
-  const isLoginPage = location.pathname === '/login'; // Kiểm tra nếu đang ở trang login
+  const isLoginPage = ['/login', '/create-account', '/forgot-password'].includes(location.pathname);
 
   return (
     <div className={`app-container ${isSidebarOpen ? 'sidebar-open' : ''} ${isLoginPage ? 'login-page' : ''}`}>
@@ -136,14 +131,6 @@ const AppContent: React.FC = () => {
           <Route path="/admin/city-list"          element={<CityList />} />
           <Route path="/payment"                  element={<PaymentPage />} />
           <Route path="/admin/paymentdetails"     element={<PaymentDetailsPage />} />
-
-          {/* {destinationList.map((dest) => (
-          <Route
-            key={dest.id}
-            path={dest.encodedPath}
-            element={<ItemDest destination={dest} />}
-          />
-          ))} */}
         </Routes>
       </div>
     </div>
