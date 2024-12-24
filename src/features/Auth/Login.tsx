@@ -1,31 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import axiosInstance from '../AxiosInterceptor/Content/axiosInterceptor';
-import { useNavigate } from 'react-router-dom';
-import { Checkbox, FormControlLabel, Button, Typography, Box, Container, TextField } from '@mui/material';
-import { TokenAuthService } from '../TokenAuthService/TokenAuthService';
-import { User } from '../User/Content/User';
-import { RiArrowGoBackLine } from 'react-icons/ri';
+import React, { useState, useEffect } from "react";
+import axiosInstance from "../AxiosInterceptor/Content/axiosInterceptor";
+import { useNavigate } from "react-router-dom";
+import {
+  Checkbox,
+  FormControlLabel,
+  Button,
+  Typography,
+  Box,
+  Container,
+  TextField,
+} from "@mui/material";
+import { TokenAuthService } from "../TokenAuthService/TokenAuthService";
+import { User } from "../User/Content/User";
 
 interface LoginProps {
   onLogin: () => void;
 }
 
-const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
-  const [userName, setUserName] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+const Login: React.FC<LoginProps> = ({ onLogin }) => {
+  const [userName, setUserName] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [rememberMe, setRememberMe] = useState<boolean>(false);
-  const [error, setError] = useState<string>(''); 
+  const [error, setError] = useState<string>("");
   const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = User.getUserData();
     if (storedUser && storedUser.username) {
-      setUserName(storedUser.username); 
+      setUserName(storedUser.username);
     }
 
-    const storedUserName = localStorage.getItem('userName') ?? '';
-    const storedPassword = localStorage.getItem('password') ?? '';
-    const storedRememberMe = localStorage.getItem('rememberMe') === 'true';
+    const storedUserName = localStorage.getItem("userName") ?? "";
+    const storedPassword = localStorage.getItem("password") ?? "";
+    const storedRememberMe = localStorage.getItem("rememberMe") === "true";
 
     if (storedUserName && storedPassword) {
       setUserName(storedUserName);
@@ -34,96 +41,87 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
     setRememberMe(storedRememberMe);
   }, []);
 
-  const handleUserNameChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleUserNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(e.target.value);
-    setError('');
+    setError("");
   };
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
-    setError('');
+    setError("");
   };
 
-  const handleRememberMeChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleRememberMeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRememberMe(e.target.checked);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!userName || !password) {
-      setError('All fields are required.');
+      setError("All fields are required.");
       return;
     }
 
     await handleLogin();
   };
 
-  const handleLogin = async (): Promise<void> => {
+  const handleLogin = async () => {
     try {
-      const response = await axiosInstance.post('/api/login', {
+      const response = await axiosInstance.post("/api/login", {
         username: userName,
         password: password,
       });
-  
+
       const token = response.data?.jwt || response.data?.data?.jwt;
-      const roles = response.data?.role; // 'role' là một mảng, vì vậy cần lấy đối tượng đầu tiên
+      const roles = response.data?.role;
       const email = response.data?.email;
       const userId = response.data?.userId;
-  
+
       if (!token || !roles || roles.length === 0) {
-        throw new Error('No token or role returned from API.');
+        throw new Error("No token or role returned from API.");
       }
-  
-      // Lấy id và name của role
-      const roleId = roles[0]?.id; // Lấy id từ phần tử đầu tiên của mảng role
-      const roleName = roles[0]?.name; // Lấy name từ phần tử đầu tiên của mảng role
-  
-      localStorage.setItem('jwt', token);
-  
+
+      const roleName = roles[0]?.name;
+
+      localStorage.setItem("jwt", token);
+
       const user = new User({
         id: userId,
         username: userName,
-        email: email || '',
+        email: email || "",
         password: password,
-        role: roleName,  // Sử dụng role name
-        active: true
+        role: roleName,
+        active: true,
       });
-  
+
       if (rememberMe) {
-        localStorage.setItem('userName', userName);
-        localStorage.setItem('password', password);
-        localStorage.setItem('role', roleName);  // Lưu tên role
-        localStorage.setItem('rememberMe', 'true');
-        localStorage.setItem('token', token);  
+        localStorage.setItem("userName", userName);
+        localStorage.setItem("password", password);
+        localStorage.setItem("role", roleName);
+        localStorage.setItem("rememberMe", "true");
+        localStorage.setItem("token", token);
       } else {
-        sessionStorage.setItem('token', token);
-        localStorage.removeItem('userName');
-        localStorage.removeItem('password');
-        localStorage.setItem('role', roleName);  // Lưu tên role
-        localStorage.removeItem('rememberMe');
+        sessionStorage.setItem("token", token);
+        localStorage.removeItem("userName");
+        localStorage.removeItem("password");
+        localStorage.removeItem("rememberMe");
       }
-  
+
       User.storeUserData(user, token, rememberMe);
       TokenAuthService.setToken(token);
-  
-      console.log('Logged in successfully');
-      
+
       onLogin();
-      navigate('/');
+      navigate("/");
     } catch (error: any) {
-      console.error('Login error:', error.response?.data?.message || error.message);
-      setError(error.response?.data?.message || 'Login failed. Please try again.');
+      setError(
+        error.response?.data?.message || "Login failed. Please try again."
+      );
     }
   };
-  
 
-  const handleCreateAccount = (): void => {
-    navigate('/create-account');
-  };
+  const handleCreateAccount = () => navigate("/create-account");
 
-  const handleForgotPassword = (): void => {
-    navigate('/forgot-password');
-  };
+  const handleForgotPassword = () => navigate("/forgot-password");
 
   return (
     <Box
@@ -135,29 +133,36 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
         backgroundImage: 'url(/images/Tokyo_japan.jpg)', 
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-
       }}
     >
-      {/* Nút quay lại */}
-      
       <Container
         maxWidth="xs"
         sx={{
-          backgroundColor: 'rgba(255, 255, 255, 0.8)', // Make the background slightly opaque
+          backgroundColor: "rgba(255, 255, 255, 50%)",
           padding: 4,
           borderRadius: 2,
-          boxShadow: 3,
+          boxShadow: 5,
         }}
       >
-        <Typography variant="h4" align="center" gutterBottom>
-          DPT Travel Login Page
+        <Typography
+          variant="h4"
+          align="center"
+          gutterBottom
+          sx={{ color: "#1300ff", fontWeight: "bold" }}
+        >
+          DPT Travel Login
         </Typography>
-        <Typography variant="h6" align="center" gutterBottom>
-          Wellcome
+
+        <Typography
+          variant="h6"
+          align="center"
+          gutterBottom
+          sx={{ color: "#388e3c" }}
+        >
+          Welcome to your journey
         </Typography>
         <form onSubmit={handleSubmit}>
           <TextField
-            type='input'
             label="Username"
             fullWidth
             variant="outlined"
@@ -174,36 +179,59 @@ const Login: React.FC<LoginProps> = ({ onLogin }): JSX.Element => {
             value={password}
             onChange={handlePasswordChange}
           />
-
-          
           <FormControlLabel
             control={
               <Checkbox
                 checked={rememberMe}
                 onChange={handleRememberMeChange}
-                color="primary"
               />
             }
             label="Remember me"
           />
           {error && <Typography color="error">{error}</Typography>}
-          <Button type="submit" variant="contained" fullWidth sx={{ marginTop: 2 }}>
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            sx={{
+              marginTop: 2,
+              backgroundColor: "#1b5e20",
+              "&:hover": {
+                backgroundColor: "#4caf50",
+              },
+            }}
+          >
             Log in
           </Button>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}>
-            <Button variant="text" onClick={handleCreateAccount}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: 2,
+            }}
+          >
+            <Button
+              variant="text"
+              onClick={handleCreateAccount}
+              sx={{ color: "#1b5e20" }}
+            >
               Create Account
             </Button>
-            <Button variant="text" onClick={handleForgotPassword}>
+            <Button
+              variant="text"
+              onClick={handleForgotPassword}
+              sx={{ color: "#1b5e20" }}
+            >
               Forgot Password
             </Button>
           </Box>
         </form>
-        <div style={{ textAlign: 'center', marginTop: '20px' }}>
-          <Typography className='login-header-bottom'>
-            © 2024 DPT TRAVEL. <strong>Version 4.3.0.0 [20231608]</strong>
-          </Typography>
-        </div>
+        <Typography
+          align="center"
+          sx={{ marginTop: 4, fontSize: "0.9rem", color: "#757575" }}
+        >
+          © 2024 DPT TRAVEL. <strong>Version 4.3.0.0 [20231608]</strong>
+        </Typography>
       </Container>
     </Box>
   );

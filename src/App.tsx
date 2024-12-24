@@ -27,6 +27,7 @@ import DestinationDetail from "./features/Maincontent/Content/DestinationDetails
 import PaymentPage from "./features/Maincontent/Payment/PaymentPage";
 import PaymentDetailsPage from "./features/Admin/Payment/PaymentDetailsPage";
 import AppHeader from "./features/Header/Content/AppHeader";
+import Profile from "./features/Profile/Profile";
 
 
 const App: React.FC = () => {

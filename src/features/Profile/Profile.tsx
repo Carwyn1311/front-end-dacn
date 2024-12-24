@@ -1,155 +1,136 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Input, Button, Tag, Form, message } from 'antd';
-import './Profile.css';
+// Profile.tsx
+import React, { useEffect, useState } from "react";
+import { Form, Input, Button, Card, message, Spin } from "antd";
+import axios from "axios";
+import "./Profile.css";
 
 const Profile: React.FC = () => {
-  // Quản lý trạng thái của người dùng
-  const [userInfo, setUserInfo] = useState({
-    fullName: 'Lê Trọng Phúc',
-    email: 'phuc.letrong@ncc.asia',
-    phone: '0904752033',
-    dob: '13/11/2003',
-    address: 'SG',
-    bank: 'Techcombank',
-    bankAccount: '1118888999',
-    taxCode: '123456789',
-    emergencyContact: 'Nguyen Van A',
-    emergencyPhone: '0901234567',
-    insuranceStatus: 'NONE',
-    identify: '082203004740',
-    origin: 'Ấp Mỹ Nghĩa 2, Mỹ Đức Tây, Cái Bè, Tiền Giang',
-    residence: 'Ấp Mỹ Nghĩa 2, Mỹ Đức Tây, Cái Bè, Tiền Giang',
-    currentAddress: '22/8 Hẻm 56, Đường 339, Phường Phước Long B, Thủ Đức, TP.HCM',
-    dateOfIssue: '19/07/2022',
-    issuedBy: 'Cục Cảnh Sát QLHC về TTXH'
-  });
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [form] = Form.useForm();
 
-  // Tải dữ liệu từ localStorage khi trang load
+  const token = localStorage.getItem("jwtToken") || sessionStorage.getItem("jwtToken");
+
   useEffect(() => {
-    const savedUserInfo = localStorage.getItem('userInfo');
-    if (savedUserInfo) {
-      setUserInfo(JSON.parse(savedUserInfo));
+    if (!token) {
+      message.error("Bạn chưa đăng nhập!");
+      return;
     }
-  }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUserInfo({ ...userInfo, [name]: value });
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axios.get("/api/user/${id}", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUser(response.data);
+        form.setFieldsValue(response.data);
+      } catch (error: any) {
+        if (error.response && error.response.status === 401) {
+          message.error("Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.");
+        } else {
+          message.error("Không thể tải thông tin người dùng!");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserInfo();
+  }, [token, form]);
+
+  const handleSave = async (values: any) => {
+    if (!token) {
+      message.error("Bạn chưa đăng nhập!");
+      return;
+    }
+
+    try {
+      const response = await axios.put("/api/update", values, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      message.success("Cập nhật thông tin thành công!");
+      setUser({ ...user, ...values });
+      setIsEditing(false);
+    } catch (error: any) {
+      message.error("Cập nhật thông tin thất bại!");
+    }
   };
 
-  const handleSave = () => {
-    localStorage.setItem('userInfo', JSON.stringify(userInfo));
-    message.success('Thông tin của bạn đã được lưu vào trình duyệt!');
-  };
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <Spin size="large" />
+      </div>
+    );
+  }
 
   return (
-    <div className="profile-container">
-      {/* Header */}
-      <h1 style={{ textAlign: 'center', marginBottom: '20px' }}>Hồ sơ người dùng</h1>
+    <Card className="profile-card">
+      <h2>Thông tin cá nhân</h2>
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={handleSave}
+        initialValues={{
+          fullname: user?.fullname,
+          username: user?.username,
+          email: user?.email,
+          phone: user?.phone,
+          address: user?.address,
+        }}
+      >
+        <Form.Item
+          name="fullname"
+          label="Họ và tên"
+        >
+          <Input disabled={!isEditing} />
+        </Form.Item>
+        <Form.Item
+          name="username"
+          label="Tên người dùng"
+        >
+          <Input disabled />
+        </Form.Item>
+        <Form.Item
+          name="email"
+          label="Email"
+        >
+          <Input disabled={!isEditing} />
+        </Form.Item>
+        <Form.Item name="phone" label="Số điện thoại">
+          <Input disabled={!isEditing} />
+        </Form.Item>
+        <Form.Item name="address" label="Địa chỉ">
+          <Input.TextArea disabled={!isEditing} />
+        </Form.Item>
 
-      {/* Phần thông tin cá nhân */}
-      <Row gutter={16} className="profile-top">
-        <Col span={8}>
-          <Card className="profile-card">
-            <div className="profile-avatar-container">
-              <img
-                className="profile-avatar"
-                src="https://img.pikbest.com/origin/09/19/03/61zpIkbEsTGjk.jpg!w700wp"
-                alt="Profile"
-              />
-            </div>
-            <h2 className="profile-name">{userInfo.fullName}</h2>
-            <p className="profile-email">{userInfo.email}</p>
-            <p className="profile-phone">{userInfo.phone}</p>
-            {/* Thẻ thông tin */}
-            <div className="profile-tags">
-              <Tag color="orange">{userInfo.address}</Tag>
-            </div>
-          </Card>
-        </Col>
-
-        <Col span={16}>
-          <Card className="profile-info-card">
-            <Form layout="vertical">
-              <Row gutter={16}>
-                <Col span={24}>
-                  <Form.Item label="Full Name">
-                    <Input name="fullName" value={userInfo.fullName} onChange={handleInputChange} style={{ width: '100%' }} />
-                  </Form.Item>
-                  <Form.Item label="Email">
-                    <Input name="email" value={userInfo.email} onChange={handleInputChange} style={{ width: '100%' }} />
-                  </Form.Item>
-                  <Form.Item label="DOB">
-                    <Input name="dob" value={userInfo.dob} onChange={handleInputChange} style={{ width: '100%' }} />
-                  </Form.Item>
-                  <Form.Item label="Address">
-                    <Input name="address" value={userInfo.address} onChange={handleInputChange} style={{ width: '100%' }} />
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Form>
-          </Card>
-          <div className="profile-actions" style={{ marginTop: '10px', textAlign: 'right' }}>
-            <Button type="primary" onClick={handleSave}>
-              Save
+        {isEditing ? (
+          <div className="form-actions">
+            <Button type="primary" htmlType="submit">
+              Lưu thay đổi
             </Button>
-            <Button type="default">Request change info</Button>
+            <Button
+              style={{ marginLeft: "10px" }}
+              onClick={() => {
+                setIsEditing(false);
+                form.resetFields();
+              }}
+            >
+              Hủy
+            </Button>
           </div>
-        </Col>
-      </Row>
-
-      {/* Phần thông tin chi tiết khác */}
-      <Row gutter={16} style={{ marginTop: '20px' }}>
-        <Col span={24}>
-          <Card className="profile-detail-card">
-            <Form layout="vertical">
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Form.Item label="Bank">
-                    <Input name="bank" value={userInfo.bank} onChange={handleInputChange} style={{ width: '100%' }} />
-                  </Form.Item>
-                  <Form.Item label="Bank account">
-                    <Input name="bankAccount" value={userInfo.bankAccount} onChange={handleInputChange} style={{ width: '100%' }} />
-                  </Form.Item>
-                  <Form.Item label="Tax code">
-                    <Input name="taxCode" value={userInfo.taxCode} onChange={handleInputChange} style={{ width: '100%' }} />
-                  </Form.Item>
-                  <Form.Item label="Emergency Contact">
-                    <Input name="emergencyContact" value={userInfo.emergencyContact} onChange={handleInputChange} style={{ width: '100%' }} />
-                  </Form.Item>
-                  <Form.Item label="Insurance status">
-                    <Input name="insuranceStatus" value={userInfo.insuranceStatus} onChange={handleInputChange} style={{ width: '100%' }} />
-                  </Form.Item>
-                  <Form.Item label="Identify">
-                    <Input name="identify" value={userInfo.identify} onChange={handleInputChange} style={{ width: '100%' }} />
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item label="Place of origin">
-                    <Input name="origin" value={userInfo.origin} onChange={handleInputChange} style={{ width: '100%' }} />
-                  </Form.Item>
-                  <Form.Item label="Place of residence">
-                    <Input name="residence" value={userInfo.residence} onChange={handleInputChange} style={{ width: '100%' }} />
-                  </Form.Item>
-                  <Form.Item label="Current Address">
-                    <Input name="currentAddress" value={userInfo.currentAddress} onChange={handleInputChange} style={{ width: '100%' }} />
-                  </Form.Item>
-                  <Form.Item label="Emergency Contact Phone">
-                    <Input name="emergencyPhone" value={userInfo.emergencyPhone} onChange={handleInputChange} style={{ width: '100%' }} />
-                  </Form.Item>
-                  <Form.Item label="Date of issue">
-                    <Input name="dateOfIssue" value={userInfo.dateOfIssue} onChange={handleInputChange} style={{ width: '100%' }} />
-                  </Form.Item>
-                  <Form.Item label="Issued By">
-                    <Input name="issuedBy" value={userInfo.issuedBy} onChange={handleInputChange} style={{ width: '100%' }} />
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Form>
-          </Card>
-        </Col>
-      </Row>
-    </div>
+        ) : (
+          <Button type="primary" onClick={() => setIsEditing(true)}>
+            Chỉnh sửa thông tin
+          </Button>
+        )}
+      </Form>
+    </Card>
   );
 };
 

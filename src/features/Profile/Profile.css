@@ -1,70 +1,21 @@
-.profile-container {
-  max-width: 700px; /* Giảm max-width để nhỏ gọn hơn */
-  max-height: 700px;
-  margin: 0 auto;
-  padding: 20px; /* Thêm padding để tránh các cạnh sát quá */
-}
-
 .profile-card {
-  text-align: center;
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.profile-avatar-container {
+.form-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.loading-container {
   display: flex;
   justify-content: center;
-  
-  margin-bottom: 20px;
-  width: 200px;
-  height: 145px;
-}
-
-.profile-avatar {
-  width: 120px; /* Giảm kích thước avatar */
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 92px;
-}
-
-.profile-name {
-  font-size: 20px; /* Giảm cỡ chữ */
-  font-weight: bold;
-}
-
-.profile-email,
-.profile-phone {
-  font-size: 14px;
-  margin-bottom: 10px;
-}
-
-.profile-tags .ant-tag {
-  margin-right: 5px;
-}
-
-.profile-info-card {
-  padding: 30px; /* Giảm padding để tiết kiệm không gian */
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.profile-detail-card {
-  padding: 15px; /* Giảm padding */
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.profile-actions {
-  text-align: right;
-}
-
-.profile-actions button {
-  margin-right: 10px;
-  padding: 5px 15px; /* Giảm padding cho button */
-}
-
-.ant-form-item {
-  margin-bottom: 12px; /* Giảm khoảng cách giữa các form items */
+  align-items: center;
+  height: 100vh;
 }
