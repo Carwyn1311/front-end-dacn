@@ -5,17 +5,16 @@ import axiosInstance from '../AxiosInterceptor/Content/axiosInterceptor';
 import CodeInput from './CodeInput';
 
 const ForgotPassword: React.FC = () => {
-  const [email, setEmail] = useState<string>(''); // Email để yêu cầu mã đổi mật khẩu
-  const [activationCode, setActivationCode] = useState<string[]>(Array(6).fill('')); // Mã đổi mật khẩu từ email
-  const [newPassword, setNewPassword] = useState<string>(''); // Mật khẩu mới
-  const [confirmNewPassword, setConfirmNewPassword] = useState<string>(''); // Xác nhận mật khẩu mới
-  const [stage, setStage] = useState<number>(1); // Giai đoạn của quy trình
-  const [message, setMessage] = useState<string>(''); // Thông báo thành công hoặc lỗi
-  const [error, setError] = useState<string>(''); // Thông báo lỗi
-  const [isLoading, setIsLoading] = useState<boolean>(false); // Trạng thái tải
+  const [email, setEmail] = useState<string>(''); 
+  const [activationCode, setActivationCode] = useState<string[]>(Array(6).fill(''));
+  const [newPassword, setNewPassword] = useState<string>(''); 
+  const [confirmNewPassword, setConfirmNewPassword] = useState<string>(''); 
+  const [stage, setStage] = useState<number>(1);
+  const [message, setMessage] = useState<string>(''); 
+  const [error, setError] = useState<string>(''); 
+  const [isLoading, setIsLoading] = useState<boolean>(false); 
   const navigate = useNavigate();
 
-  // Gửi yêu cầu với email để nhận mã đổi mật khẩu qua email
   const handleSendActivationCode = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
@@ -55,7 +54,6 @@ const ForgotPassword: React.FC = () => {
     }
     setIsLoading(false);
   };
-  
 
   const handleResetPassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -95,7 +93,6 @@ const ForgotPassword: React.FC = () => {
     }
     setIsLoading(false);
   };
-  
 
   const handleBackToLogin = () => {
     navigate('/login');
@@ -125,10 +122,9 @@ const ForgotPassword: React.FC = () => {
         justifyContent: 'center',
         alignItems: 'center',
         minHeight: '100vh',
-        backgroundImage: 'url(/images/background.jpg)', // Background image
+        backgroundImage: 'url(/images/Tokyo_japan.jpg)', // Background image giống như bên login
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        padding: 2,
       }}
     >
       <Container
@@ -138,15 +134,18 @@ const ForgotPassword: React.FC = () => {
           padding: 4,
           borderRadius: 2,
           boxShadow: 3,
-          textAlign: 'center',
         }}
       >
-        <Typography variant="h4" align="center" gutterBottom>
+        <Typography
+          variant="h4"
+          align="center"
+          gutterBottom
+          sx={{ color: "#00796b", fontWeight: "bold" }}
+        >
           {stage === 1 ? 'Quên mật khẩu' : stage === 2 ? 'Nhập mã đặt lại mật khẩu' : 'Đặt lại mật khẩu'}
         </Typography>
-        
-        {stage === 1 && (
-          <form onSubmit={handleSendActivationCode}>
+        <form onSubmit={stage === 1 ? handleSendActivationCode : stage === 2 ? handleVerifyCode : handleResetPassword}>
+          {stage === 1 && (
             <TextField
               label="Email"
               type="email"
@@ -157,58 +156,51 @@ const ForgotPassword: React.FC = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <Button type="submit" variant="contained" fullWidth disabled={isLoading}>
-              {isLoading ? <CircularProgress size={24} /> : 'Gửi mã'}
-            </Button>
-          </form>
-        )}
+          )}
 
-        {stage === 2 && (
-          <form onSubmit={handleVerifyCode}>
+          {stage === 2 && (
             <CodeInput
               activationCode={activationCode}
               handleCodeChange={handleCodeChange}
               handleKeyDown={handleKeyDown}
               setActivationCode={setActivationCode}
             />
-            <Button type="submit" variant="contained" fullWidth disabled={isLoading}>
-              {isLoading ? <CircularProgress size={24} /> : 'Xác nhận mã'}
-            </Button>
-          </form>
-        )}
+          )}
 
-        {stage === 3 && (
-          <form onSubmit={handleResetPassword}>
-            <TextField
-              label="Mật khẩu mới"
-              type="password"
-              fullWidth
-              variant="outlined"
-              margin="normal"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              required
-            />
-            <TextField
-              label="Xác nhận mật khẩu mới"
-              type="password"
-              fullWidth
-              variant="outlined"
-              margin="normal"
-              value={confirmNewPassword}
-              onChange={(e) => setConfirmNewPassword(e.target.value)}
-              required
-            />
-            <Button type="submit" variant="contained" fullWidth disabled={isLoading} sx={{ marginTop: 2 }}>
-              {isLoading ? <CircularProgress size={24} /> : 'Đặt lại mật khẩu'}
-            </Button>
-          </form>
-        )}
+          {stage === 3 && (
+            <>
+              <TextField
+                label="Mật khẩu mới"
+                type="password"
+                fullWidth
+                variant="outlined"
+                margin="normal"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+              />
+              <TextField
+                label="Xác nhận mật khẩu mới"
+                type="password"
+                fullWidth
+                variant="outlined"
+                margin="normal"
+                value={confirmNewPassword}
+                onChange={(e) => setConfirmNewPassword(e.target.value)}
+                required
+              />
+            </>
+          )}
+
+          <Button type="submit" variant="contained" fullWidth disabled={isLoading} sx={{ marginTop: 2, backgroundColor: "#00796b", "&:hover": { backgroundColor: "#004d40" } }}>
+            {isLoading ? <CircularProgress size={24} /> : stage === 1 ? 'Gửi mã' : stage === 2 ? 'Xác nhận mã' : 'Đặt lại mật khẩu'}
+          </Button>
+        </form>
 
         {message && <Typography color="success" sx={{ marginTop: 2 }}>{message}</Typography>}
         {error && <Typography color="error" sx={{ marginTop: 2 }}>{error}</Typography>}
 
-        <Button onClick={handleBackToLogin} variant="text" sx={{ marginTop: 2 }}>
+        <Button onClick={handleBackToLogin} variant="text" fullWidth sx={{ color: "#00796b", marginTop: 2 }}>
           Quay lại trang đăng nhập
         </Button>
       </Container>

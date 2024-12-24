@@ -64,7 +64,7 @@ const CreateAccounts: React.FC = () => {
         justifyContent: 'center',
         alignItems: 'center',
         minHeight: '100vh',
-        backgroundImage: 'url(/images/background.jpg)', // Background image
+        backgroundImage: 'url(/images/Tokyo_japan.jpg)', // Background image giống như bên login
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
@@ -78,7 +78,12 @@ const CreateAccounts: React.FC = () => {
           boxShadow: 3,
         }}
       >
-        <Typography variant="h4" align="center" gutterBottom>
+        <Typography
+          variant="h4"
+          align="center"
+          gutterBottom
+          sx={{ color: "#00796b", fontWeight: "bold" }}
+        >
           Create Account
         </Typography>
         <form onSubmit={handleSubmit}>
@@ -134,11 +139,22 @@ const CreateAccounts: React.FC = () => {
           />
           {error && <Typography color="error">{error}</Typography>}
           {successMessage && <Typography color="success">{successMessage}</Typography>}
-          <MuiButton type="submit" variant="contained" fullWidth sx={{ marginTop: 2 }}>
+          <MuiButton
+            type="submit"
+            variant="contained"
+            fullWidth
+            sx={{
+              marginTop: 2,
+              backgroundColor: "#00796b",
+              "&:hover": {
+                backgroundColor: "#004d40",
+              },
+            }}
+          >
             Create Account
           </MuiButton>
         </form>
-        <MuiButton onClick={handleBackToLoginClick} variant="text" fullWidth sx={{ marginTop: 2 }}>
+        <MuiButton onClick={handleBackToLoginClick} variant="text" fullWidth sx={{ color: "#00796b", marginTop: 2 }}>
           Back to Login
         </MuiButton>
       </Container>

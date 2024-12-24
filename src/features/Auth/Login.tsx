@@ -126,19 +126,19 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   return (
     <Box
       sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '100vh',
-        backgroundImage: 'url(/images/Tokyo_japan.jpg)', 
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        backgroundImage: "url(/images/Tokyo_japan.jpg)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
       }}
     >
       <Container
         maxWidth="xs"
         sx={{
-          backgroundColor: "rgba(255, 255, 255, 50%)",
+          backgroundColor: "rgba(255, 255, 255, 0.8)",
           padding: 4,
           borderRadius: 2,
           boxShadow: 5,
@@ -148,7 +148,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
           variant="h4"
           align="center"
           gutterBottom
-          sx={{ color: "#1300ff", fontWeight: "bold" }}
+          sx={{ color: "#00796b", fontWeight: "bold" }}
         >
           DPT Travel Login
         </Typography>
@@ -157,7 +157,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
           variant="h6"
           align="center"
           gutterBottom
-          sx={{ color: "#388e3c" }}
+          sx={{ color: "#00796b" }}
         >
           Welcome to your journey
         </Typography>
@@ -195,9 +195,9 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             fullWidth
             sx={{
               marginTop: 2,
-              backgroundColor: "#1b5e20",
+              backgroundColor: "#00796b",
               "&:hover": {
-                backgroundColor: "#4caf50",
+                backgroundColor: "#004d40",
               },
             }}
           >
@@ -213,14 +213,14 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             <Button
               variant="text"
               onClick={handleCreateAccount}
-              sx={{ color: "#1b5e20" }}
+              sx={{ color: "#00796b" }}
             >
               Create Account
             </Button>
             <Button
               variant="text"
               onClick={handleForgotPassword}
-              sx={{ color: "#1b5e20" }}
+              sx={{ color: "#00796b" }}
             >
               Forgot Password
             </Button>
