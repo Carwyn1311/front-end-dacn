@@ -1,47 +1,29 @@
 /* PaymentPage.css */
+.card-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
 
-.payment-page {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    text-align: center;
-    background-color: #f9f9f9;
-  }
-  
-  .payment-section {
-    text-align: left;
-    margin-bottom: 20px;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #fff;
-  }
-  
-  .payment-section img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    margin-right: 5px;
-    margin-top: 10px;
-  }
-  
-  .payment-section h6 {
-    margin-bottom: 10px;
-  }
-  
-  .payment-button {
-    width: 100%;
-    margin-top: 20px;
-  }
-  
-  .qr-code-section {
-    text-align: center;
-    margin-top: 20px;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #fff;
-  }
-  
+.card-content {
+  position: relative;
+  top: -80px;
+  margin: 25px;
+  background-color: rgba(231, 231, 231, 0.8);
+  border-radius: 20px;
+  padding: 16px;
+}
+
+.paper-container {
+  max-width: 800px;
+  margin: 16px auto;
+  padding: 16px;
+}
+
+.ticket-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+}
