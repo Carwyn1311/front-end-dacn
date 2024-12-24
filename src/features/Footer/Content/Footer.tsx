@@ -8,11 +8,6 @@ const Footer: React.FC = () => {
       <div className="footer-wrapper" style={{ backgroundImage: 'url(/uploads/images/footer/background-web2024b.jpg)', backgroundRepeat: 'no-repeat', backgroundPosition: 'top' }}>
         {/* Logo và thông tin thương hiệu */}
         <div className="footer-brand">
-          <img
-            src="/images/logo.png"
-            alt="Saigontourist Logo"
-            className="footer-logo"
-          />
           <p className="footer-tagline">
             Lữ hành DPT Travel, thương hiệu lữ hành dẫn đầu xu hướng tại Việt Nam
           </p>
@@ -22,7 +17,7 @@ const Footer: React.FC = () => {
             <span>⭐</span>
             <span>🏅</span>
           </div>
-          <p className="footer-contact">Tổng đài: 1900 1808</p>
+          <p className="footer-contact">Tổng đài: 1900 XXXX</p>
           <p className="footer-contact">Email: info@dpttravel.net</p>
         </div>
 
@@ -35,7 +30,7 @@ const Footer: React.FC = () => {
             <li className="footer-item"><a href="https://www.dichvu.saigontourist.net/" target="_blank" rel="noopener noreferrer">Dịch vụ du lịch</a></li>
             <li className="footer-item"><a href="/trang/dich-vu-ve-may-bay">Vé máy bay</a></li>
             <li className="footer-item"><a href="/trang/dich-vu-thue-xe">Thuê xe</a></li>
-            <li className="footer-item"><a href="https://duhoc.saigontourist.net/" target="_blank" rel="noopener noreferrer">Du học Saigontourist</a></li>
+            <li className="footer-item"><a href="https://duhoc.saigontourist.net/" target="_blank" rel="noopener noreferrer">Du học DPT Travel</a></li>
             <li className="footer-item"><a href="https://www.tuyendungsaigontourist.vn/" target="_blank" rel="noopener noreferrer">Việc làm ngoài nước</a></li>
           </ul>
         </div>
@@ -46,7 +41,7 @@ const Footer: React.FC = () => {
           <ul className="footer-list">
             <li className="footer-item"><a href="https://khachhang.saigontourist.net/" target="_blank" rel="noopener noreferrer">Thẻ khách hàng</a></li>
             <li className="footer-item"><a href="https://cskh.appsgt.net/doi-thuong-qua-tang" target="_blank" rel="noopener noreferrer">Đổi điểm Hoa Mai Vàng</a></li>
-            <li className="footer-item"><a href="https://saigontourist.net/trang/gioi-thieu-ung-dung-di-dong-saigontourist-travel" target="_blank" rel="noopener noreferrer">Tải App Saigontourist</a></li>
+            <li className="footer-item"><a href="https://saigontourist.net/trang/gioi-thieu-ung-dung-di-dong-saigontourist-travel" target="_blank" rel="noopener noreferrer">Tải App DPT Travel</a></li>
             <li className="footer-item"><a href="/trang/travel-voucher" target="_blank" rel="noopener noreferrer">Travel Voucher</a></li>
             <li className="footer-item"><a href="/trang/bao-hiem-du-lich" target="_blank" rel="noopener noreferrer">Bảo hiểm Du lịch</a></li>
             <li className="footer-item"><a href="/y-kien-khach-hang">Ý kiến khách hàng</a></li>

@@ -1,8 +1,7 @@
 .footer-app{
-    background-color: #012e5d;
+    background-color: #8dbff5;
 
     color: #fff;
-    padding: 0px;
     font-family: Arial, sans-serif;
   }
   
@@ -17,6 +16,8 @@
   }
   
   .footer-brand {
+    margin-top: 15px;
+    margin-left: 30px;
     flex: 1 1 300px;
     text-align: left;
   }
@@ -51,6 +52,7 @@
   
   .footer-section {
     flex: 1 1 200px;
+    margin-top: 20px;
   }
   
   .footer-title {
@@ -73,5 +75,12 @@
   
   .footer-item:hover {
     color: #fdb813;
+  }
+  .footer-item a {
+    color: black; /* Đổi màu chữ của các item thành đen */
+  }
+  
+  .footer-item a:hover {
+    color: #0056b3; /* Thêm hiệu ứng hover, có thể thay đổi theo ý muốn */
   }
   
