@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { message, Input, Card, Spin, Form, Button, Space, Popconfirm, Table } from 'antd';
-import { SearchOutlined, EyeOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { SearchOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import axiosInstanceToken from '../../AxiosInterceptor/Content/axioslnterceptorToken';
 import UpdateProvinceForm from './UpdateProvinceForm';
-// Import the Province type from listdest
+import '../css/ListMain.css';
 import { Province } from '../../Admin/Destination/listdest';
 
 const ProvinceList: React.FC = () => {
@@ -101,30 +101,35 @@ const ProvinceList: React.FC = () => {
   ];
 
   return (
-    <div className="province-list">
-      <Card title="Danh Sách Tỉnh" style={{ width: '100%' }}>
-        <Form layout="inline" style={{ marginBottom: '20px' }}>
-          <Form.Item>
-            <Input
-              placeholder="Tìm kiếm tỉnh..."
-              value={searchValue}
-              onChange={handleSearchChange}
-              prefix={<SearchOutlined />}
-              allowClear
-            />
-          </Form.Item>
-        </Form>
+    <div className="citylist-container"> 
+      <div className="citylist-header"> 
+        <h2 className="citylist-title">Danh Sách Tỉnh</h2> 
+      </div>
 
-        {loading ? (
-          <Spin size="large" />
-        ) : (
-          <Table
-            columns={columns}
-            dataSource={filterProvinces()}
-            rowKey="id"
+      <Form layout="inline" className="citylist-search-form">
+        <Form.Item>
+          <Input
+            placeholder="Tìm kiếm tỉnh..."
+            value={searchValue}
+            onChange={handleSearchChange}
+            prefix={<SearchOutlined />}
+            allowClear
           />
-        )}
-      </Card>
+        </Form.Item>
+      </Form>
+
+      {loading ? (
+        <div className="citylist-spin-container">
+          <Spin size="large" /> 
+        </div>
+      ) : (
+        <Table
+          columns={columns}
+          dataSource={filterProvinces()}
+          rowKey="id"
+          className="citylist-table" 
+        />
+      )}
 
       <UpdateProvinceForm
         visible={drawerVisible}

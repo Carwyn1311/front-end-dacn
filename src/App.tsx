@@ -7,7 +7,7 @@ import MainContent from './features/Maincontent/Content/MainContent';
 import Login from './features/Auth/Login';
 import { User } from './features/User/Content/User';
 import AdminRoutes from './features/Admin/Content/AdminRoutes';
-import AdminUser from './features/Admin/Content/AdminUser';
+import AdminUser from './features/Admin/User/AdminUser';
 import AdminTourManagement from './features/Admin/Content/AdminTourManagement';
 import TravelPageDongBac from './features/AllTours/Tours/TravelPageDongBac';
 import TravelPageHaNoi from './features/AllTours/Tours/TravelPageHaNoi';

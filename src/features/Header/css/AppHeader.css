@@ -1,8 +1,8 @@
 /* App Header */
 .app-header {
   width: 100%;
-  background-color: #6200ea;
-  color: white;
+  background: linear-gradient(90deg, #a1c4fd 0%, #c2e9fb 50%, #d4fc79 100%);
+  color: #000000; /* Chữ đen */
   padding: 16px 0;
   display: flex;
   justify-content: center;
@@ -17,46 +17,61 @@
   align-items: center;
   width: 100%;
   max-width: 1200px;
-  padding: 0 16px;
+  padding: 0 20px;
 }
 
 /* Contact Info Buttons */
 .contact-info button,
-.user-options button {
-  background-color: rgba(255, 255, 255, 0);
-  color: white;
+.user-options button,
+.nav-button {
+  background-color: transparent;
+  color: #000000; /* Chữ đen */
   border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  font-size: 14px;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 16px;
   cursor: pointer;
   text-decoration: none;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
 }
 
 .contact-info button:hover,
-.user-options button:hover {
-  color: #ff5722; /* Đổi màu chữ khi hover */
-  text-decoration: underline; /* Gạch chân khi hover */
+.user-options button:hover,
+.nav-button:hover {
+  color: #ffffff; /* Đổi màu chữ khi hover */
+  background-color: #000000; /* Nền đen khi hover */
 }
 
 /* Sidebar Toggle Button */
 .sidebar-toggle-button {
-  font-size: 20px;
-  padding: 8px;
+  font-size: 24px;
+  padding: 10px;
   border-radius: 50%;
-  background-color: rgba(187, 134, 252, 0.75);
+  background-color: rgba(0, 0, 0, 0.75); /* Nền đen mờ */
+  color: #ffffff; /* Màu chữ trắng */
 }
 
 /* Login Button */
 .button-login {
-  border: 2px solid white;
+  border: 2px solid #000000; /* Viền đen */
   background-color: transparent;
+  color: #000000; /* Chữ đen */
+}
+
+.button-login:hover {
+  background-color: #000000; /* Nền đen khi hover */
+  color: #ffffff; /* Chữ trắng khi hover */
 }
 
 /* Language Button */
 .language {
-  background-color: rgba(255, 255, 255, 0);
+  background-color: transparent;
+  color: #000000; /* Chữ đen */
+}
+
+.language:hover {
+  background-color: #000000; /* Nền đen khi hover */
+  color: #ffffff; /* Chữ trắng khi hover */
 }
 
 /* Selected Item */

@@ -1,22 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Table,
-  Button,
-  message,
-  Space,
-  Popconfirm
-} from 'antd';
-import {
-  PlusOutlined,
-  EditOutlined,
-  EyeOutlined,
-  DeleteOutlined
-} from '@ant-design/icons';
+import { Table, Button, message, Space, Popconfirm, Spin } from 'antd';
+import { PlusOutlined, EditOutlined, EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
 import FormCreateCity from './FormCreateCity';
 import FormUpdateCity from './FormUpdateCity';
 import FormViewCity from './FormViewCity';
-import '../css/CityList.css';
+import '../css/ListMain.css';
 import { listcity } from './listcity';
 import { listpovince } from './listpovince';
 
@@ -166,16 +155,21 @@ const CityList: React.FC = () => {
         </Button>
       </div>
 
-      <Table
-        columns={columns}
-        dataSource={cities}
-        loading={loading}
-        rowKey="id"
-        className="citylist-table"
-        pagination={{
-          className: 'citylist-pagination'
-        }}
-      />
+      {loading ? (
+        <div className="citylist-spin-container">
+          <Spin size="large" />
+        </div>
+      ) : (
+        <Table
+          columns={columns}
+          dataSource={cities}
+          rowKey="id"
+          className="citylist-table"
+          pagination={{
+            className: 'citylist-pagination'
+          }}
+        />
+      )}
 
       {formMode === 'create' && (
         <FormCreateCity
