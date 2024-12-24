@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Table, Card, Modal, message, Button, Input, Form, Select, Spin } from 'antd';
 import { PlusOutlined, EyeOutlined } from '@ant-design/icons';
 import axiosInstanceToken from '../../AxiosInterceptor/Content/axioslnterceptorToken';
-import '../css/ListMain.css'; // Sử dụng chung file CSS từ CityList
+import '../css/ListMain.css'; 
 
 const { Option } = Select;
 
@@ -116,16 +116,19 @@ const AdminUser: React.FC = () => {
       title: 'Tên Đăng Nhập',
       dataIndex: 'username',
       key: 'username',
+      className: 'mainlist-column-name', // Sử dụng lớp CSS chính mới
     },
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
+      className: 'mainlist-column-email', // Sử dụng lớp CSS chính mới
     },
     { 
       title: 'Vai Trò', 
       dataIndex: 'roles', 
       key: 'roles', 
+      className: 'mainlist-column-roles', // Sử dụng lớp CSS chính mới
       render: (roles: { id: number; name: string }[], record: User) => (
         roles.map(role => role.name).join(', ') 
       ), 
@@ -133,41 +136,48 @@ const AdminUser: React.FC = () => {
     {
       title: 'Hành Động',
       key: 'action',
+      className: 'mainlist-column-actions', // Sử dụng lớp CSS chính mới
       render: (text: any, record: User) => (
         <span>
-          <Button icon={<EyeOutlined />} onClick={() => handleViewUser(record)}>Xem</Button>
+          <Button 
+            icon={<EyeOutlined />} 
+            onClick={() => handleViewUser(record)}
+            className="mainlist-view-btn" // Sử dụng lớp CSS chính mới
+          >
+            Xem
+          </Button>
         </span>
       ),
     },
   ];
 
   return (
-    <div className="citylist-container">
-      <div className="citylist-header">
-        <h2 className="citylist-title">Quản Lý Người Dùng</h2>
+    <div className="mainlist-container"> {/* Sử dụng lớp CSS chính mới */}
+      <div className="mainlist-header"> {/* Sử dụng lớp CSS chính mới */}
+        <h2 className="mainlist-title">Quản Lý Người Dùng</h2> {/* Sử dụng lớp CSS chính mới */}
         <Button
           type="primary"
           icon={<PlusOutlined />}
           onClick={handleAddUser}
-          className="citylist-add-button"
+          className="mainlist-add-button" // Sử dụng lớp CSS chính mới
         >
           Thêm Người Dùng
         </Button>
       </div>
 
-      <Form layout="inline" className="citylist-search-form">
+      <Form layout="inline" className="mainlist-search-form"> {/* Sử dụng lớp CSS chính mới */}
         <Form.Item>
           <Input
             placeholder="Tìm kiếm người dùng"
             value={searchValue}
             onChange={(e) => handleSearchChange(e.target.value)}
-            className="citylist-search-input"
+            className="mainlist-search-input" // Sử dụng lớp CSS chính mới
           />
         </Form.Item>
       </Form>
 
       {loading ? (
-        <div className="citylist-spin-container">
+        <div className="mainlist-spin-container"> {/* Sử dụng lớp CSS chính mới */}
           <Spin size="large" /> 
         </div>
       ) : (
@@ -175,7 +185,7 @@ const AdminUser: React.FC = () => {
           columns={columns}
           dataSource={users}
           rowKey="id"
-          className="citylist-table"
+          className="mainlist-table" // Sử dụng lớp CSS chính mới
         />
       )}
 
@@ -217,6 +227,7 @@ const AdminUser: React.FC = () => {
             <Select
               placeholder="Chọn vai trò"
               style={{ width: '100%' }}
+
               value={selectedUser ? selectedUser.roles[0]?.id : undefined}
               onChange={(value) => handleRoleChange(selectedUser!.id, value)}
             >

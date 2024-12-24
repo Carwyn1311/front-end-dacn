@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Drawer, Descriptions, message } from 'antd';
 import axiosInstance from '../../AxiosInterceptor/Content/axiosInterceptor';
-import '../css/FormViewCity.css';
+import '../css/ListMain.css'; 
 
 interface City {
   id: number;

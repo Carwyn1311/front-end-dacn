@@ -52,16 +52,6 @@ const CityList: React.FC = () => {
       message.error('Không thể tải danh sách tỉnh');
     }
   };
-  // Xóa địa điểm
-  const handleDeleteCity = async (cityId: number) => {
-    try {
-      await axiosInstance.delete(`/api/city/${cityId}`);
-      message.success('Xóa địa điểm thành công');
-      fetchCities();
-    } catch (error) {
-      message.error('Lỗi khi xóa địa điểm');
-    }
-  };
 
   // Reset form và trạng thái
   const handleCloseForm = () => {
@@ -91,16 +81,19 @@ const CityList: React.FC = () => {
       title: 'ID',
       dataIndex: 'id',
       key: 'id',
+      className: 'mainlist-column-id', // Sử dụng lớp CSS chính mới
     },
     {
       title: 'Tên địa điểm',
       dataIndex: 'name',
       key: 'name',
+      className: 'mainlist-column-name', // Sử dụng lớp CSS chính mới
     },
     {
       title: 'Tên Tỉnh',
       dataIndex: 'province',
       key: 'province',
+      className: 'mainlist-column-province', // Sử dụng lớp CSS chính mới
       render: (provinceId: number) => {
         const province = provinces.find(province => province.id === provinceId);
         return province ? province.name : '';
@@ -109,54 +102,44 @@ const CityList: React.FC = () => {
     {
       title: 'Thao Tác',
       key: 'actions',
+      className: 'mainlist-column-actions', // Sử dụng lớp CSS chính mới
       render: (text: string, record: City) => (
         <Space>
           <Button
             icon={<EyeOutlined />}
             onClick={() => handleViewCity(record)}
+            className="mainlist-view-btn" // Sử dụng lớp CSS chính mới
           >
             Xem
           </Button>
           <Button
             icon={<EditOutlined />}
             onClick={() => handleEditCity(record)}
+            className="mainlist-edit-btn" // Sử dụng lớp CSS chính mới
           >
             Sửa
           </Button>
-          <Popconfirm
-            title="Bạn có chắc chắn muốn xóa?"
-            onConfirm={() => handleDeleteCity(record.id)}
-            okText="Xóa"
-            cancelText="Hủy"
-          >
-            <Button
-              icon={<DeleteOutlined />}
-              danger
-            >
-              Xóa
-            </Button>
-          </Popconfirm>
         </Space>
       ),
     },
   ];
 
   return (
-    <div className='citylist-container'>
-      <div className='citylist-header'>
-      <h2 className="citylist-title">Quản Lý địa điểm</h2>
+    <div className="mainlist-container"> {/* Sử dụng lớp CSS chính mới */}
+      <div className="mainlist-header"> {/* Sử dụng lớp CSS chính mới */}
+        <h2 className="mainlist-title">Quản Lý Địa Điểm</h2> {/* Sử dụng lớp CSS chính mới */}
         <Button
           type="primary"
           icon={<PlusOutlined />}
           onClick={() => setFormMode('create')}
-          className='citylist-add-button'
+          className="mainlist-add-button" // Sử dụng lớp CSS chính mới
         >
           Thêm Địa Điểm Mới
         </Button>
       </div>
 
       {loading ? (
-        <div className="citylist-spin-container">
+        <div className="mainlist-spin-container">
           <Spin size="large" />
         </div>
       ) : (
@@ -164,9 +147,9 @@ const CityList: React.FC = () => {
           columns={columns}
           dataSource={cities}
           rowKey="id"
-          className="citylist-table"
+          className="mainlist-table" // Sử dụng lớp CSS chính mới
           pagination={{
-            className: 'citylist-pagination'
+            className: 'mainlist-pagination' // Sử dụng lớp CSS chính mới
           }}
         />
       )}

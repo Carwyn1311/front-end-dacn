@@ -3,6 +3,7 @@ import { Table, Button, message, DatePicker, Select, Card, Space, Input } from '
 import axiosInstanceToken from '../../AxiosInterceptor/Content/axioslnterceptorToken';
 import 'moment/locale/en-gb';
 import moment, { Moment } from 'moment-timezone';
+import '../css/ListMain.css'; // Import CSS chung
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -138,8 +139,8 @@ const PaymentDetailsPage: React.FC = () => {
         <Space>
           {record.status === 'PENDING' && (
             <>
-              <Button type="primary" onClick={() => updatePaymentStatus(record.id, 'COMPLETED')}>Confirm</Button>
-              <Button type="default" danger onClick={() => updatePaymentStatus(record.id, 'CANCELLED')}>Cancel</Button>
+              <Button type="primary" onClick={() => updatePaymentStatus(record.id, 'COMPLETED')} className="mainlist-confirm-btn">Confirm</Button>
+              <Button type="default" danger onClick={() => updatePaymentStatus(record.id, 'CANCELLED')} className="mainlist-cancel-btn">Cancel</Button>
             </>
           )}
         </Space>
@@ -148,7 +149,11 @@ const PaymentDetailsPage: React.FC = () => {
   ];
 
   return (
-    <Card title="Payment Details" style={{ margin: '20px' }}>
+    <div className='mainlist-container'>
+      <div className='mainlist-header'>
+        <h2 className='mainlist-title'>Payment Details</h2>
+      </div>
+
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
         <Space style={{ marginBottom: 16 }} wrap>
           <RangePicker
@@ -171,9 +176,17 @@ const PaymentDetailsPage: React.FC = () => {
             style={{ width: 300 }}
           />
         </Space>
-        <Table dataSource={filteredPaymentDetails} columns={columns} rowKey="id" />
+        <Table
+          dataSource={filteredPaymentDetails}
+          columns={columns}
+          rowKey="id"
+          className="mainlist-table"
+          pagination={{
+            className: 'mainlist-pagination'
+          }}
+        />
       </Space>
-    </Card>
+    </div>
   );
 };
 

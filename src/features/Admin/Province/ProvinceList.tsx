@@ -59,54 +59,38 @@ const ProvinceList: React.FC = () => {
     setSelectedProvince(null);
   };
 
-  const handleDeleteProvince = async (id: number) => {
-    try {
-      await axiosInstanceToken.delete(`/api/province/${id}`);
-      message.success('Xóa tỉnh thành công');
-      fetchProvinces();
-    } catch (error) {
-      console.error('Lỗi khi xóa tỉnh:', error);
-      message.error('Lỗi khi xóa tỉnh');
-    }
-  };
-
   const columns = [
     {
       title: 'Tên Tỉnh',
       dataIndex: 'name',
       key: 'name',
+      className: 'mainlist-column-name', // Sử dụng lớp CSS chính mới
     },
     {
       title: 'Quốc Gia',
       dataIndex: 'country',
       key: 'country',
+      className: 'mainlist-column-country', // Sử dụng lớp CSS chính mới
     },
     {
       title: 'Thao Tác',
       key: 'actions',
+      className: 'mainlist-column-actions', // Sử dụng lớp CSS chính mới
       render: (text: string, record: Province) => (
         <Space>
-          <Button icon={<EditOutlined />} onClick={() => showDrawer(record)}>Sửa</Button>
-          <Popconfirm
-            title="Bạn có chắc chắn muốn xóa?"
-            onConfirm={() => handleDeleteProvince(record.id)}
-            okText="Xóa"
-            cancelText="Hủy"
-          >
-            <Button icon={<DeleteOutlined />} danger>Xóa</Button>
-          </Popconfirm>
+          <Button icon={<EditOutlined />} onClick={() => showDrawer(record)} className="mainlist-edit-btn">Sửa</Button>
         </Space>
       ),
     },
   ];
 
   return (
-    <div className="citylist-container"> 
-      <div className="citylist-header"> 
-        <h2 className="citylist-title">Danh Sách Tỉnh</h2> 
+    <div className="mainlist-container"> 
+      <div className="mainlist-header"> 
+        <h2 className="mainlist-title">Danh Sách Tỉnh</h2> 
       </div>
 
-      <Form layout="inline" className="citylist-search-form">
+      <Form layout="inline" className="mainlist-search-form">
         <Form.Item>
           <Input
             placeholder="Tìm kiếm tỉnh..."
@@ -114,12 +98,13 @@ const ProvinceList: React.FC = () => {
             onChange={handleSearchChange}
             prefix={<SearchOutlined />}
             allowClear
+            className="mainlist-search-input" // Sử dụng lớp CSS chính mới
           />
         </Form.Item>
       </Form>
 
       {loading ? (
-        <div className="citylist-spin-container">
+        <div className="mainlist-spin-container">
           <Spin size="large" /> 
         </div>
       ) : (
@@ -127,7 +112,8 @@ const ProvinceList: React.FC = () => {
           columns={columns}
           dataSource={filterProvinces()}
           rowKey="id"
-          className="citylist-table" 
+          className="mainlist-table" 
+          pagination={{ className: 'mainlist-pagination' }} 
         />
       )}
 

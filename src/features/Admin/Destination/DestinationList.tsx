@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Table, Button, Tag, Space, message, Popconfirm, Image } from 'antd';
 import { PlusOutlined, EditOutlined, EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import '../css/DestinationList.css';
+import '../css/ListMain.css'; 
+
 import FormCreateDestination from './FormCreateDestination';
 import FormViewDestination from './FormViewDestination';
 import {
@@ -77,20 +78,20 @@ const DestinationList: React.FC = () => {
       title: 'ID',
       dataIndex: 'id',
       key: 'id',
-      className: 'destlist-column-id',
+      className: 'mainlist-column-id', // Sử dụng lớp CSS chính mới
     },
     {
       title: 'Tên Điểm Đến',
       dataIndex: 'name',
       key: 'name',
-      className: 'destlist-column-name',
+      className: 'mainlist-column-name', // Sử dụng lớp CSS chính mới
       render: (text: string, record: Destination) => (
-        <div className="destlist-destination-info">
+        <div className="mainlist-destination-info"> {/* Sử dụng lớp CSS chính mới */}
           {record.destinationImages.length > 0 && (
             <Image
               src={`${process.env.REACT_APP_BASE_URL}${record.destinationImages[0].image_url}`}
               alt={text}
-              className="destlist-destination-thumbnail"
+              className="mainlist-destination-thumbnail" // Sử dụng lớp CSS chính mới
               width={50}
               height={50}
               preview={false}
@@ -104,7 +105,7 @@ const DestinationList: React.FC = () => {
       title: 'Loại',
       dataIndex: 'type',
       key: 'type',
-      className: 'destlist-column-type',
+      className: 'mainlist-column-type', // Sử dụng lớp CSS chính mới
       render: (type: string) => (
         <Tag color={type === 'DOMESTIC' ? 'blue' : 'green'}>
           {type === 'DOMESTIC' ? 'Trong Nước' : 'Quốc Tế'}
@@ -115,25 +116,25 @@ const DestinationList: React.FC = () => {
       title: 'Địa Điểm',
       dataIndex: 'location',
       key: 'location',
-      className: 'destlist-column-location',
+      className: 'mainlist-column-location', // Sử dụng lớp CSS chính mới
     },
     {
       title: 'Thao Tác',
       key: 'actions',
-      className: 'destlist-column-actions',
+      className: 'mainlist-column-actions', // Sử dụng lớp CSS chính mới
       render: (text: string, record: Destination) => (
         <Space>
           <Button
             icon={<EyeOutlined />}
             onClick={() => handleViewDestination(record)}
-            className="destlist-view-btn"
+            className="mainlist-view-btn" // Sử dụng lớp CSS chính mới
           >
             Xem
           </Button>
           <Button
             icon={<EditOutlined />}
             onClick={() => handleEditDestination(record)}
-            className="destlist-edit-btn"
+            className="mainlist-edit-btn" // Sử dụng lớp CSS chính mới
           >
             Sửa
           </Button>
@@ -143,14 +144,14 @@ const DestinationList: React.FC = () => {
   ];
 
   return (
-    <div className="destlist-container">
-      <div className="destlist-header">
-        <h2 className="destlist-title">Quản Lý Điểm Đến</h2>
+    <div className="mainlist-container"> {/* Sử dụng lớp CSS chính mới */}
+      <div className="mainlist-header"> {/* Sử dụng lớp CSS chính mới */}
+        <h2 className="mainlist-title">Quản Lý Điểm Đến</h2> {/* Sử dụng lớp CSS chính mới */}
         <Button
           type="primary"
           icon={<PlusOutlined />}
           onClick={() => setFormMode('create')}
-          className="destlist-add-button"
+          className="mainlist-add-button" // Sử dụng lớp CSS chính mới
         >
           Thêm Điểm Đến Mới
         </Button>
@@ -161,8 +162,8 @@ const DestinationList: React.FC = () => {
         dataSource={destinations}
         loading={loading}
         rowKey="id"
-        className="destlist-table"
-        pagination={{ className: 'destlist-pagination' }}
+        className="mainlist-table" // Sử dụng lớp CSS chính mới
+        pagination={{ className: 'mainlist-pagination' }} // Sử dụng lớp CSS chính mới
       />
 
       {formMode === 'create' && (
