@@ -105,6 +105,7 @@ const MainContent: React.FC = () => {
             <div className="commitment-section">
               <CommitmentSection />
             </div>
+            <Footer />
           </div>
         </div>
       </TourContextProvider>

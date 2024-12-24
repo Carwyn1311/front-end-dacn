@@ -130,7 +130,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
         justifyContent: "center",
         alignItems: "center",
         minHeight: "100vh",
-        backgroundImage: "url(/images/Tokyo_japan.jpg)",
+        backgroundImage: "url(/images/hanoi_login_new.jpg)",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}

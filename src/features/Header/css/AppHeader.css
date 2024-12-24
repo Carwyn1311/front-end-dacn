@@ -1,7 +1,8 @@
 /* App Header */
 .app-header {
   width: 100%;
-  background: linear-gradient(90deg, #a1c4fd 0%, #c2e9fb 50%, #d4fc79 100%);
+  background: linear-gradient(90deg, rgba(161, 196, 253, 0.8) 0%, rgba(194, 233, 251, 0.8) 50%, rgba(212, 252, 121, 0.8) 100%);
+
   color: #000000; /* Chữ đen */
   padding: 16px 0;
   display: flex;
