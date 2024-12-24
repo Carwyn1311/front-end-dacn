@@ -27,7 +27,7 @@ import DestinationDetail from "./features/Maincontent/Content/DestinationDetails
 import PaymentPage from "./features/Maincontent/Payment/PaymentPage";
 import PaymentDetailsPage from "./features/Admin/Payment/PaymentDetailsPage";
 import AppHeader from "./features/Header/Content/AppHeader";
-import Profile from "./features/Profile/Profile";
+import UserProfile from "./features/Profile/UserProfile";
 
 
 const App: React.FC = () => {
@@ -132,6 +132,7 @@ const AppContent: React.FC = () => {
           <Route path="/admin/city-list"          element={<CityList />} />
           <Route path="/payment"                  element={<PaymentPage />} />
           <Route path="/admin/paymentdetails"     element={<PaymentDetailsPage />} />
+          <Route path="/profile"                  element={<UserProfile />} />
         </Routes>
       </div>
     </div>
