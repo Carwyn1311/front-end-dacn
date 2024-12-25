@@ -2,7 +2,7 @@
 
 /* Main Content Container */
 .main-content {
-  margin-top: 3%;
+  margin-top: 13px;
   width: 100%;
   flex-direction: column;
   height: calc(100vh);
