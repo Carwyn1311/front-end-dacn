@@ -3,7 +3,8 @@ export class User {
   username: string;
   email: string;
   password: string;
-  role: number;  // 1 = "ADMIN", 2 = "USER"
+  role: number;
+  fullname: string;
   active: boolean;
   activationCode: string;
   resetToken: string;
@@ -13,7 +14,7 @@ export class User {
     this.username = userData.username || '';
     this.email = userData.email || '';
     this.password = userData.password || '';
-
+    this.fullname = userData.fullname || ''; // Đảm bảo fullname luôn có giá trị mặc định là rỗng
     // Kiểm tra role: nếu là 1 thì gán 'ADMIN', nếu là 2 thì gán 'USER'
     if (userData.role === 1) {
       this.role = 1;  // ADMIN
@@ -22,7 +23,7 @@ export class User {
     } else {
       this.role = 2;  // Default role is USER
     }
-
+    
     this.active = userData.active !== undefined ? userData.active : true;
     this.activationCode = userData.activationCode || '';
     this.resetToken = userData.resetToken || '';

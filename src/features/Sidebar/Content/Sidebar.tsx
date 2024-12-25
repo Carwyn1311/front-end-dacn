@@ -31,18 +31,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isLoggedIn, onLogout }) => {
   useEffect(() => {
     const currentUser = User.getUserData();
     if (currentUser) {
-      setIsAdmin(currentUser.isAdmin()); // Use the isAdmin method from User class
+      setIsAdmin(currentUser.isAdmin());
     }
 
-    // Fetch and classify destinations
     const fetchAndClassifyDestinations = async () => {
-      await fetchDestinations(); // Fetch the destinations from the API
-      const { domestic, international } = classifyDestinations(); // Classify them into domestic and international
+      await fetchDestinations(); 
+      const { domestic, international } = classifyDestinations(); 
       setDomestic(Object.values(domestic).flat());
       setInternational(Object.values(international).flat());
     };
 
-    fetchAndClassifyDestinations(); // Call the function to fetch and classify destinations
+    fetchAndClassifyDestinations(); 
   }, []);
 
   const handleMenuClick = (path: string) => {
@@ -64,8 +63,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isLoggedIn, onLogout }) => {
       label: "Trang chủ",
       onClick: () => handleMenuClick("/"),
     },
-    //...(isAdmin
-    //? [
+    
     {
       key: "admin",
       icon: <UserOutlined />,

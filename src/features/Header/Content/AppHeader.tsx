@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Menu, Dropdown } from 'antd';
 import { FaUserCircle } from 'react-icons/fa';
-import { MdMenuOpen, MdOutlineMenu } from "react-icons/md";
+import { MdOutlineMenu, MdMenuOpen } from "react-icons/md";
 import { AppstoreOutlined, GlobalOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import '../css/AppHeader.css';
-import { classifyDestinations, fetchDestinations } from '../../Admin/Destination/listdest'; // Import để fetch data
+import { classifyDestinations, fetchDestinations } from '../../Admin/Destination/listdest'; 
 
 interface Destination {
   id: number;
@@ -22,6 +22,7 @@ interface AppHeaderProps {
   language: 'en' | 'vn';
   formatPath: (path: string) => string;
   onLogout: () => void;
+  role: string;  // Thêm prop role
 }
 
 const AppHeader: React.FC<AppHeaderProps> = ({
@@ -34,6 +35,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({
   language,
   formatPath,
   onLogout,
+  role,  // Thêm prop role
 }) => {
   const navigate = useNavigate();
 
@@ -166,19 +168,26 @@ const AppHeader: React.FC<AppHeaderProps> = ({
     <header className="app-header">
       <div className="top-bar">
         <div className="contact-info">
+          {/* Ẩn nút Sidebar nếu không phải là Admin */}
+          {role === "ADMIN" && (
+            <Button onClick={toggleSidebar} className="sidebar-toggle-button" style={{ color: "darkgray", fontSize: "20px" }}>
+              {isSidebarOpen ? <MdMenuOpen  /> : <MdOutlineMenu /> }
+            </Button>
+          )}
           <Button onClick={() => navigate('/')} className="nav-button">
             Trang Chủ
           </Button>
           <Dropdown overlay={menu} trigger={['click']}>
             <Button className="nav-button">Danh Mục</Button>
           </Dropdown>
-
-
         </div>
         <div className="user-options">
-          <Dropdown overlay={adminMenu} trigger={['click']}>
-            <Button className="nav-button">Admin</Button>
-          </Dropdown>
+          {/* Ẩn nút Admin nếu không phải là Admin */}
+          {role === "ADMIN" && (
+            <Dropdown overlay={adminMenu} trigger={['click']}>
+              <Button className="nav-button">Admin</Button>
+            </Dropdown>
+          )}
           {isLoggedIn ? (
             <Dropdown overlay={loginMenu} trigger={['click']}>
               <Button className="nav-button">
@@ -190,10 +199,6 @@ const AppHeader: React.FC<AppHeaderProps> = ({
               <FaUserCircle /> {language === 'en' ? 'Login' : 'Đăng nhập'}
             </Button>
           )}
-
-          <Button className="language nav-button" onClick={toggleLanguage}>
-            {language === 'en' ? '🇬🇧 English' : '🇻🇳 Tiếng Việt'}
-          </Button>
         </div>
       </div>
     </header>
