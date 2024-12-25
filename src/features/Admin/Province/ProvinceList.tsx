@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { message, Input, Card, Spin, Form, Button, Space, Popconfirm, Table } from 'antd';
-import { SearchOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { message, Input, Form, Button, Space, Table, Spin } from 'antd';
+import { SearchOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import axiosInstanceToken from '../../AxiosInterceptor/Content/axioslnterceptorToken';
 import UpdateProvinceForm from './UpdateProvinceForm';
+import FormCreateProvince from './FormCreateProvince'; // Thêm import này
 import '../css/ListMain.css';
 import { Province } from '../../Admin/Destination/listdest';
 
@@ -12,6 +13,7 @@ const ProvinceList: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedProvince, setSelectedProvince] = useState<Province | null>(null);
   const [drawerVisible, setDrawerVisible] = useState<boolean>(false);
+  const [formMode, setFormMode] = useState<'create' | 'update' | null>(null); // Thêm trạng thái này
 
   useEffect(() => {
     fetchProvinces();
@@ -20,7 +22,7 @@ const ProvinceList: React.FC = () => {
   const fetchProvinces = async () => {
     setLoading(true);
     try {
-      const response = await axiosInstanceToken.get(`/api/province/list`, {
+      const response = await axiosInstanceToken.get('/api/province/list', {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -51,12 +53,19 @@ const ProvinceList: React.FC = () => {
 
   const showDrawer = (province: Province) => {
     setSelectedProvince(province);
+    setFormMode('update'); // Đặt chế độ form là 'update'
+    setDrawerVisible(true);
+  };
+
+  const showCreateForm = () => {
+    setFormMode('create'); // Đặt chế độ form là 'create'
     setDrawerVisible(true);
   };
 
   const onClose = () => {
     setDrawerVisible(false);
     setSelectedProvince(null);
+    setFormMode(null); // Đặt lại chế độ form
   };
 
   const columns = [
@@ -88,6 +97,14 @@ const ProvinceList: React.FC = () => {
     <div className="mainlist-container"> 
       <div className="mainlist-header"> 
         <h2 className="mainlist-title">Danh Sách Tỉnh</h2> 
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={showCreateForm}
+          className="mainlist-add-button" // Sử dụng lớp CSS chính mới
+        >
+          Thêm Tỉnh Mới
+        </Button>
       </div>
 
       <Form layout="inline" className="mainlist-search-form">
@@ -117,12 +134,21 @@ const ProvinceList: React.FC = () => {
         />
       )}
 
-      <UpdateProvinceForm
-        visible={drawerVisible}
-        onClose={onClose}
-        province={selectedProvince}
-        fetchProvinces={fetchProvinces}
-      />
+      {formMode === 'create' && (
+        <FormCreateProvince
+          onClose={onClose}
+          onSuccess={fetchProvinces}
+        />
+      )}
+
+      {formMode === 'update' && selectedProvince && (
+        <UpdateProvinceForm
+          visible={drawerVisible}
+          onClose={onClose}
+          province={selectedProvince}
+          fetchProvinces={fetchProvinces}
+        />
+      )}
     </div>
   );
 };
