@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axiosInstance from '../features/AxiosInterceptor/Content/axiosInterceptor';
 import { User } from '../features/User/Content/User';
 import Sidebar from '../features/Sidebar/Content/Sidebar';
 import AppHeader from '../features/Header/Content/AppHeader';
@@ -13,43 +12,21 @@ const AppContent: React.FC = () => {
   const [fullname, setFullname] = useState('');
   const [username, setUsername] = useState('');
   const [role, setRole] = useState('');
-  const [selectedItem, setSelectedItem] = useState<string>(''); // Thêm thuộc tính selectedItem
+  const [selectedItem, setSelectedItem] = useState<string>('');
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
 
   const navigate = useNavigate();
   const location = useLocation();
   const isLoginPage = ['/login', '/create-account', '/forgot-password'].includes(location.pathname);
+
   useEffect(() => {
-    const token = localStorage.getItem('jwt') || sessionStorage.getItem('token');
-    if (token) {
-      axiosInstance.post('/api/verify-token', { token })
-        .then(response => {
-          if (response.data.valid) {
-            const user = User.getUserData();
-            if (user) {
-              setIsLoggedIn(true);
-              setFullname(user.fullname);
-              setRole(user.role.toString());
-            } else {
-              handleInvalidToken();
-            }
-          } else {
-            handleInvalidToken();
-          }
-        })
-        .catch(() => {
-          handleInvalidToken();
-        });
-    } else {
-      handleInvalidToken();
+    const user = User.getUserData();
+    if (user) {
+      setIsLoggedIn(true);
+      setFullname(user.fullname);
+      setRole(user.role.toString());
     }
   }, []);
-
-  const handleInvalidToken = () => {
-    User.clearUserData();
-    setIsLoggedIn(false);
-    navigate('/login');
-  };
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -104,7 +81,7 @@ const AppContent: React.FC = () => {
           language={language}
           formatPath={(path: string) => path}
           onLogout={onLogout}
-          role={role}  // Truyền thêm prop role
+          role={role}
         />
         {role === "ADMIN" && (
           <Sidebar
