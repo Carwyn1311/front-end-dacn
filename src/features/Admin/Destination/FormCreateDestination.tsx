@@ -96,26 +96,27 @@ const FormCreateDestination: React.FC<FormCreateDestinationProps> = ({ onClose, 
     try {
       if (itinerary) {
         const formattedItinerary = {
-          ...itinerary,
-          start_date: moment(itinerary.start_date).format('YYYY-MM-DDTHH:mm:ss'),
-          end_date: moment(itinerary.end_date).format('YYYY-MM-DDTHH:mm:ss'),
-          activities: itinerary.activities.map((activity: any) => ({
-            ...activity,
-            start_time: moment(activity.start_time).format('YYYY-MM-DDTHH:mm:ss'),
-            end_time: moment(activity.end_time).format('YYYY-MM-DDTHH:mm:ss'),
-          }))
+            ...itinerary,
+            start_date: moment(itinerary.start_date).isValid() ? moment(itinerary.start_date).format('YYYY-MM-DDTHH:mm:ss') : null,
+            end_date: moment(itinerary.end_date).isValid() ? moment(itinerary.end_date).format('YYYY-MM-DDTHH:mm:ss') : null,
+            activities: itinerary.activities.map((activity: any) => ({
+                ...activity,
+                start_time: moment(activity.start_time).isValid() ? moment(activity.start_time).format('YYYY-MM-DDTHH:mm:ss') : null,
+                end_time: moment(activity.end_time).isValid() ? moment(activity.end_time).format('YYYY-MM-DDTHH:mm:ss') : null,
+            }))
         };
-
+    
         await axiosInstanceToken.post('/api/itineraries/create', formattedItinerary, {
-          headers: {
-            'Content-Type': 'application/json'
-          }
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
-
+    
         message.success('Tạo điểm đến thành công');
         onSuccess();
         onClose();
       }
+    
       if (descriptionFile) {
         const formData = new FormData();
         formData.append('descriptionFile', descriptionFile);
@@ -165,11 +166,11 @@ const FormCreateDestination: React.FC<FormCreateDestinationProps> = ({ onClose, 
         child_price: Number(values.child_price),
       };
 
-      await axiosInstance.post('/api/ticketprices/create', ticketPrices, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      // await axiosInstance.post('/api/ticketprices/create', ticketPrices, {
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      // });
 
       handleSubmit();
       message.success('Lưu giá vé thành công');
