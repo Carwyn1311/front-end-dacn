@@ -95,7 +95,7 @@ const MainContent: React.FC = () => {
               imageUrl="/images/ha-long-1.jpg"
               title="Đón 7 Chuyến Tàu Biển Quốc Tế"
               subtitle="Tin Nổi Bật"
-              description="Saigontourist đón và phục vụ hơn 20,600 du khách quốc tế đến Việt Nam từ tháng 11/2024."
+              description="DPT đón và phục vụ hơn 20,600 du khách quốc tế đến Việt Nam từ tháng 11/2024."
               buttonText="Xem thêm"
               buttonUrl="https://www.saigontourist.net/vi/chi-tiet/668"
               position="left"
