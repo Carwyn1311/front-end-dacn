@@ -11,7 +11,7 @@ import {
   SettingOutlined,
   PhoneOutlined,
 } from "@ant-design/icons";
-import { classifyDestinations, fetchDestinations } from "../../Admin/Destination/listdest";
+import { classifyDestinations, Destination, fetchDestinations } from "../../Admin/Destination/listdest";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -22,11 +22,23 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, isLoggedIn, onLogout }) => {
   const [domestic, setDomestic] = useState<any[]>([]);
   const [international, setInternational] = useState<any[]>([]);
+    const [domesticDestinations, setDomesticDestinations] = useState<{ [key: string]: Destination[] }>({});
+    const [internationalDestinations, setInternationalDestinations] = useState<{ [key: string]: Destination[] }>({});
   const navigate = useNavigate();
   const location = useLocation();
   const [isAdmin, setIsAdmin] = useState(false);
 
+  useEffect(() => {
+      const fetchAndClassifyDestinations = async () => {
+        await fetchDestinations(); // Fetch dữ liệu điểm đến từ API
+        const { domestic, international } = classifyDestinations() as { domestic: { [key: string]: Destination[] }, international: { [key: string]: Destination[] } }; // Phân loại điểm đến thành trong nước và quốc tế
+        setDomesticDestinations(domestic); // Lưu trữ điểm đến trong nước
+        setInternationalDestinations(international); // Lưu trữ điểm đến quốc tế
+      };
   
+      fetchAndClassifyDestinations(); // Thực thi chức năng fetch và phân loại điểm đến
+    }, []); 
+
 
   useEffect(() => {
     const currentUser = User.getUserData();
@@ -97,33 +109,37 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isLoggedIn, onLogout }) => {
       ],
     },
     {
-      key: "domestic-travel",
-      icon: <AppstoreOutlined />,
-      label: "Tour trong nước",
-      children: Object.entries(classifyDestinations().domestic).map(([provinceName, destinations]) => ({
-        key: `province-${provinceName}`,
-        label: provinceName, // Tên của province
-        children: destinations.map((dest) => ({
-          key: `domestic-${dest.id}`,
-          label: dest.name, // Tên điểm đến
-          onClick: () => navigate(`/travel/domestic/${formatPath(dest.name)}`),
-        })),
-      })),
-    },
-    {
-      key: "international-travel",
-      icon: <GlobalOutlined />,
-      label: "Tour quốc tế",
-      children: Object.entries(classifyDestinations().international).map(([provinceName, destinations]) => ({
-        key: `province-${provinceName}`,
-        label: provinceName, // Tên của province
-        children: destinations.map((dest) => ({
-          key: `international-${dest.id}`,
-          label: dest.name, // Tên điểm đến
-          onClick: () => navigate(`/travel/international/${formatPath(dest.name)}`),
-        })),
-      })),
-    },
+          key: "domestic-travel",
+          icon: <AppstoreOutlined />,
+          label: "Tour Trong Nước",
+          children: Object.entries(domesticDestinations).map(
+            ([provinceName, destinations]) => ({
+              key: `province-${provinceName}`,
+              label: provinceName,
+              children: destinations.map((dest) => ({
+                key: `domestic-${dest.id}`,
+                label: dest.name,
+                onClick: () => navigate(`/destination/${dest.id}`),  // Sử dụng id làm URL
+              })),
+            })
+          ),
+        },
+        {
+          key: "international-travel",
+          icon: <GlobalOutlined />,
+          label: "Tour Quốc Tế",
+          children: Object.entries(internationalDestinations).map(
+            ([provinceName, destinations]) => ({
+              key: `province-${provinceName}`,
+              label: provinceName,
+              children: destinations.map((dest) => ({
+                key: `international-${dest.id}`,
+                label: dest.name,
+                onClick: () => navigate(`/destination/${dest.id}`),  // Sử dụng id làm URL
+              })),
+            })
+          ),
+        },
     
     {
       key: "services",
