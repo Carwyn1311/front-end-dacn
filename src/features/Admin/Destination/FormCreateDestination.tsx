@@ -166,11 +166,11 @@ const FormCreateDestination: React.FC<FormCreateDestinationProps> = ({ onClose, 
         child_price: Number(values.child_price),
       };
 
-      // await axiosInstance.post('/api/ticketprices/create', ticketPrices, {
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      // });
+      await axiosInstance.post('/api/ticketprices/create', ticketPrices, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
       handleSubmit();
       message.success('Lưu giá vé thành công');
